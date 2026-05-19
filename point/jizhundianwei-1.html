@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基金业绩基准指数点位管理系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script>
+        tailwind.config={theme:{extend:{
+            colors:{
+                primary:'#165DFF',
+                success:'#00B42A',
+                danger:'#F53F3F',
+                warning:'#FF7C00',
+                wande:'#2E86AB',
+                caihui:'#A23B72',
+                risk:'#722ED1',
+                ta:'#F7BA1E'
+            }
+        }}}
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities{
+            .card-shadow{box-shadow:0 4px 12px rgba(0,0,0,0.08);}
+            .alert-item{border-left:4px solid #F53F3F;}
+            .data-checked{border-left:4px solid #00B42A;}
+            .tab-active{border-bottom:2px solid #165DFF;color:#165DFF;font-weight:500;}
+            .algo-risk{color:#722ED1;}
+            .algo-ta{color:#F7BA1E;}
+            .diff-highlight{background-color: #FFF7E6;}
+            .modal-backdrop{backdrop-filter: blur(2px);background:rgba(0,0,0,0.5);}
+            .status-pending{color: #FF7C00;}
+            .status-approved{color: #00B42A;}
+            .status-rejected{color: #F53F3F;}
+            .step-done{background-color: #165DFF; color: white;}
+            .step-current{border: 2px solid #165DFF; color: #165DFF;}
+            .step-pending{border: 2px solid #E5E7EB; color: #9CA3AF;}
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <!-- 顶部导航 -->
+    <header class="bg-white sticky top-0 shadow-sm z-20">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <i class="fa fa-line-chart text-primary text-2xl"></i>
+                <h1 class="text-xl font-bold">基金业绩基准指数点位管理系统</h1>
+            </div>
+            <div class="flex items-center gap-4">
+                <span class="text-sm text-gray-500" id="update-time">最后更新：2024-10-20 18:30:00</span>
+                <span class="text-sm bg-primary/10 text-primary px-2 py-1 rounded">注册登记部</span>
+                <button id="refresh-data" class="px-3 py-1 bg-primary text-white rounded text-sm flex items-center gap-1">
+                    <i class="fa fa-refresh"></i> 同步数据源
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-6">
+        <!-- 告警提示区 -->
+        <div id="alert-container" class="mb-6"></div>
+
+        <!-- 数据源核对区 -->
+        <div class="bg-white rounded-xl p-5 card-shadow mb-6">
+            <h3 class="font-semibold mb-4 flex items-center gap-2">
+                <i class="fa fa-exchange text-warning"></i> 数据源核对（万得/财汇）
+            </h3>
+            <div class="flex flex-wrap gap-4 items-end mb-6">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-500 mb-1">核对日期</label>
+                    <input type="date" id="check-date" class="border rounded px-3 py-2 text-sm w-40" value="2024-10-20" onchange="autoCheckDataSource()">
+                </div>
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-500 mb-1">指数名称</label>
+                    <select id="check-index" class="border rounded px-3 py-2 text-sm w-40" onchange="autoCheckDataSource()">
+                        <option value="all">全部指数</option>
+                        <option value="HS300">沪深300指数</option>
+                        <option value="ZZ500">中证500指数</option>
+                        <option value="ZBZH">中债综合财富指数</option>
+                    </select>
+                </div>
+                <button onclick="exportIndexPoint()" class="px-4 py-2 bg-success text-white rounded text-sm flex items-center gap-1">
+                    <i class="fa fa-download"></i> 导出指数点位
+                </button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm" id="data-source-table">
+                    <thead>
+                        <tr class="border-b border-gray-200 bg-gray-50">
+                            <th class="text-left py-3 px-3 text-gray-500">指数代码</th>
+                            <th class="text-left py-3 px-3 text-gray-500">指数名称</th>
+                            <th class="text-right py-3 px-3 text-wande">万得收盘点位</th>
+                            <th class="text-right py-3 px-3 text-caihui">财汇收盘点位</th>
+                            <th class="text-center py-3 px-3 text-gray-500">数据一致性</th>
+                            <th class="text-center py-3 px-3 text-gray-500">确认状态</th>
+                            <th class="text-center py-3 px-3 text-gray-500">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-source-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 当日概览 -->
+        <div class="bg-white rounded-xl p-5 card-shadow mb-6">
+            <h3 class="font-semibold mb-4 flex items-center gap-2">
+                <i class="fa fa-dashboard text-primary"></i> 当日概览
+            </h3>
+            <div class="w-full">
+                <div>
+                    <h4 class="text-sm font-medium mb-3 text-gray-600">基金业绩比较基准</h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b border-gray-200">
+                                    <th class="text-left py-2 px-2 text-gray-500 text-xs">基金代码</th>
+                                    <th class="text-left py-2 px-2 text-gray-500 text-xs">基金名称</th>
+                                    <th class="text-right py-2 px-2 text-gray-500 text-xs">基准当日点位</th>
+                                    <th class="text-right py-2 px-2 text-gray-500 text-xs">基准当日收益率</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-100">
+                                    <td class="py-2 px-2 font-medium text-xs">001234</td>
+                                    <td class="py-2 px-2 font-medium text-xs">均衡优选混合A</td>
+                                    <td class="py-2 px-2 text-right text-xs">3287.41</td>
+                                    <td class="py-2 px-2 text-right text-success text-xs">+0.42%</td>
+                                </tr>
+                                <tr class="border-b border-gray-100">
+                                    <td class="py-2 px-2 font-medium text-xs">005678</td>
+                                    <td class="py-2 px-2 font-medium text-xs">成长精选股票C</td>
+                                    <td class="py-2 px-2 text-right text-xs">6321.85</td>
+                                    <td class="py-2 px-2 text-right text-success text-xs">+0.58%</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 px-2 font-medium text-xs">009012</td>
+                                    <td class="py-2 px-2 font-medium text-xs">稳健债券型</td>
+                                    <td class="py-2 px-2 text-right text-xs">1216.33</td>
+                                    <td class="py-2 px-2 text-right text-success text-xs">+0.06%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 业绩数据查询标签页 -->
+        <div class="bg-white rounded-xl p-5 card-shadow mb-6">
+            <div class="flex border-b border-gray-200 mb-6">
+                <button id="tab-benchmark" class="py-2 px-4 tab-active cursor-pointer" onclick="switchTab('benchmark')">
+                    <i class="fa fa-bar-chart mr-1"></i> 业绩比较基准查询
+                </button>
+                <button id="tab-holding-return" class="py-2 px-4 text-gray-600 cursor-pointer" onclick="switchTab('holding-return')">
+                    <i class="fa fa-calculator mr-1"></i> 持有期间收益率查询
+                </button>
+            </div>
+
+            <!-- 标签页1：业绩比较基准查询（列顺序已调整） -->
+            <div id="content-benchmark" class="tab-content">
+                <h3 class="font-semibold mb-4 flex items-center gap-2">
+                    <i class="fa fa-search text-primary"></i> 业绩基准数据查询
+                </h3>
+                <div class="flex flex-wrap gap-4 items-end mb-4">
+                    <div class="flex flex-col">
+                        <label class="text-sm text-gray-500 mb-1">基金代码</label>
+                        <input type="text" id="fundCode" placeholder="例如：001234" class="border rounded px-3 py-2 text-sm w-40">
+                    </div>
+                    <div class="flex flex-col">
+                        <label class="text-sm text-gray-500 mb-1">开始日期</label>
+                        <input type="date" id="queryStart" class="border rounded px-3 py-2 text-sm w-40" value="2024-09-20">
+                    </div>
+                    <div class="flex flex-col">
+                        <label class="text-sm text-gray-500 mb-1">结束日期</label>
+                        <input type="date" id="queryEnd" class="border rounded px-3 py-2 text-sm w-40" value="2024-10-20">
+                    </div>
+                    <button type="button" onclick="queryData()" class="px-4 py-2 bg-primary text-white rounded text-sm flex items-center gap-1">
+                        <i class="fa fa-search"></i> 查询
+                    </button>
+                    <button type="button" onclick="exportBenchmarkData()" class="px-4 py-2 bg-success text-white rounded text-sm flex items-center gap-1">
+                        <i class="fa fa-download"></i> 导出数据
+                    </button>
+                    <button type="button" onclick="openRecalculateModal()" class="px-4 py-2 bg-warning text-white rounded text-sm flex items-center gap-1">
+                        <i class="fa fa-refresh"></i> 重算基准
+                    </button>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm" id="resultTable">
+                        <thead>
+                            <tr class="border-b border-gray-200 bg-gray-50">
+                                <th class="text-left py-3 px-3 text-gray-500">基金代码</th>
+                                <th class="text-left py-3 px-3 text-gray-500">基金名称</th>
+                                <th class="text-left py-3 px-3 text-gray-500">交易日期</th>
+                                <th class="text-left py-3 px-3 text-gray-500">基准当日点位</th>
+                                <th class="text-left py-3 px-3 text-gray-500">基准当日收益率</th>
+                                <th class="text-left py-3 px-3 text-gray-500">指数名称</th>
+                                <th class="text-right py-3 px-3 text-gray-500">指数收盘点位</th>
+                                <th class="text-right py-3 px-3 text-gray-500">当日汇率</th>
+                                <th class="text-right py-3 px-3 text-gray-500">上日汇率</th>
+                                <th class="text-right py-3 px-3 text-gray-500">指数收益率</th>
+                                <th class="text-center py-3 px-3 text-gray-500">重算状态</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultBody"></tbody>
+                    </table>
+                </div>
+                <div id="emptyTip" class="py-10 text-center text-gray-400 hidden">
+                    <i class="fa-inbox text-2xl mb-2"></i>
+                    <p>暂无查询结果，请调整查询条件后重试</p>
+                </div>
+            </div>
+
+            <!-- 标签页2：持有期间收益率查询 -->
+            <div id="content-holding-return" class="tab-content hidden">
+                <h3 class="font-semibold mb-4 flex items-center gap-2">
+                    <i class="fa fa-calculator text-primary"></i> 持有期间收益率计算结果查询
+                </h3>
+                <div class="flex flex-wrap gap-4 items-end mb-4">
+                    <div class="flex flex-col">
+                        <label class="text-sm text-gray-500 mb-1">基金代码</label>
+                        <input type="text" id="holdingFundCode" placeholder="例如：001234" class="border rounded px-3 py-2 text-sm w-40">
+                    </div>
+                    <div class="flex flex-col">
+                        <label class="text-sm text-gray-500 mb-1">开始日期</label>
+                        <input type="date" id="holdingStartDate" class="border rounded px-3 py-2 text-sm w-40" value="2024-09-20">
+                    </div>
+                    <div class="flex flex-col">
+                        <label class="text-sm text-gray-500 mb-1">结束日期</label>
+                        <input type="date" id="holdingEndDate" class="border rounded px-3 py-2 text-sm w-40" value="2024-10-20">
+                    </div>
+                    <button type="button" onclick="queryHoldingReturn()" class="px-4 py-2 bg-primary text-white rounded text-sm flex items-center gap-1">
+                        <i class="fa fa-search"></i> 查询
+                    </button>
+                    <button type="button" onclick="exportHoldingReturnData()" class="px-4 py-2 bg-success text-white rounded text-sm flex items-center gap-1">
+                        <i class="fa fa-download"></i> 导出数据
+                    </button>
+                </div>
+                <div class="bg-gray-50 p-3 rounded-lg mb-4 text-sm">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fa fa-info-circle text-primary"></i>
+                        <span class="font-medium">算法说明</span>
+                    </div>
+                    <ul class="list-disc pl-5 space-y-2 text-gray-600">
+                        <li>
+                            <span class="algo-risk font-medium">投资风险算法</span>：round((T0业绩比较基准日收益率+1)*( T1业绩比较基准日收益率+1)*……（Tn业绩比较基准日收益率+1）-1,4)
+                            <br><span class="text-xs text-gray-500">注：Tn表示计算的当日。T0表示合同生效日，逐个交易日连乘。</span>
+                        </li>
+                        <li>
+                            <span class="algo-ta font-medium">TA算法</span>：round((Tn日基金业绩比较基准点位-1000)/1000,4)
+                        </li>
+                        <li>收益率差值≥0.01%时会高亮显示，便于比对差异</li>
+                    </ul>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm" id="holdingReturnTable">
+                        <thead>
+                            <tr class="border-b border-gray-200 bg-gray-50">
+                                <th class="text-left py-3 px-3 text-gray-500">基金代码</th>
+                                <th class="text-left py-3 px-3 text-gray-500">基金名称</th>
+                                <th class="text-left py-3 px-3 text-gray-500">交易日期</th>
+                                <th class="text-right py-3 px-3 text-gray-500">基准当日点位</th>
+                                <th class="text-right py-3 px-3 text-gray-500">基准当日收益率</th>
+                                <th class="text-right py-3 px-3 algo-risk">投资风险算法收益率</th>
+                                <th class="text-right py-3 px-3 algo-ta">TA算法收益率</th>
+                                <th class="text-right py-3 px-3 text-warning">收益率差值</th>
+                            </tr>
+                        </thead>
+                        <tbody id="holdingReturnBody"></tbody>
+                    </table>
+                </div>
+                <div id="holdingSummary" class="mt-4 p-4 bg-gray-50 rounded-lg hidden">
+                    <h4 class="font-medium mb-2 flex items-center gap-2">
+                        <i class="fa fa-pie-chart text-primary"></i> 持有期间收益率汇总（按算法）
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-white p-3 rounded-lg border border-gray-200">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-medium algo-risk">投资风险算法</span>
+                                <span id="riskTotalReturn" class="font-bold"></span>
+                            </div>
+                            <p class="text-xs text-gray-500">计算方式：round((T0+1)*(T1+1)*...*(Tn+1)-1,4)</p>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg border border-gray-200">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-medium algo-ta">TA算法</span>
+                                <span id="taTotalReturn" class="font-bold"></span>
+                            </div>
+                            <p class="text-xs text-gray-500">计算方式：round((Tn日基准点位-1000)/1000,4)</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="holdingEmptyTip" class="py-10 text-center text-gray-400 hidden">
+                    <i class="fa-inbox text-2xl mb-2"></i>
+                    <p>暂无查询结果，请调整查询条件后重试</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 重算基准弹窗 -->
+    <div id="recalculateModal" class="fixed inset-0 z-[9999] flex items-center justify-center modal-backdrop hidden">
+        <div class="bg-white rounded-xl p-6 w-full max-w-3xl max-h-[90vh] overflow-y-auto card-shadow">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold flex items-center gap-2">
+                    <i class="fa fa-refresh text-warning"></i> 业绩基准重算申请
+                </h3>
+                <button type="button" onclick="closeRecalculateModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fa fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <!-- 步骤条 -->
+            <div class="flex items-center mb-6">
+                <div class="flex items-center">
+                    <div id="step1-indicator" class="w-8 h-8 rounded-full flex items-center justify-center step-done text-sm font-medium">1</div>
+                    <span class="ml-2 text-sm font-medium">录入指数收盘点位</span>
+                </div>
+                <div class="flex-1 h-1 bg-gray-200 mx-4"></div>
+                <div class="flex items-center">
+                    <div id="step2-indicator" class="w-8 h-8 rounded-full flex items-center justify-center step-pending text-sm font-medium">2</div>
+                    <span class="ml-2 text-sm text-gray-500">审核指数收盘点位</span>
+                </div>
+            </div>
+
+            <!-- 步骤1：录入指数收盘点位 -->
+            <div id="step1-content">
+                <form id="recalculateForm" onsubmit="submitStep1(event)">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div class="flex flex-col">
+                            <label class="text-sm text-gray-500 mb-1 font-medium">交易日期 <span class="text-danger">*</span></label>
+                            <input type="date" id="recalcTradeDate" class="border rounded px-3 py-2 text-sm w-full" required>
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="text-sm text-gray-500 mb-1 font-medium">维护人 <span class="text-danger">*</span></label>
+                            <input type="text" id="recalcMaintainer" placeholder="请输入维护人姓名" class="border rounded px-3 py-2 text-sm w-full" required>
+                        </div>
+                    </div>
+                    <div class="mb-6">
+                        <div class="flex justify-between items-center mb-3">
+                            <label class="text-sm text-gray-500 font-medium">指数点位信息 <span class="text-danger">*</span></label>
+                            <button type="button" onclick="addIndexRow()" class="px-3 py-1 bg-primary/10 text-primary rounded text-sm flex items-center gap-1">
+                                <i class="fa fa-plus"></i> 添加指数
+                            </button>
+                        </div>
+                        <div class="overflow-x-auto mb-2">
+                            <table class="w-full text-sm" id="indexPointsTable">
+                                <thead>
+                                    <tr class="border-b border-gray-200 bg-gray-50">
+                                        <th class="text-left py-2 px-2 text-gray-500 w-1/4">指数代码</th>
+                                        <th class="text-left py-2 px-2 text-gray-500 w-1/4">指数名称</th>
+                                        <th class="text-right py-2 px-2 text-gray-500 w-1/4">重新获取点位</th>
+                                        <th class="text-right py-2 px-2 text-gray-500 w-1/4">手工录入点位</th>
+                                        <th class="text-center py-2 px-2 text-gray-500 w-12">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="indexPointsBody">
+                                    <tr class="border-b border-gray-100">
+                                        <td class="py-2 px-2">
+                                            <select class="border rounded px-2 py-1 text-sm w-full index-code" onchange="updateIndexName(this)">
+                                                <option value="HS300">HS300</option>
+                                                <option value="ZZ500">ZZ500</option>
+                                                <option value="ZBZH">ZBZH</option>
+                                            </select>
+                                        </td>
+                                        <td class="py-2 px-2 index-name">沪深300指数</td>
+                                        <td class="py-2 px-2 text-right">
+                                            <button type="button" onclick="fetchIndexPoint(this)" class="px-2 py-1 bg-wande/10 text-wande rounded text-xs">
+                                                <i class="fa fa-download"></i> 获取
+                                            </button>
+                                        </td>
+                                        <td class="py-2 px-2 text-right">
+                                            <input type="number" step="0.0001" class="border rounded px-2 py-1 text-sm w-full index-point" placeholder="0.0000">
+                                        </td>
+                                        <td class="py-2 px-2 text-center">
+                                            <button type="button" onclick="removeIndexRow(this)" class="text-danger text-xs">
+                                                <i class="fa fa-trash"></i> 删除
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="text-xs text-gray-500">注：手工录入点位优先级高于重新获取的点位，填写后将使用该值进行重算</p>
+                    </div>
+                    <div class="flex flex-col mb-6">
+                        <label class="text-sm text-gray-500 mb-1 font-medium">重算原因 <span class="text-danger">*</span></label>
+                        <textarea id="recalcReason" rows="3" placeholder="请详细说明需要重算的原因..." class="border rounded px-3 py-2 text-sm w-full" required></textarea>
+                    </div>
+                    <div class="flex justify-end gap-3">
+                        <button type="button" onclick="closeRecalculateModal()" class="px-4 py-2 bg-gray-200 text-gray-700 rounded text-sm">取消</button>
+                        <button type="submit" class="px-4 py-2 bg-primary text-white rounded text-sm flex items-center gap-1">
+                            <i class="fa fa-arrow-right"></i> 提交审核
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 步骤2：审核指数收盘点位 -->
+            <div id="step2-content" class="hidden">
+                <div id="auditContent" class="mb-6"></div>
+                <div class="flex flex-col mb-6">
+                    <label class="text-sm text-gray-500 mb-1 font-medium">审核意见</label>
+                    <textarea id="auditComment" rows="3" placeholder="请填写审核意见..." class="border rounded px-3 py-2 text-sm w-full"></textarea>
+                </div>
+                <div class="flex justify-end gap-3">
+                    <button type="button" onclick="closeRecalculateModal()" class="px-4 py-2 bg-gray-200 text-gray-700 rounded text-sm">取消</button>
+                    <button type="button" onclick="rejectRecalculate()" class="px-4 py-2 bg-danger text-white rounded text-sm">退回修改</button>
+                    <button type="button" onclick="approveRecalculate()" class="px-4 py-2 bg-success text-white rounded text-sm">审核通过</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-white py-4 text-center text-sm text-gray-500 border-t">
+        <p>基金业绩基准指数点位管理系统 © 2024 | 数据源：万得（主）、财汇（备） | 使用者：注册登记部</p>
+    </footer>
+
+    <script>
+        // ========== 核心修复：全局挂载 重算弹窗方法 ==========
+        window.openRecalculateModal = function() {
+            const modal = document.getElementById('recalculateModal');
+            if(!modal){
+                alert("弹窗元素不存在");
+                return;
+            }
+            modal.classList.remove("hidden");
+            modal.style.display = "flex";
+            document.getElementById("step1-content").classList.remove("hidden");
+            document.getElementById("step2-content").classList.add("hidden");
+            document.getElementById("step1-indicator").className = "w-8 h-8 rounded-full flex items-center justify-center step-done text-sm font-medium";
+            document.getElementById("step2-indicator").className = "w-8 h-8 rounded-full flex items-center justify-center step-pending text-sm font-medium";
+            document.getElementById("recalculateForm").reset();
+            document.getElementById("recalcTradeDate").value = new Date().toISOString().split('T')[0];
+        }
+
+        window.closeRecalculateModal = function() {
+            const modal = document.getElementById('recalculateModal');
+            if(modal){
+                modal.classList.add("hidden");
+                modal.style.display = "none";
+            }
+        }
+
+        // ========== 模拟基础数据 ==========
+        const indexDataSource = {
+            '2024-10-20': { 'HS300': { wande: 3352.17, caihui: 3352.17, confirmed: 'wande', confirmedValue: 3352.17 }, 'ZZ500': { wande: 6388.35, caihui: 6388.32, confirmed: 'caihui', confirmedValue: 6388.32 }, 'ZBZH': { wande: 1217.11, caihui: 1217.10, confirmed: '', confirmedValue: 0 } },
+            '2024-10-18': { 'HS300': { wande: 3345.89, caihui: 3345.89, confirmed: 'wande', confirmedValue: 3345.89 }, 'ZZ500': { wande: 6378.45, caihui: 6378.45, confirmed: 'wande', confirmedValue: 6378.45 }, 'ZBZH': { wande: 1216.89, caihui: 1216.89, confirmed: 'wande', confirmedValue: 1216.89 } },
+            '2024-10-17': { 'HS300': { wande: 3338.76, caihui: 3338.80, confirmed: 'wande', confirmedValue: 3338.76 }, 'ZZ500': { wande: 6365.23, caihui: 6365.20, confirmed: 'wande', confirmedValue: 6365.23 }, 'ZBZH': { wande: 1216.78, caihui: 1216.78, confirmed: 'wande', confirmedValue: 1216.78 } },
+            '2024-10-16': { 'HS300': { wande: 3330.45, caihui: 3330.45, confirmed: 'wande', confirmedValue: 3330.45 }, 'ZZ500': { wande: 6358.78, caihui: 6358.78, confirmed: 'wande', confirmedValue: 6358.78 }, 'ZBZH': { wande: 1216.65, caihui: 1216.00, confirmed: 'wande', confirmedValue: 1216.65 } },
+            '2024-10-15': { 'HS300': { wande: 3325.12, caihui: 3325.12, confirmed: 'wande', confirmedValue: 3325.12 }, 'ZZ500': { wande: 6350.15, caihui: 6350.15, confirmed: 'wande', confirmedValue: 6350.15 }, 'ZBZH': { wande: 1216.58, caihui: 1216.58, confirmed: 'wande', confirmedValue: 1216.58 } }
+        };
+        const indexBasic = {
+            'HS300': { name: '沪深300指数' },
+            'ZZ500': { name: '中证500指数' },
+            'ZBZH': { name: '中债综合财富指数' }
+        };
+        const fundBasic = {
+            '001234': { name: '均衡优选混合A' },
+            '005678': { name: '成长精选股票C' },
+            '009012': { name: '稳健债券型' }
+        };
+        const exchangeRateData = {
+            '2024-10-15': { current: '7.1872', prevWorkday: '7.1880' },
+            '2024-10-16': { current: '7.1865', prevWorkday: '7.1872' },
+            '2024-10-17': { current: '7.1848', prevWorkday: '7.1865' },
+            '2024-10-18': { current: '7.1836', prevWorkday: '7.1848' },
+            '2024-10-20': { current: '7.1852', prevWorkday: '7.1905' }
+        };
+
+        // ========== 页面初始化 ==========
+        window.onload = function() {
+            autoCheckDataSource();
+            showAlerts();
+            queryData();
+            queryHoldingReturn();
+        };
+
+        // ========== 标签页切换 ==========
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('[id^="tab-"]').forEach(el => {
+                el.classList.remove('tab-active');
+                el.classList.add('text-gray-600');
+            });
+            document.getElementById(`content-${tabName}`).classList.remove('hidden');
+            document.getElementById(`tab-${tabName}`).classList.add('tab-active');
+            document.getElementById(`tab-${tabName}`).classList.remove('text-gray-600');
+        }
+
+        // ========== 数据源核对 ==========
+        function autoCheckDataSource() {
+            const checkDate = document.getElementById('check-date').value;
+            const checkIndex = document.getElementById('check-index').value;
+            const tbody = document.getElementById('data-source-body');
+            tbody.innerHTML = '';
+            const dateData = indexDataSource[checkDate] || {};
+            let indexesToCheck = Object.keys(indexBasic);
+            if (checkIndex !== 'all') indexesToCheck = [checkIndex];
+            indexesToCheck.forEach(indexCode => {
+                const indexInfo = indexBasic[indexCode];
+                const data = dateData[indexCode] || { wande: 0, caihui: 0, confirmed: '', confirmedValue: 0 };
+                const isConsistent = Math.abs(data.wande - data.caihui) < 0.01;
+                const consistentText = isConsistent ? '<span class="text-success"><i class="fa fa-check"></i> 一致</span>' : '<span class="text-danger"><i class="fa fa-exclamation-triangle"></i> 不一致</span>';
+                let confirmStatus = '<span class="text-gray-400">待确认</span>';
+                if (data.confirmed) {
+                    const sourceName = data.confirmed === 'wande' ? '万得' : '财汇';
+                    const sourceColor = data.confirmed === 'wande' ? 'text-wande' : 'text-caihui';
+                    confirmStatus = `<span class="${sourceColor}"><i class="fa fa-check-circle"></i> 已确认(${sourceName})</span>`;
+                }
+                let actionBtn = '';
+                if (!isConsistent) {
+                    actionBtn = `<div class="flex justify-center gap-2"><button onclick="confirmDataSource('${checkDate}', '${indexCode}', 'wande')" class="px-2 py-1 bg-wande text-white rounded text-xs">确认万得</button><button onclick="confirmDataSource('${checkDate}', '${indexCode}', 'caihui')" class="px-2 py-1 bg-caihui text-white rounded text-xs">确认财汇</button></div>`;
+                } else if (!data.confirmed) {
+                    actionBtn = `<button onclick="confirmDataSource('${checkDate}', '${indexCode}', 'wande')" class="px-2 py-1 bg-wande text-white rounded text-xs">确认万得</button>`;
+                } else {
+                    actionBtn = '<span class="text-xs text-gray-400">无需操作</span>';
+                }
+                const tr = document.createElement('tr');
+                tr.className = isConsistent ? 'border-b border-gray-100 data-checked' : 'border-b border-gray-100 alert-item';
+                tr.innerHTML = `<td class="py-3 px-3 font-medium">${indexCode}</td><td class="py-3 px-3">${indexInfo.name}</td><td class="py-3 px-3 text-right">${data.wande.toFixed(4)}</td><td class="py-3 px-3 text-right">${data.caihui.toFixed(4)}</td><td class="py-3 px-3 text-center">${consistentText}</td><td class="py-3 px-3 text-center">${confirmStatus}</td><td class="py-3 px-3 text-center">${actionBtn}</td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function confirmDataSource(date, indexCode, source) {
+            if (!indexDataSource[date]) return;
+            indexDataSource[date][indexCode].confirmed = source;
+            indexDataSource[date][indexCode].confirmedValue = indexDataSource[date][indexCode][source];
+            alert(`已确认${date} ${indexBasic[indexCode].name}采用${source === 'wande' ? '万得' : '财汇'}数据源！`);
+            autoCheckDataSource(); showAlerts(); queryData();
+        }
+
+        function showAlerts() {
+            const alertContainer = document.getElementById('alert-container');
+            alertContainer.innerHTML = '';
+            let hasAlert = false;
+            Object.keys(indexDataSource).forEach(date => {
+                Object.keys(indexDataSource[date]).forEach(indexCode => {
+                    const data = indexDataSource[date][indexCode];
+                    if (Math.abs(data.wande - data.caihui) >= 0.01 && !data.confirmed) {
+                        hasAlert = true;
+                        const alertDiv = document.createElement('div');
+                        alertDiv.className = 'bg-white p-4 rounded-lg alert-item card-shadow mb-2';
+                        alertDiv.innerHTML = `<div class="flex items-start gap-3"><i class="fa fa-exclamation-circle text-danger text-xl mt-0.5"></i><div><h4 class="font-medium text-danger">业务告警</h4><p class="text-sm text-gray-600 mt-1">${date} ${indexBasic[indexCode].name} 数据源不一致 - 万得：${data.wande.toFixed(4)}，财汇：${data.caihui.toFixed(4)}，请人工确认采用数据源！</p><button onclick="document.getElementById('check-date').value='${date}';document.getElementById('check-index').value='${indexCode}';autoCheckDataSource()" class="mt-2 px-3 py-1 bg-primary text-white rounded text-xs">处理告警</button></div></div>`;
+                        alertContainer.appendChild(alertDiv);
+                    }
+                });
+            });
+            if (!hasAlert) {
+                const noAlertDiv = document.createElement('div');
+                noAlertDiv.className = 'bg-white p-4 rounded-lg data-checked card-shadow';
+                noAlertDiv.innerHTML = `<div class="flex items-center gap-3"><i class="fa fa-check-circle text-success text-xl"></i><p class="text-sm text-gray-600">当前无数据源不一致告警，所有指数点位已核对/确认完成</p></div>`;
+                alertContainer.appendChild(noAlertDiv);
+            }
+        }
+
+        function exportIndexPoint() {
+            const startDate = prompt('请输入导出开始日期（格式：YYYY-MM-DD）', '2024-10-17');
+            const endDate = prompt('请输入导出结束日期（格式：YYYY-MM-DD）', '2024-10-20');
+            if (!startDate || !endDate) return;
+            const exportData = [];
+            const dateList = Object.keys(indexDataSource).filter(date => date >= startDate && date <= endDate);
+            dateList.forEach(date => {
+                Object.keys(indexDataSource[date]).forEach(indexCode => {
+                    const data = indexDataSource[date][indexCode];
+                    exportData.push({
+                        '日期': date,
+                        '指数代码': indexCode,
+                        '指数名称': indexBasic[indexCode].name,
+                        '万得收盘点位': data.wande.toFixed(4),
+                        '财汇收盘点位': data.caihui.toFixed(4),
+                        '数据一致性': Math.abs(data.wande - data.caihui) < 0.01 ? '一致' : '不一致',
+                        '确认数据源': data.confirmed === 'wande' ? '万得' : (data.confirmed === 'caihui' ? '财汇' : '待确认'),
+                        '确认收盘点位': data.confirmedValue ? data.confirmedValue.toFixed(4) : '待确认'
+                    });
+                });
+            });
+            const ws = XLSX.utils.json_to_sheet(exportData);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, '指数收盘点位');
+            XLSX.writeFile(wb, `指数收盘点位_${startDate}_${endDate}.xlsx`);
+            alert(`成功导出${startDate}至${endDate}的指数收盘点位数据！`);
+        }
+
+        // ========== 业绩比较基准查询 - 列顺序已调整：指数名称在指数收盘点位之前 ==========
+        function queryData(){
+            const fundCode = document.getElementById('fundCode').value.trim();
+            const tbody = document.getElementById('resultBody');
+            const emptyTip = document.getElementById('emptyTip');
+            
+            tbody.innerHTML = '';
+            emptyTip.classList.add('hidden');
+
+            // 模拟数据：同一基金、同一日期下，基准当日点位、基准当日收益率一致
+            const mockBenchData = [
+                {fundCode:'001234',fundName:'均衡优选混合A',tradeDate:'2024-10-20',benchPoint:3287.4100,benchRate:0.0042,indexName:'沪深300指数',indexPoint:3352.17,rateNow:'7.1852',rateLast:'7.1905',indexRate:0.0018,recalcStatus:'正常'},
+                {fundCode:'001234',fundName:'均衡优选混合A',tradeDate:'2024-10-20',benchPoint:3287.4100,benchRate:0.0042,indexName:'中债综合财富指数',indexPoint:1217.11,rateNow:'7.1852',rateLast:'7.1905',indexRate:0.0003,recalcStatus:'正常'},
+                {fundCode:'005678',fundName:'成长精选股票C',tradeDate:'2024-10-20',benchPoint:6321.8500,benchRate:0.0058,indexName:'中证500指数',indexPoint:6388.35,rateNow:'7.1852',rateLast:'7.1905',indexRate:0.0021,recalcStatus:'正常'},
+                {fundCode:'005678',fundName:'成长精选股票C',tradeDate:'2024-10-20',benchPoint:6321.8500,benchRate:0.0058,indexName:'中债综合财富指数',indexPoint:1217.11,rateNow:'7.1852',rateLast:'7.1905',indexRate:0.0003,recalcStatus:'正常'},
+                {fundCode:'009012',fundName:'稳健债券型',tradeDate:'2024-10-20',benchPoint:1216.3300,benchRate:0.0006,indexName:'中债综合财富指数',indexPoint:1217.11,rateNow:'7.1852',rateLast:'7.1905',indexRate:0.0003,recalcStatus:'已重算'},
+            ];
+
+            let filteredData = mockBenchData;
+            if(fundCode) {
+                filteredData = mockBenchData.filter(item => item.fundCode === fundCode);
+            }
+
+            if(filteredData.length > 0) {
+                filteredData.forEach(item=>{
+                    const tr = document.createElement('tr');
+                    tr.className = 'border-b border-gray-100';
+                    let statusClass = 'text-success';
+                    if(item.recalcStatus === '待重算') statusClass = 'text-warning';
+                    if(item.recalcStatus === '已重算') statusClass = 'text-primary';
+
+                    // 按新列顺序渲染
+                    tr.innerHTML = `
+                        <td class="py-2 px-3">${item.fundCode}</td>
+                        <td class="py-2 px-3">${item.fundName}</td>
+                        <td class="py-2 px-3">${item.tradeDate}</td>
+                        <td class="py-2 px-3 text-right">${item.benchPoint.toFixed(4)}</td>
+                        <td class="py-2 px-3 text-right ${item.benchRate>=0?'text-success':'text-danger'}">${(item.benchRate*100).toFixed(2)}%</td>
+                        <td class="py-2 px-3">${item.indexName}</td>
+                        <td class="py-2 px-3 text-right">${item.indexPoint.toFixed(2)}</td>
+                        <td class="py-2 px-3 text-right">${item.rateNow}</td>
+                        <td class="py-2 px-3 text-right">${item.rateLast}</td>
+                        <td class="py-2 px-3 text-right ${item.indexRate>=0?'text-success':'text-danger'}">${(item.indexRate*100).toFixed(2)}%</td>
+                        <td class="py-2 px-3 text-center ${statusClass}">${item.recalcStatus}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } else {
+                emptyTip.classList.remove('hidden');
+            }
+        }
+
+        // ========== 持有期间收益率查询 ==========
+        function queryHoldingReturn(){
+            const fundCode = document.getElementById('holdingFundCode').value.trim();
+            const tbody = document.getElementById('holdingReturnBody');
+            const emptyTip = document.getElementById('holdingEmptyTip');
+            const holdingSummary = document.getElementById('holdingSummary');
+            const riskTotalReturn = document.getElementById('riskTotalReturn');
+            const taTotalReturn = document.getElementById('taTotalReturn');
+            
+            tbody.innerHTML = '';
+            emptyTip.classList.add('hidden');
+            holdingSummary.classList.add('hidden');
+
+            const mockHoldingData = [
+                {fundCode:'001234',fundName:'均衡优选混合A',tradeDate:'2024-10-15',benchPoint:1026.3521,benchRate:0.0036,riskReturn:0.0265,taReturn:0.0264,diff:0.0001},
+                {fundCode:'001234',fundName:'均衡优选混合A',tradeDate:'2024-10-16',benchPoint:1027.8915,benchRate:0.0015,riskReturn:0.0281,taReturn:0.0279,diff:0.0002},
+                {fundCode:'001234',fundName:'均衡优选混合A',tradeDate:'2024-10-17',benchPoint:1029.1587,benchRate:0.0012,riskReturn:0.0294,taReturn:0.0292,diff:0.0002},
+                {fundCode:'001234',fundName:'均衡优选混合A',tradeDate:'2024-10-18',benchPoint:1029.6842,benchRate:0.0005,riskReturn:0.0299,taReturn:0.0297,diff:0.0002},
+                {fundCode:'001234',fundName:'均衡优选混合A',tradeDate:'2024-10-20',benchPoint:1030.8563,benchRate:0.0011,riskReturn:0.0310,taReturn:0.0309,diff:0.0001},
+            ];
+
+            let filteredData = mockHoldingData;
+            if(fundCode) {
+                filteredData = mockHoldingData.filter(item => item.fundCode === fundCode);
+            }
+
+            if(filteredData.length > 0) {
+                let totalRiskReturn = filteredData[filteredData.length-1].riskReturn;
+                let totalTaReturn = filteredData[filteredData.length-1].taReturn;
+                holdingSummary.classList.remove('hidden');
+                riskTotalReturn.textContent = `${(totalRiskReturn*100).toFixed(4)}%`;
+                taTotalReturn.textContent = `${(totalTaReturn*100).toFixed(4)}%`;
+
+                filteredData.forEach(item=>{
+                    const tr = document.createElement('tr');
+                    const diffClass = item.diff >= 0.0001 ? 'diff-highlight' : '';
+                    tr.className = `border-b border-gray-100 ${diffClass}`;
+                    
+                    tr.innerHTML = `
+                        <td class="py-2 px-3">${item.fundCode}</td>
+                        <td class="py-2 px-3">${item.fundName}</td>
+                        <td class="py-2 px-3">${item.tradeDate}</td>
+                        <td class="py-2 px-3 text-right">${item.benchPoint.toFixed(4)}</td>
+                        <td class="py-2 px-3 text-right ${item.benchRate>=0?'text-success':'text-danger'}">${(item.benchRate*100).toFixed(2)}%</td>
+                        <td class="py-2 px-3 text-right algo-risk">${(item.riskReturn*100).toFixed(4)}%</td>
+                        <td class="py-2 px-3 text-right algo-ta">${(item.taReturn*100).toFixed(4)}%</td>
+                        <td class="py-2 px-3 text-right text-warning">${(item.diff*100).toFixed(4)}%</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } else {
+                emptyTip.classList.remove('hidden');
+            }
+        }
+
+        // ========== 导出功能 ==========
+        function exportBenchmarkData() { alert('业绩基准数据导出功能'); }
+        function exportHoldingReturnData() { alert('持有期收益率导出功能'); }
+
+        // ========== 指数点位操作 ==========
+        function addIndexRow() {
+            const tbody = document.getElementById('indexPointsBody');
+            const tr = document.createElement('tr');
+            tr.className = 'border-b border-gray-100';
+            tr.innerHTML = `
+                <td class="py-2 px-2"><select class="border rounded px-2 py-1 text-sm w-full index-code" onchange="updateIndexName(this)"><option value="HS300">HS300</option><option value="ZZ500">ZZ500</option><option value="ZBZH">ZBZH</option></select></td>
+                <td class="py-2 px-2 index-name">沪深300指数</td>
+                <td class="py-2 px-2 text-right"><button type="button" onclick="fetchIndexPoint(this)" class="px-2 py-1 bg-wande/10 text-wande rounded text-xs"><i class="fa fa-download"></i> 获取</button></td>
+                <td class="py-2 px-2 text-right"><input type="number" step="0.0001" class="border rounded px-2 py-1 text-sm w-full index-point" placeholder="0.0000"></td>
+                <td class="py-2 px-2 text-center"><button type="button" onclick="removeIndexRow(this)" class="text-danger text-xs"><i class="fa fa-trash"></i> 删除</button></td>
+            `;
+            tbody.appendChild(tr);
+        }
+        function removeIndexRow(btn) {
+            const tr = btn.closest('tr');
+            if(tr && document.querySelectorAll('#indexPointsBody tr').length > 1) tr.remove();
+            else alert('至少保留一行');
+        }
+        function updateIndexName(select) {
+            const code = select.value;
+            select.closest('tr').querySelector('.index-name').textContent = indexBasic[code]?.name || '';
+        }
+        function fetchIndexPoint(btn) {
+            const tr = btn.closest('tr');
+            const code = tr.querySelector('.index-code').value;
+            const tradeDate = document.getElementById('recalcTradeDate').value;
+            const pointInput = tr.querySelector('.index-point');
+            if(!tradeDate) { alert('请先选择交易日期'); return; }
+            const data = indexDataSource[tradeDate]?.[code];
+            if(data) {
+                const point = data.confirmedValue || data.wande;
+                pointInput.value = point.toFixed(4);
+                alert(`已获取点位：${point.toFixed(4)}`);
+            } else alert('暂无该日期点位数据');
+        }
+
+        // 保留空函数，防止报错
+        function submitStep1(e){ e.preventDefault(); alert("功能已移除"); }
+        function approveRecalculate(){}
+        function rejectRecalculate(){}
+    </script>
+</body>
+</html>

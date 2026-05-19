@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>招募说明书更新系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+        body {
+            background: #f5f7fa;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header-bar {
+            background: #fff;
+            padding: 16px 24px;
+            border-bottom: 1px solid #ebeef5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #303133;
+        }
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+        .btn {
+            padding: 8px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background: #4080ff;
+            color: white;
+        }
+        .btn-default {
+            background: white;
+            border: 1px solid #dcdfe6;
+            color: #606266;
+        }
+        .info-card {
+            background: #f5faff;
+            margin: 20px 24px;
+            padding: 16px;
+            border-radius: 8px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        .info-item {
+            font-size: 14px;
+            color: #606266;
+        }
+        .info-label {
+            color: #909399;
+        }
+        .step-bar {
+            display: flex;
+            align-items: center;
+            margin: 20px 24px;
+        }
+        .step-item {
+            display: flex;
+            align-items: center;
+        }
+        .step-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #4080ff;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            margin-right: 8px;
+        }
+        .step-dot.unfinished {
+            background: #e6a23c;
+        }
+        .step-line {
+            width: 120px;
+            height: 3px;
+            background: #4080ff;
+            margin: 0 8px;
+        }
+        .step-line.unfinished {
+            background: #ebeef5;
+        }
+        .step-text {
+            font-size: 14px;
+            color: #303133;
+        }
+        .form-section {
+            margin: 20px 24px;
+        }
+        .section-title {
+            background: linear-gradient(to right, #4080ff, #a0c4ff);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px 8px 0 0;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .form-content {
+            border: 1px solid #ebeef5;
+            border-top: none;
+            padding: 20px;
+            border-radius: 0 0 8px 8px;
+        }
+        .form-row {
+            margin-bottom: 20px;
+        }
+        .form-label {
+            display: block;
+            font-size: 14px;
+            color: #606266;
+            margin-bottom: 8px;
+        }
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #dcdfe6;
+            border-radius: 4px;
+            font-size: 14px;
+            background: #f5f7fa;
+        }
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        .table-box {
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ebeef5;
+        }
+        th {
+            background: #f5f7fa;
+            color: #909399;
+        }
+        .reject-area {
+            margin-top: 20px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 1. 首页列表（已去掉审核按钮） -->
+<div id="listPage" class="container">
+    <div class="header-bar">
+        <div class="header-title">信披文件撰写 — 招募说明书</div>
+    </div>
+    <div class="form-section">
+        <table>
+            <thead>
+                <tr>
+                    <th>更新批次标题</th>
+                    <th>年编号</th>
+                    <th>内容截止日</th>
+                    <th>财报截止日</th>
+                    <th>封面&落款日期</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="javascript:;" style="color:#4080ff;" onclick="openMaintainPage()">2026年招募说明书更新04月24日</a></td>
+                    <td>2026</td>
+                    <td>2026-04-20</td>
+                    <td>2026-03-31</td>
+                    <td>2026-04-25</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- 2. 维护页面 -->
+<div id="maintainPage" class="container hidden">
+    <div class="header-bar">
+        <div class="header-title">招募说明书更新</div>
+        <div class="header-actions">
+            <button class="btn btn-default" onclick="backToList()">返回</button>
+            <button class="btn btn-primary" onclick="submitMaintain()">提交</button>
+        </div>
+    </div>
+    <div class="info-card">
+        <div class="info-item"><span class="info-label">创建人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">归属部门：</span>办公室</div>
+        <div class="info-item"><span class="info-label">前序任务处理人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">任务到达时间：</span>2026-04-24 15:30</div>
+    </div>
+    <div class="step-bar">
+        <div class="step-item">
+            <div class="step-dot">1</div>
+            <span class="step-text">维护招募说明书要素</span>
+        </div>
+        <div class="step-line unfinished"></div>
+        <div class="step-item">
+            <div class="step-dot unfinished">2</div>
+            <span class="step-text">审核招募说明书要素</span>
+        </div>
+    </div>
+    <div class="form-section">
+        <div class="section-title">招募说明书要素维护</div>
+        <div class="form-content">
+            <div class="form-row">
+                <label class="form-label">本次更新内容截止日</label>
+                <input type="text" class="form-input" value="2026-04-20" readonly>
+            </div>
+            <div class="form-row">
+                <label class="form-label">财报截止日</label>
+                <input type="text" class="form-input" value="2026-03-31" readonly>
+            </div>
+            <div class="table-box">
+                <label class="form-label">本次更新涉及产品</label>
+                <table>
+                    <tr><th>基金全称</th><th>基金代码</th></tr>
+                    <tr><td>建信嘉合债券型证券投资基金</td><td>000123</td></tr>
+                    <tr><td>建信丰享债券型证券投资基金</td><td>000456</td></tr>
+                </table>
+            </div>
+            <div class="form-row" style="margin-top:20px;">
+                <label class="form-label">基金管理人概况</label>
+                <textarea class="form-textarea" placeholder="请录入基金管理人概况"></textarea>
+            </div>
+            <!-- 改为文本框 -->
+            <div class="form-row">
+                <label class="form-label">董事会成员信息</label>
+                <textarea class="form-textarea" placeholder="请录入董事会成员信息"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 3. 审核页面 -->
+<div id="auditPage" class="container hidden">
+    <div class="header-bar">
+        <div class="header-title">招募说明书更新 - 审核</div>
+        <div class="header-actions">
+            <button class="btn btn-default" onclick="backToList()">返回</button>
+            <button class="btn btn-default" onclick="rejectMaintain()">退回</button>
+            <button class="btn btn-primary" onclick="passAudit()">审核通过</button>
+        </div>
+    </div>
+    <div class="info-card">
+        <div class="info-item"><span class="info-label">创建人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">归属部门：</span>办公室</div>
+        <div class="info-item"><span class="info-label">前序任务处理人：</span>办公室</div>
+        <div class="info-item"><span class="info-label">任务到达时间：</span>2026-04-24 16:00</div>
+    </div>
+    <div class="step-bar">
+        <div class="step-item">
+            <div class="step-dot" style="background:#52c41a;">✓</div>
+            <span class="step-text">维护招募说明书要素</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step-item">
+            <div class="step-dot">2</div>
+            <span class="step-text">审核招募说明书要素</span>
+        </div>
+    </div>
+    <div class="form-section">
+        <div class="section-title">招募说明书要素审核</div>
+        <div class="form-content">
+            <div class="form-row">
+                <label class="form-label">内容截止日</label>
+                <input type="text" class="form-input" value="2026-04-20" readonly>
+            </div>
+            <div class="form-row">
+                <label class="form-label">财报截止日</label>
+                <input type="text" class="form-input" value="2026-03-31" readonly>
+            </div>
+            <div class="table-box">
+                <table>
+                    <tr><th>基金全称</th><th>基金代码</th></tr>
+                    <tr><td>建信嘉合债券型证券投资基金</td><td>000123</td></tr>
+                    <tr><td>建信丰享债券型证券投资基金</td><td>000456</td></tr>
+                </table>
+            </div>
+            <div class="form-row" style="margin-top:20px;">
+                <label class="form-label">基金管理人概况（已录入）</label>
+                <textarea class="form-textarea" readonly>已填写内容</textarea>
+            </div>
+            <div class="form-row">
+                <label class="form-label">董事会成员信息（已录入）</label>
+                <textarea class="form-textarea" readonly>已填写内容</textarea>
+            </div>
+            <div class="reject-area">
+                <label class="form-label">退回意见</label>
+                <textarea class="form-textarea" placeholder="请填写退回原因"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openMaintainPage(){
+        listPage.classList.add('hidden')
+        maintainPage.classList.remove('hidden')
+        auditPage.classList.add('hidden')
+    }
+    function openAuditPage(){
+        listPage.classList.add('hidden')
+        maintainPage.classList.add('hidden')
+        auditPage.classList.remove('hidden')
+    }
+    function backToList(){
+        listPage.classList.remove('hidden')
+        maintainPage.classList.add('hidden')
+        auditPage.classList.add('hidden')
+    }
+    function submitMaintain(){alert('提交成功，进入审核');openAuditPage()}
+    function rejectMaintain(){alert('已退回至维护步骤');openMaintainPage()}
+    function passAudit(){alert('审核通过，流程完成');backToList()}
+</script>
+</body>
+</html>

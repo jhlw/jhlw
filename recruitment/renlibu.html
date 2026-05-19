@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>信披文件撰写-招募说明书 | 人力资源部合并列表最终版</title>
+    <style>
+        * {margin: 0;padding: 0;box-sizing: border-box;font-family: "Microsoft Yahei", sans-serif;}
+        body {background: #f5f7fa;padding: 20px;}
+        .container {max-width: 1200px;margin: 0 auto;background: #fff;border-radius: 8px;box-shadow: 0 2px 12px rgba(0,0,0,0.1);overflow: hidden;}
+        .header-bar {background: #fff;padding: 16px 24px;border-bottom: 1px solid #ebeef5;display: flex;justify-content: space-between;align-items: center;}
+        .header-title {font-size: 20px;font-weight: bold;color: #303133;}
+        .header-actions {display: flex;gap: 12px;}
+        .dept-btn-group{padding:12px 24px;border-bottom:1px solid #ebeef5;display: flex;gap: 12px;flex-wrap: wrap;}
+        .btn {padding: 8px 24px;border: none;border-radius: 4px;font-size: 14px;cursor: pointer;}
+        .btn-primary {background: #4080ff;color: #fff;}
+        .btn-default {background: #fff;border: 1px solid #dcdfe6;color: #606266;}
+        .btn-success {background: #52c41a;color:#fff;}
+        .btn-warn {background: #e6a23c;color:#fff;}
+        .btn:disabled {opacity: 0.55;cursor: not-allowed;}
+        .form-section {margin: 20px 24px;}
+        .section-title {background: linear-gradient(to right, #4080ff, #a0c4ff);color: #fff;padding: 12px 16px;border-radius: 8px 8px 0 0;font-size: 16px;font-weight: 500;}
+        .form-content {border: 1px solid #ebeef5;border-top: none;padding: 20px;border-radius: 0 0 8px;}
+        .form-row {margin-bottom: 20px;}
+        .form-label {display: block;font-size: 14px;color: #606266;margin-bottom: 8px;}
+        .form-input, .form-textarea {width: 100%;padding: 10px 12px;border: 1px solid #dcdfe6;border-radius: 4px;font-size: 14px;background: #f5f7fa;}
+        .form-textarea {min-height: 120px;resize: vertical;}
+        table {width: 100%;border-collapse: collapse;font-size: 14px;}
+        th, td {padding: 12px;text-align: center;border: 1px solid #ebeef5;}
+        th {background: #f5f7fa;color: #909399;}
+        .hidden {display: none;}
+        .title-link{color:#4080ff;cursor:pointer;font-weight:500;}
+        .type-tag{font-size:12px;padding:2px 6px;border-radius:3px;color:#fff;}
+        .tag-general{background:#67c23a;}
+        .tag-product{background:#e6a23c;}
+        .batch-box{padding:12px 24px;border-top:1px solid #eee;}
+        .info-card {
+            background: #f5faff;
+            margin: 20px 24px;
+            padding: 16px;
+            border-radius: 8px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        .info-item {
+            font-size: 14px;
+            color: #606266;
+        }
+        .info-label {
+            color: #909399;
+        }
+        .step-bar {
+            display: flex;
+            align-items: center;
+            margin: 20px 24px;
+        }
+        .step-item {
+            display: flex;
+            align-items: center;
+        }
+        .step-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #4080ff;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            margin-right: 8px;
+        }
+        .step-dot.unfinished {
+            background: #e6a23c;
+        }
+        .step-line {
+            width: 120px;
+            height: 3px;
+            background: #4080ff;
+            margin: 0 8px;
+        }
+        .step-line.unfinished {
+            background: #ebeef5;
+        }
+        .step-text {
+            font-size: 14px;
+            color: #303133;
+        }
+        .reject-area {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 首页 -->
+<div id="mainPage" class="container">
+    <div class="header-bar"><div class="header-title">信披文件撰写 — 招募说明书</div></div>
+    <div class="dept-btn-group">
+        <button class="btn btn-default">办公室</button>
+        <button class="btn btn-primary" onclick="openHrIndex()">人力资源部</button>
+        <button class="btn btn-default">研究部</button>
+        <button class="btn btn-default">市场部门</button>
+        <button class="btn btn-default">创新部</button>
+        <button class="btn btn-default">基金会计部</button>
+        <button class="btn btn-default">投资风险部</button>
+        <button class="btn btn-default">品牌部</button>
+        <button class="btn btn-primary" onclick="openCompliance()">风险合规部</button>
+    </div>
+</div>
+
+<!-- 风险合规部（保留原版） -->
+<div id="complianceIndex" class="container hidden">
+    <div class="header-bar"><div class="header-title">风险合规部</div><button class="btn btn-default" onclick="backMain()">返回</button></div>
+</div>
+
+<!-- ====================== 人力资源部 - 合并列表 ====================== -->
+<div id="hrIndex" class="container hidden">
+    <div class="header-bar">
+        <div class="header-title">人力资源部 - 招募说明书更新任务</div>
+        <button class="btn btn-default" onclick="backMain()">返回首页</button>
+    </div>
+
+    <div class="form-section">
+        <div class="section-title">全部更新任务（统一更新 + 单产品更新）</div>
+        <div class="form-content">
+            <table>
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="allCheck"></th>
+                        <th>任务类型</th>
+                        <th>任务标题</th>
+                        <th>年编号</th>
+                        <th>内容截止日</th>
+                        <th>财报截止日</th>
+                        <th>状态</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 统一更新（高管） -->
+                    <tr>
+                        <td>—</td>
+                        <td><span class="type-tag tag-general">统一更新</span></td>
+                        <td><a class="title-link" onclick="openHrGeneralEdit()">2026年招募说明书更新04月27日</a></td>
+                        <td>2026</td>
+                        <td>2026-04-20</td>
+                        <td>2026-03-31</td>
+                        <td>待维护</td>
+                    </tr>
+
+                    <!-- 产品更新（基金经理） -->
+                    <tr>
+                        <td><input type="checkbox" class="itemCheck"></td>
+                        <td><span class="type-tag tag-product">产品更新</span></td>
+                        <td><a class="title-link" onclick="openHrProdEdit()">2026年招募说明书混合基金更新04月27日</a></td>
+                        <td>2026</td>
+                        <td>2026-04-20</td>
+                        <td>2026-03-31</td>
+                        <td>待录入</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" class="itemCheck"></td>
+                        <td><span class="type-tag tag-product">产品更新</span></td>
+                        <td><a class="title-link" onclick="openHrProdEdit()">2026年招募说明书债券基金更新04月27日</a></td>
+                        <td>2026</td>
+                        <td>2026-04-20</td>
+                        <td>2026-03-31</td>
+                        <td>待录入</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="batch-box" style="margin-top:20px;">
+                <button class="btn btn-primary" onclick="batchSubmit()">批量提交</button>
+                <button class="btn btn-success" id="batchAudit" disabled>批量审核通过</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 人力资源部 - 统一维护（仅按要求修改，高管字段不动） -->
+<div id="hrGeneralEdit" class="container hidden">
+    <div class="header-bar">
+        <div class="header-title">招募说明书要素维护</div>
+        <div class="header-actions">
+            <button class="btn btn-default" onclick="openHrIndex()">返回</button>
+            <button class="btn btn-primary" onclick="submitHrGeneral()">提交</button>
+        </div>
+    </div>
+    <div class="info-card">
+        <div class="info-item"><span class="info-label">创建人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">归属部门：</span>人力资源部</div>
+        <div class="info-item"><span class="info-label">任务到达时间：</span>2026-04-24 15:30</div>
+        <div class="info-item"><span class="info-label">内容截止日/财报截止日：</span>2026-04-20 / 2026-03-31</div>
+    </div>
+    <div class="step-bar">
+        <div class="step-item">
+            <div class="step-dot">1</div>
+            <span class="step-text">维护招募说明书要素</span>
+        </div>
+        <div class="step-line unfinished"></div>
+        <div class="step-item">
+            <div class="step-dot unfinished">2</div>
+            <span class="step-text">审核招募说明书要素</span>
+        </div>
+    </div>
+
+    <!-- 本次涉及的具体产品 -->
+    <div class="form-section">
+        <div class="section-title">本次涉及的具体产品</div>
+        <div class="form-content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>产品名称</th>
+                        <th>产品代码</th>
+                        <th>产品类型</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>混合型证券投资基金</td>
+                        <td>006699</td>
+                        <td>混合型</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>债券型证券投资基金</td>
+                        <td>006700</td>
+                        <td>债券型</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="form-section">
+        <div class="section-title">高管信息维护</div>
+        <div class="form-content">
+            <div class="form-row">
+                <label class="form-label">高管信息录入</label>
+                <textarea class="form-textarea" placeholder="请录入高管任职、简历、变更信息等"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 人力资源部 - 产品维护（基金经理）完全不变 -->
+<div id="hrProdEdit" class="container hidden">
+    <div class="header-bar">
+        <div class="header-title">基金经理信息维护</div>
+        <div class="header-actions">
+            <button class="btn btn-default" onclick="openHrIndex()">返回</button>
+            <button class="btn btn-primary" onclick="submitHrProd()">提交</button>
+        </div>
+    </div>
+    <div class="info-card">
+        <div class="info-item"><span class="info-label">创建人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">归属部门：</span>人力资源部</div>
+        <div class="info-item"><span class="info-label">任务到达时间：</span>2026-04-24 15:40</div>
+        <div class="info-item"><span class="info-label">内容截止日/财报截止日：</span>2026-04-20 / 2026-03-31</div>
+    </div>
+    <div class="step-bar">
+        <div class="step-item">
+            <div class="step-dot">1</div>
+            <span class="step-text">维护招募说明书要素</span>
+        </div>
+        <div class="step-line unfinished"></div>
+        <div class="step-item">
+            <div class="step-dot unfinished">2</div>
+            <span class="step-text">审核招募说明书要素</span>
+        </div>
+    </div>
+    <div class="form-section">
+        <div class="section-title">基金经理信息维护</div>
+        <div class="form-content">
+            <div class="form-row">
+                <label class="form-label">产品名称/代码</label>
+                <input type="text" class="form-input" value="混合型证券投资基金（006699）" readonly>
+            </div>
+            <div class="form-row">
+                <label class="form-label">现任基金经理</label>
+                <textarea class="form-textarea" placeholder="请录入现任基金经理的任职信息、简历等"></textarea>
+            </div>
+            <div class="form-row">
+                <label class="form-label">曾任基金经理</label>
+                <textarea class="form-textarea" placeholder="请录入曾任基金经理的离职信息、任职期间等"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 人力资源部 - 审核页面 不变 -->
+<div id="hrAuditPage" class="container hidden">
+    <div class="header-bar">
+        <div class="header-title">内容审核 - 人力资源部</div>
+        <div class="header-actions">
+            <button class="btn btn-default" onclick="openHrIndex()">返回</button>
+            <button class="btn btn-warn" onclick="rejectHr()">退回</button>
+            <button class="btn btn-primary" onclick="passHr()">审核通过</button>
+        </div>
+    </div>
+    <div class="info-card">
+        <div class="info-item"><span class="info-label">创建人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">归属部门：</span>人力资源部</div>
+        <div class="info-item"><span class="info-label">前序任务处理人：</span>人力资源部</div>
+        <div class="info-item"><span class="info-label">任务到达时间：</span>2026-04-24 16:00</div>
+    </div>
+    <div class="step-bar">
+        <div class="step-item">
+            <div class="step-dot" style="background:#52c41a;">✓</div>
+            <span class="step-text">维护招募说明书要素</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step-item">
+            <div class="step-dot">2</div>
+            <span class="step-text">审核招募说明书要素</span>
+        </div>
+    </div>
+    <div class="form-section">
+        <div class="section-title">基金经理/高管信息审核</div>
+        <div class="form-content">
+            <div class="form-row">
+                <label class="form-label">已提交内容</label>
+                <textarea class="form-textarea" readonly>展示已录入的基金经理/高管信息内容</textarea>
+            </div>
+            <div class="reject-area">
+                <label class="form-label">退回意见</label>
+                <textarea class="form-textarea" placeholder="请填写问题说明"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function hideAll() {document.querySelectorAll('.container').forEach(e=>e.classList.add('hidden'));}
+function backMain() {hideAll();document.getElementById('mainPage').classList.remove('hidden');}
+function openCompliance() {hideAll();document.getElementById('complianceIndex').classList.remove('hidden');}
+function openHrIndex() {hideAll();document.getElementById('hrIndex').classList.remove('hidden');}
+function openHrGeneralEdit() {hideAll();document.getElementById('hrGeneralEdit').classList.remove('hidden');}
+function openHrProdEdit() {hideAll();document.getElementById('hrProdEdit').classList.remove('hidden');}
+function openHrAudit() {hideAll();document.getElementById('hrAuditPage').classList.remove('hidden');}
+
+function submitHrGeneral(){
+    alert("提交成功，进入审核流程");
+    openHrAudit();
+}
+function submitHrProd(){
+    alert("单品提交成功，进入审核流程");
+    openHrAudit();
+}
+function batchSubmit(){
+    alert("批量提交成功");
+    document.getElementById('batchAudit').disabled = false;
+}
+function rejectHr(){
+    alert("已退回至经办");
+    openHrProdEdit();
+}
+function passHr(){
+    alert("审核通过，流程完成");
+    openHrIndex();
+}
+
+document.getElementById('allCheck').onchange=function(){
+    document.querySelectorAll('.itemCheck').forEach(i=>i.checked = this.checked);
+}
+</script>
+</body>
+</html>

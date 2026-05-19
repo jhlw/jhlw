@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>公募业绩比较基准维护流程系统</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        primary: '#165DFF',
+        success: '#00B42A',
+        danger: '#F53F3F',
+        warning: '#FF7D00',
+        process: '#4080FF',
+      }
+    }
+  }
+}
+</script>
+</head>
+<body class="bg-gray-50 text-gray-600 text-sm">
+
+<!-- 顶部流程信息 -->
+<div class="bg-white shadow p-4 mb-4">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+      <h2 class="text-lg font-semibold text-primary">公募业绩比较基准维护</h2>
+      <div class="flex gap-4 mt-2 md:mt-0">
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-gray-500">紧急程度：</span>
+          <select class="border border-gray-200 rounded px-2 py-1 text-sm">
+            <option>一般</option>
+            <option>紧急</option>
+            <option>特急</option>
+          </select>
+        </div>
+        <div>
+          <button id="btn-submit" class="px-4 py-2 bg-primary text-white rounded mr-2">提交</button>
+          <button class="px-4 py-2 border border-gray-200 rounded">返回</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 流程基础信息（修改：公募产品经理姓名 → 维护人姓名） -->
+    <div class="bg-blue-50 p-4 rounded mb-4 text-sm">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+        <div>创建人：维护人姓名</div>
+        <div>归属部门：注册登记部</div>
+        <div>前序任务处理人：维护人姓名</div>
+        <div>归属部门：注册登记部</div>
+        <div>流程创建时间：2024.08.05 10:12:05</div>
+        <div>任务到达时间：2024.08.06 15:39:48</div>
+      </div>
+    </div>
+
+    <!-- 流程步骤 -->
+    <div class="flex items-center gap-1 mb-6 overflow-x-auto pb-2">
+      <div class="flex flex-col items-center">
+        <div class="w-10 h-10 rounded-full bg-process text-white flex items-center justify-center mb-1">
+          <i class="fa fa-check"></i>
+        </div>
+        <span class="text-xs font-medium">发起维护</span>
+      </div>
+      <div class="h-0.5 w-12 bg-process"></div>
+      <div class="flex flex-col items-center">
+        <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center mb-1" id="step-audit">
+          <i class="fa fa-check"></i>
+        </div>
+        <span class="text-xs font-medium" id="step-audit-text">审核维护</span>
+      </div>
+      <div class="h-0.5 w-12 bg-gray-200"></div>
+      <div class="flex flex-col items-center">
+        <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center mb-1">
+          <i class="fa fa-file-text-o"></i>
+        </div>
+        <span class="text-xs font-medium">流程轨迹</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 核心表单区域 -->
+<div class="max-w-7xl mx-auto px-4">
+  <!-- 步骤切换：发起/审核 -->
+  <div class="flex gap-2 mb-4">
+    <button onclick="switchStep('initiate')" id="tab-initiate" class="px-4 py-2 bg-primary text-white rounded">发起公募业绩比较基准维护</button>
+    <button onclick="switchStep('audit')" id="tab-audit" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded">审核公募业绩比较基准维护</button>
+  </div>
+
+  <!-- 1. 发起维护面板 -->
+  <div id="panel-initiate" class="bg-white rounded shadow p-6">
+    <!-- 产品选择（仅保留产品名称） -->
+    <div class="mb-6">
+      <h3 class="text-base font-medium mb-3">产品选择</h3>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-3">
+        <div class="md:col-span-4">
+          <label class="text-xs text-gray-500 block mb-1">公募产品名称 *</label>
+          <select class="w-full border border-gray-200 rounded px-3 py-2 text-sm">
+            <option value="">请选择产品</option>
+            <option value="1">建信纯债债券型证券投资基金</option>
+            <option value="2">均衡优选混合A</option>
+            <option value="3">成长精选股票C</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- 基准基本信息（仅保留生效日期） -->
+    <div class="mb-6">
+      <h3 class="text-base font-medium mb-3">业绩比较基准基本信息</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="text-xs text-gray-500 block mb-1">生效日期 *</label>
+          <input type="date" class="w-full border border-gray-200 rounded px-3 py-2 text-sm" value="2024-01-01" placeholder="默认=产品合同生效日">
+          <p class="text-xs text-gray-400 mt-1">默认值：所选产品的合同生效日</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 指数配置 -->
+    <div class="mb-6">
+      <h3 class="text-base font-medium mb-3">指数配置 *</h3>
+      <div class="border rounded overflow-hidden">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="bg-gray-50 text-xs font-medium">
+              <th class="px-3 py-2 text-left">指数代码（来源业绩比较指数库）</th>
+              <th class="px-3 py-2 text-left">指数名称</th>
+              <th class="px-3 py-2 text-right">权重(%)</th>
+              <th class="px-3 py-2 text-center w-20">操作</th>
+            </tr>
+          </thead>
+          <tbody id="index-config-table">
+            <tr class="border-t">
+              <td class="px-3 py-2">
+                <select class="w-full border rounded px-2 py-1 text-sm">
+                  <option value="000300">000300</option>
+                  <option value="000905">000905</option>
+                  <option value="000012">000012</option>
+                  <option value="HSI">HSI</option>
+                </select>
+              </td>
+              <td class="px-3 py-2">
+                <input class="w-full border rounded px-2 py-1 text-sm bg-gray-50" value="沪深300指数" readonly>
+              </td>
+              <td class="px-3 py-2">
+                <input type="number" class="w-full border rounded px-2 py-1 text-right weight-input" value="60" min="0" max="100">
+              </td>
+              <td class="px-3 py-2 text-center">
+                <button onclick="delIndexRow(this)" class="text-danger">-</button>
+              </td>
+            </tr>
+            <tr class="border-t">
+              <td class="px-3 py-2">
+                <select class="w-full border rounded px-2 py-1 text-sm">
+                  <option value="000300">000300</option>
+                  <option value="000905">000905</option>
+                  <option value="000012" selected>000012</option>
+                  <option value="HSI">HSI</option>
+                </select>
+              </td>
+              <td class="px-3 py-2">
+                <input class="w-full border rounded px-2 py-1 text-sm bg-gray-50" value="中债综合财富指数" readonly>
+              </td>
+              <td class="px-3 py-2">
+                <input type="number" class="w-full border rounded px-2 py-1 text-right weight-input" value="40" min="0" max="100">
+              </td>
+              <td class="px-3 py-2 text-center">
+                <button onclick="delIndexRow(this)" class="text-danger">-</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="p-2 border-t flex justify-between items-center">
+          <button onclick="addIndexRow()" class="text-primary py-1 flex items-center gap-1">
+            <i class="fa fa-plus"></i> 添加指数
+          </button>
+          <div class="text-xs text-gray-600">
+            权重合计：<span id="weight-total" class="font-medium">100</span>%
+            <span id="weight-tips" class="text-danger ml-2 hidden">（权重需等于100%）</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 备注 -->
+    <div class="mb-6">
+      <label class="text-xs text-gray-500 block mb-1">备注</label>
+      <textarea rows="3" class="w-full border rounded px-3 py-2 text-sm"></textarea>
+    </div>
+
+    <!-- 操作按钮 -->
+    <div class="flex justify-end gap-3">
+      <button class="px-4 py-2 border border-gray-200 rounded">保存草稿</button>
+      <button onclick="submitInitiate()" class="px-4 py-2 bg-primary text-white rounded">提交审核</button>
+    </div>
+  </div>
+
+  <!-- 2. 审核维护面板 -->
+  <div id="panel-audit" class="bg-white rounded shadow p-6 hidden">
+    <!-- 审核提示 -->
+    <div class="bg-yellow-50 p-3 rounded mb-6 text-sm">
+      <i class="fa fa-info-circle text-warning mr-1"></i>
+      审核页面与经办界面一致，可查看完整维护信息，根据实际情况选择通过/退回
+    </div>
+
+    <!-- 产品信息（仅保留产品名称） -->
+    <div class="mb-6">
+      <h3 class="text-base font-medium mb-3">产品信息</h3>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-3">
+        <div class="md:col-span-4 bg-gray-50 p-2 rounded">
+          <div class="text-xs text-gray-500">公募产品名称</div>
+          <div class="mt-1">建信纯债债券型证券投资基金</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 基准基本信息（仅保留生效日期） -->
+    <div class="mb-6">
+      <h3 class="text-base font-medium mb-3">业绩比较基准基本信息</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-gray-50 p-2 rounded">
+          <div class="text-xs text-gray-500">生效日期</div>
+          <div class="mt-1">2024-01-01（产品合同生效日）</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 指数配置（只读） -->
+    <div class="mb-6">
+      <h3 class="text-base font-medium mb-3">指数配置</h3>
+      <div class="border rounded overflow-hidden">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="bg-gray-50 text-xs font-medium">
+              <th class="px-3 py-2 text-left">指数代码</th>
+              <th class="px-3 py-2 text-left">指数名称</th>
+              <th class="px-3 py-2 text-right">权重(%)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-t">
+              <td class="px-3 py-2">000300</td>
+              <td class="px-3 py-2">沪深300指数</td>
+              <td class="px-3 py-2 text-right">60</td>
+            </tr>
+            <tr class="border-t">
+              <td class="px-3 py-2">000012</td>
+              <td class="px-3 py-2">中债综合财富指数</td>
+              <td class="px-3 py-2 text-right">40</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="p-2 border-t text-right text-xs text-gray-600">
+          权重合计：100% <span class="text-success">(符合要求)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 审核意见 -->
+    <div class="mb-6">
+      <h3 class="text-base font-medium mb-3">审核意见</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="col-span-2">
+          <label class="text-xs text-gray-500 block mb-1">审核结果</label>
+          <div class="flex gap-4">
+            <label class="flex items-center gap-1 cursor-pointer">
+              <input type="radio" name="audit-result" value="pass" checked class="accent-primary">
+              <span>审核通过</span>
+            </label>
+            <label class="flex items-center gap-1 cursor-pointer">
+              <input type="radio" name="audit-result" value="reject" class="accent-primary">
+              <span>退回修改</span>
+            </label>
+          </div>
+        </div>
+        <div class="col-span-2">
+          <label class="text-xs text-gray-500 block mb-1">退回意见（仅退回时必填）</label>
+          <textarea rows="3" class="w-full border rounded px-3 py-2 text-sm" placeholder="请输入退回原因..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- 审核操作按钮 -->
+    <div class="flex justify-end gap-3">
+      <button onclick="rejectAudit()" class="px-4 py-2 border border-danger text-danger rounded">退回</button>
+      <button onclick="passAudit()" class="px-4 py-2 bg-primary text-white rounded">审核通过并提交</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// 步骤切换
+function switchStep(step) {
+  document.getElementById('panel-initiate').classList.add('hidden');
+  document.getElementById('panel-audit').classList.add('hidden');
+  document.getElementById('tab-initiate').className = 'px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded';
+  document.getElementById('tab-audit').className = 'px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded';
+  
+  document.getElementById('panel-' + step).classList.remove('hidden');
+  document.getElementById('tab-' + step).className = 'px-4 py-2 bg-primary text-white rounded';
+
+  // 更新流程步骤样式
+  if (step === 'initiate') {
+    document.getElementById('step-audit').className = 'w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center mb-1';
+    document.getElementById('step-audit-text').className = 'text-xs font-medium';
+  } else {
+    document.getElementById('step-audit').className = 'w-10 h-10 rounded-full bg-process text-white flex items-center justify-center mb-1';
+    document.getElementById('step-audit-text').className = 'text-xs font-medium text-process';
+  }
+}
+
+// 指数行操作
+function addIndexRow() {
+  const table = document.getElementById('index-config-table');
+  const row = document.createElement('tr');
+  row.className = 'border-t';
+  row.innerHTML = `
+    <td class="px-3 py-2">
+      <select class="w-full border rounded px-2 py-1 text-sm">
+        <option value="000300">000300</option>
+        <option value="000905">000905</option>
+        <option value="000012">000012</option>
+        <option value="HSI">HSI</option>
+      </select>
+    </td>
+    <td class="px-3 py-2">
+      <input class="w-full border rounded px-2 py-1 text-sm bg-gray-50" placeholder="自动匹配" readonly>
+    </td>
+    <td class="px-3 py-2">
+      <input type="number" class="w-full border rounded px-2 py-1 text-right weight-input" value="0" min="0" max="100">
+    </td>
+    <td class="px-3 py-2 text-center">
+      <button onclick="delIndexRow(this)" class="text-danger">-</button>
+    </td>
+  `;
+  table.appendChild(row);
+  
+  // 绑定权重计算事件
+  bindWeightCalc();
+}
+
+function delIndexRow(el) {
+  const row = el.closest('tr');
+  // 至少保留一行
+  if (document.querySelectorAll('#index-config-table tr').length > 1) {
+    row.remove();
+    calcTotalWeight();
+  } else {
+    alert('至少保留一条指数配置');
+  }
+}
+
+// 权重计算
+function calcTotalWeight() {
+  let total = 0;
+  const inputs = document.querySelectorAll('.weight-input');
+  inputs.forEach(input => {
+    total += Number(input.value) || 0;
+  });
+  
+  document.getElementById('weight-total').innerText = total;
+  
+  // 校验权重是否等于100%
+  if (total !== 100) {
+    document.getElementById('weight-tips').classList.remove('hidden');
+    document.getElementById('btn-submit').disabled = true;
+  } else {
+    document.getElementById('weight-tips').classList.add('hidden');
+    document.getElementById('btn-submit').disabled = false;
+  }
+}
+
+// 绑定权重输入事件
+function bindWeightCalc() {
+  const inputs = document.querySelectorAll('.weight-input');
+  inputs.forEach(input => {
+    input.oninput = calcTotalWeight;
+  });
+}
+
+// 初始化绑定
+bindWeightCalc();
+calcTotalWeight();
+
+// 发起维护提交
+function submitInitiate() {
+  const totalWeight = Number(document.getElementById('weight-total').innerText);
+  if (totalWeight !== 100) {
+    alert('权重合计必须等于100%，请调整后提交');
+    return;
+  }
+  alert('发起成功！已提交至审核环节');
+  switchStep('audit');
+}
+
+// 审核通过
+function passAudit() {
+  alert('审核通过！公募业绩比较基准维护流程完成');
+}
+
+// 审核退回
+function rejectAudit() {
+  const reason = document.querySelector('textarea[placeholder="请输入退回原因..."]').value;
+  if (!reason) {
+    alert('请输入退回意见');
+    return;
+  }
+  alert(`已退回！退回意见：${reason}`);
+  switchStep('initiate');
+}
+</script>
+</body>
+</html>

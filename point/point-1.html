@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>公募基金业绩比较基准管理</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        primary: '#165DFF',
+        success: '#00B42A',
+        warning: '#FF7D00',
+        danger: '#F53F3F',
+      }
+    }
+  }
+}
+</script>
+</head>
+<body class="bg-gray-50 text-gray-600 text-sm">
+
+<!-- 顶部 -->
+<div class="bg-white shadow sticky top-0 z-40">
+  <div class="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
+    <div class="font-semibold text-primary flex items-center">
+      <i class="fa fa-line-chart mr-2"></i>公募基金业绩比较基准管理
+    </div>
+    <div class="text-xs text-gray-400">管理员</div>
+  </div>
+</div>
+
+<!-- 主体 -->
+<div class="max-w-7xl mx-auto px-4 py-6">
+
+  <!-- 查询区 -->
+  <div class="bg-white rounded shadow p-4 mb-5">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+      <div>
+        <label class="text-xs text-gray-500 block mb-1">基金代码</label>
+        <input type="text" class="w-full border border-gray-200 rounded px-3 py-2 text-sm">
+      </div>
+      <div>
+        <label class="text-xs text-gray-500 block mb-1">基金名称</label>
+        <input type="text" class="w-full border border-gray-200 rounded px-3 py-2 text-sm">
+      </div>
+      <div>
+        <label class="text-xs text-gray-500 block mb-1">状态</label>
+        <select class="w-full border border-gray-200 rounded px-3 py-2 text-sm">
+          <option value="">全部</option>
+          <option>已生效</option>
+          <option>待生效</option>
+          <option>已失效</option>
+        </select>
+      </div>
+      <div class="flex gap-2 items-end">
+        <button class="flex-1 px-3 py-2 bg-primary text-white rounded">查询</button>
+        <button class="flex-1 px-3 py-2 border border-gray-200 rounded">重置</button>
+      </div>
+    </div>
+    <div>
+      <button onclick="openAddModal()" class="px-4 py-2 bg-primary text-white rounded flex items-center gap-1">
+        <i class="fa fa-plus"></i> 新增基准
+      </button>
+    </div>
+  </div>
+
+  <!-- 列表 -->
+  <div class="bg-white rounded shadow overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead>
+          <tr class="bg-gray-50 text-left font-medium text-xs text-gray-600">
+            <th class="px-4 py-3">序号</th>
+            <th class="px-4 py-3">基金代码</th>
+            <th class="px-4 py-3">基金名称</th>
+            <th class="px-4 py-3">业绩比较基准</th>
+            <th class="px-4 py-3 text-center">类型</th>
+            <th class="px-4 py-3 text-center">生效时间</th>
+            <th class="px-4 py-3 text-center">状态</th>
+            <th class="px-4 py-3 text-center">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-t">
+            <td class="px-4 py-3">1</td>
+            <td class="px-4 py-3">001234</td>
+            <td class="px-4 py-3 font-medium">均衡优选混合A</td>
+            <td class="px-4 py-3">
+              <div>沪深300 × 60%</div>
+              <div class="text-xs text-gray-400">中债综合 × 40%</div>
+            </td>
+            <td class="px-4 py-3 text-center">
+              <span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded">复合</span>
+            </td>
+            <td class="px-4 py-3 text-center text-gray-500">2025-01-01</td>
+            <td class="px-4 py-3 text-center">
+              <span class="text-xs bg-success/10 text-success px-2 py-0.5 rounded">已生效</span>
+            </td>
+            <td class="px-4 py-3 text-center">
+              <div class="flex gap-2 justify-center text-sm">
+                <button onclick="openViewModal()" class="text-primary hover:underline">查看</button>
+                <button onclick="openEditModal()" class="text-warning hover:underline">编辑</button>
+                <button onclick="openDeleteModal()" class="text-danger hover:underline">删除</button>
+              </div>
+            </td>
+          </tr>
+          <tr class="border-t">
+            <td class="px-4 py-3">2</td>
+            <td class="px-4 py-3">005678</td>
+            <td class="px-4 py-3 font-medium">成长精选股票C</td>
+            <td class="px-4 py-3">
+              <div>中证500 × 80%</div>
+              <div class="text-xs text-gray-400">中债综合 × 20%</div>
+            </td>
+            <td class="px-4 py-3 text-center">
+              <span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded">复合</span>
+            </td>
+            <td class="px-4 py-3 text-center text-gray-500">2025-02-01</td>
+            <td class="px-4 py-3 text-center">
+              <span class="text-xs bg-success/10 text-success px-2 py-0.5 rounded">已生效</span>
+            </td>
+            <td class="px-4 py-3 text-center">
+              <div class="flex gap-2 justify-center text-sm">
+                <button onclick="openViewModal()" class="text-primary hover:underline">查看</button>
+                <button onclick="openEditModal()" class="text-warning hover:underline">编辑</button>
+                <button onclick="openDeleteModal()" class="text-danger hover:underline">删除</button>
+              </div>
+            </td>
+          </tr>
+          <tr class="border-t">
+            <td class="px-4 py-3">3</td>
+            <td class="px-4 py-3">009012</td>
+            <td class="px-4 py-3 font-medium">稳健债券型</td>
+            <td class="px-4 py-3">中债综合财富指数 × 100%</td>
+            <td class="px-4 py-3 text-center">
+              <span class="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded">单指数</span>
+            </td>
+            <td class="px-4 py-3 text-center text-gray-500">2025-01-15</td>
+            <td class="px-4 py-3 text-center">
+              <span class="text-xs bg-gray-200 text-gray-500 px-2 py-0.5 rounded">待生效</span>
+            </td>
+            <td class="px-4 py-3 text-center">
+              <div class="flex gap-2 justify-center text-sm">
+                <button onclick="openViewModal()" class="text-primary hover:underline">查看</button>
+                <button onclick="openEditModal()" class="text-warning hover:underline">编辑</button>
+                <button onclick="openDeleteModal()" class="text-danger hover:underline">删除</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 新增/编辑弹窗 -->
+<div id="formModal" class="fixed inset-0 bg-black/40 z-50 hidden items-center justify-center">
+  <div class="bg-white rounded w-full max-w-2xl max-h-[90vh] overflow-auto">
+    <div class="p-4 border-b flex justify-between items-center sticky top-0 bg-white">
+      <h3 id="formTitle" class="font-medium">新增业绩比较基准</h3>
+      <button onclick="closeFormModal()" class="text-xl text-gray-400">&times;</button>
+    </div>
+    <div class="p-6 space-y-5">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="text-xs text-gray-500 block mb-1">基金代码 <span class="text-danger">*</span></label>
+          <input type="text" class="w-full border border-gray-200 rounded px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="text-xs text-gray-500 block mb-1">基金名称 <span class="text-danger">*</span></label>
+          <input type="text" class="w-full border border-gray-200 rounded px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="text-xs text-gray-500 block mb-1">生效日期 <span class="text-danger">*</span></label>
+          <input type="date" class="w-full border border-gray-200 rounded px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="text-xs text-gray-500 block mb-1">失效日期</label>
+          <input type="date" class="w-full border border-gray-200 rounded px-3 py-2 text-sm">
+        </div>
+      </div>
+
+      <div>
+        <label class="text-xs text-gray-500 block mb-2">指数配置 <span class="text-danger">*</span></label>
+        <div class="border rounded">
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="bg-gray-50 text-xs">
+                  <th class="px-3 py-2 text-left">指数代码</th>
+                  <th class="px-3 py-2 text-left">指数名称</th>
+                  <th class="px-3 py-2 text-right">权重(%)</th>
+                  <th class="px-3 py-2 text-center">数据源</th>
+                  <th class="px-3 py-2 text-center w-16">操作</th>
+                </tr>
+              </thead>
+              <tbody id="indexTable">
+                <tr class="border-t">
+                  <td class="px-3 py-2"><input type="text" class="w-full border border-gray-200 rounded px-2 py-1 text-sm" value="000300"></td>
+                  <td class="px-3 py-2"><input type="text" class="w-full border border-gray-200 rounded px-2 py-1 text-sm" value="沪深300指数"></td>
+                  <td class="px-3 py-2"><input type="number" class="w-full border border-gray-200 rounded px-2 py-1 text-right" value="60"></td>
+                  <td class="px-3 py-2">
+                    <select class="w-full border border-gray-200 rounded px-2 py-1 text-sm">
+                      <option>万得Wind</option>
+                      <option>中证指数</option>
+                      <option>财汇</option>
+                    </select>
+                  </td>
+                  <td class="px-3 py-2 text-center">
+                    <button onclick="delRow(this)" class="text-danger">-</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="p-2 border-t">
+            <button onclick="addRow()" class="w-full text-primary py-1 hover:bg-primary/5 rounded">
+              <i class="fa fa-plus"></i> 添加指数
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <label class="text-xs text-gray-500 block mb-1">备注</label>
+        <textarea rows="3" class="w-full border border-gray-200 rounded px-3 py-2 text-sm"></textarea>
+      </div>
+    </div>
+    <div class="p-4 border-t flex justify-end gap-3 sticky bottom-0 bg-white">
+      <button onclick="closeFormModal()" class="px-4 py-2 border border-gray-200 rounded">取消</button>
+      <button onclick="save()" class="px-4 py-2 bg-primary text-white rounded">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- 查看弹窗 -->
+<div id="viewModal" class="fixed inset-0 bg-black/40 z-50 hidden items-center justify-center">
+  <div class="bg-white rounded w-full max-w-xl">
+    <div class="p-4 border-b flex justify-between items-center">
+      <h3 class="font-medium">基准详情</h3>
+      <button onclick="closeViewModal()" class="text-xl text-gray-400">&times;</button>
+    </div>
+    <div class="p-6 space-y-4 text-sm">
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <div class="text-xs text-gray-400">基金代码</div>
+          <div class="font-medium">001234</div>
+        </div>
+        <div>
+          <div class="text-xs text-gray-400">基金名称</div>
+          <div class="font-medium">均衡优选混合A</div>
+        </div>
+        <div>
+          <div class="text-xs text-gray-400">生效日期</div>
+          <div>2025-01-01</div>
+        </div>
+        <div>
+          <div class="text-xs text-gray-400">状态</div>
+          <div class="text-success">已生效</div>
+        </div>
+      </div>
+      <div>
+        <div class="text-xs text-gray-400 mb-1">业绩比较基准</div>
+        <div class="bg-gray-50 p-3 rounded space-y-1">
+          <div>沪深300指数 × 60%</div>
+          <div>中债综合财富指数 × 40%</div>
+        </div>
+      </div>
+    </div>
+    <div class="p-4 border-t flex justify-end">
+      <button onclick="closeViewModal()" class="px-4 py-2 border border-gray-200 rounded">关闭</button>
+    </div>
+  </div>
+</div>
+
+<!-- 删除弹窗 -->
+<div id="delModal" class="fixed inset-0 bg-black/40 z-50 hidden items-center justify-center">
+  <div class="bg-white rounded w-full max-w-md">
+    <div class="p-4 border-b font-medium">删除确认</div>
+    <div class="p-6">确定要删除该业绩比较基准吗？删除后无法恢复。</div>
+    <div class="p-4 border-t flex justify-end gap-3">
+      <button onclick="closeDelModal()" class="px-4 py-2 border border-gray-200 rounded">取消</button>
+      <button onclick="doDel()" class="px-4 py-2 bg-danger text-white rounded">确认删除</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function openAddModal(){
+  document.getElementById('formTitle').innerText = '新增业绩比较基准';
+  document.getElementById('formModal').style.display='flex';
+}
+function openEditModal(){
+  document.getElementById('formTitle').innerText = '编辑业绩比较基准';
+  document.getElementById('formModal').style.display='flex';
+}
+function closeFormModal(){document.getElementById('formModal').style.display='none';}
+
+function openViewModal(){document.getElementById('viewModal').style.display='flex';}
+function closeViewModal(){document.getElementById('viewModal').style.display='none';}
+
+function openDeleteModal(){document.getElementById('delModal').style.display='flex';}
+function closeDelModal(){document.getElementById('delModal').style.display='none';}
+function doDel(){alert('删除成功');closeDelModal();}
+
+function addRow(){
+  const t=document.getElementById('indexTable');
+  const r=document.createElement('tr');
+  r.className='border-t';
+  r.innerHTML=`
+    <td class="px-3 py-2"><input type="text" class="w-full border border-gray-200 rounded px-2 py-1 text-sm"></td>
+    <td class="px-3 py-2"><input type="text" class="w-full border border-gray-200 rounded px-2 py-1 text-sm"></td>
+    <td class="px-3 py-2"><input type="number" class="w-full border border-gray-200 rounded px-2 py-1 text-right"></td>
+    <td class="px-3 py-2">
+      <select class="w-full border border-gray-200 rounded px-2 py-1 text-sm">
+        <option>万得Wind</option><option>中证指数</option><option>财汇</option>
+      </select>
+    </td>
+    <td class="px-3 py-2 text-center"><button onclick="delRow(this)" class="text-danger">-</button></td>
+  `;
+  t.appendChild(r);
+}
+function delRow(o){o.closest('tr').remove();}
+function save(){alert('保存成功');closeFormModal();}
+</script>
+</body>
+</html>

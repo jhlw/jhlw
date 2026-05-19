@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>基金业绩比较基准 - 指数库管理</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        primary: '#165DFF',
+        success: '#00B42A',
+        danger: '#F53F3F',
+        gray: {
+          100: '#F2F3F5',
+          200: '#E5E6EB',
+        }
+      }
+    }
+  }
+}
+</script>
+</head>
+<body class="bg-gray-50 text-gray-600 text-sm">
+
+<!-- 顶部导航 -->
+<div class="bg-white shadow sticky top-0 z-50">
+  <div class="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
+    <div class="font-semibold text-primary flex items-center gap-2">
+      <i class="fa fa-database"></i>
+      基金业绩比较基准 - 指数库管理
+    </div>
+  </div>
+</div>
+
+<!-- 主体内容 -->
+<div class="max-w-6xl mx-auto px-4 py-6 space-y-6">
+
+  <!-- 筛选查询栏 -->
+  <div class="bg-white rounded shadow p-5">
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-4">
+      <div>
+        <label class="text-xs text-gray-500 block mb-1">指数编码</label>
+        <input id="q-code" type="text" class="w-full border border-gray-200 rounded px-3 py-2 text-sm" placeholder="请输入">
+      </div>
+      <div>
+        <label class="text-xs text-gray-500 block mb-1">指数名称</label>
+        <input id="q-name" type="text" class="w-full border border-gray-200 rounded px-3 py-2 text-sm" placeholder="请输入">
+      </div>
+      <div>
+        <label class="text-xs text-gray-500 block mb-1">指数类型</label>
+        <select id="q-type" class="w-full border border-gray-200 rounded px-3 py-2 text-sm">
+          <option value="">全部</option>
+          <option>股票指数</option>
+          <option>债券指数</option>
+          <option>货币指数</option>
+          <option>商品指数</option>
+        </select>
+      </div>
+      <div>
+        <label class="text-xs text-gray-500 block mb-1">市场类型</label>
+        <select id="q-market" class="w-full border border-gray-200 rounded px-3 py-2 text-sm">
+          <option value="">全部</option>
+          <option>沪深市场</option>
+          <option>港股市场</option>
+          <option>美股市场</option>
+          <option>全球市场</option>
+        </select>
+      </div>
+      <div class="flex items-end gap-2">
+        <button onclick="search()" class="flex-1 px-4 py-2 bg-primary text-white rounded text-sm">查询</button>
+        <button onclick="reset()" class="flex-1 px-4 py-2 border border-gray-200 rounded text-sm">重置</button>
+      </div>
+    </div>
+    <div>
+      <button onclick="openAddModal()" class="px-4 py-2 bg-primary text-white rounded text-sm flex items-center gap-1">
+        <i class="fa fa-plus"></i> 新增指数
+      </button>
+    </div>
+  </div>
+
+  <!-- 数据列表 -->
+  <div class="bg-white rounded shadow overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="bg-gray-100 text-gray-600 text-left font-medium">
+            <th class="px-4 py-3">序号</th>
+            <th class="px-4 py-3">指数编码</th>
+            <th class="px-4 py-3">指数名称</th>
+            <th class="px-4 py-3">指数类型</th>
+            <th class="px-4 py-3">市场类型</th>
+            <th class="px-4 py-3">计价币种</th>
+            <th class="px-4 py-3 text-center">操作</th>
+          </tr>
+        </thead>
+        <tbody id="data-table">
+          <tr class="border-t">
+            <td class="px-4 py-3">1</td>
+            <td class="px-4 py-3">000300</td>
+            <td class="px-4 py-3 font-medium">沪深300指数</td>
+            <td class="px-4 py-3">股票指数</td>
+            <td class="px-4 py-3">沪深市场</td>
+            <td class="px-4 py-3">人民币(CNY)</td>
+            <td class="px-4 py-3 text-center">
+              <button onclick="openViewModal(1)" class="text-primary hover:underline mr-3">查看</button>
+              <button onclick="openDeleteModal(1)" class="text-danger hover:underline">删除</button>
+            </td>
+          </tr>
+          <tr class="border-t">
+            <td class="px-4 py-3">2</td>
+            <td class="px-4 py-3">000905</td>
+            <td class="px-4 py-3 font-medium">中证500指数</td>
+            <td class="px-4 py-3">股票指数</td>
+            <td class="px-4 py-3">沪深市场</td>
+            <td class="px-4 py-3">人民币(CNY)</td>
+            <td class="px-4 py-3 text-center">
+              <button onclick="openViewModal(2)" class="text-primary hover:underline mr-3">查看</button>
+              <button onclick="openDeleteModal(2)" class="text-danger hover:underline">删除</button>
+            </td>
+          </tr>
+          <tr class="border-t">
+            <td class="px-4 py-3">3</td>
+            <td class="px-4 py-3">000012</td>
+            <td class="px-4 py-3 font-medium">中债综合财富指数</td>
+            <td class="px-4 py-3">债券指数</td>
+            <td class="px-4 py-3">沪深市场</td>
+            <td class="px-4 py-3">人民币(CNY)</td>
+            <td class="px-4 py-3 text-center">
+              <button onclick="openViewModal(3)" class="text-primary hover:underline mr-3">查看</button>
+              <button onclick="openDeleteModal(3)" class="text-danger hover:underline">删除</button>
+            </td>
+          </tr>
+          <tr class="border-t">
+            <td class="px-4 py-3">4</td>
+            <td class="px-4 py-3">HSI</td>
+            <td class="px-4 py-3 font-medium">恒生指数</td>
+            <td class="px-4 py-3">股票指数</td>
+            <td class="px-4 py-3">港股市场</td>
+            <td class="px-4 py-3">港币(HKD)</td>
+            <td class="px-4 py-3 text-center">
+              <button onclick="openViewModal(4)" class="text-primary hover:underline mr-3">查看</button>
+              <button onclick="openDeleteModal(4)" class="text-danger hover:underline">删除</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 新增弹窗 -->
+<div id="add-modal" class="fixed inset-0 bg-black/40 z-50 hidden items-center justify-center">
+  <div class="bg-white rounded shadow w-full max-w-xl">
+    <div class="p-4 border-b flex justify-between items-center">
+      <h3 class="font-medium">新增指数</h3>
+      <button onclick="closeAddModal()" class="text-xl text-gray-400">&times;</button>
+    </div>
+    <div class="p-6 space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="text-xs text-gray-500 block mb-1">指数编码 <span class="text-danger">*</span></label>
+          <input type="text" class="w-full border border-gray-200 rounded px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="text-xs text-gray-500 block mb-1">指数名称 <span class="text-danger">*</span></label>
+          <input type="text" class="w-full border border-gray-200 rounded px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="text-xs text-gray-500 block mb-1">指数类型 <span class="text-danger">*</span></label>
+          <select class="w-full border border-gray-200 rounded px-3 py-2 text-sm">
+            <option>股票指数</option>
+            <option>债券指数</option>
+            <option>货币指数</option>
+            <option>商品指数</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-xs text-gray-500 block mb-1">市场类型 <span class="text-danger">*</span></label>
+          <select class="w-full border border-gray-200 rounded px-3 py-2 text-sm">
+            <option>沪深市场</option>
+            <option>港股市场</option>
+            <option>美股市场</option>
+            <option>全球市场</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-xs text-gray-500 block mb-1">计价币种 <span class="text-danger">*</span></label>
+          <select class="w-full border border-gray-200 rounded px-3 py-2 text-sm">
+            <option>人民币(CNY)</option>
+            <option>港币(HKD)</option>
+            <option>美元(USD)</option>
+            <option>欧元(EUR)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="p-4 border-t flex justify-end gap-3">
+      <button onclick="closeAddModal()" class="px-4 py-2 border border-gray-200 rounded text-sm">取消</button>
+      <button onclick="saveAdd()" class="px-4 py-2 bg-primary text-white rounded text-sm">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- 查看弹窗 -->
+<div id="view-modal" class="fixed inset-0 bg-black/40 z-50 hidden items-center justify-center">
+  <div class="bg-white rounded shadow w-full max-w-md">
+    <div class="p-4 border-b flex justify-between items-center">
+      <h3 class="font-medium">指数详情</h3>
+      <button onclick="closeViewModal()" class="text-xl text-gray-400">&times;</button>
+    </div>
+    <div class="p-6 space-y-3 text-sm">
+      <div>
+        <div class="text-xs text-gray-400">指数编码</div>
+        <div class="font-medium">000300</div>
+      </div>
+      <div>
+        <div class="text-xs text-gray-400">指数名称</div>
+        <div class="font-medium">沪深300指数</div>
+      </div>
+      <div>
+        <div class="text-xs text-gray-400">指数类型</div>
+        <div>股票指数</div>
+      </div>
+      <div>
+        <div class="text-xs text-gray-400">市场类型</div>
+        <div>沪深市场</div>
+      </div>
+      <div>
+        <div class="text-xs text-gray-400">计价币种</div>
+        <div>人民币(CNY)</div>
+      </div>
+    </div>
+    <div class="p-4 border-t flex justify-end">
+      <button onclick="closeViewModal()" class="px-4 py-2 border border-gray-200 rounded text-sm">关闭</button>
+    </div>
+  </div>
+</div>
+
+<!-- 删除弹窗 -->
+<div id="delete-modal" class="fixed inset-0 bg-black/40 z-50 hidden items-center justify-center">
+  <div class="bg-white rounded shadow w-full max-w-sm">
+    <div class="p-4 border-b font-medium">删除确认</div>
+    <div class="p-6 text-sm">确定要删除该指数信息吗？删除后无法恢复。</div>
+    <div class="p-4 border-t flex justify-end gap-3">
+      <button onclick="closeDeleteModal()" class="px-4 py-2 border border-gray-200 rounded text-sm">取消</button>
+      <button onclick="deleteConfirm()" class="px-4 py-2 bg-danger text-white rounded text-sm">确认删除</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// 查询与重置
+function search() {}
+function reset() {
+  document.getElementById('q-code').value = '';
+  document.getElementById('q-name').value = '';
+  document.getElementById('q-type').value = '';
+  document.getElementById('q-market').value = '';
+}
+
+// 新增
+function openAddModal() {
+  document.getElementById('add-modal').style.display = 'flex';
+}
+function closeAddModal() {
+  document.getElementById('add-modal').style.display = 'none';
+}
+function saveAdd() {
+  alert('新增成功');
+  closeAddModal();
+}
+
+// 查看
+function openViewModal(id) {
+  document.getElementById('view-modal').style.display = 'flex';
+}
+function closeViewModal() {
+  document.getElementById('view-modal').style.display = 'none';
+}
+
+// 删除
+function openDeleteModal(id) {
+  document.getElementById('delete-modal').style.display = 'flex';
+}
+function closeDeleteModal() {
+  document.getElementById('delete-modal').style.display = 'none';
+}
+function deleteConfirm() {
+  alert('删除成功');
+  closeDeleteModal();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>信披文件撰写 - 招募说明书（全部门整合版）</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+        body {
+            background: #f5f7fa;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header-bar {
+            background: #fff;
+            padding: 16px 24px;
+            border-bottom: 1px solid #ebeef5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #303133;
+        }
+        .header-actions,.batch-btn-group,.dept-btn-group {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .dept-btn-group{
+            padding:12px 24px;
+            border-bottom:1px solid #ebeef5;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background: #4062C1;
+            color: #fff;
+        }
+        .btn-default {
+            background: #fff;
+            border: 1px solid #dcdfe6;
+            color: #606266;
+        }
+        .btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+        .info-card {
+            background: #f5faff;
+            margin: 20px 24px;
+            padding: 16px;
+            border-radius: 8px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .info-item {
+            font-size: 14px;
+            color: #606266;
+        }
+        .info-label {
+            color: #909399;
+        }
+        .step-bar {
+            display: flex;
+            align-items: center;
+            margin: 20px 24px;
+        }
+        .step-item {
+            display: flex;
+            align-items: center;
+        }
+        .step-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #4062C1;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            margin-right: 8px;
+        }
+        .step-dot.unfinished {
+            background: #e6a23c;
+        }
+        .step-dot.pass {
+            background: #52c41a;
+        }
+        .step-line {
+            width: 140px;
+            height: 3px;
+            background: #4062C1;
+            margin: 0 10px;
+        }
+        .step-line.unfinished {
+            background: #ebeef5;
+        }
+        .step-text {
+            font-size: 14px;
+            color: #303133;
+        }
+        .form-section {
+            margin: 20px 24px;
+        }
+        .section-title {
+            background: #4062C1;
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 8px 8px 0 0;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .form-content {
+            border: 1px solid #ebeef5;
+            border-top: none;
+            padding: 20px;
+            border-radius: 0 0 8px 8px;
+        }
+        .form-row {
+            margin-bottom: 20px;
+        }
+        .form-label {
+            display: block;
+            font-size: 14px;
+            color: #606266;
+            margin-bottom: 8px;
+        }
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #dcdfe6;
+            border-radius: 4px;
+            font-size: 14px;
+            background: #f5f7fa;
+        }
+        .form-textarea {
+            min-height: 130px;
+            resize: vertical;
+        }
+        .table-box {
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ebeef5;
+        }
+        th {
+            background: #f5f7fa;
+            color: #909399;
+        }
+        .reject-area {
+            margin-top: 20px;
+        }
+        .hidden {
+            display: none;
+        }
+        .batch-wrap{
+            padding:12px 24px;
+            border-top:1px solid #ebeef5;
+        }
+        .title-link{
+            color:#4062C1;
+            cursor:pointer;
+            text-decoration:none;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 总首页：信披文件撰写—招募说明书 统一入口 -->
+<div id="mainListPage" class="container">
+    <div class="header-bar">
+        <div class="header-title">信披文件撰写 — 招募说明书</div>
+    </div>
+    <!-- 部门快速入口 -->
+    <div class="dept-btn-group">
+        <button class="btn btn-default" onclick="openOfficeMaintain()">办公室</button>
+        <button class="btn btn-default" onclick="openResearchMaintain()">研究部</button>
+        <button class="btn btn-default" onclick="openMarketList()">市场部门（四大业务部）</button>
+    </div>
+    <div class="form-section">
+        <table>
+            <thead>
+                <tr>
+                    <th>更新批次标题</th>
+                    <th>年编号</th>
+                    <th>内容截止日</th>
+                    <th>财报截止日</th>
+                    <th>封面&落款日期</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a class="title-link">2026年招募说明书更新04月24日</a></td>
+                    <td>2026</td>
+                    <td>2026-04-20</td>
+                    <td>2026-03-31</td>
+                    <td>2026-04-25</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- ########################### 办公室 ########################### -->
+<div id="officeMaintain" class="container hidden">
+    <div class="header-bar">
+        <div class="header-title">招募说明书更新 - 办公室</div>
+        <div class="header-actions">
+            <button class="btn btn-default" onclick="backMain()">返回</button>
+            <button class="btn btn-primary" onclick="officeSubmit()">提交</button>
+        </div>
+    </div>
+    <div class="info-card">
+        <div class="info-item"><span class="info-label">创建人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">归属部门：</span>办公室</div>
+        <div class="info-item"><span class="info-label">前序任务处理人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">任务到达时间：</span>2026-04-24</div>
+    </div>
+    <div class="step-bar">
+        <div class="step-item"><div class="step-dot">1</div><span class="step-text">维护招募说明书要素</span></div>
+        <div class="step-line unfinished"></div>
+        <div class="step-item"><div class="step-dot unfinished">2</div><span class="step-text">审核招募说明书要素</span></div>
+    </div>
+    <div class="form-section">
+        <div class="section-title">招募说明书要素维护</div>
+        <div class="form-content">
+            <div class="form-row">
+                <label class="form-label">本次更新内容截止日</label>
+                <input type="text" class="form-input" value="2026-04-20" readonly>
+            </div>
+            <div class="form-row">
+                <label class="form-label">财报截止日</label>
+                <input type="text" class="form-input" value="2026-03-31" readonly>
+            </div>
+            <div class="table-box">
+                <label class="form-label">本次更新涉及产品</label>
+                <table>
+                    <tr><th>基金全称</th><th>基金代码</th></tr>
+                    <tr><td>建信嘉合债券型证券投资基金</td><td>000123</td></tr>
+                    <tr><td>建信丰享债券型证券投资基金</td><td>000456</td></tr>
+                </table>
+            </div>
+            <div class="form-row">
+                <label class="form-label">基金管理人概况</label>
+                <textarea class="form-textarea" placeholder="请录入基金管理人概况"></textarea>
+            </div>
+            <div class="form-row">
+                <label class="form-label">董事会成员信息</label>
+                <textarea class="form-textarea" placeholder="请录入董事会成员信息"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="officeAudit" class="container hidden">
+    <div class="header-bar">
+        <div class="header-title">招募说明书审核 - 办公室</div>
+        <div class="header-actions">
+            <button class="btn btn-default" onclick="backMain()">返回</button>
+            <button class="btn btn-default" onclick="officeReject()">退回</button>
+            <button class="btn btn-primary" onclick="officePass()">审核通过</button>
+        </div>
+    </div>
+    <div class="info-card">
+        <div class="info-item"><span class="info-label">创建人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">归属部门：</span>办公室</div>
+        <div class="info-item"><span class="info-label">前序任务处理人：</span>办公室</div>
+        <div class="info-item"><span class="info-label">任务到达时间：</span>2026-04-24</div>
+    </div>
+    <div class="step-bar">
+        <div class="step-item"><div class="step-dot pass">✓</div><span class="step-text">维护招募说明书要素</span></div>
+        <div class="step-line"></div>
+        <div class="step-item"><div class="step-dot">2</div><span class="step-text">审核招募说明书要素</span></div>
+    </div>
+    <div class="form-section">
+        <div class="section-title">招募说明书要素审核</div>
+        <div class="form-content">
+            <div class="form-row">
+                <label class="form-label">本次更新内容截止日</label>
+                <input type="text" class="form-input" value="2026-04-20" readonly>
+            </div>
+            <div class="form-row">
+                <label class="form-label">财报截止日</label>
+                <input type="text" class="form-input" value="2026-03-31" readonly>
+            </div>
+            <div class="table-box">
+                <label class="form-label">本次更新涉及产品</label>
+                <table>
+                    <tr><th>基金全称</th><th>基金代码</th></tr>
+                    <tr><td>建信嘉合债券型证券投资基金</td><td>000123</td></tr>
+                </table>
+            </div>
+            <div class="form-row">
+                <label class="form-label">基金管理人概况（已录入）</label>
+                <textarea class="form-textarea" readonly></textarea>
+            </div>
+            <div class="form-row">
+                <label class="form-label">董事会成员信息（已录入）</label>
+                <textarea class="form-textarea" readonly></textarea>
+            </div>
+            <div class="reject-area">
+                <label class="form-label">退回意见</label>
+                <textarea class="form-textarea" placeholder="请录入退回意见"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ########################### 研究部 ########################### -->
+<div id="researchMaintain" class="container hidden">
+    <div class="header-bar">
+        <div class="header-title">招募说明书更新 - 研究部</div>
+        <div class="header-actions">
+            <button class="btn btn-default" onclick="backMain()">返回</button>
+            <button class="btn btn-primary" onclick="researchSubmit()">提交</button>
+        </div>
+    </div>
+    <div class="info-card">
+        <div class="info-item"><span class="info-label">创建人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">归属部门：</span>研究部</div>
+        <div class="info-item"><span class="info-label">前序任务处理人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">任务到达时间：</span>2026-04-24</div>
+    </div>
+    <div class="step-bar">
+        <div class="step-item"><div class="step-dot">1</div><span class="step-text">维护招募说明书要素</span></div>
+        <div class="step-line unfinished"></div>
+        <div class="step-item"><div class="step-dot unfinished">2</div><span class="step-text">审核招募说明书要素</span></div>
+    </div>
+    <div class="form-section">
+        <div class="section-title">招募说明书要素维护</div>
+        <div class="form-content">
+            <div class="form-row">
+                <label class="form-label">本次更新内容截止日</label>
+                <input type="text" class="form-input" value="2026-04-20" readonly>
+            </div>
+            <div class="form-row">
+                <label class="form-label">财报截止日</label>
+                <input type="text" class="form-input" value="2026-03-31" readonly>
+            </div>
+            <div class="table-box">
+                <label class="form-label">本次更新涉及产品</label>
+                <table>
+                    <tr><th>基金全称</th><th>基金代码</th></tr>
+                    <tr><td>建信嘉合债券型证券投资基金</td><td>000123</td></tr>
+                </table>
+            </div>
+            <div class="form-row">
+                <label class="form-label">投资决策委员会成员信息</label>
+                <textarea class="form-textarea" placeholder="请录入投资决策委员会成员信息"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="researchAudit" class="container hidden">
+    <div class="header-bar">
+        <div class="header-title">招募说明书审核 - 研究部</div>
+        <div class="header-actions">
+            <button class="btn btn-default" onclick="backMain()">返回</button>
+            <button class="btn btn-default" onclick="researchReject()">退回</button>
+            <button class="btn btn-primary" onclick="researchPass()">审核通过</button>
+        </div>
+    </div>
+    <div class="info-card">
+        <div class="info-item"><span class="info-label">创建人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">归属部门：</span>研究部</div>
+        <div class="info-item"><span class="info-label">前序任务处理人：</span>研究部</div>
+        <div class="info-item"><span class="info-label">任务到达时间：</span>2026-04-24</div>
+    </div>
+    <div class="step-bar">
+        <div class="step-item"><div class="step-dot pass">✓</div><span class="step-text">维护招募说明书要素</span></div>
+        <div class="step-line"></div>
+        <div class="step-item"><div class="step-dot">2</div><span class="step-text">审核招募说明书要素</span></div>
+    </div>
+    <div class="form-section">
+        <div class="section-title">招募说明书要素审核</div>
+        <div class="form-content">
+            <div class="form-row">
+                <label class="form-label">本次更新内容截止日</label>
+                <input type="text" class="form-input" value="2026-04-20" readonly>
+            </div>
+            <div class="form-row">
+                <label class="form-label">财报截止日</label>
+                <input type="text" class="form-input" value="2026-03-31" readonly>
+            </div>
+            <div class="form-row">
+                <label class="form-label">投资决策委员会成员信息（已录入）</label>
+                <textarea class="form-textarea" readonly></textarea>
+            </div>
+            <div class="reject-area">
+                <label class="form-label">退回意见</label>
+                <textarea class="form-textarea" placeholder="请录入退回意见"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ########################### 市场部门总列表 ########################### -->
+<div id="marketListPage" class="container hidden">
+    <div class="header-bar">
+        <div class="header-title">信披文件撰写 — 招募说明书（市场部门）</div>
+    </div>
+    <div class="form-section">
+        <table>
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="checkAll">全选</th>
+                    <th>更新标题</th>
+                    <th>年编号</th>
+                    <th>内容截止日</th>
+                    <th>财报截止日</th>
+                    <th>封面&落款日期</th>
+                    <th>状态</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="checkbox" class="item-check"></td>
+                    <td><a class="title-link" onclick="openBankMaintain()">2026年招募说明书建信嘉合债券产品更新04月24日</a></td>
+                    <td>2026</td>
+                    <td>2026-04-20</td>
+                    <td>2026-03-31</td>
+                    <td>2026-04-25</td>
+                    <td>待维护</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" class="item-check"></td>
+                    <td><a class="title-link" onclick="openOrgMaintain()">2026年招募说明书建信丰享债券产品更新04月24日</a></td>
+                    <td>2026</td>
+                    <td>2026-04-20</td>
+                    <td>2026-03-31</td>
+                    <td>2026-04-25</td>
+                    <td>待维护</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" class="item-check"></td>
+                    <td><a class="title-link" onclick="openSecMaintain()">2026年招募说明书建信优选混合产品更新04月24日</a></td>
+                    <td>2026</td>
+                    <td>2026-04-20</td>
+                    <td>2026-03-31</td>
+                    <td>2026-04-25</td>
+                    <td>待维护</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" class="item-check"></td>
+                    <td><a class="title-link" onclick="openNetMaintain()">2026年招募说明书建信互联网金融产品更新04月24日</a></td>
+                    <td>2026</td>
+                    <td>2026-04-20</td>
+                    <td>2026-03-31</td>
+                    <td>2026-04-25</td>
+                    <td>待维护</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="batch-wrap">
+        <div class="batch-btn-group">
+            <button class="btn btn-primary" id="batchSubmit">批量提交</button>
+            <button class="btn btn-default" id="batchAudit" disabled>批量审核通过</button>
+            <span style="color:#909399;font-size:13px;">审核按钮需全部提交完成后解锁</span>
+        </div>
+    </div>
+</div>
+
+<!-- ########################### 四大市场部门 ########################### -->
+<!-- 银行业务部 -->
+<div id="bankMaintain" class="container hidden">
+    <div class="header-bar">
+        <div class="header-title">招募说明书更新 - 银行业务部</div>
+        <div class="header-actions">
+            <button class="btn btn-default" onclick="backMarketList()">返回</button>
+            <button class="btn btn-primary" onclick="bankSubmit()">提交</button>
+        </div>
+    </div>
+    <div class="info-card">
+        <div class="info-item"><span class="info-label">创建人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">归属部门：</span>银行业务部</div>
+        <div class="info-item"><span class="info-label">前序任务处理人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">任务到达时间：</span>2026-04-24</div>
+    </div>
+    <div class="step-bar">
+        <div class="step-item"><div class="step-dot">1</div><span class="step-text">维护招募说明书要素</span></div>
+        <div class="step-line unfinished"></div>
+        <div class="step-item"><div class="step-dot unfinished">2</div><span class="step-text">审核招募说明书要素</span></div>
+    </div>
+    <div class="form-section">
+        <div class="section-title">代销机构信息维护</div>
+        <div class="form-content">
+            <div class="form-row">
+                <label class="form-label">本次更新内容截止日</label>
+                <input type="text" class="form-input" value="2026-04-20" readonly>
+            </div>
+            <div class="form-row">
+                <label class="form-label">财报截止日</label>
+                <input type="text" class="form-input" value="2026-03-31" readonly>
+            </div>
+            <div class="table-box">
+                <label class="form-label">本次更新涉及产品</label>
+                <table>
+                    <tr><th>基金全称</th><th>基金代码</th></tr>
+                    <tr><td>建信嘉合债券型证券投资基金</td><td>000123</td></tr>
+                </table>
+            </div>
+            <div class="form-row" style="margin-top:20px;">
+                <label class="form-label">代销机构信息</label>
+                <textarea class="form-textarea" placeholder="请录入本产品对应银行业务部代销机构信息..."></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="bankAudit" class="container hidden">
+    <div class="header-bar">
+        <div class="header-title">招募说明书审核 - 银行业务部</div>
+        <div class="header-actions">
+            <button class="btn btn-default" onclick="backMarketList()">返回</button>
+            <button class="btn btn-default" onclick="bankReject()">退回</button>
+            <button class="btn btn-primary" onclick="bankPass()">审核通过</button>
+        </div>
+    </div>
+    <div class="info-card">
+        <div class="info-item"><span class="info-label">创建人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">归属部门：</span>银行业务部</div>
+        <div class="info-item"><span class="info-label">前序任务处理人：</span>银行业务部</div>
+        <div class="info-item"><span class="info-label">任务到达时间：</span>2026-04-24</div>
+    </div>
+    <div class="step-bar">
+        <div class="step-item"><div class="step-dot pass">✓</div><span class="step-text">维护招募说明书要素</span></div>
+        <div class="step-line"></div>
+        <div class="step-item"><div class="step-dot">2</div><span class="step-text">审核招募说明书要素</span></div>
+    </div>
+    <div class="form-section">
+        <div class="section-title">代销机构信息审核</div>
+        <div class="form-content">
+            <div class="form-row">
+                <label class="form-label">本次更新内容截止日</label>
+                <input type="text" class="form-input" value="2026-04-20" readonly>
+            </div>
+            <div class="form-row">
+                <label class="form-label">财报截止日</label>
+                <input type="text" class="form-input" value="2026-03-31" readonly>
+            </div>
+            <div class="table-box">
+                <label class="form-label">本次更新涉及产品</label>
+                <table>
+                    <tr><th>基金全称</th><th>基金代码</th></tr>
+                    <tr><td>建信嘉合债券型证券投资基金</td><td>000123</td></tr>
+                </table>
+            </div>
+            <div class="form-row" style="margin-top:20px;">
+                <label class="form-label">代销机构信息（已录入）</label>
+                <textarea class="form-textarea" readonly></textarea>
+            </div>
+            <div class="reject-area">
+                <label class="form-label">退回意见</label>
+                <textarea class="form-textarea" placeholder="请录入退回意见..."></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 机构业务部 -->
+<div id="orgMaintain" class="container hidden">
+    <div class="header-bar">
+        <div class="header-title">招募说明书更新 - 机构业务部</div>
+        <div class="header-actions">
+            <button class="btn btn-default" onclick="backMarketList()">返回</button>
+            <button class="btn btn-primary" onclick="orgSubmit()">提交</button>
+        </div>
+    </div>
+    <div class="info-card">
+        <div class="info-item"><span class="info-label">创建人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">归属部门：</span>机构业务部</div>
+        <div class="info-item"><span class="info-label">前序任务处理人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">任务到达时间：</span>2026-04-24</div>
+    </div>
+    <div class="step-bar">
+        <div class="step-item"><div class="step-dot">1</div><span class="step-text">维护招募说明书要素</span></div>
+        <div class="step-line unfinished"></div>
+        <div class="step-item"><div class="step-dot unfinished">2</div><span class="step-text">审核招募说明书要素</span></div>
+    </div>
+    <div class="form-section">
+        <div class="section-title">代销机构信息维护</div>
+        <div class="form-content">
+            <div class="form-row">
+                <label class="form-label">本次更新内容截止日</label>
+                <input type="text" class="form-input" value="2026-04-20" readonly>
+            </div>
+            <div class="form-row">
+                <label class="form-label">财报截止日</label>
+                <input type="text" class="form-input" value="2026-03-31" readonly>
+            </div>
+            <div class="table-box">
+                <label class="form-label">本次更新涉及产品</label>
+                <table>
+                    <tr><th>基金全称</th><th>基金代码</th></tr>
+                    <tr><td>建信丰享债券型证券投资基金</td><td>000456</td></tr>
+                </table>
+            </div>
+            <div class="form-row">
+                <label class="form-label">代销机构信息</label>
+                <textarea class="form-textarea" placeholder="请录入本产品对应机构业务部代销机构信息..."></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="orgAudit" class="container hidden">
+    <div class="header-bar">
+        <div class="header-title">招募说明书审核 - 机构业务部</div>
+        <div class="header-actions">
+            <button class="btn btn-default" onclick="backMarketList()">返回</button>
+            <button class="btn btn-default" onclick="orgReject()">退回</button>
+            <button class="btn btn-primary" onclick="orgPass()">审核通过</button>
+        </div>
+    </div>
+    <div class="info-card">
+        <div class="info-item"><span class="info-label">创建人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">归属部门：</span>机构业务部</div>
+        <div class="info-item"><span class="info-label">前序任务处理人：</span>机构业务部</div>
+        <div class="info-item"><span class="info-label">任务到达时间：</span>2026-04-24</div>
+    </div>
+    <div class="step-bar">
+        <div class="step-item"><div class="step-dot pass">✓</div><span class="step-text">维护招募说明书要素</span></div>
+        <div class="step-line"></div>
+        <div class="step-item"><div class="step-dot">2</div><span class="step-text">审核招募说明书要素</span></div>
+    </div>
+    <div class="form-section">
+        <div class="section-title">代销机构信息审核</div>
+        <div class="form-content">
+            <div class="form-row">
+                <label class="form-label">本次更新内容截止日</label>
+                <input type="text" class="form-input" value="2026-04-20" readonly>
+            </div>
+            <div class="form-row">
+                <label class="form-label">财报截止日</label>
+                <input type="text" class="form-input" value="2026-03-31" readonly>
+            </div>
+            <div class="table-box">
+                <label class="form-label">本次更新涉及产品</label>
+                <table>
+                    <tr><th>基金全称</th><th>基金代码</th></tr>
+                    <tr><td>建信丰享债券型证券投资基金</td><td>000456</td></tr>
+                </table>
+            </div>
+            <div class="form-row">
+                <label class="form-label">代销机构信息（已录入）</label>
+                <textarea class="form-textarea" readonly></textarea>
+            </div>
+            <div class="reject-area">
+                <label class="form-label">退回意见</label>
+                <textarea class="form-textarea" placeholder="请录入退回意见..."></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 证券公司业务部 -->
+<div id="secMaintain" class="container hidden">
+    <div class="header-bar">
+        <div class="header-title">招募说明书更新 - 证券公司业务部</div>
+        <div class="header-actions">
+            <button class="btn btn-default" onclick="backMarketList()">返回</button>
+            <button class="btn btn-primary" onclick="secSubmit()">提交</button>
+        </div>
+    </div>
+    <div class="info-card">
+        <div class="info-item"><span class="info-label">创建人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">归属部门：</span>证券公司业务部</div>
+        <div class="info-item"><span class="info-label">前序任务处理人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">任务到达时间：</span>2026-04-24</div>
+    </div>
+    <div class="step-bar">
+        <div class="step-item"><div class="step-dot">1</div><span class="step-text">维护招募说明书要素</span></div>
+        <div class="step-line unfinished"></div>
+        <div class="step-item"><div class="step-dot unfinished">2</div><span class="step-text">审核招募说明书要素</span></div>
+    </div>
+    <div class="form-section">
+        <div class="section-title">代销机构信息维护</div>
+        <div class="form-content">
+            <div class="form-row">
+                <label class="form-label">本次更新内容截止日</label>
+                <input type="text" class="form-input" value="2026-04-20" readonly>
+            </div>
+            <div class="form-row">
+                <label class="form-label">财报截止日</label>
+                <input type="text" class="form-input" value="2026-03-31" readonly>
+            </div>
+            <div class="table-box">
+                <label class="form-label">本次更新涉及产品</label>
+                <table>
+                    <tr><th>基金全称</th><th>基金代码</th></tr>
+                    <tr><td>建信优选混合型证券投资基金</td><td>000789</td></tr>
+                </table>
+            </div>
+            <div class="form-row">
+                <label class="form-label">代销机构信息</label>
+                <textarea class="form-textarea" placeholder="请录入本产品对应证券公司业务部代销机构信息..."></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="secAudit" class="container hidden">
+    <div class="header-bar">
+        <div class="header-title">招募说明书审核 - 证券公司业务部</div>
+        <div class="header-actions">
+            <button class="btn btn-default" onclick="backMarketList()">返回</button>
+            <button class="btn btn-default" onclick="secReject()">退回</button>
+            <button class="btn btn-primary" onclick="secPass()">审核通过</button>
+        </div>
+    </div>
+    <div class="info-card">
+        <div class="info-item"><span class="info-label">创建人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">归属部门：</span>证券公司业务部</div>
+        <div class="info-item"><span class="info-label">前序任务处理人：</span>证券公司业务部</div>
+        <div class="info-item"><span class="info-label">任务到达时间：</span>2026-04-24</div>
+    </div>
+    <div class="step-bar">
+        <div class="step-item"><div class="step-dot pass">✓</div><span class="step-text">维护招募说明书要素</span></div>
+        <div class="step-line"></div>
+        <div class="step-item"><div class="step-dot">2</div><span class="step-text">审核招募说明书要素</span></div>
+    </div>
+    <div class="form-section">
+        <div class="section-title">代销机构信息审核</div>
+        <div class="form-content">
+            <div class="form-row">
+                <label class="form-label">本次更新内容截止日</label>
+                <input type="text" class="form-input" value="2026-04-20" readonly>
+            </div>
+            <div class="form-row">
+                <label class="form-label">财报截止日</label>
+                <input type="text" class="form-input" value="2026-03-31" readonly>
+            </div>
+            <div class="table-box">
+                <label class="form-label">本次更新涉及产品</label>
+                <table>
+                    <tr><th>基金全称</th><th>基金代码</th></tr>
+                    <tr><td>建信优选混合型证券投资基金</td><td>000789</td></tr>
+                </table>
+            </div>
+            <div class="form-row">
+                <label class="form-label">代销机构信息（已录入）</label>
+                <textarea class="form-textarea" readonly></textarea>
+            </div>
+            <div class="reject-area">
+                <label class="form-label">退回意见</label>
+                <textarea class="form-textarea" placeholder="请录入退回意见..."></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 网络金融业务部 -->
+<div id="netMaintain" class="container hidden">
+    <div class="header-bar">
+        <div class="header-title">招募说明书更新 - 网络金融业务部</div>
+        <div class="header-actions">
+            <button class="btn btn-default" onclick="backMarketList()">返回</button>
+            <button class="btn btn-primary" onclick="netSubmit()">提交</button>
+        </div>
+    </div>
+    <div class="info-card">
+        <div class="info-item"><span class="info-label">创建人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">归属部门：</span>网络金融业务部</div>
+        <div class="info-item"><span class="info-label">前序任务处理人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">任务到达时间：</span>2026-04-24</div>
+    </div>
+    <div class="step-bar">
+        <div class="step-item"><div class="step-dot">1</div><span class="step-text">维护招募说明书要素</span></div>
+        <div class="step-line unfinished"></div>
+        <div class="step-item"><div class="step-dot unfinished">2</div><span class="step-text">审核招募说明书要素</span></div>
+    </div>
+    <div class="form-section">
+        <div class="section-title">代销机构信息维护</div>
+        <div class="form-content">
+            <div class="form-row">
+                <label class="form-label">本次更新内容截止日</label>
+                <input type="text" class="form-input" value="2026-04-20" readonly>
+            </div>
+            <div class="form-row">
+                <label class="form-label">财报截止日</label>
+                <input type="text" class="form-input" value="2026-03-31" readonly>
+            </div>
+            <div class="table-box">
+                <label class="form-label">本次更新涉及产品</label>
+                <table>
+                    <tr><th>基金全称</th><th>基金代码</th></tr>
+                    <tr><td>建信互联网金融混合型证券投资基金</td><td>000987</td></tr>
+                </table>
+            </div>
+            <div class="form-row">
+                <label class="form-label">代销机构信息</label>
+                <textarea class="form-textarea" placeholder="请录入本产品对应网络金融业务部代销机构信息..."></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="netAudit" class="container hidden">
+    <div class="header-bar">
+        <div class="header-title">招募说明书审核 - 网络金融业务部</div>
+        <div class="header-actions">
+            <button class="btn btn-default" onclick="backMarketList()">返回</button>
+            <button class="btn btn-default" onclick="netReject()">退回</button>
+            <button class="btn btn-primary" onclick="netPass()">审核通过</button>
+        </div>
+    </div>
+    <div class="info-card">
+        <div class="info-item"><span class="info-label">创建人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">归属部门：</span>网络金融业务部</div>
+        <div class="info-item"><span class="info-label">前序任务处理人：</span>网络金融业务部</div>
+        <div class="info-item"><span class="info-label">任务到达时间：</span>2026-04-24</div>
+    </div>
+    <div class="step-bar">
+        <div class="step-item"><div class="step-dot pass">✓</div><span class="step-text">维护招募说明书要素</span></div>
+        <div class="step-line"></div>
+        <div class="step-item"><div class="step-dot">2</div><span class="step-text">审核招募说明书要素</span></div>
+    </div>
+    <div class="form-section">
+        <div class="section-title">代销机构信息审核</div>
+        <div class="form-content">
+            <div class="form-row">
+                <label class="form-label">本次更新内容截止日</label>
+                <input type="text" class="form-input" value="2026-04-20" readonly>
+            </div>
+            <div class="form-row">
+                <label class="form-label">财报截止日</label>
+                <input type="text" class="form-input" value="2026-03-31" readonly>
+            </div>
+            <div class="table-box">
+                <label class="form-label">本次更新涉及产品</label>
+                <table>
+                    <tr><th>基金全称</th><th>基金代码</th></tr>
+                    <tr><td>建信互联网金融混合型证券投资基金</td><td>000987</td></tr>
+                </table>
+            </div>
+            <div class="form-row">
+                <label class="form-label">代销机构信息（已录入）</label>
+                <textarea class="form-textarea" readonly></textarea>
+            </div>
+            <div class="reject-area">
+                <label class="form-label">退回意见</label>
+                <textarea class="form-textarea" placeholder="请录入退回意见..."></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// 公共返回首页
+function backMain(){
+    document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));
+    document.getElementById('mainListPage').classList.remove('hidden');
+}
+// 返回市场部门列表
+function backMarketList(){
+    document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));
+    document.getElementById('marketListPage').classList.remove('hidden');
+}
+function openOfficeMaintain(){
+    document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));
+    document.getElementById('officeMaintain').classList.remove('hidden');
+}
+function openResearchMaintain(){
+    document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));
+    document.getElementById('researchMaintain').classList.remove('hidden');
+}
+function openMarketList(){
+    document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));
+    document.getElementById('marketListPage').classList.remove('hidden');
+}
+
+// 办公室流程
+function officeSubmit(){alert('提交成功，进入审核');document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));document.getElementById('officeAudit').classList.remove('hidden');}
+function officeReject(){openOfficeMaintain();}
+function officePass(){backMain();}
+
+// 研究部流程
+function researchSubmit(){alert('提交成功，进入审核');document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));document.getElementById('researchAudit').classList.remove('hidden');}
+function researchReject(){openResearchMaintain();}
+function researchPass(){backMain();}
+
+// 银行业务部流程
+function openBankMaintain(){
+    document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));
+    document.getElementById('bankMaintain').classList.remove('hidden');
+}
+function bankSubmit(){alert('提交成功，已生成审核待办');document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));document.getElementById('bankAudit').classList.remove('hidden');document.getElementById('batchAudit').disabled = false;}
+function bankReject(){openBankMaintain();}
+function bankPass(){backMarketList();}
+
+// 机构业务部流程
+function openOrgMaintain(){
+    document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));
+    document.getElementById('orgMaintain').classList.remove('hidden');
+}
+function orgSubmit(){alert('提交成功，已生成审核待办');document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));document.getElementById('orgAudit').classList.remove('hidden');document.getElementById('batchAudit').disabled = false;}
+function orgReject(){openOrgMaintain();}
+function orgPass(){backMarketList();}
+
+// 证券公司业务部流程
+function openSecMaintain(){
+    document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));
+    document.getElementById('secMaintain').classList.remove('hidden');
+}
+function secSubmit(){alert('提交成功，已生成审核待办');document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));document.getElementById('secAudit').classList.remove('hidden');document.getElementById('batchAudit').disabled = false;}
+function secReject(){openSecMaintain();}
+function secPass(){backMarketList();}
+
+// 网络金融业务部流程
+function openNetMaintain(){
+    document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));
+    document.getElementById('netMaintain').classList.remove('hidden');
+}
+function netSubmit(){alert('提交成功，已生成审核待办');document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));document.getElementById('netAudit').classList.remove('hidden');document.getElementById('batchAudit').disabled = false;}
+function netReject(){openNetMaintain();}
+function netPass(){backMarketList();}
+
+// 市场部批量操作
+document.getElementById('batchSubmit').onclick = function(){
+    alert('已勾选条目统一提交，等待审核');
+    document.getElementById('batchAudit').disabled = false;
+}
+document.getElementById('batchAudit').onclick = function(){
+    alert('批量审核通过');
+    backMarketList();
+}
+document.getElementById('checkAll').onchange = function(){
+    document.querySelectorAll('.item-check').forEach(i=>i.checked = this.checked);
+}
+</script>
+</body>
+</html>

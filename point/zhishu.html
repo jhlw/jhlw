@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公募业绩比较指数库维护原型</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        success: '#00B42A',
+                        danger: '#F53F3F',
+                        warning: '#FF7D00',
+                        gray: { 100: '#F7F8FA', 200: '#E5E6EB', 300: '#C9CDD4', 400: '#86909C', 500: '#4E5969', 600: '#272E3B', 700: '#1D2129' }
+                    },
+                    boxShadow: { 'card': '0 2px 8px 0 rgba(0,0,0,0.08)' }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 text-gray-600 text-sm">
+    <header class="bg-white shadow-sm sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <i class="fa fa-database text-primary text-xl"></i>
+                <h1 class="text-lg font-semibold text-gray-700">公募业绩比较指数库维护原型</h1>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="text-gray-500 text-xs">当前用户：管理员（注册登记部）</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-6">
+        <div class="bg-white rounded-lg shadow-card p-4 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-4">
+                <div><label class="block text-xs text-gray-500 mb-1">指数编码</label><input type="text" id="search-code" class="w-full border border-gray-200 rounded px-3 py-2"></div>
+                <div><label class="block text-xs text-gray-500 mb-1">指数名称</label><input type="text" id="search-name" class="w-full border border-gray-200 rounded px-3 py-2"></div>
+                <div><label class="block text-xs text-gray-500 mb-1">是否外盘指数</label><select id="search-foreign" class="w-full border border-gray-200 rounded px-3 py-2"><option value="">全部</option><option value="是">是</option><option value="否">否</option></select></div>
+                <div class="flex items-end gap-2">
+                    <button id="btn-search" class="px-4 py-2 bg-primary text-white rounded text-sm flex-1"><i class="fa fa-search mr-1"></i>查询</button>
+                    <button id="btn-reset" class="px-4 py-2 border border-gray-200 rounded text-sm"><i class="fa fa-refresh mr-1"></i>重置</button>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <button id="btn-add" class="px-4 py-2 bg-primary text-white rounded text-sm"><i class="fa fa-plus mr-1"></i>新增指数</button>
+                <div class="text-xs text-gray-500">共 <span class="text-primary font-medium">10</span> 条记录</div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-card overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead><tr class="bg-gray-100 text-gray-600">
+                        <th class="px-4 py-3 text-left font-medium text-xs">序号</th>
+                        <th class="px-4 py-3 text-left font-medium text-xs">指数编码</th>
+                        <th class="px-4 py-3 text-left font-medium text-xs">指数名称</th>
+                        <th class="px-4 py-3 text-left font-medium text-xs">是否外盘</th>
+                        <th class="px-4 py-3 text-left font-medium text-xs">计价币种</th>
+                        <th class="px-4 py-3 text-left font-medium text-xs">主数据源</th>
+                        <th class="px-4 py-3 text-left font-medium text-xs">维护人</th>
+                        <th class="px-4 py-3 text-center font-medium text-xs">操作</th>
+                    </tr></thead>
+                    <tbody id="index-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- 新增/编辑弹窗 -->
+    <div id="index-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div class="px-6 py-4 border-b flex justify-between items-center">
+                <h2 id="modal-title">新增指数</h2>
+                <button id="close-modal"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="px-6 py-4">
+                <form id="index-form">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div class="md:col-span-2">
+                            <label class="block text-xs text-gray-500 mb-1 required">指数编码</label>
+                            <input type="text" id="form-code" class="w-full border bg-gray-100 px-3 py-2" readonly>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-xs text-gray-500 mb-1 required">指数名称</label>
+                            <input type="text" id="form-name" class="w-full border px-3 py-2">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-500 mb-1 required">是否外盘指数</label>
+                            <div class="flex gap-4 pt-1">
+                                <label><input type="radio" name="foreign" value="否" checked> 否</label>
+                                <label><input type="radio" name="foreign" value="是"> 是</label>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-500 mb-1 required">计价币种</label>
+                            <select id="form-currency" class="w-full border px-3 py-2">
+                                <option value="">请选择</option>
+                                <option value="CNY">人民币</option>
+                                <option value="HKD">港币</option>
+                                <option value="USD">美元</option>
+                                <option value="EUR">欧元</option>
+                                <option value="GBP">英镑</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-xs text-gray-500 mb-1">指数说明</label>
+                            <textarea id="form-desc" rows="3" class="w-full border px-3 py-2 resize-none" placeholder="请输入指数说明、编制规则、适用场景等"></textarea>
+                        </div>
+                    </div>
+                    <div class="border rounded-lg p-4 mb-6">
+                        <div class="flex justify-between mb-4">
+                            <h3 class="text-sm font-medium">数据来源配置</h3>
+                            <button type="button" id="add-source-btn" class="px-3 py-1 bg-primary text-white rounded text-xs">+ 添加数据来源</button>
+                        </div>
+                        <div id="source-tags-container" class="flex flex-wrap gap-2 mb-4">
+                            <div class="text-gray-400 text-sm italic">暂无数据来源</div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm"><thead><tr class="bg-gray-100">
+                                <th class="px-3 py-2 text-left text-xs">数据源类型</th>
+                                <th class="px-3 py-2 text-left text-xs">指数编码</th>
+                                <th class="px-3 py-2 text-left text-xs">指数名称</th>
+                                <th class="px-3 py-2 text-center text-xs">是否主数据源</th>
+                                <th class="px-3 py-2 text-center text-xs">操作</th>
+                            </tr></thead>
+                            <tbody id="source-table-body"></tbody></table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="px-6 py-4 border-t flex justify-end gap-3">
+                <button id="cancel-btn" class="px-4 py-2 border rounded">取消</button>
+                <button id="save-btn" class="px-4 py-2 bg-primary text-white rounded">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 选择数据来源弹窗 -->
+    <div id="source-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+            <div class="px-5 py-4 border-b flex justify-between items-center">
+                <h3 class="font-medium">选择数据来源</h3>
+                <button id="close-source-modal" class="text-gray-400 hover:text-gray-600"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="px-5 py-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+                    <div>
+                        <label class="block text-xs text-gray-500 mb-1">数据来源名称</label>
+                        <input type="text" id="qry-source-name" class="w-full border border-gray-200 rounded px-3 py-2 text-sm" placeholder="请输入数据来源名称">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-500 mb-1">指数编码</label>
+                        <input type="text" id="qry-source-code" class="w-full border border-gray-200 rounded px-3 py-2 text-sm" placeholder="请输入指数编码">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-500 mb-1">指数名称</label>
+                        <input type="text" id="qry-index-name" class="w-full border border-gray-200 rounded px-3 py-2 text-sm" placeholder="请输入指数名称">
+                    </div>
+                </div>
+                <div class="flex justify-end gap-3 mb-4">
+                    <button id="qry-btn" class="px-3 py-1 bg-primary text-white rounded text-xs"><i class="fa fa-search mr-1"></i>查询</button>
+                    <button id="reset-qry-btn" class="px-4 py-2 border border-gray-200 rounded text-xs"><i class="fa fa-refresh mr-1"></i>重置</button>
+                </div>
+                <div class="overflow-x-auto max-h-64 overflow-y-auto border border-gray-200 rounded">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="px-3 py-2 text-left text-xs w-12">选择</th>
+                                <th class="px-3 py-2 text-left text-xs">数据来源名称</th>
+                                <th class="px-3 py-2 text-left text-xs">指数编码</th>
+                                <th class="px-3 py-2 text-left text-xs">指数名称</th>
+                            </tr>
+                        </thead>
+                        <tbody id="source-select-body"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="px-5 py-4 border-t flex justify-end gap-3">
+                <button id="cancel-source-btn" class="px-4 py-2 border rounded text-sm">取消</button>
+                <button id="confirm-source-btn" class="px-4 py-2 bg-primary text-white rounded text-sm">确认选择添加</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 查看弹窗 -->
+    <div id="view-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-5 rounded-lg w-full max-w-xl"><h3 class="mb-4">指数详情</h3><div id="view-content"></div><div class="text-right mt-4"><button id="close-view-btn" class="px-3 py-1 border rounded">关闭</button></div></div>
+    </div>
+
+    <!-- 删除弹窗 -->
+    <div id="del-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-5 rounded-lg w-full max-w-md text-center">
+            <i class="fa fa-exclamation-circle text-warning text-2xl mb-2"></i>
+            <p class="mb-4">确定删除该指数？</p>
+            <textarea id="del-reason" rows="2" class="w-full border px-3 py-2 mb-4" placeholder="请输入删除原因"></textarea>
+            <div class="flex justify-end gap-3">
+                <button id="cancel-del-btn" class="px-4 py-1 border rounded">取消</button>
+                <button id="confirm-del-btn" class="px-4 py-1 bg-danger text-white rounded">确认删除</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 币种编码转中文
+        function getCurrencyText(code){
+            const map = {
+                'CNY':'人民币',
+                'HKD':'港币',
+                'USD':'美元',
+                'EUR':'欧元',
+                'GBP':'英镑'
+            };
+            return map[code] || code;
+        }
+
+        // 获取主数据源（名称 + 指数名称）
+        function getMainSource(sources){
+            const main = sources.find(s => s.isMain);
+            if (!main) return '-';
+            return `${main.sourceName}（${main.sourceIndexName}）`;
+        }
+
+        // 模拟指数数据
+        const indexData = [
+            { id:1, code:'000300', name:'沪深300指数', foreign:'否', currency:'CNY', creator:'张三', createTime:'2024-08-01 10:20:30', desc:'由沪深两市精选300只龙头A股编制，反映A股整体市场表现，是权益类基金常用业绩基准。', sources:[{id:1,sourceName:'万得资讯',sourceCode:'WIND001',sourceIndexName:'沪深300指数', isMain: true}]},
+            { id:2, code:'000905', name:'中证500指数', foreign:'否', currency:'CNY', creator:'张三', createTime:'2024-08-01 10:21:15', desc:'选取沪深两市中小市值500只股票，代表中小盘成长风格走势。', sources:[{id:2,sourceName:'同花顺iFinD',sourceCode:'IFIND001',sourceIndexName:'中证500指数', isMain: true}]},
+            { id:3, code:'000012', name:'中债综合财富指数', foreign:'否', currency:'CNY', creator:'李四', createTime:'2024-08-02 14:30:20', desc:'覆盖全市场利率债、信用债，作为纯债型基金业绩比较基准。', sources:[{id:3,sourceName:'东方财富Choice',sourceCode:'CHOICE001',sourceIndexName:'中债综合财富指数', isMain: true}]},
+            { id:4, code:'HSI', name:'恒生指数', foreign:'是', currency:'HKD', creator:'王五', createTime:'2024-08-03 09:15:45', desc:'香港交易所核心大盘蓝筹指数，覆盖金融、地产、科技龙头企业。', sources:[{id:4,sourceName:'彭博资讯',sourceCode:'BLOOM001',sourceIndexName:'恒生指数', isMain: true}]},
+            { id:5, code:'SPX', name:'标普500指数', foreign:'是', currency:'USD', creator:'王五', createTime:'2024-08-03 09:18:22', desc:'美国500家龙头上市公司组成，是全球主流权益资产基准指数。', sources:[{id:5,sourceName:'路透资讯',sourceCode:'REUTE001',sourceIndexName:'标普500指数', isMain: true}]},
+            { id:6, code:'NDX', name:'纳斯达克100', foreign:'是', currency:'USD', creator:'赵六', createTime:'2024-08-04 11:05:10', desc:'美股科技龙头指数，包含互联网、半导体、软件龙头公司。', sources:[{id:1,sourceName:'万得资讯',sourceCode:'WIND002',sourceIndexName:'纳斯达克100', isMain: true}]},
+            { id:7, code:'000852', name:'中证科创创业50', foreign:'否', currency:'CNY', creator:'李四', createTime:'2024-08-05 08:45:36', desc:'汇聚科创板、创业板龙头科创企业，代表新兴产业成长方向。', sources:[{id:2,sourceName:'同花顺iFinD',sourceCode:'IFIND002',sourceIndexName:'中证科创创业50', isMain: true}]},
+            { id:8, code:'FTSE', name:'富时100指数', foreign:'是', currency:'GBP', creator:'赵六', createTime:'2024-08-06 15:22:08', desc:'英国伦敦证券交易所百强企业指数，欧洲核心大盘基准。', sources:[{id:4,sourceName:'彭博资讯',sourceCode:'BLOOM002',sourceIndexName:'富时100', isMain: true}]},
+            { id:9, code:'000932', name:'中证消费指数', foreign:'否', currency:'CNY', creator:'张三', createTime:'2024-08-07 09:33:45', desc:'必选消费、可选消费行业龙头个股组成，作为消费主题基金基准。', sources:[{id:3,sourceName:'东方财富Choice',sourceCode:'CHOICE002',sourceIndexName:'中证消费指数', isMain: true}]},
+            { id:10, code:'SX5E', name:'欧洲斯托克50', foreign:'是', currency:'EUR', creator:'王五', createTime:'2024-08-07 16:10:22', desc:'欧元区50家核心蓝筹企业，覆盖欧洲主流行业龙头。', sources:[{id:5,sourceName:'路透资讯',sourceCode:'REUTE002',sourceIndexName:'欧洲斯托克50', isMain: true}]}
+        ];
+
+        // 数据来源基础库
+        const sourceData = [
+            {id:1,sourceName:'万得资讯',sourceCode:'WIND001',sourceIndexName:'沪深300指数'},
+            {id:2,sourceName:'同花顺iFinD',sourceCode:'IFIND001',sourceIndexName:'中证500指数'},
+            {id:3,sourceName:'东方财富Choice',sourceCode:'CHOICE001',sourceIndexName:'中债综合财富指数'},
+            {id:4,sourceName:'彭博资讯',sourceCode:'BLOOM001',sourceIndexName:'恒生指数'},
+            {id:5,sourceName:'路透资讯',sourceCode:'REUTE001',sourceIndexName:'标普500指数'},
+            {id:6,sourceName:'万得资讯',sourceCode:'WIND002',sourceIndexName:'纳斯达克100'},
+            {id:7,sourceName:'同花顺iFinD',sourceCode:'IFIND002',sourceIndexName:'中证科创创业50'},
+            {id:8,sourceName:'彭博资讯',sourceCode:'BLOOM002',sourceIndexName:'富时100'},
+            {id:9,sourceName:'东方财富Choice',sourceCode:'CHOICE002',sourceIndexName:'中证消费指数'},
+            {id:10,sourceName:'路透资讯',sourceCode:'REUTE002',sourceIndexName:'欧洲斯托克50'}
+        ];
+
+        let currentEditId = null;
+        let currentSources = [];
+        let filterSourceList = [];
+
+        const indexModal = document.getElementById('index-modal');
+        const sourceModal = document.getElementById('source-modal');
+        const viewModal = document.getElementById('view-modal');
+        const delModal = document.getElementById('del-modal');
+
+        // 渲染指数列表
+        function renderIndexTable() {
+            const tbody = document.getElementById('index-table-body');
+            tbody.innerHTML = '';
+            indexData.forEach((item, idx) => {
+                const tr = document.createElement('tr');
+                tr.className = 'border-t hover:bg-gray-50';
+                tr.innerHTML = `
+                    <td class="px-4 py-3">${idx+1}</td>
+                    <td class="px-4 py-3">${item.code}</td>
+                    <td class="px-4 py-3">${item.name}</td>
+                    <td class="px-4 py-3">${item.foreign}</td>
+                    <td class="px-4 py-3">${getCurrencyText(item.currency)}</td>
+                    <td class="px-4 py-3 font-medium text-primary">${getMainSource(item.sources)}</td>
+                    <td class="px-4 py-3">${item.creator}</td>
+                    <td class="px-4 py-3 text-center">
+                        <button class="text-primary mr-2 view-btn" data-id="${item.id}">查看</button>
+                        <button class="text-warning mr-2 edit-btn" data-id="${item.id}">编辑</button>
+                        <button class="text-danger del-btn" data-id="${item.id}">删除</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // 渲染数据源标签（并排展示）
+        function renderSourceTags() {
+            const container = document.getElementById('source-tags-container');
+            if (currentSources.length === 0) {
+                container.innerHTML = '<div class="text-gray-400 text-sm italic">暂无数据来源</div>';
+                return;
+            }
+            
+            let tagsHtml = '';
+            currentSources.forEach((s, i) => {
+                const mainTag = s.isMain ? '<span class="bg-primary/10 text-primary text-xs px-1 rounded ml-1">主数据源</span>' : '';
+                tagsHtml += `
+                    <div class="bg-gray-100 rounded px-3 py-2 flex items-center">
+                        <span class="text-sm">${s.sourceName}：${s.sourceIndexName}</span>
+                        ${mainTag}
+                    </div>
+                `;
+            });
+            container.innerHTML = tagsHtml;
+        }
+
+        // 渲染已选数据来源表格
+        function renderSourceTable() {
+            const tb = document.getElementById('source-table-body');
+            tb.innerHTML = '';
+            
+            if (currentSources.length === 0) {
+                tb.innerHTML = `<tr><td colspan="5" class="text-center text-gray-400 py-4">暂无数据来源</td></tr>`;
+                renderSourceTags();
+                return;
+            }
+
+            currentSources.forEach((s, i) => {
+                const tr = document.createElement('tr');
+                tr.className = 'border-t';
+                tr.innerHTML = `
+                    <td class="px-3 py-2">${s.sourceName}</td>
+                    <td class="px-3 py-2">${s.sourceCode}</td>
+                    <td class="px-3 py-2">${s.sourceIndexName}</td>
+                    <td class="px-3 py-2 text-center">
+                        <input type="radio" name="mainSource" class="main-source-radio" data-i="${i}" ${s.isMain ? 'checked' : ''}>
+                    </td>
+                    <td class="px-3 py-2 text-center"><button class="del-source-btn text-danger text-xs" data-i="${i}">删除</button></td>
+                `;
+                tb.appendChild(tr);
+            });
+            renderSourceTags();
+        }
+
+        // 设置主数据源
+        function setMainSource(index) {
+            currentSources.forEach((s, i) => {
+                s.isMain = (i === index);
+            });
+            renderSourceTable();
+        }
+
+        // 渲染可选择的数据来源列表
+        function renderSourceSelectList(list) {
+            const tb = document.getElementById('source-select-body');
+            tb.innerHTML = '';
+            if (!list || list.length === 0) {
+                tb.innerHTML = `<tr><td colspan="4" class="text-center text-gray-400 py-4">无匹配数据</td></tr>`;
+                return;
+            }
+            list.forEach(s => {
+                const tr = document.createElement('tr');
+                tr.className = 'border-t hover:bg-gray-50';
+                tr.innerHTML = `
+                    <td class="px-3 py-2"><input type="checkbox" class="source-checkbox" value='${JSON.stringify(s)}'></td>
+                    <td class="px-3 py-2">${s.sourceName}</td>
+                    <td class="px-3 py-2">${s.sourceCode}</td>
+                    <td class="px-3 py-2">${s.sourceIndexName}</td>
+                `;
+                tb.appendChild(tr);
+            });
+        }
+
+        // 过滤数据来源
+        function filterSource() {
+            const sName = document.getElementById('qry-source-name').value.trim().toLowerCase();
+            const sCode = document.getElementById('qry-source-code').value.trim().toLowerCase();
+            const iName = document.getElementById('qry-index-name').value.trim().toLowerCase();
+
+            filterSourceList = sourceData.filter(item => {
+                let match = true;
+                if (sName && !item.sourceName.toLowerCase().includes(sName)) match = false;
+                if (sCode && !item.sourceCode.toLowerCase().includes(sCode)) match = false;
+                if (iName && !item.sourceIndexName.toLowerCase().includes(iName)) match = false;
+                return match;
+            });
+            renderSourceSelectList(filterSourceList);
+        }
+
+        // 清空查询条件
+        function resetQuery() {
+            document.getElementById('qry-source-name').value = '';
+            document.getElementById('qry-source-code').value = '';
+            document.getElementById('qry-index-name').value = '';
+            filterSourceList = [...sourceData];
+            renderSourceSelectList(filterSourceList);
+        }
+
+        // 生成指数编码
+        function genCode() { return 'IDX' + Date.now().toString().slice(-8); }
+
+        // 全局事件委托
+        document.addEventListener('click', function (e) {
+            // 新增指数
+            if (e.target.id === 'btn-add' || e.target.closest('#btn-add')) {
+                document.getElementById('modal-title').innerText = '新增指数';
+                document.getElementById('index-form').reset();
+                document.getElementById('form-code').value = genCode();
+                currentEditId = null;
+                currentSources = [];
+                renderSourceTable();
+                indexModal.classList.remove('hidden');
+            }
+
+            // 关闭弹窗
+            if (e.target.id === 'close-modal' || e.target.id === 'cancel-btn') indexModal.classList.add('hidden');
+            if (e.target.id === 'close-source-modal' || e.target.id === 'cancel-source-btn') sourceModal.classList.add('hidden');
+            if (e.target.id === 'close-view-btn') viewModal.classList.add('hidden');
+            if (e.target.id === 'cancel-del-btn') delModal.classList.add('hidden');
+
+            // 打开添加数据来源弹窗
+            if (e.target.id === 'add-source-btn') {
+                resetQuery();
+                sourceModal.classList.remove('hidden');
+            }
+
+            // 查询按钮
+            if (e.target.id === 'qry-btn') {
+                filterSource();
+            }
+            // 重置查询
+            if (e.target.id === 'reset-qry-btn') {
+                resetQuery();
+            }
+
+            // 确认选择添加
+            if (e.target.id === 'confirm-source-btn') {
+                const list = [...document.querySelectorAll('.source-checkbox:checked')];
+                if (list.length === 0) { alert('请至少勾选一条数据来源'); return; }
+                
+                list.forEach(cb => {
+                    const it = JSON.parse(cb.value);
+                    if (!currentSources.some(x => x.id === it.id)) {
+                        it.isMain = (it.sourceName === '万得资讯') && !currentSources.some(s => s.isMain);
+                        currentSources.push(it);
+                    }
+                });
+                
+                const wandSources = currentSources.filter(s => s.sourceName === '万得资讯');
+                if (wandSources.length > 1) {
+                    wandSources.forEach((ws, i) => {
+                        ws.isMain = (i === 0);
+                    });
+                }
+                
+                renderSourceTable();
+                sourceModal.classList.add('hidden');
+            }
+
+            // 删除已选来源行
+            if (e.target.classList.contains('del-source-btn')) {
+                const i = parseInt(e.target.dataset.i);
+                const isMainDeleted = currentSources[i].isMain;
+                currentSources.splice(i, 1);
+                
+                if (isMainDeleted && currentSources.length > 0) {
+                    const wandIndex = currentSources.findIndex(s => s.sourceName === '万得资讯');
+                    setMainSource(wandIndex >= 0 ? wandIndex : 0);
+                } else {
+                    renderSourceTable();
+                }
+            }
+
+            // 设置主数据源
+            if (e.target.classList.contains('main-source-radio')) {
+                const i = parseInt(e.target.dataset.i);
+                setMainSource(i);
+            }
+
+            // 查看
+            if (e.target.classList.contains('view-btn')) {
+                const id = parseInt(e.target.dataset.id);
+                const d = indexData.find(x => x.id === id);
+                document.getElementById('view-content').innerHTML = `
+                    <p class="mb-1">指数编码：${d.code}</p>
+                    <p class="mb-1">指数名称：${d.name}</p>
+                    <p class="mb-1">是否外盘：${d.foreign}</p>
+                    <p class="mb-1">计价币种：${getCurrencyText(d.currency)}</p>
+                    <p class="mb-1">维护人：${d.creator}</p>
+                    <p class="mb-1">维护时间：${d.createTime}</p>
+                    <p class="mt-2 mb-1 font-medium">指数说明：</p>
+                    <p class="text-gray-600">${d.desc || '暂无'}</p>
+                    <p class="mt-2 mb-1 font-medium">数据来源：</p>
+                    <div class="flex flex-wrap gap-2">
+                        ${d.sources.map(s => {
+                            const mainTag = s.isMain ? '<span class="bg-primary/10 text-primary text-xs px-1 rounded ml-1">主数据源</span>' : '';
+                            return `<div class="bg-gray-100 rounded px-3 py-1">${s.sourceName}：${s.sourceIndexName}${mainTag}</div>`;
+                        }).join('')}
+                    </div>
+                `;
+                viewModal.classList.remove('hidden');
+            }
+
+            // 编辑
+            if (e.target.classList.contains('edit-btn')) {
+                const id = parseInt(e.target.dataset.id);
+                const d = indexData.find(x => x.id === id);
+                currentEditId = id;
+                currentSources = JSON.parse(JSON.stringify(d.sources));
+                document.getElementById('modal-title').innerText = '编辑指数';
+                document.getElementById('form-code').value = d.code;
+                document.getElementById('form-name').value = d.name;
+                document.querySelector(`input[name="foreign"][value="${d.foreign}"]`).checked = true;
+                document.getElementById('form-currency').value = d.currency;
+                document.getElementById('form-desc').value = d.desc || '';
+                renderSourceTable();
+                indexModal.classList.remove('hidden');
+            }
+
+            // 删除弹窗
+            if (e.target.classList.contains('del-btn')) {
+                delModal.classList.remove('hidden');
+            }
+
+            // 确认删除
+            if (e.target.id === 'confirm-del-btn') {
+                const r = document.getElementById('del-reason').value.trim();
+                if (!r) { alert('请输入删除原因'); return; }
+                alert('删除成功');
+                delModal.classList.add('hidden');
+            }
+
+            // 保存指数
+            if (e.target.id === 'save-btn') {
+                const name = document.getElementById('form-name').value.trim();
+                const desc = document.getElementById('form-desc').value.trim();
+                if (!name) { alert('请输入指数名称'); return; }
+                if (currentSources.length === 0) { alert('请添加数据来源'); return; }
+                alert('保存成功');
+                indexModal.classList.add('hidden');
+                renderIndexTable();
+            }
+        });
+
+        // 初始化页面
+        renderIndexTable();
+        resetQuery();
+    </script>
+</body>
+</html>

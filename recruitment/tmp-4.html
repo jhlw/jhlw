@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>信披文件撰写 — 招募说明书管理</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Microsoft Yahei", sans-serif; }
+        body { background: #f5f7fa; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.1); overflow: hidden; }
+        .header-bar { background: #fff; padding: 16px 24px; border-bottom: 1px solid #ebeef5; display: flex; justify-content: space-between; align-items: center; }
+        .header-title { font-size: 20px; font-weight: bold; color: #303133; }
+        .tab-bar { display: flex; border-bottom: 1px solid #ebeef5; background: #f8f9fa; }
+        .tab-item { padding: 12px 24px; font-size: 14px; color: #606266; cursor: pointer; border-bottom: 2px solid transparent; }
+        .tab-item.active { color: #4062C1; border-bottom-color: #4062C1; font-weight: 500; }
+        .btn { padding: 6px 12px; border: none; border-radius: 4px; font-size: 13px; cursor: pointer; margin: 0 2px; }
+        .btn-primary { background: #4062C1; color: #fff; }
+        .btn-default { background: #fff; border: 1px solid #dcdfe6; color: #606266; }
+        .btn-warn { background: #faad14; color: #fff; }
+        .btn-success { background: #52c41a; color: #fff; }
+        .btn-danger { background: #f56c6c; color: #fff; }
+        .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+        .form-section { margin: 20px 24px; }
+        .section-title { background: #4062C1; color: #fff; padding: 12px 16px; border-radius: 8px 8px 0 0; font-size: 16px; font-weight: 500; }
+        .form-content { border: 1px solid #ebeef5; padding: 20px; border-radius: 8px; background: #fff; }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        th, td { padding: 12px 10px; text-align: center; border: 1px solid #ebeef5; }
+        th { background: #f5f7fa; color: #909399; font-weight: 500; }
+        .hidden { display: none !important; }
+        .status-wait { color: #faad14; }
+        .status-done { color: #52c41a; }
+        .status-ing { color: #4062C1; }
+        .status-back { color: #f56c6c; }
+        .back-btn { margin-left: 24px; margin-top: 16px; }
+        .textarea-lg { width: 100%; height: 280px; padding: 12px; border: 1px solid #dcdfe6; border-radius: 4px; resize: none; }
+        .modal-mask { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 999; }
+        .modal-container { width: 900px; background: #fff; border-radius: 8px; max-height: 85vh; overflow-y: auto; }
+        .modal-header { padding: 16px 24px; border-bottom: 1px solid #ebeef5; display: flex; justify-content: space-between; align-items: center; }
+        .modal-title { font-size: 22px; font-weight: bold; color: #303133; }
+        .modal-close { cursor: pointer; font-size: 24px; color: #999; }
+        .modal-body { padding: 24px; }
+        .modal-footer { padding: 16px 24px; border-top: 1px solid #ebeef5; text-align: right; }
+        .form-item { margin-bottom: 20px; }
+        .form-item label { display: block; margin-bottom: 8px; font-weight: 500; color: #303133; }
+        .form-item input, .form-item-readonly { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; background: #f5f7fa; }
+        .batch-btn-group { margin: 12px 0; display: flex; gap: 12px; }
+        .product-table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        .product-table th, .product-table td { padding: 12px; border: 1px solid #ebeef5; text-align: left; }
+        .date-group { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px; }
+        .type-tag { padding: 2px 8px; border-radius: 4px; font-size: 12px; }
+        .tag-general { background: #e8f4fd; color: #4062C1; }
+        .tag-product { background: #f0f9eb; color: #52c41a; }
+        .title-link { color: #4062C1; cursor: pointer; text-decoration: underline; }
+        .audit-textarea { width: 100%; height: 180px; padding: 12px; border: 1px solid #dcdfe6; border-radius: 4px; resize: none; }
+        .query-bar { padding: 16px 24px; background: #fafbfc; border-bottom: 1px solid #ebeef5; display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; }
+        .query-item { display: flex; flex-direction: column; gap: 6px; }
+        .query-item label { font-size: 13px; color: #606266; font-weight: 500; }
+        .query-item input, .query-item select { padding: 8px 12px; border: 1px solid #dcdfe6; border-radius: 4px; font-size: 13px; min-width: 160px; height: 34px; }
+        .query-btns { display: flex; gap: 8px; margin-left: auto; }
+        .step-line { width: 40px; height: 2px; background: #ddd; margin: 0 8px; }
+        .steps-bar { display: flex; align-items: center; margin: 20px 24px; }
+        .step-item { display: flex; flex-direction: column; align-items: center; }
+        .step-num { width: 30px; height: 30px; border-radius: 50%; background: #ebeef5; color: #909399; display: flex; justify-content: center; align-items: center; margin-bottom: 8px; }
+        .step-num.active { background: #4062C1; color: #fff; }
+        .flow-track { background: #f9fafc; padding: 12px; border-radius: 6px; margin-top: 20px; }
+        .flow-track h4 { margin-bottom: 8px; font-size: 14px; color: #303133; }
+        .track-item { font-size: 13px; color: #606266; padding: 4px 0; border-bottom: 1px dashed #eee; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-bottom: 1px solid #ebeef5; }
+        .header-info { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; padding: 16px 24px; border-bottom: 1px solid #ebeef5; font-size: 14px; color: #606266; }
+    </style>
+</head>
+<body>
+<div id="app" class="container"></div>
+
+<script>
+    // ========================= 模拟数据库 =========================
+    const departments = ["风险合规部","办公室","人力资源部","研究部","银行业务部","机构业务部","证券公司业务部","网络金融业务部","创新部","基金会计部","投资风险部","品牌部"];
+    const updateElements = ["基金管理人概况","董事会成员","申赎起点金额","ETF基金指数编制方案","基金管理人的内部控制制度","会计师事务所","基金托管人","其他应披露事项","投资组合报告","对基金份额持有人的服务","高管信息","基金经理","代销机构","基金的业绩","投资决策委员会成员"];
+
+    let processes = [];  // 存储流程
+
+    // 辅助函数
+    function formatDateMD(dateStr) { if(!dateStr) return ''; return dateStr.slice(5).replace(/-/g, '月') + '日'; }
+    function buildTitle(proc, elementName, productName = null) {
+        const prefix = `${proc.yearCode}年第${proc.serialNum}号`;
+        if (productName) return `${prefix}招募说明书${elementName}${productName}产品更新${formatDateMD(proc.initiateDate)}`;
+        else return `${prefix}招募说明书更新${elementName}${formatDateMD(proc.initiateDate)}`;
+    }
+
+    // 初始化模拟数据
+    function initMockData() {
+        if (processes.length) return;
+        const p1 = {
+            id: "p1", yearCode: "2026", serialNum: "1", contentDeadline: "2026-04-20", financeDeadline: "2026-03-31",
+            coverDate: "2026-04-20", initiateDate: "2026-04-20", status: "待维护",
+            products: [{ code: "000056", name: "建信消费升级混合" }, { code: "000105", name: "建信安心回报债券A" }],
+            generalElements: { "基金管理人内部控制制度": "完善的内部控制制度文本", "会计师事务所": "普华永道中天会计师事务所" },
+            productElements: { "000056": { otherDisclosure: "无其他披露事项", custodian: "建设银行" }, "000105": { otherDisclosure: "2025年托管报告已披露", custodian: "工商银行" } },
+            depts: departments.map(d => ({ name: d, status: "待维护", opinion: "", auditTime: null, auditBy: null }))
+        };
+        const p2 = {
+            id: "p2", yearCode: "2026", serialNum: "2", contentDeadline: "2026-04-25", financeDeadline: "2026-03-31",
+            coverDate: "2026-04-25", initiateDate: "2026-04-25", status: "维护中",
+            products: [{ code: "000207", name: "建信双债增强债券A" }],
+            generalElements: { "基金管理人内部控制制度": "内控手册第四版", "会计师事务所": "安永华明" },
+            productElements: { "000207": { otherDisclosure: "基金合同修订", custodian: "农业银行" } },
+            depts: departments.map(d => ({ name: d, status: "待维护", opinion: "", auditTime: null, auditBy: null }))
+        };
+        const p3 = {
+            id: "p3", yearCode: "2025", serialNum: "3", contentDeadline: "2025-12-20", financeDeadline: "2025-09-30",
+            coverDate: "2025-12-20", initiateDate: "2025-12-20", status: "已完成",
+            products: [{ code: "000308", name: "建信创新中国混合" }],
+            generalElements: { "基金管理人内部控制制度": "旧版内控", "会计师事务所": "立信" },
+            productElements: { "000308": { otherDisclosure: "年度报告", custodian: "中国银行" } },
+            depts: departments.map(d => ({ name: d, status: "已完成", opinion: "通过", auditTime: "2025-12-25 14:30", auditBy: "合规审核员" }))
+        };
+        // 为p2部分部门设为已维护
+        p2.depts.find(d => d.name === "风险合规部").status = "已维护";
+        p2.depts.find(d => d.name === "办公室").status = "已维护";
+        processes = [p1, p2, p3];
+    }
+
+    // 全局状态
+    let currentProcessId = null;
+    let currentDeptName = null;
+    let currentUpdateType = null;
+    let currentProductCode = null;
+    let currentAuditProcId = null;
+    let currentAuditDept = null;
+
+    // 渲染发起列表
+    let launchFilter = { title: "", year: "", contentDate: "", financeDate: "", status: "" };
+    function renderLaunchList() {
+        const tbody = document.getElementById('launchTableBody');
+        if (!tbody) return;
+        let filtered = processes.filter(p => {
+            if (launchFilter.title && !p.title?.includes(launchFilter.title)) return false;
+            if (launchFilter.year && !p.yearCode.includes(launchFilter.year)) return false;
+            if (launchFilter.contentDate && p.contentDeadline !== launchFilter.contentDate) return false;
+            if (launchFilter.financeDate && p.financeDeadline !== launchFilter.financeDate) return false;
+            if (launchFilter.status && p.status !== launchFilter.status) return false;
+            return true;
+        });
+        tbody.innerHTML = filtered.map(p => `
+            <tr data-status="${p.status}" data-id="${p.id}">
+                <td>${p.title || buildTitle(p, "基金管理人内部控制制度")}</td>
+                <td>${p.yearCode}</td>
+                <td>${p.contentDeadline}</td>
+                <td>${p.financeDeadline}</td>
+                <td>${p.coverDate}</td>
+                <td><span class="${p.status === '待维护' ? 'status-wait' : (p.status === '维护中' ? 'status-ing' : 'status-done')}">${p.status}</span></td>
+                <td>
+                    <button class="btn btn-default" onclick="viewProcessDetail('${p.id}')">详情</button>
+                    <button class="btn btn-warn" ${p.status !== '已完成' ? 'disabled' : ''} onclick="downloadFinal('${p.id}')">定稿下载</button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    function handleLaunchQuery() {
+        launchFilter.title = document.getElementById('queryTitle')?.value || '';
+        launchFilter.year = document.getElementById('queryYear')?.value || '';
+        launchFilter.contentDate = document.getElementById('queryContentDate')?.value || '';
+        launchFilter.financeDate = document.getElementById('queryFinanceDate')?.value || '';
+        launchFilter.status = document.getElementById('queryStatus')?.value || '';
+        renderLaunchList();
+    }
+    function resetLaunchQuery() {
+        document.getElementById('queryTitle').value = '';
+        document.getElementById('queryYear').value = '';
+        document.getElementById('queryContentDate').value = '';
+        document.getElementById('queryFinanceDate').value = '';
+        document.getElementById('queryStatus').value = '';
+        launchFilter = { title: "", year: "", contentDate: "", financeDate: "", status: "" };
+        renderLaunchList();
+    }
+
+    // 流程详情页
+    function viewProcessDetail(pid) {
+        currentProcessId = pid;
+        const proc = processes.find(p => p.id === pid);
+        if (!proc) return;
+        document.getElementById('complianceLaunch').classList.add('hidden');
+        document.getElementById('launchDetail').classList.remove('hidden');
+        const isCompletedFlow = (proc.status === '已完成');
+        renderDeptTable(proc, isCompletedFlow);
+        const finalBtn = document.getElementById('finalizeBtn');
+        if (finalBtn) {
+            if (isCompletedFlow) finalBtn.disabled = true;
+            else {
+                const allDone = proc.depts.every(d => d.status === '已完成');
+                finalBtn.disabled = !allDone;
+            }
+        }
+        const exportBtn = document.querySelector('#launchDetail .btn-primary');
+        if (exportBtn) exportBtn.disabled = isCompletedFlow;
+    }
+
+    function renderDeptTable(proc, readOnlyMode) {
+        const tbody = document.querySelector('#deptProgressTable tbody');
+        if (!tbody) return;
+        tbody.innerHTML = proc.depts.map(dept => {
+            let statusClass = '', statusText = '';
+            if (dept.status === '待维护') { statusClass = 'status-wait'; statusText = '待维护'; }
+            else if (dept.status === '已维护') { statusClass = 'status-ing'; statusText = '已维护'; }
+            else { statusClass = 'status-done'; statusText = '已完成'; }
+            const canOperate = !readOnlyMode;
+            const detailDisabled = !canOperate || dept.status !== '已完成';
+            const auditDisabled = !canOperate || dept.status !== '已完成';
+            const cancelDisabled = !canOperate || dept.status !== '已完成';
+            return `<tr data-dept="${dept.name}">
+                <td>${dept.name}</td>
+                <td>—</td>
+                <td>${dept.auditTime || '—'}</td>
+                <td><span class="${statusClass}">${statusText}</span></td>
+                <td>
+                    <button class="btn btn-default" onclick="openDeptDetailList('${proc.id}','${dept.name}')" ${detailDisabled ? 'disabled' : ''}>详情</button>
+                    <button class="btn btn-primary" onclick="openAuditModalForDept('${proc.id}','${dept.name}')" ${auditDisabled ? 'disabled' : ''}>审核</button>
+                    <button class="btn btn-warn" onclick="cancelDeptAudit('${proc.id}','${dept.name}')" ${cancelDisabled ? 'disabled' : ''}>取消审核</button>
+                </td>
+            </tr>`;
+        }).join('');
+    }
+
+    function openDeptDetailList(pid, deptName) {
+        const proc = processes.find(p => p.id === pid);
+        if (!proc) return;
+        currentProcessId = pid;
+        currentDeptName = deptName;
+        const generalElement = "基金管理人内部控制制度";
+        const generalTitle = buildTitle(proc, generalElement, null);
+        const productRows = proc.products.map(prod => ({
+            type: 'product', title: buildTitle(proc, "其他应披露事项", prod.name),
+            productCode: prod.code, productName: prod.name, element: "其他应披露事项"
+        }));
+        const items = [{ type: 'general', title: generalTitle, element: generalElement }, ...productRows];
+        const tbody = document.querySelector('#detailListView .form-content table tbody');
+        if (tbody) {
+            tbody.innerHTML = items.map(item => `
+                <tr>
+                    <td><span class="type-tag ${item.type === 'general' ? 'tag-general' : 'tag-product'}">${item.type === 'general' ? '通用更新' : '产品更新'}</span></td>
+                    <td><a class="title-link" onclick="openContentByType('${proc.id}','${item.type}','${item.productCode || ''}','${item.element}')">${item.title}</a></td>
+                    <td>${proc.yearCode}</td>
+                    <td>${proc.contentDeadline}</td>
+                    <td>${proc.financeDeadline}</td>
+                    <td>${proc.coverDate}</td>
+                </tr>
+            `).join('');
+        }
+        document.getElementById('launchDetail').classList.add('hidden');
+        document.getElementById('detailListView').classList.remove('hidden');
+    }
+
+    function openContentByType(pid, type, productCode, elementName) {
+        const proc = processes.find(p => p.id === pid);
+        if (!proc) return;
+        currentUpdateType = type;
+        currentProductCode = productCode;
+        const container = document.getElementById('contentPage');
+        const contentDiv = container.querySelector('.form-content');
+        if (type === 'general') {
+            contentDiv.innerHTML = `
+                <div class="form-item"><label>本次更新截止日</label><div class="form-item-readonly">${proc.contentDeadline}</div></div>
+                <div class="form-item"><label>财报截止日</label><div class="form-item-readonly">${proc.financeDeadline}</div></div>
+                <div class="form-item"><label>本次更新涉及产品</label><div>${proc.products.map(p => `${p.name}(${p.code})`).join(', ')}</div></div>
+                <div class="form-item"><label>管理人内部控制制度</label><div class="form-item-readonly">${proc.generalElements["基金管理人内部控制制度"]}</div></div>
+                <div class="form-item"><label>会计师事务所</label><div class="form-item-readonly">${proc.generalElements["会计师事务所"]}</div></div>
+            `;
+        } else {
+            const prodData = proc.productElements[productCode] || { otherDisclosure: "无", custodian: "未指定" };
+            contentDiv.innerHTML = `
+                <div class="form-item"><label>本次更新截止日</label><div class="form-item-readonly">${proc.contentDeadline}</div></div>
+                <div class="form-item"><label>财报截止日</label><div class="form-item-readonly">${proc.financeDeadline}</div></div>
+                <div class="form-item"><label>本次更新涉及产品</label><div>${proc.products.find(p => p.code === productCode)?.name || productCode}</div></div>
+                <div class="form-item"><label>其他应披露事项</label><div class="form-item-readonly">${prodData.otherDisclosure}</div></div>
+                <div class="form-item"><label>基金托管人</label><div class="form-item-readonly">${prodData.custodian}</div></div>
+            `;
+        }
+        document.getElementById('detailListView').classList.add('hidden');
+        document.getElementById('contentPage').classList.remove('hidden');
+    }
+    function backToDetailList() { document.getElementById('contentPage').classList.add('hidden'); document.getElementById('detailListView').classList.remove('hidden'); }
+    function backToLaunchDetail() { document.getElementById('detailListView').classList.add('hidden'); document.getElementById('launchDetail').classList.remove('hidden'); }
+    function backLaunch() { document.getElementById('launchDetail').classList.add('hidden'); document.getElementById('complianceLaunch').classList.remove('hidden'); }
+
+    // 审核逻辑
+    function openAuditModalForDept(pid, deptName) {
+        currentAuditProcId = pid;
+        currentAuditDept = deptName;
+        document.getElementById('auditModal').classList.remove('hidden');
+        document.getElementById('auditOpinion').value = '';
+    }
+    function closeAuditModal() { document.getElementById('auditModal').classList.add('hidden'); }
+    function doPass() {
+        const proc = processes.find(p => p.id === currentAuditProcId);
+        if (proc) {
+            const dept = proc.depts.find(d => d.name === currentAuditDept);
+            if (dept && dept.status === '已完成') {
+                dept.status = '已完成';
+                dept.auditTime = new Date().toLocaleString();
+                dept.auditBy = '审核员';
+                dept.opinion = '通过';
+            }
+        }
+        closeAuditModal();
+        const proc2 = processes.find(p => p.id === currentAuditProcId);
+        if (proc2) renderDeptTable(proc2, proc2.status === '已完成');
+        const finalBtn = document.getElementById('finalizeBtn');
+        if (finalBtn && proc2 && proc2.status !== '已完成') {
+            const allDone = proc2.depts.every(d => d.status === '已完成');
+            finalBtn.disabled = !allDone;
+        }
+    }
+    function doBack() {
+        const opinion = document.getElementById('auditOpinion').value;
+        if (!opinion) { alert('请填写退回原因'); return; }
+        const proc = processes.find(p => p.id === currentAuditProcId);
+        if (proc) {
+            const dept = proc.depts.find(d => d.name === currentAuditDept);
+            if (dept) dept.status = '待维护';
+        }
+        closeAuditModal();
+        if (proc) renderDeptTable(proc, proc.status === '已完成');
+        document.getElementById('finalizeBtn').disabled = true;
+    }
+    function cancelDeptAudit(pid, deptName) {
+        const proc = processes.find(p => p.id === pid);
+        if (proc) {
+            const dept = proc.depts.find(d => d.name === deptName);
+            if (dept && dept.status === '已完成') dept.status = '已维护';
+        }
+        if (proc) renderDeptTable(proc, proc.status === '已完成');
+        document.getElementById('finalizeBtn').disabled = true;
+    }
+    function doFinalize() {
+        const proc = processes.find(p => p.id === currentProcessId);
+        if (proc && proc.depts.every(d => d.status === '已完成')) {
+            proc.status = '已完成';
+            alert('定稿完成，流程状态已更新为已完成');
+            backLaunch();
+            renderLaunchList();
+        } else alert('尚有部门未完成审核');
+    }
+    function downloadFinal(pid) { alert(`下载定稿文件, 流程${pid}`); }
+
+    // 导出弹窗
+    function openExportModal() { document.getElementById('exportModal').classList.remove('hidden'); }
+    function closeExportModal() { document.getElementById('exportModal').classList.add('hidden'); }
+    function selectAllExport() { document.querySelectorAll('.export-item').forEach(cb => cb.checked = true); }
+    function unSelectAllExport() { document.querySelectorAll('.export-item').forEach(cb => cb.checked = false); }
+    function doExport() { alert("导出成功"); closeExportModal(); }
+
+    // 发起流程弹窗
+    function openInitiateModal() { document.getElementById('initiateModal').classList.remove('hidden'); }
+    function closeInitiateModal() { document.getElementById('initiateModal').classList.add('hidden'); }
+    function toggleAllTableCheck() { const v = document.getElementById('checkAllTable').checked; document.querySelectorAll('.productCheck').forEach(cb => cb.checked = v); }
+    function deleteSelectedProducts() { document.querySelectorAll('.productCheck:checked').forEach(cb => cb.closest('tr').remove()); }
+    function submitInitiateForm() {
+        const year = document.getElementById('yearCode').value;
+        const content = document.getElementById('contentDeadline').value;
+        const finance = document.getElementById('financeDeadline').value;
+        const cover = document.getElementById('coverDate').value;
+        if (!year || !content || !finance || !cover) { alert('请填写完整'); return; }
+        const selectedProducts = [];
+        document.querySelectorAll('#productTableBody .productCheck:checked').forEach(cb => {
+            const row = cb.closest('tr');
+            const code = row.cells[1].innerText;
+            const name = row.cells[2].innerText;
+            selectedProducts.push({ code, name });
+        });
+        if (selectedProducts.length === 0) { alert('请至少选择一个产品'); return; }
+        const newId = 'p' + Date.now();
+        const newSerial = (processes.length + 1).toString();
+        const newProc = {
+            id: newId, yearCode: year, serialNum: newSerial, contentDeadline: content, financeDeadline: finance,
+            coverDate: cover, initiateDate: new Date().toISOString().slice(0, 10), status: "待维护",
+            products: selectedProducts,
+            generalElements: { "基金管理人内部控制制度": "待维护内控", "会计师事务所": "待维护会所" },
+            productElements: {},
+            depts: departments.map(d => ({ name: d, status: "待维护", opinion: "", auditTime: null, auditBy: null }))
+        };
+        selectedProducts.forEach(p => { newProc.productElements[p.code] = { otherDisclosure: "待补充", custodian: "待指定" }; });
+        processes.push(newProc);
+        closeInitiateModal();
+        renderLaunchList();
+        alert("发起成功");
+    }
+    function openTransferModal() { alert('演示模式，产品已预设'); }
+    function uploadAttachFiles() { }
+
+    // 维护页签相关
+    let maintainFilter = { title: "", year: "", contentDate: "", financeDate: "", status: "", fundCode: "", fundName: "", element: "" };
+    function renderMaintainList() {
+        const tbody = document.querySelector('#maintainTab .form-content tbody');
+        if (!tbody) return;
+        let filtered = processes.filter(p => {
+            if (maintainFilter.status && p.status !== maintainFilter.status) return false;
+            if (maintainFilter.title && !(p.title || '').includes(maintainFilter.title)) return false;
+            if (maintainFilter.year && !p.yearCode.includes(maintainFilter.year)) return false;
+            if (maintainFilter.contentDate && p.contentDeadline !== maintainFilter.contentDate) return false;
+            if (maintainFilter.financeDate && p.financeDeadline !== maintainFilter.financeDate) return false;
+            if (maintainFilter.fundCode && !p.products.some(pr => pr.code.includes(maintainFilter.fundCode))) return false;
+            if (maintainFilter.fundName && !p.products.some(pr => pr.name.includes(maintainFilter.fundName))) return false;
+            return true;
+        });
+        let rowsHtml = '';
+        filtered.forEach(p => {
+            const generalTitle = buildTitle(p, "基金管理人内部控制制度", null);
+            rowsHtml += `<tr data-type="general" data-id="${p.id}" data-status="${p.status}">
+                <td><input type="checkbox" class="itemCheck"></td>
+                <td><span class="type-tag tag-general">通用更新</span></td>
+                <td><span class="title-link" onclick="openMaintainDetail('${p.id}','general')">${generalTitle}</span></td>
+                <td>${p.yearCode}</td>
+                <td>${p.contentDeadline}</td>
+                <td>${p.financeDeadline}</td>
+                <td>${p.status}</td>
+                <td><button class="btn btn-default" onclick="openMaintainDetail('${p.id}','general')">维护</button></td>
+            </tr>`;
+            p.products.forEach(prod => {
+                const productTitle = buildTitle(p, "其他应披露事项", prod.name);
+                rowsHtml += `<tr data-type="product" data-id="${p.id}" data-pcode="${prod.code}" data-status="${p.status}">
+                    <td><input type="checkbox" class="itemCheck"></td>
+                    <td><span class="type-tag tag-product">产品更新</span></td>
+                    <td><span class="title-link" onclick="openMaintainDetail('${p.id}','product','${prod.code}')">${productTitle}</span></td>
+                    <td>${p.yearCode}</td>
+                    <td>${p.contentDeadline}</td>
+                    <td>${p.financeDeadline}</td>
+                    <td>${p.status}</td>
+                    <td><button class="btn btn-default" onclick="openMaintainDetail('${p.id}','product','${prod.code}')">维护</button></td>
+                </tr>`;
+            });
+        });
+        tbody.innerHTML = rowsHtml;
+    }
+
+    function openMaintainDetail(pid, type, productCode = null) {
+        const proc = processes.find(p => p.id === pid);
+        if (!proc) return;
+        const isCompleted = (proc.status === '已完成');
+        if (type === 'general') {
+            const page = document.getElementById('generalEditPage');
+            const contentDiv = page.querySelector('.form-content');
+            const headerInfo = page.querySelector('.header-info');
+            const stepsBar = page.querySelector('.steps-bar');
+            if (isCompleted) {
+                if (headerInfo) headerInfo.classList.add('hidden');
+                if (stepsBar) stepsBar.classList.add('hidden');
+                contentDiv.innerHTML = `
+                    <div class="form-item"><label>本次更新截止日</label><div class="form-item-readonly">${proc.contentDeadline}</div></div>
+                    <div class="form-item"><label>财报截止日</label><div class="form-item-readonly">${proc.financeDeadline}</div></div>
+                    <div class="form-item"><label>本次更新涉及产品</label><div>${proc.products.map(p => p.name).join(',')}</div></div>
+                    <div class="form-item"><label>管理人内部控制制度</label><div class="form-item-readonly">${proc.generalElements["基金管理人内部控制制度"]}</div></div>
+                    <div class="form-item"><label>会计师事务所</label><div class="form-item-readonly">${proc.generalElements["会计师事务所"]}</div></div>
+                    <div class="flow-track"><h4>流程轨迹</h4>${genTrackHtml(proc)}</div>
+                    <div style="margin-top:20px;"><button class="btn btn-default" onclick="backToMaintain()">返回</button></div>
+                `;
+            } else {
+                if (headerInfo) headerInfo.classList.remove('hidden');
+                if (stepsBar) stepsBar.classList.remove('hidden');
+                contentDiv.innerHTML = `<div>编辑模式内容（实际项目中可编辑）<br>本次更新截止日: ${proc.contentDeadline}<br>财报截止日: ${proc.financeDeadline}<br>...</div>`;
+            }
+            document.getElementById('maintainTab').classList.add('hidden');
+            page.classList.remove('hidden');
+        } else {
+            const page = document.getElementById('productEditPage');
+            const contentDiv = page.querySelector('.form-content');
+            const headerInfo = page.querySelector('.header-info');
+            const stepsBar = page.querySelector('.steps-bar');
+            if (isCompleted) {
+                if (headerInfo) headerInfo.classList.add('hidden');
+                if (stepsBar) stepsBar.classList.add('hidden');
+                const prodData = proc.productElements[productCode] || { otherDisclosure: "", custodian: "" };
+                contentDiv.innerHTML = `
+                    <div class="form-item"><label>本次更新截止日</label><div class="form-item-readonly">${proc.contentDeadline}</div></div>
+                    <div class="form-item"><label>财报截止日</label><div class="form-item-readonly">${proc.financeDeadline}</div></div>
+                    <div class="form-item"><label>本次更新涉及产品</label><div>${proc.products.find(p => p.code === productCode)?.name}</div></div>
+                    <div class="form-item"><label>其他应披露事项</label><div class="form-item-readonly">${prodData.otherDisclosure}</div></div>
+                    <div class="form-item"><label>基金托管人</label><div class="form-item-readonly">${prodData.custodian}</div></div>
+                    <div class="flow-track"><h4>流程轨迹</h4>${genTrackHtml(proc)}</div>
+                    <div style="margin-top:20px;"><button class="btn btn-default" onclick="backToMaintain()">返回</button></div>
+                `;
+            } else {
+                if (headerInfo) headerInfo.classList.remove('hidden');
+                if (stepsBar) stepsBar.classList.remove('hidden');
+                contentDiv.innerHTML = `<div>编辑模式内容（实际项目中可编辑）</div>`;
+            }
+            document.getElementById('maintainTab').classList.add('hidden');
+            page.classList.remove('hidden');
+        }
+    }
+
+    function genTrackHtml(proc) {
+        let html = `<div class="track-item">发起日期：${proc.initiateDate} 发起人：风险合规部</div>`;
+        proc.depts.filter(d => d.auditTime).forEach(d => {
+            html += `<div class="track-item">审核部门：${d.name} 审核时间：${d.auditTime} 审核人：${d.auditBy || '—'} 意见：${d.opinion || '通过'}</div>`;
+        });
+        return html;
+    }
+
+    function backToMaintain() {
+        document.getElementById('generalEditPage').classList.add('hidden');
+        document.getElementById('productEditPage').classList.add('hidden');
+        document.getElementById('maintainTab').classList.remove('hidden');
+        renderMaintainList();
+    }
+    function batchSubmit() { alert('批量提交审核（演示）'); }
+    function handleMaintainQuery() {
+        maintainFilter.title = document.getElementById('queryMTitle')?.value || '';
+        maintainFilter.year = document.getElementById('queryMYear')?.value || '';
+        maintainFilter.contentDate = document.getElementById('queryMContentDate')?.value || '';
+        maintainFilter.financeDate = document.getElementById('queryMFinanceDate')?.value || '';
+        maintainFilter.status = document.getElementById('queryMStatus')?.value || '';
+        maintainFilter.fundCode = document.getElementById('queryMFundCode')?.value || '';
+        maintainFilter.fundName = document.getElementById('queryMFundName')?.value || '';
+        maintainFilter.element = document.getElementById('queryMElement')?.value || '';
+        renderMaintainList();
+    }
+    function resetMaintainQuery() {
+        document.getElementById('queryMTitle').value = '';
+        document.getElementById('queryMYear').value = '';
+        document.getElementById('queryMContentDate').value = '';
+        document.getElementById('queryMFinanceDate').value = '';
+        document.getElementById('queryMStatus').value = '';
+        document.getElementById('queryMFundCode').value = '';
+        document.getElementById('queryMFundName').value = '';
+        document.getElementById('queryMElement').value = '';
+        maintainFilter = { title: "", year: "", contentDate: "", financeDate: "", status: "", fundCode: "", fundName: "", element: "" };
+        renderMaintainList();
+    }
+
+    function switchTab(id) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+        document.getElementById(id).classList.remove('hidden');
+        if (id === 'maintainTab') renderMaintainList();
+        if (id === 'launchTab') renderLaunchList();
+    }
+
+    // 构建完整界面
+    function buildUI() {
+        const container = document.getElementById('app');
+        container.innerHTML = `
+            <div class="header-bar"><div class="header-title">风险合规部 - 招募说明书管理</div></div>
+            <div class="tab-bar">
+                <div class="tab-item active" onclick="switchTab('launchTab')">发起</div>
+                <div class="tab-item" onclick="switchTab('maintainTab')">维护</div>
+            </div>
+            <!-- 发起页签 -->
+            <div id="launchTab" class="tab-content">
+                <div id="complianceLaunch">
+                    <div class="top-action" style="padding:12px 24px;"><button class="btn btn-primary" onclick="openInitiateModal()">发起</button></div>
+                    <div class="query-bar">
+                        <div class="query-item"><label>流程标题</label><input type="text" id="queryTitle" placeholder="请输入流程标题"></div>
+                        <div class="query-item"><label>年编号</label><input type="text" id="queryYear" placeholder="请输入年编号"></div>
+                        <div class="query-item"><label>内容截止日</label><input type="date" id="queryContentDate"></div>
+                        <div class="query-item"><label>财报截止日</label><input type="date" id="queryFinanceDate"></div>
+                        <div class="query-item"><label>流程状态</label><select id="queryStatus"><option value="">全部</option><option value="待维护">待维护</option><option value="维护中">维护中</option><option value="已完成">已完成</option></select></div>
+                        <div class="query-btns"><button class="btn btn-primary" onclick="handleLaunchQuery()">查询</button><button class="btn btn-default" onclick="resetLaunchQuery()">重置</button></div>
+                    </div>
+                    <div class="form-section"><table><thead><tr><th>流程标题</th><th>年编号</th><th>内容截止日</th><th>财报截止日</th><th>封面&落款日期</th><th>流程状态</th><th>操作</th></tr></thead><tbody id="launchTableBody"></tbody></table></div>
+                </div>
+                <div id="launchDetail" class="hidden">
+                    <div class="header-bar"><div class="header-title">流程详情｜各部门招募说明书更新情况</div></div>
+                    <div class="back-btn"><button class="btn btn-default" onclick="backLaunch()">← 返回发起列表</button></div>
+                    <div class="form-section">
+                        <div class="section-title">各部门更新完成情况</div>
+                        <div class="form-content"><table id="deptProgressTable"><thead><tr><th>部门名称</th><th>启动处理时间</th><th>处理完成时间</th><th>流程状态</th><th>操作</th></tr></thead><tbody></tbody></table><div style="text-align:right;margin-top:16px;"><button class="btn btn-primary" onclick="openExportModal()">导出</button><button id="finalizeBtn" class="btn btn-success" disabled onclick="doFinalize()">定稿完成</button></div></div>
+                    </div>
+                </div>
+                <div id="detailListView" class="hidden">
+                    <div class="header-bar"><div class="header-title">详情列表</div></div>
+                    <div class="back-btn"><button class="btn btn-default" onclick="backToLaunchDetail()">← 返回</button></div>
+                    <div class="form-section"><div class="form-content"><table><thead><tr><th>更新类型</th><th>更新标题</th><th>年编号</th><th>内容截止日</th><th>财报截止日</th><th>封面&落款日期</th></tr></thead><tbody></tbody></table></div></div>
+                </div>
+                <div id="contentPage" class="hidden">
+                    <div class="header-bar"><div class="header-title">招募说明书内容</div></div>
+                    <div class="back-btn"><button class="btn btn-default" onclick="backToDetailList()">← 返回列表</button></div>
+                    <div class="form-section"><div class="form-content"></div></div>
+                </div>
+            </div>
+            <!-- 维护页签 -->
+            <div id="maintainTab" class="tab-content hidden">
+                <div class="query-bar">
+                    <div class="query-item"><label>流程标题</label><input type="text" id="queryMTitle"></div>
+                    <div class="query-item"><label>年编号</label><input type="text" id="queryMYear"></div>
+                    <div class="query-item"><label>内容截止日</label><input type="date" id="queryMContentDate"></div>
+                    <div class="query-item"><label>财报截止日</label><input type="date" id="queryMFinanceDate"></div>
+                    <div class="query-item"><label>流程状态</label><select id="queryMStatus"><option value="">全部</option><option value="待维护">待维护</option><option value="维护中">维护中</option><option value="已完成">已完成</option></select></div>
+                    <div class="query-item"><label>基金代码</label><input type="text" id="queryMFundCode"></div>
+                    <div class="query-item"><label>基金名称</label><input type="text" id="queryMFundName"></div>
+                    <div class="query-item"><label>更新要素</label><select id="queryMElement"><option value="">全部</option>${updateElements.map(el => `<option value="${el}">${el}</option>`).join('')}</select></div>
+                    <div class="query-btns"><button class="btn btn-primary" onclick="handleMaintainQuery()">查询</button><button class="btn btn-default" onclick="resetMaintainQuery()">重置</button></div>
+                </div>
+                <div class="form-section"><div class="form-content"><table><thead><tr><th><input type="checkbox" id="checkAllMaintain"></th><th>更新类型</th><th>更新标题</th><th>年度</th><th>内容截止日</th><th>财报截止日</th><th>状态</th><th>操作</th></tr></thead><tbody></tbody></table><div class="batch-group" style="margin-top:16px;"><button class="btn btn-primary" onclick="batchSubmit()">批量提交审核</button></div></div></div>
+            </div>
+            <!-- 通用编辑页 -->
+            <div id="generalEditPage" class="tab-content hidden">
+                <div class="container"><div class="page-header"><h2 class="header-title">招募说明书更新（通用）</h2><div><button class="btn btn-default" onclick="backToMaintain()">返回</button><button class="btn btn-primary" onclick="submitGeneral()">提交</button></div></div><div class="header-info hidden"><div>创建人：风险合规部</div><div>归属部门：风险合规部</div><div>前序任务处理人：风险合规部</div><div>任务到达时间：2026-04-24 15:30</div></div><div class="steps-bar hidden"><div class="step-item"><div class="step-num active">1</div><span>维护招募说明书要素</span></div><div class="step-line"></div><div class="step-item"><div class="step-num inactive">2</div><span>审核招募说明书要素</span></div></div><div class="form-section"><div class="form-content"></div></div></div>
+            </div>
+            <!-- 产品编辑页 -->
+            <div id="productEditPage" class="tab-content hidden">
+                <div class="container"><div class="page-header"><h2 class="header-title">招募说明书更新（产品）</h2><div><button class="btn btn-default" onclick="backToMaintain()">返回</button><button class="btn btn-primary" onclick="submitProduct()">提交</button></div></div><div class="header-info hidden"><div>创建人：风险合规部</div><div>归属部门：风险合规部</div><div>前序任务处理人：风险合规部</div><div>任务到达时间：2026-04-24</div></div><div class="steps-bar hidden"><div class="step-item"><div class="step-num active">1</div><span>维护招募说明书要素</span></div><div class="step-line"></div><div class="step-item"><div class="step-num inactive">2</div><span>审核招募说明书要素</span></div></div><div class="form-section"><div class="form-content"></div></div></div>
+            </div>
+            <!-- 模态框 -->
+            <div id="auditModal" class="modal-mask hidden"><div class="modal-container"><div class="modal-header"><div class="modal-title">审核意见</div><span class="modal-close" onclick="closeAuditModal()">×</span></div><div class="modal-body"><textarea id="auditOpinion" class="audit-textarea" placeholder="如有问题，请填写退回原因"></textarea></div><div class="modal-footer"><button class="btn btn-danger" onclick="doBack()">退回</button><button class="btn btn-success" onclick="doPass()">通过</button></div></div></div>
+            <div id="exportModal" class="modal-mask hidden"><div class="modal-container"><div class="modal-header"><div class="modal-title">导出产品列表</div><span class="modal-close" onclick="closeExportModal()">×</span></div><div class="modal-body"><button class="btn btn-default" onclick="selectAllExport()">全选</button><button class="btn btn-default" onclick="unSelectAllExport()">取消全选</button><div style="margin-top:10px;"><label><input type="checkbox" class="export-item" value="混合基金"> 2026年招募说明书混合基金更新</label><br><label><input type="checkbox" class="export-item" value="债券基金"> 2026年招募说明书债券基金更新</label><br></div></div><div class="modal-footer"><button class="btn btn-primary" onclick="doExport()">确认导出</button></div></div></div>
+            <div id="initiateModal" class="modal-mask hidden"><div class="modal-container"><div class="modal-header"><div class="modal-title">发起招募说明书更新流程</div><span class="modal-close" onclick="closeInitiateModal()">×</span></div><div class="modal-body"><div class="batch-btn-group"><button class="btn btn-primary" onclick="checkAllProducts()">全选</button><button class="btn btn-default" onclick="openTransferModal()">选择产品</button><button class="btn btn-warn" onclick="deleteSelectedProducts()">删除选中</button><button class="btn btn-default" onclick="document.getElementById('importFile').click()">批量导入产品</button><input type="file" id="importFile" accept=".xlsx,.xls,.csv" hidden onchange="uploadAttachFiles(this)"></div><p class="import-tip">导入文件要求：两列，第一列基金代码，第二列基金名称</p><table class="product-table"><thead><tr><th><input type="checkbox" id="checkAllTable" onchange="toggleAllTableCheck()"></th><th>产品代码</th><th>产品名称</th></tr></thead><tbody id="productTableBody"><tr><td><input type="checkbox" class="productCheck"></td><td>006699</td><td>稳健混合型证券投资基金</td></tr><tr><td><input type="checkbox" class="productCheck"></td><td>007788</td><td>中短债债券型基金</td></tr></tbody></table><div class="date-group"><div class="form-item"><label>年编号</label><input type="text" id="yearCode" placeholder="2026"></div><div class="form-item"><label>内容截止日</label><input type="date" id="contentDeadline"></div><div class="form-item"><label>财报截止日</label><input type="date" id="financeDeadline"></div><div class="form-item"><label>封面&落款日期</label><input type="text" id="coverDate" placeholder="2026-04-29"></div></div></div><div class="modal-footer"><button class="btn btn-default" onclick="closeInitiateModal()">取消</button><button class="btn btn-success" onclick="submitInitiateForm()">提交</button></div></div></div>
+        `;
+        // 绑定丢失的辅助函数
+        window.checkAllProducts = () => { document.querySelectorAll('.productCheck').forEach(cb => cb.checked = true); document.getElementById('checkAllTable').checked = true; };
+        window.submitGeneral = () => { alert('通用更新提交成功'); backToMaintain(); };
+        window.submitProduct = () => { alert('产品更新提交成功'); backToMaintain(); };
+        initMockData();
+        renderLaunchList();
+        // 默认展示非已完成流程（发起列表默认）
+        const applyDefaultFilter = () => {
+            const rows = document.querySelectorAll('#launchTableBody tr');
+            rows.forEach(row => { if (row.getAttribute('data-status') === '已完成') row.style.display = 'none'; });
+        };
+        setTimeout(applyDefaultFilter, 50);
+    }
+    buildUI();
+</script>
+</body>
+</html>

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>信披文件撰写 — 招募说明书 总入口</title>
+    <style>
+        * {margin:0;padding:0;box-sizing:border-box;font-family:"Microsoft Yahei",sans-serif;}
+        body {background:#f5f7fa;padding:20px;}
+        .container {max-width:1300px;margin:0 auto;background:#fff;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,0.1);overflow:hidden;}
+        .header-bar {background:#fff;padding:16px 24px;border-bottom:1px solid #ebeef5;display:flex;justify-content:space-between;align-items:center;}
+        .header-title {font-size:20px;font-weight:bold;color:#303133;}
+        .tab-bar {display:flex;border-bottom:1px solid #ebeef5;background:#f8f9fa;}
+        .tab-item {padding:12px 24px;font-size:14px;color:#606266;cursor:pointer;border-bottom:2px solid transparent;}
+        .tab-item.active {color:#4062C1;border-bottom-color:#4062C1;font-weight:500;}
+        .btn {padding:6px 12px;border:none;border-radius:4px;font-size:13px;cursor:pointer;margin:0 2px;}
+        .btn-primary {background:#4062C1;color:#fff;}
+        .btn-default {background:#fff;border:1px solid #dcdfe6;color:#606266;}
+        .btn-warn {background:#faad14;color:#fff;}
+        .btn-success {background:#52c41a;color:#fff;}
+        .btn-danger {background:#f56c6c;color:#fff;}
+        .btn:disabled {opacity:.55;cursor:not-allowed;}
+        .dept-btn-group {padding:12px 24px;border-bottom:1px solid #ebeef5;flex-wrap:wrap;display:flex;gap:12px;}
+        .top-action {padding:12px 24px;text-align:left;}
+        .form-section {margin:20px 24px;}
+        .section-title {background:#4062C1;color:#fff;padding:12px 16px;border-radius:8px 8px 0 0;font-size:16px;font-weight:500;}
+        .form-content {border:1px solid #ebeef5;padding:20px;border-radius:8px;}
+        table {width:100%;border-collapse:collapse;font-size:14px;}
+        th,td {padding:12px 10px;text-align:center;border:1px solid #ebeef5;}
+        th {background:#f5f7fa;color:#909399;font-weight:500;}
+        .hidden {display:none!important;}
+        .status-wait {color:#faad14;}
+        .status-done {color:#52c41a;}
+        .status-ing {color:#4062C1;}
+        .status-back {color:#f56c6c;}
+        .back-btn {margin-left:24px;margin-top:16px;}
+        .textarea-lg {width:100%;height:280px;padding:12px;border:1px solid #dcdfe6;border-radius:4px;resize:none;}
+        .modal-mask {position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;justify-content:center;align-items:center;z-index:999;}
+        .modal-container {width:600px;background:#fff;border-radius:8px;max-height:80vh;overflow-y:auto;}
+        .modal-header {padding:16px 24px;border-bottom:1px solid #ebeef5;display:flex;justify-content:space-between;align-items:center;}
+        .modal-title {font-size:18px;font-weight:bold;color:#303133;}
+        .modal-close {cursor:pointer;font-size:20px;color:#999;}
+        .modal-body {padding:20px 24px;}
+        .type-tag {font-size:12px;padding:4px 10px;border-radius:4px;color:#fff;}
+        .tag-general {background:#52c41a;}
+        .tag-product {background:#faad14;}
+        .title-link {color:#4062C1;cursor:pointer;text-decoration:none;font-weight:500;}
+        .audit-textarea {width:100%;height:100px;padding:10px;margin-top:10px;border:1px solid #ddd;border-radius:4px;}
+        .modal-footer {padding:16px 24px;border-top:1px solid #ebeef5;text-align:right;}
+    </style>
+</head>
+<body>
+
+<!-- 首页 -->
+<div id="mainPage" class="container">
+    <div class="header-bar"><div class="header-title">信披文件撰写 — 招募说明书 总入口</div></div>
+    <div class="dept-btn-group">
+        <button class="btn btn-default">办公室</button>
+        <button class="btn btn-default">人力资源部</button>
+        <button class="btn btn-default">研究部</button>
+        <button class="btn btn-default">市场部门</button>
+        <button class="btn btn-default">创新部</button>
+        <button class="btn btn-default">基金会计部</button>
+        <button class="btn btn-default">投资风险部</button>
+        <button class="btn btn-default">品牌部</button>
+        <button class="btn btn-primary" onclick="openComplianceMain()">风险合规部</button>
+    </div>
+</div>
+
+<!-- 风险合规主界面 -->
+<div id="complianceMain" class="container hidden">
+    <div class="header-bar">
+        <div class="header-title">风险合规部 - 招募说明书管理</div>
+        <button class="btn btn-default" onclick="backMain()">返回首页</button>
+    </div>
+    <div class="tab-bar">
+        <div class="tab-item active" onclick="switchTab('launchTab')">发起</div>
+        <div class="tab-item" onclick="switchTab('maintainTab')">维护</div>
+    </div>
+
+    <!-- 发起页面 -->
+    <div id="launchTab" class="tab-content">
+        <div id="complianceLaunch">
+            <div class="top-action">
+                <button class="btn btn-primary" onclick="openInitiateModal()">发起</button>
+            </div>
+            <div class="form-section">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>流程标题</th>
+                            <th>年编号</th>
+                            <th>内容截止日</th>
+                            <th>财报截止日</th>
+                            <th>封面&落款日期</th>
+                            <th>流程状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2026年招募说明书更新04月27日</td>
+                            <td>2026</td>
+                            <td>2026-04-20</td>
+                            <td>2026-03-31</td>
+                            <td>2026-04-27</td>
+                            <td><span class="status-ing">已发起</span></td>
+                            <td>
+                                <button class="btn btn-default" onclick="openLaunchDetail()">详情</button>
+                                <button class="btn btn-warn">定稿</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 流程详情（部门列表） -->
+        <div id="launchDetail" class="hidden">
+            <div class="header-bar"><div class="header-title">流程详情｜各部门招募说明书更新情况</div></div>
+            <div class="back-btn">
+                <button class="btn btn-default" onclick="backLaunch()">← 返回发起列表</button>
+            </div>
+            <div class="form-section">
+                <div class="section-title">各部门更新完成情况</div>
+                <div class="form-content">
+                    <table id="deptProgressTable">
+                        <thead>
+                            <tr>
+                                <th>部门名称</th>
+                                <th>启动处理时间</th>
+                                <th>处理完成时间</th>
+                                <th>流程状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-dept="风险合规部">
+                                <td>风险合规部</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td><span class="status-wait">未完成</span></td>
+                                <td>
+                                    <button class="btn btn-default" onclick="openDetailListView()">详情</button>
+                                    <button class="btn btn-primary" onclick="openAuditModal(this)">审核</button>
+                                    <button class="btn btn-warn" onclick="cancelAudit(this)" disabled>取消审核</button>
+                                </td>
+                            </tr>
+                            <tr data-dept="办公室">
+                                <td>办公室</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td><span class="status-wait">未完成</span></td>
+                                <td>
+                                    <button class="btn btn-default" onclick="openDetailListView()">详情</button>
+                                    <button class="btn btn-primary" onclick="openAuditModal(this)">审核</button>
+                                    <button class="btn btn-warn" onclick="cancelAudit(this)" disabled>取消审核</button>
+                                </td>
+                            </tr>
+                            <tr data-dept="人力资源部">
+                                <td>人力资源部</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td><span class="status-wait">未完成</span></td>
+                                <td>
+                                    <button class="btn btn-default" onclick="openDetailListView()">详情</button>
+                                    <button class="btn btn-primary" onclick="openAuditModal(this)">审核</button>
+                                    <button class="btn btn-warn" onclick="cancelAudit(this)" disabled>取消审核</button>
+                                </td>
+                            </tr>
+                            <tr data-dept="研究部">
+                                <td>研究部</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td><span class="status-wait">未完成</span></td>
+                                <td>
+                                    <button class="btn btn-default" onclick="openDetailListView()">详情</button>
+                                    <button class="btn btn-primary" onclick="openAuditModal(this)">审核</button>
+                                    <button class="btn btn-warn" onclick="cancelAudit(this)" disabled>取消审核</button>
+                                </td>
+                            </tr>
+                            <tr data-dept="银行业务部">
+                                <td>银行业务部</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td><span class="status-wait">未完成</span></td>
+                                <td>
+                                    <button class="btn btn-default" onclick="openDetailListView()">详情</button>
+                                    <button class="btn btn-primary" onclick="openAuditModal(this)">审核</button>
+                                    <button class="btn btn-warn" onclick="cancelAudit(this)" disabled>取消审核</button>
+                                </td>
+                            </tr>
+                            <tr data-dept="机构业务部">
+                                <td>机构业务部</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td><span class="status-wait">未完成</span></td>
+                                <td>
+                                    <button class="btn btn-default" onclick="openDetailListView()">详情</button>
+                                    <button class="btn btn-primary" onclick="openAuditModal(this)">审核</button>
+                                    <button class="btn btn-warn" onclick="cancelAudit(this)" disabled>取消审核</button>
+                                </td>
+                            </tr>
+                            <tr data-dept="证券公司业务部">
+                                <td>证券公司业务部</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td><span class="status-wait">未完成</span></td>
+                                <td>
+                                    <button class="btn btn-default" onclick="openDetailListView()">详情</button>
+                                    <button class="btn btn-primary" onclick="openAuditModal(this)">审核</button>
+                                    <button class="btn btn-warn" onclick="cancelAudit(this)" disabled>取消审核</button>
+                                </td>
+                            </tr>
+                            <tr data-dept="网络金融业务部">
+                                <td>网络金融业务部</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td><span class="status-wait">未完成</span></td>
+                                <td>
+                                    <button class="btn btn-default" onclick="openDetailListView()">详情</button>
+                                    <button class="btn btn-primary" onclick="openAuditModal(this)">审核</button>
+                                    <button class="btn btn-warn" onclick="cancelAudit(this)" disabled>取消审核</button>
+                                </td>
+                            </tr>
+                            <tr data-dept="创新部">
+                                <td>创新部</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td><span class="status-wait">未完成</span></td>
+                                <td>
+                                    <button class="btn btn-default" onclick="openDetailListView()">详情</button>
+                                    <button class="btn btn-primary" onclick="openAuditModal(this)">审核</button>
+                                    <button class="btn btn-warn" onclick="cancelAudit(this)" disabled>取消审核</button>
+                                </td>
+                            </tr>
+                            <tr data-dept="基金会计部">
+                                <td>基金会计部</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td><span class="status-wait">未完成</span></td>
+                                <td>
+                                    <button class="btn btn-default" onclick="openDetailListView()">详情</button>
+                                    <button class="btn btn-primary" onclick="openAuditModal(this)">审核</button>
+                                    <button class="btn btn-warn" onclick="cancelAudit(this)" disabled>取消审核</button>
+                                </td>
+                            </tr>
+                            <tr data-dept="投资风险部">
+                                <td>投资风险部</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td><span class="status-wait">未完成</span></td>
+                                <td>
+                                    <button class="btn btn-default" onclick="openDetailListView()">详情</button>
+                                    <button class="btn btn-primary" onclick="openAuditModal(this)">审核</button>
+                                    <button class="btn btn-warn" onclick="cancelAudit(this)" disabled>取消审核</button>
+                                </td>
+                            </tr>
+                            <tr data-dept="品牌部">
+                                <td>品牌部</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td><span class="status-wait">未完成</span></td>
+                                <td>
+                                    <button class="btn btn-default" onclick="openDetailListView()">详情</button>
+                                    <button class="btn btn-primary" onclick="openAuditModal(this)">审核</button>
+                                    <button class="btn btn-warn" onclick="cancelAudit(this)" disabled>取消审核</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div style="text-align:right;margin-top:16px;">
+                        <button class="btn btn-primary" onclick="openExportModal()">导出</button>
+                        <button id="finalizeBtn" class="btn btn-success" disabled onclick="doFinalize()">定稿完成</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 详情列表 -->
+        <div id="detailListView" class="hidden">
+            <div class="header-bar"><div class="header-title">详情列表</div></div>
+            <div class="back-btn">
+                <button class="btn btn-default" onclick="backToLaunchDetail()">← 返回</button>
+            </div>
+            <div class="form-section">
+                <div class="form-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>更新类型</th>
+                                <th>更新标题</th>
+                                <th>年编号</th>
+                                <th>内容截止日</th>
+                                <th>财报截止日</th>
+                                <th>封面&落款日期</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="type-tag tag-general">通用更新</span></td>
+                                <td><a class="title-link" onclick="openContentPage()">2026年招募说明书更新04月27日</a></td>
+                                <td>2026</td>
+                                <td>2026-04-20</td>
+                                <td>2026-03-31</td>
+                                <td>2026-04-27</td>
+                            </tr>
+                            <tr>
+                                <td><span class="type-tag tag-product">产品更新</span></td>
+                                <td><a class="title-link" onclick="openContentPage()">2026年招募说明书混合基金更新04月27日</a></td>
+                                <td>2026</td>
+                                <td>2026-04-20</td>
+                                <td>2026-03-31</td>
+                                <td>2026-04-27</td>
+                            </tr>
+                            <tr>
+                                <td><span class="type-tag tag-product">产品更新</span></td>
+                                <td><a class="title-link" onclick="openContentPage()">2026年招募说明书债券基金更新04月27日</a></td>
+                                <td>2026</td>
+                                <td>2026-04-20</td>
+                                <td>2026-03-31</td>
+                                <td>2026-04-27</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 内容展示页 -->
+        <div id="contentPage" class="hidden">
+            <div class="header-bar"><div class="header-title">招募说明书内容</div></div>
+            <div class="back-btn">
+                <button class="btn btn-default" onclick="backToDetailList()">← 返回列表</button>
+            </div>
+            <div class="form-section">
+                <div class="form-content">
+                    <textarea class="textarea-lg" readonly>
+这里展示该部门维护的招募说明书正式内容，仅用于查看。
+                    </textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- 审核弹窗 -->
+        <div id="auditModal" class="modal-mask hidden">
+            <div class="modal-container">
+                <div class="modal-header"><div class="modal-title">审核意见</div><span class="modal-close" onclick="closeAuditModal()">×</span></div>
+                <div class="modal-body">
+                    <div>请输入审核意见：</div>
+                    <textarea id="auditOpinion" class="audit-textarea" placeholder="如有问题，请填写退回原因"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" onclick="doBack()">退回</button>
+                    <button class="btn btn-success" onclick="doPass()">通过</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 导出弹窗 -->
+        <div id="exportModal" class="modal-mask hidden">
+            <div class="modal-container">
+                <div class="modal-header"><div class="modal-title">导出产品列表</div><span class="modal-close" onclick="closeExportModal()">×</span></div>
+                <div class="modal-body">
+                    <button class="btn btn-default" onclick="selectAllExport()">全选</button>
+                    <button class="btn btn-default" onclick="unSelectAllExport()">取消全选</button>
+                    <div style="margin-top:10px;">
+                        <label><input type="checkbox" class="export-item" value="混合基金"> 2026年招募说明书混合基金更新</label><br>
+                        <label><input type="checkbox" class="export-item" value="债券基金"> 2026年招募说明书债券基金更新</label><br>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="doExport()">确认导出</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 发起弹窗 -->
+        <div id="initiateModal" class="modal-mask hidden">
+            <div class="modal-container">
+                <div class="modal-header"><div class="modal-title">发起流程</div><span class="modal-close" onclick="closeInitiateModal()">×</span></div>
+                <div class="modal-body"><p>发起流程内容</p></div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" onclick="closeInitiateModal()">取消</button>
+                    <button class="btn btn-success" onclick="submitInitiateForm()">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="maintainTab" class="tab-content hidden"></div>
+</div>
+
+<script>
+    var currentBtn;
+    // 基础跳转
+    function openComplianceMain(){document.getElementById('mainPage').classList.add('hidden');document.getElementById('complianceMain').classList.remove('hidden');}
+    function backMain(){document.getElementById('complianceMain').classList.add('hidden');document.getElementById('mainPage').classList.remove('hidden');}
+    function switchTab(id){document.querySelectorAll('.tab-content').forEach(e=>e.classList.add('hidden'));document.querySelectorAll('.tab-item').forEach(e=>e.classList.remove('active'));document.getElementById(id).classList.remove('hidden');event.target.classList.add('active');}
+    function openLaunchDetail(){document.getElementById('complianceLaunch').classList.add('hidden');document.getElementById('launchDetail').classList.remove('hidden');}
+    function backLaunch(){document.getElementById('launchDetail').classList.add('hidden');document.getElementById('complianceLaunch').classList.remove('hidden');}
+    function openDetailListView(){document.getElementById('launchDetail').classList.add('hidden');document.getElementById('detailListView').classList.remove('hidden');}
+    function backToLaunchDetail(){document.getElementById('detailListView').classList.add('hidden');document.getElementById('contentPage').classList.add('hidden');document.getElementById('launchDetail').classList.remove('hidden');}
+    function openContentPage(){document.getElementById('detailListView').classList.add('hidden');document.getElementById('contentPage').classList.remove('hidden');}
+    function backToDetailList(){document.getElementById('contentPage').classList.add('hidden');document.getElementById('detailListView').classList.remove('hidden');}
+
+    // 审核功能
+    function openAuditModal(btn){currentBtn=btn;document.getElementById('auditModal').classList.remove('hidden');document.getElementById('auditOpinion').value='';}
+    function closeAuditModal(){document.getElementById('auditModal').classList.add('hidden');}
+    
+    // 审核通过
+    function doPass(){
+        let tr = currentBtn.closest('tr');
+        tr.querySelector('td:nth-child(4)').innerHTML = '<span class="status-done">审核通过</span>';
+        let auditBtn = currentBtn;
+        let cancelBtn = auditBtn.nextElementSibling;
+        auditBtn.disabled = true;
+        cancelBtn.disabled = false;
+        closeAuditModal();
+        checkAllDone();
+        alert('审核通过！');
+    }
+
+    // 取消审核
+    function cancelAudit(btn){
+        let tr = btn.closest('tr');
+        tr.querySelector('td:nth-child(4)').innerHTML = '<span class="status-wait">未完成</span>';
+        let cancelBtn = btn;
+        let auditBtn = cancelBtn.previousElementSibling;
+        auditBtn.disabled = false;
+        cancelBtn.disabled = true;
+        checkAllDone();
+        alert('已取消审核！');
+    }
+
+    // 退回
+    function doBack(){
+        let msg=document.getElementById('auditOpinion').value;
+        if(!msg){alert('请填写退回原因');return;}
+        let tr=currentBtn.closest('tr');
+        tr.querySelector('td:nth-child(4)').innerHTML='<span class="status-back">已退回</span>';
+        closeAuditModal();
+        alert('已退回至 '+tr.dataset.dept+'，待办通知已发送');
+    }
+
+    // 导出功能
+    function openExportModal(){document.getElementById('exportModal').classList.remove('hidden');}
+    function closeExportModal(){document.getElementById('exportModal').classList.add('hidden');}
+    function selectAllExport(){document.querySelectorAll('.export-item').forEach(i=>i.checked=true);}
+    function unSelectAllExport(){document.querySelectorAll('.export-item').forEach(i=>i.checked=false);}
+    function doExport(){
+        let arr=[];document.querySelectorAll('.export-item:checked').forEach(i=>arr.push(i.value));
+        if(arr.length===0){alert('请选择导出项');return;}
+        alert('导出成功：'+arr.join('、'));closeExportModal();
+    }
+
+    // 定稿
+    function checkAllDone(){
+        let all=true;
+        document.querySelectorAll('#deptProgressTable tbody tr').forEach(tr=>{
+            let t=tr.querySelector('td:nth-child(4)').textContent;
+            if(t!=='审核通过')all=false;
+        });
+        document.getElementById('finalizeBtn').disabled=!all;
+    }
+    function doFinalize(){alert('流程定稿完成！');}
+    function openInitiateModal(){document.getElementById('initiateModal').classList.remove('hidden');}
+    function closeInitiateModal(){document.getElementById('initiateModal').classList.add('hidden');}
+    function submitInitiateForm(){alert('发起成功');closeInitiateModal();}
+</script>
+</body>
+</html>

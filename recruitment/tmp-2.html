@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>信披文件撰写 — 招募说明书 总入口</title>
+    <style>
+        * {margin:0;padding:0;box-sizing:border-box;font-family:"Microsoft Yahei",sans-serif;}
+        body {background:#f5f7fa;padding:20px;}
+        .container {max-width:1300px;margin:0 auto;background:#fff;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,0.1);overflow:hidden;}
+        .header-bar {background:#fff;padding:16px 24px;border-bottom:1px solid #ebeef5;display:flex;justify-content:space-between;align-items:center;}
+        .header-title {font-size:20px;font-weight:bold;color:#303133;}
+        .tab-bar {display:flex;border-bottom:1px solid #ebeef5;background:#f8f9fa;}
+        .tab-item {padding:12px 24px;font-size:14px;color:#606266;cursor:pointer;border-bottom:2px solid transparent;}
+        .tab-item.active {color:#4062C1;border-bottom-color:#4062C1;font-weight:500;}
+        .btn {padding:6px 12px;border:none;border-radius:4px;font-size:13px;cursor:pointer;margin:0 2px;}
+        .btn-primary {background:#4062C1;color:#fff;}
+        .btn-default {background:#fff;border:1px solid #dcdfe6;color:#606266;}
+        .btn-warn {background:#faad14;color:#fff;}
+        .btn-success {background:#52c41a;color:#fff;}
+        .btn-danger {background:#f56c6c;color:#fff;}
+        .btn:disabled {opacity:.55;cursor:not-allowed;}
+        .query-bar {padding:16px 24px;background:#fafbfc;border-bottom:1px solid #ebeef5;display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;}
+        .query-item {display:flex;flex-direction:column;gap:6px;}
+        .query-item label {font-size:13px;color:#606266;font-weight:500;}
+        .query-item input,.query-item select {padding:8px 12px;border:1px solid #dcdfe6;border-radius:4px;font-size:13px;min-width:160px;height:34px;background:#fff;}
+        .query-item input:focus,.query-item select:focus {outline:none;border-color:#4062C1;}
+        .query-btns {display:flex;gap:8px;margin-left:auto;}
+        table {width:100%;border-collapse:collapse;font-size:14px;}
+        th,td {padding:12px 10px;text-align:center;border:1px solid #ebeef5;}
+        th {background:#f5f7fa;color:#909399;font-weight:500;}
+        .hidden {display:none!important;}
+        .status-wait {color:#faad14;}
+        .status-done {color:#52c41a;}
+        .status-ing {color:#4062C1;}
+        .status-back {color:#f56c6c;}
+        .textarea-lg {width:100%;height:280px;padding:12px;border:1px solid #dcdfe6;border-radius:4px;resize:none;}
+        .modal-mask {position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;justify-content:center;align-items:center;z-index:999;}
+        .modal-container {width:900px;background:#fff;border-radius:8px;max-height:85vh;overflow-y:auto;}
+        .modal-header {padding:16px 24px;border-bottom:1px solid #ebeef5;display:flex;justify-content:space-between;align-items:center;}
+        .modal-title {font-size:22px;font-weight:bold;color:#303133;}
+        .modal-close {cursor:pointer;font-size:24px;color:#999;}
+        .modal-body {padding:24px;}
+        .modal-footer {padding:16px 24px;border-top:1px solid #ebeef5;text-align:right;}
+        .form-item {margin-bottom:20px;}
+        .form-item label {display:block;margin-bottom:8px;font-weight:500;color:#303133;}
+        .form-item input {width:100%;padding:10px;border:1px solid #ddd;border-radius:4px;font-size:14px;}
+        .product-table {width:100%;border-collapse:collapse;margin:15px 0;}
+        .product-table th, .product-table td {padding:12px;border:1px solid #ebeef5;text-align:left;}
+        .product-table th {background:#f5f7fa;color:#909399;}
+        .date-group {display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;}
+        .upload-area {border:1px dashed #dcdfe6;padding:20px;text-align:center;border-radius:4px;cursor:pointer;margin:15px 0;}
+        .upload-area:hover {border-color:#4062C1;}
+        .attach-list {margin-top:10px;}
+        .attach-item {display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border:1px solid #ebeef5;border-radius:4px;margin-bottom:8px;}
+        .attach-name {color:#4062C1;}
+        .delete-attach {color:#f56c6c;cursor:pointer;}
+        .import-tip {font-size:12px;color:#909399;margin-top:5px;}
+        .type-tag {padding:2px 8px;border-radius:4px;font-size:12px;}
+        .tag-general {background:#e8f4fd;color:#4062C1;}
+        .tag-product {background:#f0f9eb;color:#52c41a;}
+        .title-link {color:#4062C1;cursor:pointer;text-decoration:underline;}
+        .audit-textarea {width:100%;height:180px;padding:12px;border:1px solid #dcdfe6;border-radius:4px;resize:none;}
+        .info-grid {display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+        .info-item {padding:12px;background:#f5f7fa;border-radius:4px;}
+        .info-label {font-size:12px;color:#909399;margin-bottom:4px;}
+        .info-value {font-size:14px;color:#303133;font-weight:500;}
+        .trace-box {border:1px solid #ebeef5;border-radius:4px;padding:16px;margin-top:20px;}
+        .trace-item {display:flex;gap:16px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px dashed #ebeef5;}
+        .trace-item:last-child {border-bottom:none;margin-bottom:0;padding-bottom:0;}
+        .trace-label {font-weight:500;color:#606266;min-width:120px;}
+        .trace-value {color:#303133;}
+    </style>
+</head>
+<body>
+
+<div id="complianceMain" class="container">
+    <div class="header-bar">
+        <div class="header-title">风险合规部 - 招募说明书管理</div>
+    </div>
+    <div class="tab-bar">
+        <div class="tab-item active" onclick="switchTab('launchTab')">发起</div>
+        <div class="tab-item" onclick="switchTab('maintainTab')">维护</div>
+    </div>
+
+    <!-- 发起页签 -->
+    <div id="launchTab" class="tab-content">
+        <div id="complianceLaunch">
+            <div class="top-action">
+                <button class="btn btn-primary" onclick="openInitiateModal()">发起</button>
+            </div>
+            <div class="query-bar">
+                <div class="query-item">
+                    <label>流程标题</label>
+                    <input type="text" id="queryTitle" placeholder="请输入流程标题" onkeyup="handleQuery()">
+                </div>
+                <div class="query-item">
+                    <label>年编号</label>
+                    <input type="text" id="queryYear" placeholder="请输入年编号" onkeyup="handleQuery()">
+                </div>
+                <div class="query-item">
+                    <label>内容截止日</label>
+                    <input type="date" id="queryContentDate" onchange="handleQuery()">
+                </div>
+                <div class="query-item">
+                    <label>财报截止日</label>
+                    <input type="date" id="queryFinanceDate" onchange="handleQuery()">
+                </div>
+                <div class="query-item">
+                    <label>流程状态</label>
+                    <select id="queryStatus" onchange="handleQuery()">
+                        <option value="">全部</option>
+                        <option value="待维护">待维护</option>
+                        <option value="维护中">维护中</option>
+                        <option value="已完成">已完成</option>
+                    </select>
+                </div>
+                <div class="query-btns">
+                    <button class="btn btn-primary" onclick="handleQuery()">查询</button>
+                    <button class="btn btn-default" onclick="resetQuery()">重置</button>
+                </div>
+            </div>
+            <div class="form-section">
+                <table id="launchTable">
+                    <thead>
+                        <tr>
+                            <th>流程标题</th>
+                            <th>年编号</th>
+                            <th>内容截止日</th>
+                            <th>财报截止日</th>
+                            <th>封面&落款日期</th>
+                            <th>流程状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="launchTableBody">
+                        <tr data-status="待维护">
+                            <td>2026年第1号招募说明书更新04月29日</td>
+                            <td>2026</td>
+                            <td>2026-04-20</td>
+                            <td>2026-03-31</td>
+                            <td>2026-04-29</td>
+                            <td><span class="status-wait">待维护</span></td>
+                            <td>
+                                <button class="btn btn-default detail-btn" onclick="openLaunchDetail(this)">详情</button>
+                                <button class="btn btn-warn" disabled>定稿下载</button>
+                            </td>
+                        </tr>
+                        <tr data-status="维护中">
+                            <td>2026年第2号招募说明书更新05月10日</td>
+                            <td>2026</td>
+                            <td>2026-05-05</td>
+                            <td>2026-03-31</td>
+                            <td>2026-05-10</td>
+                            <td><span class="status-ing">维护中</span></td>
+                            <td>
+                                <button class="btn btn-default detail-btn" onclick="openLaunchDetail(this)">详情</button>
+                                <button class="btn btn-warn" disabled>定稿下载</button>
+                            </td>
+                        </tr>
+                        <tr data-status="已完成">
+                            <td>2025年第12号招募说明书更新12月31日</td>
+                            <td>2025</td>
+                            <td>2025-12-20</td>
+                            <td>2025-09-30</td>
+                            <td>2025-12-31</td>
+                            <td><span class="status-done">已完成</span></td>
+                            <td>
+                                <button class="btn btn-default detail-btn" onclick="openLaunchDetail(this)">详情</button>
+                                <button class="btn btn-warn" disabled>定稿下载</button>
+                            </td>
+                        </tr>
+                        <tr data-status="待维护">
+                            <td>2026年第3号招募说明书更新03月15日</td>
+                            <td>2026</td>
+                            <td>2026-03-10</td>
+                            <td>2025-12-31</td>
+                            <td>2026-03-15</td>
+                            <td><span class="status-wait">待维护</span></td>
+                            <td>
+                                <button class="btn btn-default detail-btn" onclick="openLaunchDetail(this)">详情</button>
+                                <button class="btn btn-warn" disabled>定稿下载</button>
+                            </td>
+                        </tr>
+                        <tr data-status="已完成">
+                            <td>2024年第8号招募说明书更新11月20日</td>
+                            <td>2024</td>
+                            <td>2024-11-15</td>
+                            <td>2024-09-30</td>
+                            <td>2024-11-20</td>
+                            <td><span class="status-done">已完成</span></td>
+                            <td>
+                                <button class="btn btn-default detail-btn" onclick="openLaunchDetail(this)">详情</button>
+                                <button class="btn btn-warn" disabled>定稿下载</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="launchDetail" class="hidden">
+            <div class="header-bar"><div class="header-title">流程详情｜各部门招募说明书更新情况</div></div>
+            <div class="back-btn">
+                <button class="btn btn-default" onclick="backLaunch()">← 返回发起列表</button>
+            </div>
+            <div class="form-section">
+                <div class="section-title">各部门更新完成情况</div>
+                <div class="form-content">
+                    <table id="deptProgressTable">
+                        <thead>
+                            <tr>
+                                <th>部门名称</th>
+                                <th>启动处理时间</th>
+                                <th>处理完成时间</th>
+                                <th>流程状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="deptProgressBody">
+                        </tbody>
+                    </table>
+                    <div style="text-align:right;margin-top:16px;">
+                        <button class="btn btn-primary" id="exportBtn" onclick="openExportModal()">导出</button>
+                        <button id="finalizeBtn" class="btn btn-success" disabled onclick="doFinalize()">定稿完成</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="detailListView" class="hidden">
+            <div class="header-bar"><div class="header-title">详情列表</div></div>
+            <div class="back-btn">
+                <button class="btn btn-default" onclick="backToLaunchDetail()">← 返回</button>
+            </div>
+            <div class="form-section">
+                <div class="form-content">
+                    <table id="detailListTable">
+                        <thead>
+                            <tr>
+                                <th>更新类型</th>
+                                <th>更新标题</th>
+                                <th>年度</th>
+                                <th>内容截止日</th>
+                                <th>财报截止日</th>
+                                <th>封面&落款日期</th>
+                            </tr>
+                        </thead>
+                        <tbody id="detailListBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="contentPage" class="hidden">
+            <div class="header-bar"><div class="header-title">招募说明书内容</div></div>
+            <div class="back-btn">
+                <button class="btn btn-default" onclick="backToDetailList()">← 返回列表</button>
+            </div>
+            <div class="form-section">
+                <div class="form-content">
+                    <textarea class="textarea-lg" readonly id="contentTextArea"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 维护页签 -->
+    <div id="maintainTab" class="tab-content hidden">
+        <div class="query-bar">
+            <div class="query-item">
+                <label>流程标题</label>
+                <input type="text" id="mqueryTitle" placeholder="请输入流程标题" onkeyup="handleMaintainQuery()">
+            </div>
+            <div class="query-item">
+                <label>年编号</label>
+                <input type="text" id="mqueryYear" placeholder="请输入年编号" onkeyup="handleMaintainQuery()">
+            </div>
+            <div class="query-item">
+                <label>内容截止日</label>
+                <input type="date" id="mqueryContentDate" onchange="handleMaintainQuery()">
+            </div>
+            <div class="query-item">
+                <label>财报截止日</label>
+                <input type="date" id="mqueryFinanceDate" onchange="handleMaintainQuery()">
+            </div>
+            <div class="query-item">
+                <label>流程状态</label>
+                <select id="mqueryStatus" onchange="handleMaintainQuery()">
+                    <option value="">全部</option>
+                    <option value="待维护">待维护</option>
+                    <option value="已维护">已维护</option>
+                    <option value="已完成">已完成</option>
+                </select>
+            </div>
+            <div class="query-item">
+                <label>基金代码</label>
+                <input type="text" id="mqueryFundCode" placeholder="请输入基金代码" onkeyup="handleMaintainQuery()">
+            </div>
+            <div class="query-item">
+                <label>基金名称</label>
+                <input type="text" id="mqueryFundName" placeholder="请输入基金名称" onkeyup="handleMaintainQuery()">
+            </div>
+            <div class="query-item">
+                <label>更新要素</label>
+                <select id="mqueryElement" onchange="handleMaintainQuery()">
+                    <option value="">全部</option>
+                    <option value="基金管理人概况">基金管理人概况</option>
+                    <option value="董事会成员">董事会成员</option>
+                    <option value="申赎起点金额">申赎起点金额</option>
+                    <option value="ETF基金指数编制方案">ETF基金指数编制方案</option>
+                    <option value="基金管理人的内部控制制度">基金管理人的内部控制制度</option>
+                    <option value="会计师事务所">会计师事务所</option>
+                    <option value="基金托管人">基金托管人</option>
+                    <option value="其他应披露事项">其他应披露事项</option>
+                    <option value="投资组合报告">投资组合报告</option>
+                    <option value="对基金份额持有人的服务">对基金份额持有人的服务</option>
+                    <option value="高管信息">高管信息</option>
+                    <option value="基金经理">基金经理</option>
+                    <option value="代销机构">代销机构</option>
+                    <option value="基金的业绩">基金的业绩</option>
+                    <option value="投资决策委员会成员">投资决策委员会成员</option>
+                </select>
+            </div>
+            <div class="query-btns">
+                <button class="btn btn-primary" onclick="handleMaintainQuery()">查询</button>
+                <button class="btn btn-default" onclick="resetMaintainQuery()">重置</button>
+            </div>
+        </div>
+        <div class="form-section">
+            <div class="form-content">
+                <table id="maintainTable">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="checkAllMaintain"></th>
+                            <th>更新类型</th>
+                            <th>更新标题</th>
+                            <th>年度</th>
+                            <th>内容截止日</th>
+                            <th>财报截止日</th>
+                            <th>流程状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="maintainTableBody">
+                    </tbody>
+                </table>
+                <div class="batch-group" style="margin-top:16px;">
+                    <button class="btn btn-primary" onclick="batchSubmit()">批量提交审核</button>
+                    <button class="btn btn-success" id="batchAuditBtn" disabled>批量审核通过</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 通用更新页面 -->
+    <div id="generalEditPage" class="tab-content hidden">
+        <div class="container">
+            <div class="page-header">
+                <h2 class="header-title">招募说明书更新（通用）</h2>
+                <div>
+                    <button class="btn btn-default" onclick="backToMaintain()">返回</button>
+                    <button class="btn btn-primary" onclick="submitGeneral()">提交</button>
+                </div>
+            </div>
+            <div style="padding:16px 24px;">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">创建人</div>
+                        <div class="info-value" id="genCreator">张三</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">归属部门</div>
+                        <div class="info-value" id="genDept">风险合规部</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">前序任务处理人</div>
+                        <div class="info-value" id="genHandler">李四</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">任务到达时间</div>
+                        <div class="info-value" id="genArriveTime">2026-04-24 15:30</div>
+                    </div>
+                </div>
+
+                <div style="margin:20px 0;padding:16px;background:#f5f7fa;border-radius:4px;">
+                    <h4 style="margin-bottom:12px;color:#303133;">流程进度</h4>
+                    <div style="display:flex;gap:40px;align-items:center;">
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <span style="width:30px;height:30px;border-radius:50%;background:#4062C1;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;">1</span>
+                            <span style="color:#4062C1;font-weight:500;">维护招募说明书要素</span>
+                        </div>
+                        <div style="color:#909399;">→</div>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <span style="width:30px;height:30px;border-radius:50%;background:#dcdfe6;color:#909399;display:flex;align-items:center;justify-content:center;font-size:12px;">2</span>
+                            <span style="color:#909399;">审核招募说明书要素</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom:20px;">
+                    <label>本次更新内容截止日</label>
+                    <div class="form-item-readonly" id="genContentDate"></div>
+                </div>
+                <div style="margin-bottom:20px;">
+                    <label>财报截止日</label>
+                    <div class="form-item-readonly" id="genFinanceDate"></div>
+                </div>
+                <div style="margin-bottom:20px;">
+                    <label>本次更新涉及产品</label>
+                    <table>
+                        <thead>
+                            <tr style="background:#f5f7fa;">
+                                <th>基金全称</th>
+                                <th>基金代码</th>
+                            </tr>
+                        </thead>
+                        <tbody id="genProductTable">
+                        </tbody>
+                    </table>
+                </div>
+                <div style="margin-bottom:20px;">
+                    <label>管理人内部控制制度</label>
+                    <textarea id="genControlSystem" style="width:100%;min-height:120px;padding:12px;border:1px solid #ebeef5;border-radius:4px;"></textarea>
+                </div>
+                <div>
+                    <label>会计师事务所</label>
+                    <input type="text" id="genAccountant" style="width:100%;padding:12px;border:1px solid #ebeef5;border-radius:4px;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 产品更新页面 -->
+    <div id="productEditPage" class="tab-content hidden">
+        <div class="container">
+            <div class="page-header">
+                <h2 class="header-title">招募说明书更新（产品）</h2>
+                <div>
+                    <button class="btn btn-default" onclick="backToMaintain()">返回</button>
+                    <button class="btn btn-primary" onclick="submitProduct()">提交</button>
+                </div>
+            </div>
+            <div style="padding:16px 24px;">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">创建人</div>
+                        <div class="info-value" id="prodCreator">王五</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">归属部门</div>
+                        <div class="info-value" id="prodDept">产品运营部</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">前序任务处理人</div>
+                        <div class="info-value" id="prodHandler">赵六</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">任务到达时间</div>
+                        <div class="info-value" id="prodArriveTime">2026-04-25 09:15</div>
+                    </div>
+                </div>
+
+                <div style="margin:20px 0;padding:16px;background:#f5f7fa;border-radius:4px;">
+                    <h4 style="margin-bottom:12px;color:#303133;">流程进度</h4>
+                    <div style="display:flex;gap:40px;align-items:center;">
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <span style="width:30px;height:30px;border-radius:50%;background:#4062C1;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;">1</span>
+                            <span style="color:#4062C1;font-weight:500;">维护招募说明书要素</span>
+                        </div>
+                        <div style="color:#909399;">→</div>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <span style="width:30px;height:30px;border-radius:50%;background:#dcdfe6;color:#909399;display:flex;align-items:center;justify-content:center;font-size:12px;">2</span>
+                            <span style="color:#909399;">审核招募说明书要素</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom:20px;">
+                    <label>本次更新内容截止日</label>
+                    <div class="form-item-readonly" id="prodContentDate"></div>
+                </div>
+                <div style="margin-bottom:20px;">
+                    <label>财报截止日</label>
+                    <div class="form-item-readonly" id="prodFinanceDate"></div>
+                </div>
+                <div style="margin-bottom:20px;">
+                    <label>本次更新涉及产品</label>
+                    <table>
+                        <thead>
+                            <tr style="background:#f5f7fa;">
+                                <th>基金全称</th>
+                                <th>基金代码</th>
+                                <th>产品类型</th>
+                            </tr>
+                        </thead>
+                        <tbody id="prodProductTable">
+                        </tbody>
+                    </table>
+                </div>
+                <div style="margin-bottom:20px;">
+                    <label>其他应披露事项</label>
+                    <textarea id="prodOtherMatters" style="width:100%;min-height:120px;padding:12px;border:1px solid #ebeef5;border-radius:4px;"></textarea>
+                </div>
+                <div>
+                    <label>基金托管人</label>
+                    <input type="text" id="prodCustodian" style="width:100%;padding:12px;border:1px solid #ebeef5;border-radius:4px;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 审核弹窗 -->
+    <div id="auditModal" class="modal-mask hidden">
+        <div class="modal-container">
+            <div class="modal-header"><div class="modal-title">审核意见</div><span class="modal-close" onclick="closeAuditModal()">×</span></div>
+            <div class="modal-body">
+                <textarea id="auditOpinion" class="audit-textarea" placeholder="如有问题，请填写退回原因"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" onclick="doBack()">退回</button>
+                <button class="btn btn-success" onclick="doPass()">通过</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 导出弹窗 -->
+    <div id="exportModal" class="modal-mask hidden">
+        <div class="modal-container">
+            <div class="modal-header"><div class="modal-title">导出产品列表</div><span class="modal-close" onclick="closeExportModal()">×</span></div>
+            <div class="modal-body">
+                <button class="btn btn-default" onclick="selectAllExport()">全选</button>
+                <button class="btn btn-default" onclick="unSelectAllExport()">取消全选</button>
+                <div style="margin-top:10px;" id="exportCheckboxes">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="doExport()">确认导出</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 发起流程弹窗 -->
+    <div id="initiateModal" class="modal-mask hidden">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div class="modal-title">发起招募说明书更新流程</div>
+                <span class="modal-close" onclick="closeInitiateModal()">×</span>
+            </div>
+            <div class="modal-body">
+                <div class="batch-btn-group">
+                    <button class="btn btn-primary" onclick="checkAllProducts()">全选</button>
+                    <button class="btn btn-default" onclick="openTransferModal()">选择产品</button>
+                    <button class="btn btn-warn" onclick="deleteSelectedProducts()">删除选中</button>
+                    <button class="btn btn-default" onclick="document.getElementById('importFile').click()">批量导入产品</button>
+                    <input type="file" id="importFile" accept=".xlsx,.xls,.csv" hidden onchange="importProductList(this)">
+                </div>
+                <p class="import-tip">导入文件要求：两列，第一列基金代码，第二列基金名称（支持xlsx/xls/csv格式）</p>
+                <table class="product-table">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="checkAllTable" onchange="toggleAllTableCheck()"></th>
+                            <th>产品代码</th>
+                            <th>产品名称</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productTableBody">
+                        <tr><td><input type="checkbox" class="productCheck"></td><td>006699</td><td>稳健混合型证券投资基金</td></tr>
+                        <tr><td><input type="checkbox" class="productCheck"></td><td>007788</td><td>中短债债券型基金</td></tr>
+                    </tbody>
+                </table>
+                <div class="form-item">
+                    <label>基金托管人信息上传</label>
+                    <div class="upload-area" onclick="document.getElementById('attachFile').click()">点击上传附件（支持多文件）</div>
+                    <input type="file" id="attachFile" multiple hidden onchange="uploadAttachFiles(this)">
+                    <div class="attach-list" id="attachList"></div>
+                </div>
+                <div class="date-group">
+                    <div class="form-item"><label>年编号</label><input type="text" id="yearCode" placeholder="2026"></div>
+                    <div class="form-item"><label>内容截止日</label><input type="date" id="contentDeadline"></div>
+                    <div class="form-item"><label>财报截止日</label><input type="date" id="financeDeadline"></div>
+                    <div class="form-item"><label>封面&落款日期</label><input type="text" id="coverDate" placeholder="2026-04-29"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" onclick="closeInitiateModal()">取消</button>
+                <button class="btn btn-success" onclick="submitInitiateForm()">提交</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 选择产品穿梭框 -->
+    <div id="transferModal" class="modal-mask hidden">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div class="modal-title">选择产品</div>
+                <span class="modal-close" onclick="closeTransferModal()">×</span>
+            </div>
+            <div class="modal-body">
+                <div class="transfer-top">
+                    <label><input type="checkbox" id="checkAllLeft"> 未选中</label>
+                    <span>0/562</span>
+                </div>
+                <input type="text" class="transfer-search" placeholder="请输入">
+                <div class="transfer-list-box" id="leftList">
+                    <div class="transfer-item"><input type="checkbox" value="000056"> 建信消费升级混合(000056)</div>
+                    <div class="transfer-item"><input type="checkbox" value="000105"> 建信安心回报债券A(000105)</div>
+                    <div class="transfer-item"><input type="checkbox" value="000106"> 建信安心回报债券C(000106)</div>
+                    <div class="transfer-item"><input type="checkbox" value="000207"> 建信双债增强债券A(000207)</div>
+                    <div class="transfer-item"><input type="checkbox" value="000208"> 建信双债增强债券C(000208)</div>
+                    <div class="transfer-item"><input type="checkbox" value="000270"> 建信灵活配置混合A(000270)</div>
+                    <div class="transfer-item"><input type="checkbox" value="000308"> 建信创新中国混合(000308)</div>
+                </div>
+                <div style="text-align:center;margin:20px 0;">
+                    <button class="btn btn-primary" onclick="toRight()">&gt;</button>
+                    <button class="btn btn-primary" onclick="toLeft()">&lt;</button>
+                </div>
+                <div class="transfer-list-box" id="rightList">
+                    <div class="empty-tip">无数据</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" onclick="closeTransferModal()">取消</button>
+                <button class="btn btn-primary" onclick="confirmSelect()">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var currentBtn;
+    var currentLaunchData = null;
+    var currentMaintainData = null;
+
+    function switchTab(id){
+        document.querySelectorAll('.tab-content').forEach(e=>e.classList.add('hidden'));
+        document.querySelectorAll('.tab-item').forEach(e=>e.classList.remove('active'));
+        document.getElementById(id).classList.remove('hidden');
+        event.target.classList.add('active');
+    }
+
+    function openLaunchDetail(btn){
+        var tr = btn.closest('tr');
+        currentLaunchData = {
+            title: tr.cells[0].textContent,
+            year: tr.cells[1].textContent,
+            contentDate: tr.cells[2].textContent,
+            financeDate: tr.cells[3].textContent,
+            coverDate: tr.cells[4].textContent,
+            status: tr.getAttribute('data-status')
+        };
+        document.getElementById('complianceLaunch').classList.add('hidden');
+        document.getElementById('launchDetail').classList.remove('hidden');
+        renderDeptProgress();
+    }
+
+    function backLaunch(){
+        document.getElementById('launchDetail').classList.add('hidden');
+        document.getElementById('complianceLaunch').classList.remove('hidden');
+    }
+
+    function renderDeptProgress(){
+        var tbody = document.getElementById('deptProgressBody');
+        var departments = [
+            {name:'风险合规部',status:'待维护'},
+            {name:'办公室',status:'待维护'},
+            {name:'人力资源部',status:'待维护'},
+            {name:'研究部',status:'待维护'},
+            {name:'银行业务部',status:'待维护'},
+            {name:'机构业务部',status:'待维护'},
+            {name:'证券公司业务部',status:'待维护'},
+            {name:'网络金融业务部',status:'待维护'},
+            {name:'创新部',status:'待维护'},
+            {name:'基金会计部',status:'待维护'},
+            {name:'投资风险部',status:'待维护'},
+            {name:'品牌部',status:'待维护'}
+        ];
+
+        if(currentLaunchData.status === '已完成'){
+            var completedCount = 10;
+            departments.forEach(function(dept, idx) {
+                if(idx < completedCount){
+                    dept.status = '已完成';
+                } else if(idx < completedCount + 2){
+                    dept.status = '已维护';
+                } else {
+                    dept.status = '待维护';
+                }
+            });
+        } else if(currentLaunchData.status === '维护中'){
+            departments.forEach(function(dept, idx) {
+                if(idx < 3){
+                    dept.status = '已维护';
+                } else {
+                    dept.status = '待维护';
+                }
+            });
+        }
+
+        var html = '';
+        departments.forEach(function(dept) {
+            var isCompleted = dept.status === '已完成';
+            var isMaintained = dept.status === '已维护';
+            var statusClass = dept.status === '待维护' ? 'status-wait' : dept.status === '维护中' ? 'status-ing' : 'status-done';
+            
+            html += '<tr data-dept="' + dept.name + '">';
+            html += '<td>' + dept.name + '</td>';
+            html += '<td>' + (isCompleted || isMaintained ? '2026-04-24 15:30' : '—') + '</td>';
+            html += '<td>' + (isCompleted ? '2026-04-25 10:00' : '—') + '</td>';
+            html += '<td><span class="status-' + statusClass + '">' + dept.status + '</span></td>';
+            html += '<td>';
+            html += '<button class="btn btn-default detail-btn" onclick="openDetailListView()" ' + (!isCompleted ? 'disabled' : '') + '>详情</button>';
+            html += '<button class="btn btn-primary" onclick="openAuditModal(this)" ' + (!isCompleted ? 'disabled' : '') + '>审核</button>';
+            html += '<button class="btn btn-warn" onclick="cancelAudit(this)" ' + (isCompleted ? 'disabled' : '') + '>取消审核</button>';
+            html += '</td>';
+            html += '</tr>';
+        });
+        
+        tbody.innerHTML = html;
+
+        var exportBtn = document.getElementById('exportBtn');
+        var finalizeBtn = document.getElementById('finalizeBtn');
+        
+        if(currentLaunchData.status === '已完成'){
+            exportBtn.disabled = true;
+            finalizeBtn.disabled = true;
+        } else {
+            exportBtn.disabled = false;
+            finalizeBtn.disabled = true;
+        }
+
+        checkAllDone();
+    }
+
+    function openDetailListView(){
+        var tbody = document.getElementById('detailListBody');
+        var updateItems = [
+            {type:'通用更新', element:'管理人内部控制制度', title: currentLaunchData.year + '年第1号招募说明书更新' + currentLaunchData.contentDate.substring(5,7) + '月' + currentLaunchData.contentDate.substring(8,10) + '日'},
+            {type:'产品更新', element:'基金托管人', title: currentLaunchData.year + '年第1号招募说明书基金托管人产品更新' + currentLaunchData.contentDate.substring(5,7) + '月' + currentLaunchData.contentDate.substring(8,10) + '日'},
+            {type:'产品更新', element:'其他应披露事项', title: currentLaunchData.year + '年第2号招募说明书其他应披露事项产品更新' + currentLaunchData.contentDate.substring(5,7) + '月' + currentLaunchData.contentDate.substring(8,10) + '日'}
+        ];
+
+        var html = '';
+        updateItems.forEach(function(item) {
+            html += '<tr>';
+            html += '<td><span class="type-tag ' + (item.type === '通用更新' ? 'tag-general' : 'tag-product') + '">' + item.type + '</span></td>';
+            html += '<td><a class="title-link" onclick="openContentPage(\'' + item.type + '\',\'' + item.element + '\')">' + item.title + '</a></td>';
+            html += '<td>' + currentLaunchData.year + '</td>';
+            html += '<td>' + currentLaunchData.contentDate + '</td>';
+            html += '<td>' + currentLaunchData.financeDate + '</td>';
+            html += '<td>' + currentLaunchData.coverDate + '</td>';
+            html += '</tr>';
+        });
+        
+        tbody.innerHTML = html;
+        document.getElementById('launchDetail').classList.add('hidden');
+        document.getElementById('detailListView').classList.remove('hidden');
+    }
+
+    function backToLaunchDetail(){
+        document.getElementById('detailListView').classList.add('hidden');
+        document.getElementById('launchDetail').classList.remove('hidden');
+    }
+
+    function openContentPage(type, element){
+        var textarea = document.getElementById('contentTextArea');
+        if(type === '通用更新'){
+            textarea.value = '本次更新内容截止日：' + currentLaunchData.contentDate + '\n财报截止日：' + currentLaunchData.financeDate + '\n\n本次更新涉及产品：\n- 建信嘉合债券型证券投资基金（000123）\n- 建信丰享债券型证券投资基金（000456）\n\n管理人内部控制制度：\n[待填写]\n\n会计师事务所：\n[待填写]';
+        } else {
+            textarea.value = '本次更新内容截止日：' + currentLaunchData.contentDate + '\n财报截止日：' + currentLaunchData.financeDate + '\n\n本次更新涉及产品：\n- 创新混合型证券投资基金（001122）\n\n其他应披露事项：\n[待填写]\n\n基金托管人：\n[待填写]';
+        }
+        document.getElementById('detailListView').classList.add('hidden');
+        document.getElementById('contentPage').classList.remove('hidden');
+    }
+
+    function backToDetailList(){
+        document.getElementById('contentPage').classList.add('hidden');
+        document.getElementById('detailListView').classList.remove('hidden');
+    }
+
+    function openAuditModal(btn){
+        currentBtn = btn;
+        document.getElementById('auditModal').classList.remove('hidden');
+    }
+    function closeAuditModal(){
+        document.getElementById('auditModal').classList.add('hidden');
+        document.getElementById('auditOpinion').value = '';
+    }
+    function doPass(){
+        var tr = currentBtn.closest('tr');
+        tr.querySelector('td:nth-child(4) span').className = 'status-done';
+        tr.querySelector('td:nth-child(4) span').textContent = '已完成';
+        tr.querySelector('.btn-primary').disabled = true;
+        tr.querySelector('.btn-warn').disabled = false;
+        closeAuditModal();
+        checkAllDone();
+    }
+    function doBack(){
+        var opinion = document.getElementById('auditOpinion').value;
+        if(!opinion){alert('请填写退回原因');return;}
+        var tr = currentBtn.closest('tr');
+        tr.querySelector('td:nth-child(4) span').className = 'status-back';
+        tr.querySelector('td:nth-child(4) span').textContent = '已退回';
+        closeAuditModal();
+    }
+    function cancelAudit(btn){
+        var tr = btn.closest('tr');
+        tr.querySelector('td:nth-child(4) span').className = 'status-wait';
+        tr.querySelector('td:nth-child(4) span').textContent = '待维护';
+        tr.querySelector('.btn-primary').disabled = false;
+        btn.disabled = true;
+    }
+    function checkAllDone(){
+        var allTr = document.querySelectorAll('#deptProgressTable tbody tr');
+        var allDone = Array.from(allTr).every(function(tr) {
+            return tr.querySelector('td:nth-child(4) span').classList.contains('status-done');
+        });
+        if(allDone){
+            document.getElementById('finalizeBtn').disabled = false;
+        }
+    }
+    function doFinalize(){
+        if(confirm('确认定稿下载？')){
+            alert('定稿下载成功！');
+            backLaunch();
+        }
+    }
+
+    function openExportModal(){
+        document.getElementById('exportModal').classList.remove('hidden');
+        var container = document.getElementById('exportCheckboxes');
+        container.innerHTML = '<label><input type="checkbox" class="export-item" value="混合基金"> 2026年招募说明书混合基金更新</label><br><label><input type="checkbox" class="export-item" value="债券基金"> 2026年招募说明书债券基金更新</label><br>';
+    }
+    function closeExportModal(){document.getElementById('exportModal').classList.add('hidden');}
+    function selectAllExport(){document.querySelectorAll('.export-item').forEach(function(cb) {cb.checked = true;});}
+    function unSelectAllExport(){document.querySelectorAll('.export-item').forEach(function(cb) {cb.checked = false;});}
+    function doExport(){
+        var selected = Array.from(document.querySelectorAll('.export-item:checked')).map(function(cb){return cb.value;});
+        if(selected.length === 0){alert('请选择至少一个导出项');return;}
+        alert('已选择导出：' + selected.join(', ') + '，导出成功');
+        closeExportModal();
+    }
+
+    function openInitiateModal(){document.getElementById('initiateModal').classList.remove('hidden');}
+    function closeInitiateModal(){
+        document.getElementById('initiateModal').classList.add('hidden');
+        document.getElementById('yearCode').value = '';
+        document.getElementById('contentDeadline').value = '';
+        document.getElementById('financeDeadline').value = '';
+        document.getElementById('coverDate').value = '';
+        document.getElementById('attachList').innerHTML = '';
+    }
+    function toggleAllTableCheck(){
+        var v = document.getElementById('checkAllTable').checked;
+        document.querySelectorAll('.productCheck').forEach(function(cb) {cb.checked = v;});
+    }
+    function checkAllProducts(){
+        document.querySelectorAll('.productCheck').forEach(function(cb) {cb.checked = true;});
+        document.getElementById('checkAllTable').checked = true;
+    }
+    function deleteSelectedProducts(){
+        var list = document.querySelectorAll('.productCheck:checked');
+        if(list.length===0){alert('请选择产品');return;}
+        if(confirm('确定删除？')) list.forEach(function(i){i.closest('tr').remove();});
+    }
+    function uploadAttachFiles(input){
+        var files = input.files;
+        var attachList = document.getElementById('attachList');
+        for(var i=0;i<files.length;i++){
+            var f = files[i];
+            var item = document.createElement('div');
+            item.className='attach-item';
+            item.innerHTML='<span class="attach-name">' + f.name + '</span><span class="delete-attach" onclick="deleteAttach(this,' + i + ')">删除</span>';
+            attachList.appendChild(item);
+        }
+        input.value='';
+    }
+    function deleteAttach(el,idx){el.parentElement.remove();}
+    function importProductList(input){alert('导入演示');input.value='';}
+    function submitInitiateForm(){
+        var y=document.getElementById('yearCode').value;
+        var c=document.getElementById('contentDeadline').value;
+        var f=document.getElementById('financeDeadline').value;
+        var d=document.getElementById('coverDate').value;
+        if(!y||!c||!f||!d){alert('请填写完整');return;}
+        alert('流程发起成功');closeInitiateModal();
+    }
+
+    function openTransferModal(){document.getElementById('transferModal').classList.remove('hidden');}
+    function closeTransferModal(){document.getElementById('transferModal').classList.add('hidden');}
+    function toRight(){
+        var items=document.querySelectorAll('#leftList input:checked');
+        if(!items.length)return;
+        var right=document.getElementById('rightList');
+        if(right.querySelector('.empty-tip'))right.innerHTML='';
+        items.forEach(function(i){
+            var div=document.createElement('div');
+            div.className='transfer-item';
+            div.innerHTML=i.parentElement.innerHTML;
+            right.appendChild(div);
+            i.parentElement.remove();
+        });
+    }
+    function toLeft(){
+        var items=document.querySelectorAll('#rightList input:checked');
+        if(!items.length)return;
+        var left=document.getElementById('leftList');
+        items.forEach(function(i){
+            var div=document.createElement('div');
+            div.className='transfer-item';
+            div.innerHTML=i.parentElement.innerHTML;
+            left.appendChild(div);
+            i.parentElement.remove();
+        });
+    }
+    function confirmSelect(){
+        var list=document.querySelectorAll('#rightList .transfer-item');
+        var tbody=document.getElementById('productTableBody');
+        list.forEach(function(item){
+            var code=item.querySelector('input').value;
+            var name=item.textContent.trim().replace('(' + code + ')','');
+            var tr=document.createElement('tr');
+            tr.innerHTML='<td><input type="checkbox" class="productCheck"></td><td>' + code + '</td><td>' + name + '</td>';
+            tbody.appendChild(tr);
+        });
+        closeTransferModal();
+        alert('选择成功');
+    }
+    document.getElementById('checkAllLeft').onchange=function(){
+        document.querySelectorAll('#leftList input').forEach(function(i){i.checked=this.checked;});
+    }
+    document.getElementById('checkAllRight').onchange=function(){
+        document.querySelectorAll('#rightList input').forEach(function(i){i.checked=this.checked;});
+    }
+
+    function renderMaintainTable(){
+        var tbody = document.getElementById('maintainTableBody');
+        var items = [
+            {type:'通用更新', element:'管理人内部控制制度', title:'2026年第1号招募说明书更新管理人内部控制制度04月29日', year:'2026', contentDate:'2026-04-20', financeDate:'2026-03-31', status:'待维护'},
+            {type:'产品更新', element:'基金托管人', title:'2026年第1号招募说明书基金托管人产品更新04月29日', year:'2026', contentDate:'2026-04-20', financeDate:'2026-03-31', status:'已维护'},
+            {type:'产品更新', element:'其他应披露事项', title:'2026年第2号招募说明书其他应披露事项产品更新05月10日', year:'2026', contentDate:'2026-05-05', financeDate:'2026-03-31', status:'已完成'},
+            {type:'通用更新', element:'会计师事务所', title:'2025年第12号招募说明书更新会计师事务所12月31日', year:'2025', contentDate:'2025-12-20', financeDate:'2025-09-30', status:'已完成'},
+            {type:'通用更新', element:'基金管理人概况', title:'2026年第3号招募说明书更新基金管理人概况03月15日', year:'2026', contentDate:'2026-03-10', financeDate:'2025-12-31', status:'已完成'},
+            {type:'产品更新', element:'基金托管人', title:'2024年第8号招募说明书更新基金托管人11月20日', year:'2024', contentDate:'2024-11-15', financeDate:'2024-09-30', status:'已完成'}
+        ];
+
+        var html = '';
+        items.forEach(function(item, idx) {
+            var isCompleted = item.status === '已完成';
+            var isNonCompleted = item.status !== '已完成';
+            html += '<tr data-type="' + item.type + '" data-status="' + item.status + '">';
+            html += '<td><input type="checkbox" class="prodCheck" ' + (isCompleted ? 'disabled' : '') + '></td>';
+            html += '<td><span class="type-tag ' + (item.type === '通用更新' ? 'tag-general' : 'tag-product') + '">' + item.type + '</span></td>';
+            html += '<td><span class="title-link" onclick="openMaintainEdit(' + idx + ')" style="cursor:' + (isCompleted ? 'not-allowed' : 'pointer') + ';color:' + (isCompleted ? '#999' : '#4062C1') + '">' + item.title + '</span></td>';
+            html += '<td>' + item.year + '</td>';
+            html += '<td>' + item.contentDate + '</td>';
+            html += '<td>' + item.financeDate + '</td>';
+            html += '<td><span class="status-' + (item.status === '待维护' ? 'wait' : item.status === '维护中' ? 'ing' : 'done') + '">' + item.status + '</span></td>';
+            html += '<td>';
+            if(isCompleted){
+                html += '<button class="btn btn-default" onclick="openMaintainEdit(' + idx + ')">查看</button>';
+            } else {
+                html += '<button class="btn btn-default" onclick="openMaintainEdit(' + idx + ')">维护</button>';
+            }
+            html += '</td>';
+            html += '</tr>';
+        });
+        
+        tbody.innerHTML = html;
+        applyMaintainDefaultFilter();
+    }
+
+    function openMaintainEdit(idx){
+        var item = document.querySelectorAll('#maintainTableBody tr')[idx];
+        var type = item.getAttribute('data-type');
+        var status = item.getAttribute('data-status');
+
+        currentMaintainData = {
+            type: type,
+            title: item.cells[2].textContent,
+            year: item.cells[3].textContent,
+            contentDate: item.cells[4].textContent,
+            financeDate: item.cells[5].textContent,
+            status: status
+        };
+
+        console.log('点击了第' + idx + '行，type=' + type + ', status=' + status);
+
+        if(type === '通用更新' && status !== '已完成') {
+            console.log('进入通用更新-非已完成');
+            document.getElementById('genCreator').textContent = '张三';
+            document.getElementById('genDept').textContent = '风险合规部';
+            document.getElementById('genHandler').textContent = '李四';
+            document.getElementById('genArriveTime').textContent = '2026-04-24 15:30';
+            document.getElementById('genContentDate').textContent = item.cells[4].textContent;
+            document.getElementById('genFinanceDate').textContent = item.cells[5].textContent;
+            document.getElementById('genProductTable').innerHTML = '<tr><td>建信嘉合债券型证券投资基金</td><td>000123</td></tr><tr><td>建信丰享债券型证券投资基金</td><td>000456</td></tr>';
+            document.getElementById('genControlSystem').value = '';
+            document.getElementById('genAccountant').value = '';
+            document.querySelectorAll('.tab-content').forEach(function(e){e.classList.add('hidden');});
+            document.getElementById('generalEditPage').classList.remove('hidden');
+        } 
+        else if(type === '产品更新' && status !== '已完成') {
+            console.log('进入产品更新-非已完成');
+            document.getElementById('prodCreator').textContent = '王五';
+            document.getElementById('prodDept').textContent = '产品运营部';
+            document.getElementById('prodHandler').textContent = '赵六';
+            document.getElementById('prodArriveTime').textContent = '2026-04-25 09:15';
+            document.getElementById('prodContentDate').textContent = item.cells[4].textContent;
+            document.getElementById('prodFinanceDate').textContent = item.cells[5].textContent;
+            document.getElementById('prodProductTable').innerHTML = '<tr><td>创新混合型证券投资基金</td><td>001122</td><td>普通非ETF</td></tr>';
+            document.getElementById('prodOtherMatters').value = '';
+            document.getElementById('prodCustodian').value = '';
+            document.querySelectorAll('.tab-content').forEach(function(e){e.classList.add('hidden');});
+            document.getElementById('productEditPage').classList.remove('hidden');
+        }
+        else {
+            console.log('进入已完成处理');
+            if(type === '通用更新' && status === '已完成') {
+                console.log('进入通用更新-已完成');
+                document.getElementById('genCreator').textContent = '张三';
+                document.getElementById('genDept').textContent = '风险合规部';
+                document.getElementById('genHandler').textContent = '李四';
+                document.getElementById('genArriveTime').textContent = '2026-04-24 15:30';
+                document.getElementById('genContentDate').textContent = item.cells[4].textContent;
+                document.getElementById('genFinanceDate').textContent = item.cells[5].textContent;
+                document.getElementById('genProductTable').innerHTML = '<tr><td>建信嘉合债券型证券投资基金</td><td>000123</td></tr><tr><td>建信丰享债券型证券投资基金</td><td>000456</td></tr>';
+                document.getElementById('genControlSystem').value = '已填写内容';
+                document.getElementById('genAccountant').value = '已填写会计师事务所';
+                document.querySelectorAll('.tab-content').forEach(function(e){e.classList.add('hidden');});
+                document.getElementById('generalEditPage').classList.remove('hidden');
+            }
+            else if(type === '产品更新' && status === '已完成') {
+                console.log('进入产品更新-已完成');
+                document.getElementById('prodCreator').textContent = '王五';
+                document.getElementById('prodDept').textContent = '产品运营部';
+                document.getElementById('prodHandler').textContent = '赵六';
+                document.getElementById('prodArriveTime').textContent = '2026-04-25 09:15';
+                document.getElementById('prodContentDate').textContent = item.cells[4].textContent;
+                document.getElementById('prodFinanceDate').textContent = item.cells[5].textContent;
+                document.getElementById('prodProductTable').innerHTML = '<tr><td>创新混合型证券投资基金</td><td>001122</td><td>普通非ETF</td></tr>';
+                document.getElementById('prodOtherMatters').value = '已填写其他应披露事项';
+                document.getElementById('prodCustodian').value = '已填写基金托管人';
+                document.querySelectorAll('.tab-content').forEach(function(e){e.classList.add('hidden');});
+                document.getElementById('productEditPage').classList.remove('hidden');
+            }
+        }
+    }
+
+    function backToMaintain(){
+        document.getElementById('generalEditPage').classList.add('hidden');
+        document.getElementById('productEditPage').classList.add('hidden');
+        document.getElementById('maintainTab').classList.remove('hidden');
+    }
+
+    function batchSubmit(){
+        var checked = document.querySelectorAll('.prodCheck:checked');
+        if(checked.length === 0){alert('请选择至少一个产品更新项');return;}
+        if(confirm('确认批量提交审核？')){
+            alert('批量提交成功，等待审核');
+            document.getElementById('batchAuditBtn').disabled = false;
+        }
+    }
+
+    function submitGeneral(){alert('通用更新提交成功');backToMaintain();}
+    function submitProduct(){alert('产品更新提交成功');backToMaintain();}
+
+    function handleQuery(){
+        var title = document.getElementById('queryTitle').value.trim();
+        var year = document.getElementById('queryYear').value.trim();
+        var contentDate = document.getElementById('queryContentDate').value;
+        var financeDate = document.getElementById('queryFinanceDate').value;
+        var status = document.getElementById('queryStatus').value;
+
+        var rows = document.querySelectorAll('#launchTableBody tr');
+        rows.forEach(function(row) {
+            var rowTitle = row.cells[0].textContent.trim();
+            var rowYear = row.cells[1].textContent.trim();
+            var rowContentDate = row.cells[2].textContent.trim();
+            var rowFinanceDate = row.cells[3].textContent.trim();
+            var rowStatus = row.getAttribute('data-status') || '';
+
+            var match = true;
+            if (title && !rowTitle.includes(title)) match = false;
+            if (year && !rowYear.includes(year)) match = false;
+            if (contentDate && rowContentDate !== contentDate) match = false;
+            if (financeDate && rowFinanceDate !== financeDate) match = false;
+            if (status && rowStatus !== status) match = false;
+
+            row.style.display = match ? '' : 'none';
+        });
+    }
+
+    function resetQuery(){
+        document.getElementById('queryTitle').value = '';
+        document.getElementById('queryYear').value = '';
+        document.getElementById('queryContentDate').value = '';
+        document.getElementById('queryFinanceDate').value = '';
+        document.getElementById('queryStatus').value = '';
+        applyDefaultFilter();
+    }
+
+    function applyDefaultFilter(){
+        var rows = document.querySelectorAll('#launchTableBody tr');
+        rows.forEach(function(row) {
+            var rowStatus = row.getAttribute('data-status') || '';
+            if (rowStatus === '已完成') {
+                row.style.display = 'none';
+            } else {
+                row.style.display = '';
+            }
+        });
+    }
+
+    function handleMaintainQuery(){
+        var title = document.getElementById('mqueryTitle').value.trim();
+        var year = document.getElementById('mqueryYear').value.trim();
+        var contentDate = document.getElementById('mqueryContentDate').value;
+        var financeDate = document.getElementById('mqueryFinanceDate').value;
+        var status = document.getElementById('mqueryStatus').value;
+        var fundCode = document.getElementById('mqueryFundCode').value.trim();
+        var fundName = document.getElementById('mqueryFundName').value.trim();
+        var element = document.getElementById('mqueryElement').value;
+
+        var rows = document.querySelectorAll('#maintainTableBody tr');
+        rows.forEach(function(row) {
+            var rowTitle = row.cells[2].textContent.trim();
+            var rowYear = row.cells[3].textContent.trim();
+            var rowContentDate = row.cells[4].textContent.trim();
+            var rowFinanceDate = row.cells[5].textContent.trim();
+            var rowStatus = row.cells[6].textContent.trim();
+
+            var match = true;
+            if (title && !rowTitle.includes(title)) match = false;
+            if (year && !rowYear.includes(year)) match = false;
+            if (contentDate && rowContentDate !== contentDate) match = false;
+            if (financeDate && rowFinanceDate !== financeDate) match = false;
+            if (status && rowStatus !== status) match = false;
+            if (fundCode && !rowTitle.includes(fundCode)) match = false;
+            if (fundName && !rowTitle.includes(fundName)) match = false;
+
+            row.style.display = match ? '' : 'none';
+        });
+    }
+
+    function resetMaintainQuery(){
+        document.getElementById('mqueryTitle').value = '';
+        document.getElementById('mqueryYear').value = '';
+        document.getElementById('mqueryContentDate').value = '';
+        document.getElementById('mqueryFinanceDate').value = '';
+        document.getElementById('mqueryStatus').value = '';
+        document.getElementById('mqueryFundCode').value = '';
+        document.getElementById('mqueryFundName').value = '';
+        document.getElementById('mqueryElement').value = '';
+        applyMaintainDefaultFilter();
+    }
+
+    function applyMaintainDefaultFilter(){
+        var rows = document.querySelectorAll('#maintainTableBody tr');
+        rows.forEach(function(row) {
+            var rowStatus = row.cells[6].textContent.trim();
+            if(rowStatus === '已完成'){
+                row.style.display = 'none';
+            } else {
+                row.style.display = '';
+            }
+        });
+    }
+
+    window.onload = function(){
+    
+    renderMaintainTable();
+};
+
+</script>
+</body>
+</html>

@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>信披文件撰写 — 招募说明书 总入口（整合版）</title>
+    <style>
+        /* 基础样式整合 */
+        * {margin: 0;padding: 0;box-sizing: border-box;font-family: "Microsoft Yahei", sans-serif;}
+        body {background: #f5f7fa;padding: 20px;}
+        .container {max-width: 1300px;margin: 0 auto;background: #fff;border-radius: 8px;box-shadow: 0 2px 12px rgba(0,0,0,0.1);overflow: hidden;}
+        .header-bar {background: #fff;padding: 16px 24px;border-bottom: 1px solid #ebeef5;display: flex;justify-content: space-between;align-items: center;}
+        .header-title {font-size: 20px;font-weight: bold;color: #303133;}
+        
+        /* 页签样式 */
+        .tab-bar {display: flex;border-bottom: 1px solid #ebeef5;background: #f8f9fa;}
+        .tab-item {padding: 12px 24px;font-size: 14px;color: #606266;cursor: pointer;border-bottom: 2px solid transparent;}
+        .tab-item.active {color: #4062C1;border-bottom-color: #4062C1;font-weight: 500;}
+        
+        /* 按钮通用样式 */
+        .btn {padding: 6px 12px;border: none;border-radius: 4px;font-size: 13px;cursor: pointer;margin:0 2px;}
+        .btn-primary {background: #4062C1;color: #fff;}
+        .btn-default {background: #fff;border: 1px solid #dcdfe6;color: #606266;}
+        .btn-warn {background: #e6a23c;color:#fff;}
+        .btn-success {background: #52c41a;color:#fff;}
+        .btn:disabled {opacity: 0.55;cursor: not-allowed;}
+        
+        /* 发起流程样式（保留recruitment-4原有样式） */
+        .dept-btn-group{padding:12px 24px;border-bottom:1px solid #ebeef5;flex-wrap: wrap;display: flex;gap: 12px;}
+        .top-action {padding: 12px 24px;text-align: left;}
+        .form-section {margin: 20px 24px;}
+        .section-title {background: #4062C1;color: #fff;padding: 12px 16px;border-radius: 8px 8px 0 0;font-size: 16px;font-weight: 500;}
+        .form-content {border: 1px solid #ebeef5;border-top: none;padding: 20px;border-radius: 0 0 8px 8px;}
+        table {width:100%;border-collapse: collapse;font-size: 14px;}
+        th, td {padding: 12px 10px;text-align: center;border: 1px solid #ebeef5;}
+        th {background: #f5f7fa;color: #909399;font-weight: 500;}
+        .hidden {display: none !important;}
+        .status-wait{color:#e6a23c;}
+        .status-done{color:#52c41a;}
+        .status-ing{color:#4062C1;}
+        .back-btn{margin-left:24px;margin-top:16px;}
+        .product-dept-wrap{text-align:left;padding:10px;border-top:1px dashed #eee;margin-top:8px;}
+        .dept-row{font-size:13px;color:#666;line-height:1.8;}
+        .tip-text{font-size:13px;color:#999;margin-top:10px;}
+        .textarea-lg{width:100%;min-height:260px;padding: 12px;border:1px solid #dcdfe6;border-radius:4px;resize:vertical;}
+        
+        .modal-mask {position: fixed;top:0;left:0;right:0;bottom:0;background: rgba(0,0,0,0.5);display: flex;justify-content: center;align-items: center;z-index: 999;}
+        .modal-container {width: 900px;background: #fff;border-radius: 8px;max-height: 80vh;overflow-y: auto;}
+        .modal-header {padding: 16px 24px;border-bottom: 1px solid #ebeef5;display: flex;justify-content: space-between;align-items: center;}
+        .modal-title {font-size: 18px;font-weight: bold;color: #303133;}
+        .modal-close {cursor: pointer;font-size: 20px;color: #999;}
+        .modal-body {padding: 20px 24px;}
+        .search-input {padding: 8px 12px;border: 1px solid #dcdfe6;border-radius: 4px;font-size: 13px;width: 300px;margin-bottom: 16px;}
+        .batch-btn-group {margin-bottom: 16px;display: flex;gap: 12px;}
+        .form-row {display: flex;gap: 16px;margin-bottom: 20px;flex-wrap: wrap;}
+        .form-item {display: flex;flex-direction: column;gap: 6px;flex: 1;min-width: 180px;}
+        .form-item label {font-size: 13px;color: #606266;}
+        .form-item input {padding: 8px 12px;border: 1px solid #dcdfe6;border-radius: 4px;font-size: 13px;}
+        .modal-footer {padding: 16px 24px;border-top: 1px solid #ebeef5;display: flex;justify-content: flex-end;gap: 12px;}
+        .product-table th:first-child, .product-table td:first-child {width: 40px;}
+
+        /* 维护流程样式（保留heguibu原有样式） */
+        .info-card {background: #f5faff;margin: 20px 24px;padding: 16px;border-radius: 8px;display: grid;grid-template-columns: repeat(2, 1fr);gap: 12px;}
+        .info-item {font-size: 14px;color: #606266;}
+        .info-label {color: #909399;}
+        .step-bar {display: flex;align-items: center;margin: 20px 24px;}
+        .step-item {display: flex;align-items: center;}
+        .step-dot {width: 24px;height: 24px;border-radius: 50%;background: #4062C1;color: #fff;display: flex;align-items: center;justify-content: center;font-size: 12px;margin-right: 8px;}
+        .step-dot.unfinished {background: #e6a23c;}
+        .step-dot.pass {background: #52c41a;}
+        .step-line {width: 140px;height: 3px;background: #4062C1;margin: 0 10px;}
+        .step-line.unfinished {background: #ebeef5;}
+        .step-text {font-size: 14px;color: #303133;}
+        .form-label {display: block;font-size: 14px;color: #606266;margin-bottom: 8px;}
+        .form-input, .form-textarea {width: 100%;padding: 10px 12px;border: 1px solid #dcdfe6;border-radius: 4px;font-size: 14px;background: #f5f7fa;}
+        .form-textarea {min-height: 120px;resize: vertical;}
+        .tips-text{font-size: 12px;color: #999;margin-top:4px;}
+        .table-box {margin-top: 20px;}
+        .reject-area {margin-top: 20px;}
+        .batch-wrap{padding:12px 24px;border-top:1px solid #ebeef5;}
+        .title-link{color:#4062C1;cursor:pointer;text-decoration:none;font-weight: 500;}
+        .type-tag{font-size:12px;padding:2px 6px;border-radius:3px;color:#fff;}
+        .tag-general{background:#67c23a;}
+        .tag-product{background:#e6a23c;}
+    </style>
+</head>
+<body>
+    <!-- 首页 -->
+    <div id="mainPage" class="container">
+        <div class="header-bar">
+            <div class="header-title">信披文件撰写 — 招募说明书 总入口</div>
+        </div>
+        <div class="dept-btn-group">
+            <button class="btn btn-default">办公室</button>
+            <button class="btn btn-default">人力资源部</button>
+            <button class="btn btn-default">研究部</button>
+            <button class="btn btn-default">市场部门</button>
+            <button class="btn btn-default">创新部</button>
+            <button class="btn btn-default">基金会计部</button>
+            <button class="btn btn-default">投资风险部</button>
+            <button class="btn btn-default">品牌部</button>
+            <button class="btn btn-primary" onclick="openComplianceMain()">风险合规部</button>
+        </div>
+    </div>
+
+    <!-- 风险合规部主页面（包含页签） -->
+    <div id="complianceMain" class="container hidden">
+        <div class="header-bar">
+            <div class="header-title">风险合规部 - 招募说明书管理</div>
+            <button class="btn btn-default" onclick="backMain()">返回首页</button>
+        </div>
+        <!-- 页签栏 -->
+        <div class="tab-bar">
+            <div class="tab-item active" onclick="switchTab('launchTab')">发起</div>
+            <div class="tab-item" onclick="switchTab('maintainTab')">维护</div>
+        </div>
+
+        <!-- 发起页签内容（原recruitment-4.html） -->
+        <div id="launchTab" class="tab-content">
+            <div id="complianceLaunch">
+                <div class="top-action">
+                    <button class="btn btn-primary" onclick="openInitiateModal()">发起</button>
+                </div>
+                <div class="form-section">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>流程标题</th>
+                                <th>年编号</th>
+                                <th>内容截止日</th>
+                                <th>财报截止日</th>
+                                <th>封面&落款日期</th>
+                                <th>流程状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2026年招募说明书更新04月27日</td>
+                                <td>2026</td>
+                                <td>2026-04-20</td>
+                                <td>2026-03-31</td>
+                                <td>2026-04-27</td>
+                                <td><span class="status-ing">已发起</span></td>
+                                <td>
+                                    <button class="btn btn-default" onclick="openLaunchDetail()">详情</button>
+                                    <button class="btn btn-warn">定稿</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 发起流程详情 -->
+            <div id="launchDetail" class="hidden">
+                <div class="header-bar"><div class="header-title">流程详情｜2026年招募说明书更新04月27日</div></div>
+                <div class="back-btn">
+                    <button class="btn btn-default" onclick="backLaunch()">← 返回发起列表</button>
+                </div>
+                <div class="form-section">
+                    <div class="section-title">本次更新产品列表（产品维度维护展示）</div>
+                    <div class="form-content">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>基金全称</th>
+                                    <th>基金代码</th>
+                                    <th>产品类型</th>
+                                    <th>全部门协同完成情况</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>稳健混合型证券投资基金</td>
+                                    <td>006699</td>
+                                    <td>混合类</td>
+                                    <td>
+                                        <div class="product-dept-wrap">
+                                            <div class="dept-row">风险合规部：未完成｜启动时间：—｜完成时间：—</div>
+                                            <div class="dept-row">办公室：未完成｜启动时间：—｜完成时间：—</div>
+                                            <div class="dept-row">人力资源部：未完成｜启动时间：—｜完成时间：—</div>
+                                            <div class="dept-row">研究部：未完成｜启动时间：—｜完成时间：—</div>
+                                            <div class="dept-row">银行业务部/机构业务部/证券公司业务部/网络金融业务部：未完成</div>
+                                            <div class="dept-row">创新部、基金会计部、投资风险部、品牌部：未完成</div>
+                                        </div>
+                                    </td>
+                                    <td><button class="btn btn-primary" disabled onclick="openProductAudit()">审核</button></td>
+                                </tr>
+                                <tr>
+                                    <td>中短债债券型基金</td>
+                                    <td>007788</td>
+                                    <td>固收类</td>
+                                    <td>
+                                        <div class="product-dept-wrap">
+                                            <div class="dept-row">全部门统一状态：<span class="status-wait">未完成</span></div>
+                                        </div>
+                                    </td>
+                                    <td><button class="btn btn-primary" disabled onclick="openProductAudit()">审核</button></td>
+                                </tr>
+                                <tr>
+                                    <td>红利主题股票基金</td>
+                                    <td>009900</td>
+                                    <td>权益类</td>
+                                    <td>
+                                        <div class="product-dept-wrap">
+                                            <div class="dept-row">全部门统一状态：<span class="status-wait">未完成</span></div>
+                                        </div>
+                                    </td>
+                                    <td><button class="btn btn-primary" disabled onclick="openProductAudit()">审核</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="tip-text">规则说明：当前所有部门为未完成状态，待全部部门流程完成后，产品审核按钮自动解锁可操作</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 产品审核页面 -->
+            <div id="productAuditPage" class="hidden">
+                <div class="header-bar"><div class="header-title">单产品联合审核页面</div></div>
+                <div class="back-btn">
+                    <button class="btn btn-default" onclick="backDetail()">← 返回流程详情</button>
+                    <button class="btn btn-success" style="margin-left:10px;">导出本产品招募说明书</button>
+                </div>
+                <div class="form-section">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>责任部门</th>
+                                <th>启动处理时间</th>
+                                <th>处理完成时间</th>
+                                <th>部门流程状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>风险合规部</td>
+                                <td>2026-04-27 09:00</td>
+                                <td>2026-04-27 11:20</td>
+                                <td><span class="status-done">已完成</span></td>
+                                <td><button class="btn btn-default" onclick="openDeptContent()">详情</button></td>
+                            </tr>
+                            <tr>
+                                <td>办公室</td>
+                                <td>2026-04-27 09:05</td>
+                                <td>2026-04-27 11:35</td>
+                                <td><span class="status-done">已完成</span></td>
+                                <td><button class="btn btn-default" onclick="openDeptContent()">详情</button></td>
+                            </tr>
+                            <tr>
+                                <td>人力资源部</td>
+                                <td>2026-04-27 09:10</td>
+                                <td>2026-04-27 14:10</td>
+                                <td><span class="status-done">已完成</span></td>
+                                <td><button class="btn btn-default" onclick="openDeptContent()">详情</button></td>
+                            </tr>
+                            <tr>
+                                <td>市场各业务部</td>
+                                <td>2026-04-27 09:20</td>
+                                <td>2026-04-27 16:00</td>
+                                <td><span class="status-done">已完成</span></td>
+                                <td><button class="btn btn-default" onclick="openDeptContent()">详情</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 部门内容审核页面 -->
+            <div id="deptContentPage" class="hidden">
+                <div class="header-bar"><div class="header-title">部门招募说明书内容审核</div></div>
+                <div class="back-btn">
+                    <button class="btn btn-default" onclick="backProductAudit()">← 返回产品审核</button>
+                </div>
+                <div class="form-section">
+                    <div class="section-title">部门维护内容展示</div>
+                    <div class="form-content">
+                        <textarea class="textarea-lg" readonly>此处展示对应部门维护的全部招募说明书章节内容
+可在线预览、核对合规性、业务准确性</textarea>
+                    </div>
+                </div>
+                <div class="form-section">
+                    <div class="section-title">审核操作</div>
+                    <div class="form-content">
+                        <textarea class="textarea-lg" placeholder="如有问题，请录入退回意见；无问题留空即可"></textarea>
+                        <div style="text-align:center;margin-top:20px;">
+                            <button class="btn btn-warn" onclick="rejectDept()">退回对应部门</button>
+                            <button class="btn btn-success" onclick="passDept()">审核通过 提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 发起弹窗 -->
+            <div id="initiateModal" class="modal-mask hidden">
+                <div class="modal-container">
+                    <div class="modal-header">
+                        <div class="modal-title">发起招募说明书更新流程</div>
+                        <span class="modal-close" onclick="closeInitiateModal()">×</span>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" id="productSearch" class="search-input" placeholder="输入产品代码/名称搜索">
+                        <div class="batch-btn-group">
+                            <button class="btn btn-primary" onclick="selectAllProducts()">全选</button>
+                            <button class="btn btn-warn" onclick="deleteSelectedProducts()">删除选中</button>
+                        </div>
+                        <table class="product-table">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="checkAll"></th>
+                                    <th>产品代码</th>
+                                    <th>产品名称</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productList">
+                                <tr>
+                                    <td><input type="checkbox" class="productItem" data-code="006699" data-name="稳健混合型证券投资基金"></td>
+                                    <td>006699</td>
+                                    <td>稳健混合型证券投资基金</td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="productItem" data-code="007788" data-name="中短债债券型基金"></td>
+                                    <td>007788</td>
+                                    <td>中短债债券型基金</td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="productItem" data-code="009900" data-name="红利主题股票基金"></td>
+                                    <td>009900</td>
+                                    <td>红利主题股票基金</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="form-row" style="margin-top:20px;">
+                            <div class="form-item">
+                                <label>年编号</label>
+                                <input type="text" id="yearCode" placeholder="例如：2026">
+                            </div>
+                            <div class="form-item">
+                                <label>内容截止日</label>
+                                <input type="date" id="contentDeadline">
+                            </div>
+                            <div class="form-item">
+                                <label>财报截止日</label>
+                                <input type="date" id="financialDeadline">
+                            </div>
+                            <div class="form-item">
+                                <label>封面&落款日期</label>
+                                <input type="date" id="coverDate">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-default" onclick="closeInitiateModal()">取消</button>
+                        <button class="btn btn-success" onclick="submitInitiateForm()">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 维护页签内容（原heguibu.html） -->
+        <div id="maintainTab" class="tab-content hidden">
+            <div id="complianceIndex">
+                <div class="form-section">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="checkAllPro">全选</th>
+                                <th>更新类型</th>
+                                <th>更新标题</th>
+                                <th>年编号</th>
+                                <th>内容截止日</th>
+                                <th>财报截止日</th>
+                                <th>封面&落款日期</th>
+                                <th>状态</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- 通用合规更新条目 -->
+                            <tr>
+                                <td>—</td>
+                                <td><span class="type-tag tag-general">通用更新</span></td>
+                                <td><a class="title-link" onclick="openMaintain1()">2026年招募说明书更新04月27日</a></td>
+                                <td>2026</td>
+                                <td>2026-04-20</td>
+                                <td>2026-03-31</td>
+                                <td>2026-04-27</td>
+                                <td>待维护</td>
+                            </tr>
+                            <!-- 产品维度更新条目 -->
+                            <tr>
+                                <td><input type="checkbox" class="pro-check"></td>
+                                <td><span class="type-tag tag-product">产品更新</span></td>
+                                <td><a class="title-link" onclick="openMaintain2()">2026年招募说明书混合基金更新04月27日</a></td>
+                                <td>2026</td>
+                                <td>2026-04-20</td>
+                                <td>2026-03-31</td>
+                                <td>2026-04-27</td>
+                                <td>待维护</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" class="pro-check"></td>
+                                <td><span class="type-tag tag-product">产品更新</span></td>
+                                <td><a class="title-link" onclick="openMaintain2()">2026年招募说明书债券基金更新04月27日</a></td>
+                                <td>2026</td>
+                                <td>2026-04-20</td>
+                                <td>2026-03-31</td>
+                                <td>2026-04-27</td>
+                                <td>待维护</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- 批量操作栏 -->
+                <div class="batch-wrap">
+                    <div class="batch-btn-group">
+                        <button class="btn btn-primary" id="batchSub" onclick="batchSubmit()">批量提交</button>
+                        <button class="btn btn-default" id="batchAudit" disabled onclick="batchAudit()">批量审核通过</button>
+                        <span class="tips-text">说明：仅产品维度条目支持批量操作；全部产品提交完成后，审核按钮自动解锁</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 通用更新-维护页 -->
+            <div id="maintainPage1" class="hidden">
+                <div class="header-bar">
+                    <div class="header-title">通用合规信息维护</div>
+                    <div class="header-actions">
+                        <button class="btn btn-default" onclick="backComplianceIndex()">返回</button>
+                        <button class="btn btn-primary" onclick="submit1()">提交审核</button>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="info-item"><span class="info-label">发起部门：</span>风险合规部</div>
+                    <div class="info-item"><span class="info-label">更新类型：</span>通用合规更新</div>
+                    <div class="info-item"><span class="info-label">生成日期：</span>2026-04-27</div>
+                    <div class="info-item"><span class="info-label">当前状态：</span>待经办维护</div>
+                </div>
+                <div class="step-bar">
+                    <div class="step-item"><div class="step-dot">1</div><span class="step-text">合规信息维护</span></div>
+                    <div class="step-line unfinished"></div>
+                    <div class="step-item"><div class="step-dot unfinished">2</div><span class="step-text">风险合规审核</span></div>
+                </div>
+                <div class="form-section">
+                    <div class="section-title">基础信息</div>
+                    <div class="form-content">
+                        <div class="form-row">
+                            <label class="form-label">内容截止日</label>
+                            <input class="form-input" value="2026-04-20" readonly>
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label">财报截止日</label>
+                            <input class="form-input" value="2026-03-31" readonly>
+                        </div>
+                        <div class="table-box">
+                            <label class="form-label">本次涉及产品范围</label>
+                            <table>
+                                <tr><th>产品范围</th><th>更新适用类型</th></tr>
+                                <tr><td>全公司公募基金产品</td><td>通用制度及审计信息更新</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-section">
+                    <div class="section-title">合规信息录入</div>
+                    <div class="form-content">
+                        <div class="form-row">
+                            <label class="form-label">管理人内部控制制度（自动带入上一版招募说明书内容，确认后可修改）</label>
+                            <textarea class="form-textarea">系统自动同步上一版招募说明书对应章节内容：
+1. 内控管理目标、治理架构、管控体系；
+2. 合规风控管理制度、关键业务环节管控要求；
+3. 关联交易、信息披露、从业人员管理等合规约束；
+4. 往期延续内容无需重复编制，仅核对更新变更项。</textarea>
+                            <div class="tips-text">★ 取自前一版正式招募说明书原文，业务核对确认是否需要修订</div>
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label">会计师事务所</label>
+                            <input class="form-input" placeholder="请填写合作会计师事务所全称、审计资质、服务期限">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 通用更新-审核页 -->
+            <div id="auditPage1" class="hidden">
+                <div class="header-bar">
+                    <div class="header-title">通用合规信息审核</div>
+                    <div class="header-actions">
+                        <button class="btn btn-default" onclick="backComplianceIndex()">返回</button>
+                        <button class="btn btn-default" onclick="reject1()">退回修改</button>
+                        <button class="btn btn-primary" onclick="pass1()">审核通过</button>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="info-item"><span class="info-label">发起部门：</span>风险合规部</div>
+                    <div class="info-item"><span class="info-label">更新类型：</span>通用合规更新</div>
+                    <div class="info-item"><span class="info-label">经办提交时间：</span>2026-04-27</div>
+                    <div class="info-item"><span class="info-label">当前状态：</span>待合规审核</div>
+                </div>
+                <div class="step-bar">
+                    <div class="step-item"><div class="step-dot pass">✓</div><span class="step-text">合规信息维护</span></div>
+                    <div class="step-line"></div>
+                    <div class="step-item"><div class="step-dot">2</div><span class="step-text">风险合规审核</span></div>
+                </div>
+                <div class="form-section">
+                    <div class="section-title">基础信息查看</div>
+                    <div class="form-content">
+                        <div class="form-row">
+                            <label class="form-label">内容截止日</label>
+                            <input class="form-input" value="2026-04-20" readonly>
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label">财报截止日</label>
+                            <input class="form-input" value="2026-03-31" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-section">
+                    <div class="section-title">合规信息审核</div>
+                    <div class="form-content">
+                        <div class="form-row">
+                            <label class="form-label">管理人内部控制制度（已确认）</label>
+                            <textarea class="form-textarea" readonly></textarea>
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label">会计师事务所（已录入）</label>
+                            <input class="form-input" readonly>
+                        </div>
+                        <div class="reject-area">
+                            <label class="form-label">退回意见</label>
+                            <textarea class="form-textarea" placeholder="填写问题描述、内容错误、制度未更新等退回原因"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 产品维度-维护页 -->
+            <div id="maintainPage2" class="hidden">
+                <div class="header-bar">
+                    <div class="header-title">产品专项信息维护</div>
+                    <div class="header-actions">
+                        <button class="btn btn-default" onclick="backComplianceIndex()">返回</button>
+                        <button class="btn btn-primary" onclick="submit2()">提交审核</button>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="info-item"><span class="info-label">发起部门：</span>风险合规部</div>
+                    <div class="info-item"><span class="info-label">更新类型：</span>单品专项更新</div>
+                    <div class="info-item"><span class="info-label">生成日期：</span>2026-04-27</div>
+                    <div class="info-item"><span class="info-label">当前状态：</span>待维护</div>
+                </div>
+                <div class="step-bar">
+                    <div class="step-item"><div class="step-dot">1</div><span class="step-text">产品信息维护</span></div>
+                    <div class="step-line unfinished"></div>
+                    <div class="step-item"><div class="step-dot unfinished">2</div><span class="step-text">合规审核</span></div>
+                </div>
+                <div class="form-section">
+                    <div class="section-title">基础信息</div>
+                    <div class="form-content">
+                        <div class="form-row">
+                            <label class="form-label">内容截止日</label>
+                            <input class="form-input" value="2026-04-20" readonly>
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label">财报截止日</label>
+                            <input class="form-input" value="2026-03-31" readonly>
+                        </div>
+                        <div class="table-box">
+                            <label class="form-label">本次更新涉及产品</label>
+                            <table>
+                                <tr><th>基金名称</th><th>基金代码</th><th>产品类型</th></tr>
+                                <tr><td>混合型精选基金</td><td>006699</td><td>权益类产品</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-section">
+                    <div class="section-title">产品合规事项录入</div>
+                    <div class="form-content">
+                        <div class="form-row">
+                            <label class="form-label">基金托管人</label>
+                            <input class="form-input" placeholder="填写托管银行全称、托管职责、监管备案信息">
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label">其他应披露事项</label>
+                            <textarea class="form-textarea" placeholder="填写产品专属合规变更、重大事项、监管要求补充披露、专项提示信息等"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 产品维度-审核页 -->
+            <div id="auditPage2" class="hidden">
+                <div class="header-bar">
+                    <div class="header-title">产品专项信息审核</div>
+                    <div class="header-actions">
+                        <button class="btn btn-default" onclick="backComplianceIndex()">返回</button>
+                        <button class="btn btn-default" onclick="reject2()">退回修改</button>
+                        <button class="btn btn-primary" onclick="pass2()">审核通过</button>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="info-item"><span class="info-label">发起部门：</span>风险合规部</div>
+                    <div class="info-item"><span class="info-label">更新类型：</span>单品专项更新</div>
+                    <div class="info-item"><span class="info-label">经办提交时间：</span>2026-04-27</div>
+                    <div class="info-item"><span class="info-label">当前状态：</span>待合规审核</div>
+                </div>
+                <div class="step-bar">
+                    <div class="step-item"><div class="step-dot pass">✓</div><span class="step-text">产品信息维护</span></div>
+                    <div class="step-line"></div>
+                    <div class="step-item"><div class="step-dot">2</div><span class="step-text">合规审核</span></div>
+                </div>
+                <div class="form-section">
+                    <div class="section-title">基础信息查看</div>
+                    <div class="form-content">
+                        <div class="form-row">
+                            <label class="form-label">内容截止日</label>
+                            <input class="form-input" value="2026-04-20" readonly>
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label">财报截止日</label>
+                            <input class="form-input" value="2026-03-31" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-section">
+                    <div class="section-title">产品合规审核</div>
+                    <div class="form-content">
+                        <div class="form-row">
+                            <label class="form-label">基金托管人（已录入）</label>
+                            <input class="form-input" readonly>
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label">其他应披露事项（已录入）</label>
+                            <textarea class="form-textarea" readonly></textarea>
+                        </div>
+                        <div class="reject-area">
+                            <label class="form-label">退回意见</label>
+                            <textarea class="form-textarea" placeholder="填写内容缺失、信息有误、披露不完整等退回意见"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局基础方法
+        function backMain() {
+            document.querySelectorAll('.container').forEach(c => c.classList.add('hidden'));
+            document.getElementById('mainPage').classList.remove('hidden');
+        }
+
+        function openComplianceMain() {
+            document.querySelectorAll('.container').forEach(c => c.classList.add('hidden'));
+            document.getElementById('complianceMain').classList.remove('hidden');
+            // 默认选中发起页签
+            switchTab('launchTab');
+        }
+
+        // 页签切换方法
+        function switchTab(tabId) {
+            // 重置所有页签样式
+            document.querySelectorAll('.tab-item').forEach(item => item.classList.remove('active'));
+            // 隐藏所有页签内容
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+            // 激活目标页签
+            event.target.classList.add('active');
+            // 显示目标页签内容
+            document.getElementById(tabId).classList.remove('hidden');
+        }
+
+        // ---------------------- 发起流程相关方法（原recruitment-4） ----------------------
+        function hideAllLaunch() {
+            document.querySelectorAll('#launchTab > div').forEach(item => item.classList.add('hidden'));
+        }
+
+        function openLaunchDetail() {
+            hideAllLaunch();
+            document.getElementById('launchDetail').classList.remove('hidden');
+        }
+        function openProductAudit() {
+            hideAllLaunch();
+            document.getElementById('productAuditPage').classList.remove('hidden');
+        }
+        function openDeptContent() {
+            hideAllLaunch();
+            document.getElementById('deptContentPage').classList.remove('hidden');
+        }
+
+        function backLaunch() {
+            hideAllLaunch();
+            document.getElementById('complianceLaunch').classList.remove('hidden');
+        }
+        function backDetail() {
+            hideAllLaunch();
+            document.getElementById('launchDetail').classList.remove('hidden');
+        }
+        function backProductAudit() {
+            hideAllLaunch();
+            document.getElementById('productAuditPage').classList.remove('hidden');
+        }
+
+        function rejectDept() {
+            alert('已退回该部门，系统将以待办消息通知对应部门重新提交');
+            backProductAudit();
+        }
+        function passDept() {
+            alert('审核通过，该部门内容审核完成');
+            backProductAudit();
+        }
+
+        // 延迟解锁审核按钮
+        setTimeout(() => {
+            document.querySelectorAll('#launchDetail .btn-primary').forEach(btn => { btn.disabled = false; });
+        }, 1800);
+
+        // 发起弹窗相关
+        function openInitiateModal() {
+            document.getElementById('initiateModal').classList.remove('hidden');
+            document.getElementById('productSearch').value = '';
+            document.getElementById('yearCode').value = '';
+            document.getElementById('contentDeadline').value = '';
+            document.getElementById('financialDeadline').value = '';
+            document.getElementById('coverDate').value = '';
+            document.querySelectorAll('.productItem').forEach(checkbox => { checkbox.checked = false; });
+            document.getElementById('checkAll').checked = false;
+        }
+
+        function closeInitiateModal() {
+            document.getElementById('initiateModal').classList.add('hidden');
+        }
+
+        // 全选/取消全选
+        document.getElementById('checkAll').addEventListener('change', function () {
+            const isChecked = this.checked;
+            document.querySelectorAll('.productItem').forEach(checkbox => { checkbox.checked = isChecked; });
+        });
+
+        function selectAllProducts() {
+            document.getElementById('checkAll').checked = true;
+            document.querySelectorAll('.productItem').forEach(checkbox => { checkbox.checked = true; });
+        }
+
+        function deleteSelectedProducts() {
+            document.querySelectorAll('.productItem:checked').forEach(checkbox => { checkbox.closest('tr').remove(); });
+            document.getElementById('checkAll').checked = false;
+        }
+
+        // 产品搜索
+        document.getElementById('productSearch').addEventListener('input', function () {
+            const keyword = this.value.toLowerCase().trim();
+            const productRows = document.querySelectorAll('#productList tr');
+            productRows.forEach(row => {
+                const code = row.querySelector('.productItem').dataset.code.toLowerCase();
+                const name = row.querySelector('.productItem').dataset.name.toLowerCase();
+                row.style.display = (code.includes(keyword) || name.includes(keyword)) ? '' : 'none';
+            });
+        });
+
+        // 提交发起表单
+        function submitInitiateForm() {
+            const selectedProducts = [];
+            document.querySelectorAll('.productItem:checked').forEach(checkbox => {
+                selectedProducts.push({ code: checkbox.dataset.code, name: checkbox.dataset.name });
+            });
+            if (selectedProducts.length === 0) { alert('请至少选择一个产品'); return; }
+            const yearCode = document.getElementById('yearCode').value.trim();
+            const contentDeadline = document.getElementById('contentDeadline').value;
+            const financialDeadline = document.getElementById('financialDeadline').value;
+            const coverDate = document.getElementById('coverDate').value;
+            if (!yearCode) { alert('请年编号'); return; }
+            if (!contentDeadline) { alert('请选择内容截止日'); return; }
+            if (!financialDeadline) { alert('请选择财报截止日'); return; }
+            if (!coverDate) { alert('请选择封面&落款日期'); return; }
+            alert(`成功发起流程！\n选中产品：${selectedProducts.map(p => p.name).join('、')}\n年编号：${yearCode}\n内容截止日：${contentDeadline}\n财报截止日：${financialDeadline}\n封面&落款日期：${coverDate}`);
+            closeInitiateModal();
+            const newRow = `
+                <tr>
+                    <td>${yearCode}年招募说明书更新${coverDate.replace(/-/g, '月')}日</td>
+                    <td>${yearCode}</td>
+                    <td>${contentDeadline}</td>
+                    <td>${financialDeadline}</td>
+                    <td>${coverDate}</td>
+                    <td><span class="status-ing">已发起</span></td>
+                    <td>
+                        <button class="btn btn-default" onclick="openLaunchDetail()">详情</button>
+                        <button class="btn btn-warn">定稿</button>
+                    </td>
+                </tr>
+            `;
+            document.querySelector('#complianceLaunch table tbody').insertAdjacentHTML('beforeend', newRow);
+        }
+
+        // ---------------------- 维护流程相关方法（原heguibu） ----------------------
+        function backComplianceIndex() {
+            document.querySelectorAll('#maintainTab > div').forEach(c => c.classList.add('hidden'));
+            document.getElementById('complianceIndex').classList.remove('hidden');
+        }
+
+        // 通用更新 页面跳转
+        function openMaintain1() {
+            document.querySelectorAll('#maintainTab > div').forEach(c => c.classList.add('hidden'));
+            document.getElementById('maintainPage1').classList.remove('hidden');
+        }
+        function submit1() {
+            alert('通用更新提交成功，生成合规审核待办');
+            document.querySelectorAll('#maintainTab > div').forEach(c => c.classList.add('hidden'));
+            document.getElementById('auditPage1').classList.remove('hidden');
+        }
+        function reject1() { openMaintain1(); }
+        function pass1() { backComplianceIndex(); alert('审核通过'); }
+
+        // 产品维度 页面跳转
+        function openMaintain2() {
+            document.querySelectorAll('#maintainTab > div').forEach(c => c.classList.add('hidden'));
+            document.getElementById('maintainPage2').classList.remove('hidden');
+        }
+        function submit2() {
+            alert('单品提交成功');
+            document.querySelectorAll('#maintainTab > div').forEach(c => c.classList.add('hidden'));
+            document.getElementById('auditPage2').classList.remove('hidden');
+        }
+        function reject2() { openMaintain2(); }
+        function pass2() { backComplianceIndex(); alert('审核通过'); }
+
+        // 批量操作（仅产品条目）
+        function batchSubmit() {
+            alert('已勾选产品条目统一提交');
+            document.getElementById('batchAudit').disabled = false;
+        }
+        function batchAudit() {
+            alert('批量审核通过，流程办结');
+            backComplianceIndex();
+        }
+        document.getElementById('checkAllPro').onchange = function () {
+            document.querySelectorAll('.pro-check').forEach(i => i.checked = this.checked);
+        }
+    </script>
+</body>
+</html>

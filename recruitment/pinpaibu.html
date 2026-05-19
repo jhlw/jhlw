@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>信披文件撰写-招募说明书（全部门最终版）</title>
+    <style>
+        * {margin: 0;padding: 0;box-sizing: border-box;font-family: "Microsoft Yahei", sans-serif;}
+        body {background: #f5f7fa;padding: 20px;}
+        .container {max-width: 1280px;margin: 0 auto;background: #fff;border-radius: 8px;box-shadow: 0 2px 12px rgba(0,0,0,0.1);overflow: hidden;}
+        .header-bar {background: #fff;padding: 16px 24px;border-bottom: 1px solid #ebeef5;display: flex;justify-content: space-between;align-items: center;}
+        .header-title {font-size: 20px;font-weight: bold;color: #303133;}
+        .header-actions,.batch-btn-group,.dept-btn-group {display: flex;gap: 12px;align-items: center;}
+        .dept-btn-group{padding:12px 24px;border-bottom:1px solid #ebeef5;flex-wrap: wrap;}
+        .btn {padding: 8px 20px;border: none;border-radius: 4px;font-size: 14px;cursor: pointer;}
+        .btn-primary {background: #4062C1;color: #fff;}
+        .btn-default {background: #fff;border: 1px solid #dcdfe6;color: #606266;}
+        .btn:disabled {opacity: 0.55;cursor: not-allowed;}
+        .info-card {background: #f5faff;margin: 20px 24px;padding: 16px;border-radius: 8px;display: grid;grid-template-columns: repeat(2, 1fr);gap: 12px;}
+        .info-item {font-size: 14px;color: #606266;}
+        .info-label {color: #909399;}
+        .step-bar {display: flex;align-items: center;margin: 20px 24px;}
+        .step-item {display: flex;align-items: center;}
+        .step-dot {width: 24px;height: 24px;border-radius: 50%;background: #4062C1;color: #fff;display: flex;align-items: center;justify-content: center;font-size: 12px;margin-right: 8px;}
+        .step-dot.unfinished {background: #e6a23c;}
+        .step-dot.pass {background: #52c41a;}
+        .step-line {width: 140px;height: 3px;background: #4062C1;margin: 0 10px;}
+        .step-line.unfinished {background: #ebeef5;}
+        .step-text {font-size: 14px;color: #303133;}
+        .form-section {margin: 20px 24px;}
+        .section-title {background: #4062C1;color: #fff;padding: 12px 16px;border-radius: 8px 8px 0 0;font-size: 16px;font-weight: 500;}
+        .form-content {border: 1px solid #ebeef5;border-top: none;padding: 20px;border-radius: 0 0 8px 8px;}
+        .form-row {margin-bottom: 20px;}
+        .form-label {display: block;font-size: 14px;color: #606266;margin-bottom: 8px;}
+        .form-input, .form-textarea {width: 100%;padding: 10px 12px;border: 1px solid #dcdfe6;border-radius: 4px;font-size: 14px;background: #f5f7fa;}
+        .form-textarea {min-height: 130px;resize: vertical;}
+        .table-box {margin-top: 20px;}
+        table {width: 100%;border-collapse: collapse;font-size: 14px;}
+        th, td {padding: 12px;text-align: center;border: 1px solid #ebeef5;}
+        th {background: #f5f7fa;color: #909399;}
+        .reject-area {margin-top: 20px;}
+        .hidden {display: none;}
+        .batch-wrap{padding:12px 24px;border-top:1px solid #ebeef5;}
+        .title-link{color:#4062C1;cursor:pointer;text-decoration:none;}
+    </style>
+</head>
+<body>
+<!-- 总首页统一入口 -->
+<div id="mainListPage" class="container">
+    <div class="header-bar"><div class="header-title">信披文件撰写 — 招募说明书</div></div>
+    <div class="dept-btn-group">
+        <button class="btn btn-default" onclick="openOfficeMaintain()">办公室</button>
+        <button class="btn btn-default" onclick="openResearchMaintain()">研究部</button>
+        <button class="btn btn-default" onclick="openMarketList()">市场部门</button>
+        <button class="btn btn-default" onclick="openInnovationList()">创新部</button>
+        <button class="btn btn-default" onclick="openFundAccountList()">基金会计部</button>
+        <button class="btn btn-default" onclick="openRiskList()">投资风险部</button>
+        <button class="btn btn-default" onclick="openBrandList()">品牌部</button>
+    </div>
+    <div class="form-section">
+        <table>
+            <thead>
+                <tr><th>更新批次标题</th><th>年编号</th><th>内容截止日</th><th>财报截止日</th><th>封面&落款日期</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><a class="title-link">2026年招募说明书统一批次更新04月24日</a></td><td>2026</td><td>2026-04-20</td><td>2026-03-31</td><td>2026-04-25</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- ########################### 品牌部 ########################### -->
+<!-- 品牌部 列表页 -->
+<div id="brandListPage" class="container hidden">
+    <div class="header-bar"><div class="header-title">信披文件撰写 — 招募说明书（品牌部）</div></div>
+    <div class="form-section">
+        <table>
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="checkAllBrand">全选</th>
+                    <th>更新标题</th>
+                    <th>年编号</th>
+                    <th>内容截止日</th>
+                    <th>财报截止日</th>
+                    <th>封面&落款日期</th>
+                    <th>状态</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="checkbox" class="item-check-brand"></td>
+                    <td><a class="title-link" onclick="openBrandMaintain()">2026年招募说明书零售产品更新04月24日</a></td>
+                    <td>2026</td><td>2026-04-20</td><td>2026-03-31</td><td>2026-04-25</td><td>待维护</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" class="item-check-brand"></td>
+                    <td><a class="title-link" onclick="openBrandMaintain()">2026年招募说明书定制产品更新04月24日</a></td>
+                    <td>2026</td><td>2026-04-20</td><td>2026-03-31</td><td>2026-04-25</td><td>待维护</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="batch-wrap">
+        <div class="batch-btn-group">
+            <button class="btn btn-primary" id="batchSubmitBrand">批量提交</button>
+            <button class="btn btn-default" id="batchAuditBrand" disabled>批量审核通过</button>
+            <span style="color:#909399;font-size:13px;">全部提交完成后审核按钮解锁</span>
+        </div>
+    </div>
+</div>
+
+<!-- 品牌部 经办维护页 -->
+<div id="brandMaintain" class="container hidden">
+    <div class="header-bar">
+        <div class="header-title">招募说明书更新 - 品牌部</div>
+        <div class="header-actions">
+            <button class="btn btn-default" onclick="backBrandList()">返回</button>
+            <button class="btn btn-primary" onclick="brandSubmit()">提交</button>
+        </div>
+    </div>
+    <div class="info-card">
+        <div class="info-item"><span class="info-label">创建人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">归属部门：</span>品牌部</div>
+        <div class="info-item"><span class="info-label">前序任务处理人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">任务到达时间：</span>2026-04-24</div>
+    </div>
+    <div class="step-bar">
+        <div class="step-item"><div class="step-dot">1</div><span class="step-text">维护招募说明书要素</span></div>
+        <div class="step-line unfinished"></div>
+        <div class="step-item"><div class="step-dot unfinished">2</div><span class="step-text">审核招募说明书要素</span></div>
+    </div>
+    <div class="form-section">
+        <div class="section-title">持有人服务信息维护</div>
+        <div class="form-content">
+            <div class="form-row">
+                <label class="form-label">本次更新内容截止日</label>
+                <input type="text" class="form-input" value="2026-04-20" readonly>
+            </div>
+            <div class="form-row">
+                <label class="form-label">财报截止日</label>
+                <input type="text" class="form-input" value="2026-03-31" readonly>
+            </div>
+            <div class="table-box">
+                <label class="form-label">本次更新涉及产品</label>
+                <table>
+                    <tr><th>基金全称</th><th>基金代码</th><th>产品类型</th></tr>
+                    <tr><td>品牌主题精选混合型基金</td><td>005588</td><td>零售公募基金</td></tr>
+                </table>
+            </div>
+            <div class="form-row">
+                <label class="form-label">对基金份额持有人的服务</label>
+                <textarea class="form-textarea" placeholder="请录入：客户咨询、对账单寄送、持仓查询、线上服务渠道、投诉处理、持有人专属活动、信息披露通知、增值服务等相关内容"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 品牌部 审核页（同经办界面） -->
+<div id="brandAudit" class="container hidden">
+    <div class="header-bar">
+        <div class="header-title">招募说明书审核 - 品牌部</div>
+        <div class="header-actions">
+            <button class="btn btn-default" onclick="backBrandList()">返回</button>
+            <button class="btn btn-default" onclick="brandReject()">退回</button>
+            <button class="btn btn-primary" onclick="brandPass()">审核通过</button>
+        </div>
+    </div>
+    <div class="info-card">
+        <div class="info-item"><span class="info-label">创建人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">归属部门：</span>品牌部</div>
+        <div class="info-item"><span class="info-label">前序任务处理人：</span>品牌部</div>
+        <div class="info-item"><span class="info-label">任务到达时间：</span>2026-04-24</div>
+    </div>
+    <div class="step-bar">
+        <div class="step-item"><div class="step-dot pass">✓</div><span class="step-text">维护招募说明书要素</span></div>
+        <div class="step-line"></div>
+        <div class="step-item"><div class="step-dot">2</div><span class="step-text">审核招募说明书要素</span></div>
+    </div>
+    <div class="form-section">
+        <div class="section-title">持有人服务信息审核</div>
+        <div class="form-content">
+            <div class="form-row">
+                <label class="form-label">本次更新内容截止日</label>
+                <input type="text" class="form-input" value="2026-04-20" readonly>
+            </div>
+            <div class="form-row">
+                <label class="form-label">财报截止日</label>
+                <input type="text" class="form-input" value="2026-03-31" readonly>
+            </div>
+            <div class="table-box">
+                <label class="form-label">本次更新涉及产品</label>
+                <table>
+                    <tr><th>基金全称</th><th>基金代码</th><th>产品类型</th></tr>
+                    <tr><td>品牌主题精选混合型基金</td><td>005588</td><td>零售公募基金</td></tr>
+                </table>
+            </div>
+            <div class="form-row">
+                <label class="form-label">对基金份额持有人的服务（已录入）</label>
+                <textarea class="form-textarea" readonly></textarea>
+            </div>
+            <div class="reject-area">
+                <label class="form-label">退回意见</label>
+                <textarea class="form-textarea" placeholder="录入问题描述、内容缺失、表述不规范等退回意见"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 其他部门容器占位 -->
+<div id="officeMaintain" class="container hidden"></div>
+<div id="researchMaintain" class="container hidden"></div>
+<div id="marketListPage" class="container hidden"></div>
+<div id="innovationListPage" class="container hidden"></div>
+<div id="fundAccountListPage" class="container hidden"></div>
+<div id="riskListPage" class="container hidden"></div>
+
+<script>
+// 公共返回
+function backMain(){document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));document.getElementById('mainListPage').classList.remove('hidden');}
+// 品牌部返回
+function backBrandList(){document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));document.getElementById('brandListPage').classList.remove('hidden');}
+
+// 部门入口
+function openOfficeMaintain(){}
+function openResearchMaintain(){}
+function openMarketList(){}
+function openInnovationList(){}
+function openFundAccountList(){}
+function openRiskList(){}
+function openBrandList(){
+    document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));
+    document.getElementById('brandListPage').classList.remove('hidden');
+}
+
+// 品牌部页面跳转
+function openBrandMaintain(){
+    document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));
+    document.getElementById('brandMaintain').classList.remove('hidden');
+}
+
+// 品牌部流程
+function brandSubmit(){
+    alert('提交成功，已生成品牌部审核待办');
+    document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));
+    document.getElementById('brandAudit').classList.remove('hidden');
+    document.getElementById('batchAuditBrand').disabled = false;
+}
+function brandReject(){openBrandMaintain();}
+function brandPass(){backBrandList();}
+
+// 品牌部批量操作
+document.getElementById('batchSubmitBrand').onclick = function(){
+    alert('已勾选多条信息统一提交至审核');
+    document.getElementById('batchAuditBrand').disabled = false;
+}
+document.getElementById('batchAuditBrand').onclick = function(){
+    alert('已勾选多条信息统一审核通过');
+    backBrandList();
+}
+document.getElementById('checkAllBrand').onchange = function(){
+    document.querySelectorAll('.item-check-brand').forEach(i=>i.checked = this.checked);
+}
+</script>
+</body>
+</html>

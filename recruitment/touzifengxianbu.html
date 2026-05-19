@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>信披文件撰写 - 招募说明书（全部门完整版）</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+        body {
+            background: #f5f7fa;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header-bar {
+            background: #fff;
+            padding: 16px 24px;
+            border-bottom: 1px solid #ebeef5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #303133;
+        }
+        .header-actions,.batch-btn-group,.dept-btn-group {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .dept-btn-group{
+            padding:12px 24px;
+            border-bottom:1px solid #ebeef5;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background: #4062C1;
+            color: #fff;
+        }
+        .btn-default {
+            background: #fff;
+            border: 1px solid #dcdfe6;
+            color: #606266;
+        }
+        .btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+        .info-card {
+            background: #f5faff;
+            margin: 20px 24px;
+            padding: 16px;
+            border-radius: 8px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .info-item {
+            font-size: 14px;
+            color: #606266;
+        }
+        .info-label {
+            color: #909399;
+        }
+        .step-bar {
+            display: flex;
+            align-items: center;
+            margin: 20px 24px;
+        }
+        .step-item {
+            display: flex;
+            align-items: center;
+        }
+        .step-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #4062C1;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            margin-right: 8px;
+        }
+        .step-dot.unfinished {
+            background: #e6a23c;
+        }
+        .step-dot.pass {
+            background: #52c41a;
+        }
+        .step-line {
+            width: 140px;
+            height: 3px;
+            background: #4062C1;
+            margin: 0 10px;
+        }
+        .step-line.unfinished {
+            background: #ebeef5;
+        }
+        .step-text {
+            font-size: 14px;
+            color: #303133;
+        }
+        .form-section {
+            margin: 20px 24px;
+        }
+        .section-title {
+            background: #4062C1;
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 8px 8px 0 0;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .form-content {
+            border: 1px solid #ebeef5;
+            border-top: none;
+            padding: 20px;
+            border-radius: 0 0 8px 8px;
+        }
+        .form-row {
+            margin-bottom: 20px;
+        }
+        .form-label {
+            display: block;
+            font-size: 14px;
+            color: #606266;
+            margin-bottom: 8px;
+        }
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #dcdfe6;
+            border-radius: 4px;
+            font-size: 14px;
+            background: #f5f7fa;
+        }
+        .form-textarea {
+            min-height: 130px;
+            resize: vertical;
+        }
+        .table-box {
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ebeef5;
+        }
+        th {
+            background: #f5f7fa;
+            color: #909399;
+        }
+        .reject-area {
+            margin-top: 20px;
+        }
+        .hidden {
+            display: none;
+        }
+        .batch-wrap{
+            padding:12px 24px;
+            border-top:1px solid #ebeef5;
+        }
+        .title-link{
+            color:#4062C1;
+            cursor:pointer;
+            text-decoration:none;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 总首页：信披文件撰写—招募说明书 统一入口 -->
+<div id="mainListPage" class="container">
+    <div class="header-bar">
+        <div class="header-title">信披文件撰写 — 招募说明书</div>
+    </div>
+    <div class="dept-btn-group">
+        <button class="btn btn-default" onclick="openOfficeMaintain()">办公室</button>
+        <button class="btn btn-default" onclick="openResearchMaintain()">研究部</button>
+        <button class="btn btn-default" onclick="openMarketList()">市场部门</button>
+        <button class="btn btn-default" onclick="openInnovationList()">创新部</button>
+        <button class="btn btn-default" onclick="openFundAccountList()">基金会计部</button>
+        <button class="btn btn-default" onclick="openRiskList()">投资风险部</button>
+    </div>
+    <div class="form-section">
+        <table>
+            <thead>
+                <tr>
+                    <th>更新批次标题</th>
+                    <th>年编号</th>
+                    <th>内容截止日</th>
+                    <th>财报截止日</th>
+                    <th>封面&落款日期</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a class="title-link">2026年招募说明书统一批次更新04月24日</a></td>
+                    <td>2026</td>
+                    <td>2026-04-20</td>
+                    <td>2026-03-31</td>
+                    <td>2026-04-25</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- ########################### 投资风险部 【新增】########################### -->
+<!-- 投资风险部-列表页 -->
+<div id="riskListPage" class="container hidden">
+    <div class="header-bar">
+        <div class="header-title">信披文件撰写 — 招募说明书（投资风险部）</div>
+    </div>
+    <div class="form-section">
+        <table>
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="checkAllRisk">全选</th>
+                    <th>更新标题</th>
+                    <th>年编号</th>
+                    <th>内容截止日</th>
+                    <th>财报截止日</th>
+                    <th>封面&落款日期</th>
+                    <th>状态</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="checkbox" class="item-check-risk"></td>
+                    <td><a class="title-link" onclick="openRiskMaintain()">2026年招募说明书权益类产品更新04月24日</a></td>
+                    <td>2026</td>
+                    <td>2026-04-20</td>
+                    <td>2026-03-31</td>
+                    <td>2026-04-25</td>
+                    <td>待维护</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" class="item-check-risk"></td>
+                    <td><a class="title-link" onclick="openRiskMaintain()">2026年招募说明书固收+产品更新04月24日</a></td>
+                    <td>2026</td>
+                    <td>2026-04-20</td>
+                    <td>2026-03-31</td>
+                    <td>2026-04-25</td>
+                    <td>待维护</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="batch-wrap">
+        <div class="batch-btn-group">
+            <button class="btn btn-primary" id="batchSubmitRisk">批量提交</button>
+            <button class="btn btn-default" id="batchAuditRisk" disabled>批量审核通过</button>
+            <span style="color:#909399;font-size:13px;">全部提交完成后审核按钮解锁</span>
+        </div>
+    </div>
+</div>
+
+<!-- 投资风险部-经办维护页 -->
+<div id="riskMaintain" class="container hidden">
+    <div class="header-bar">
+        <div class="header-title">招募说明书更新 - 投资风险部</div>
+        <div class="header-actions">
+            <button class="btn btn-default" onclick="backRiskList()">返回</button>
+            <button class="btn btn-primary" onclick="riskSubmit()">提交</button>
+        </div>
+    </div>
+    <div class="info-card">
+        <div class="info-item"><span class="info-label">创建人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">归属部门：</span>投资风险部</div>
+        <div class="info-item"><span class="info-label">前序任务处理人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">任务到达时间：</span>2026-04-24</div>
+    </div>
+    <div class="step-bar">
+        <div class="step-item"><div class="step-dot">1</div><span class="step-text">维护招募说明书要素</span></div>
+        <div class="step-line unfinished"></div>
+        <div class="step-item"><div class="step-dot unfinished">2</div><span class="step-text">审核招募说明书要素</span></div>
+    </div>
+    <div class="form-section">
+        <div class="section-title">基金业绩信息维护</div>
+        <div class="form-content">
+            <div class="form-row">
+                <label class="form-label">本次更新内容截止日</label>
+                <input type="text" class="form-input" value="2026-04-20" readonly>
+            </div>
+            <div class="form-row">
+                <label class="form-label">财报截止日</label>
+                <input type="text" class="form-input" value="2026-03-31" readonly>
+            </div>
+            <div class="table-box">
+                <label class="form-label">本次更新涉及产品</label>
+                <table>
+                    <tr><th>基金全称</th><th>基金代码</th><th>风险等级</th></tr>
+                    <tr><td>混合型权益精选基金</td><td>003366</td><td>R4</td></tr>
+                </table>
+            </div>
+            <div class="form-row">
+                <label class="form-label">基金业绩信息（必填）</label>
+                <textarea class="form-textarea" placeholder="请录入产品历史业绩、近1月/3月/6月/近1年/成立以来收益率、业绩比较基准走势、阶段收益表现、业绩波动情况等内容"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 投资风险部-审核页面（同经办界面） -->
+<div id="riskAudit" class="container hidden">
+    <div class="header-bar">
+        <div class="header-title">招募说明书审核 - 投资风险部</div>
+        <div class="header-actions">
+            <button class="btn btn-default" onclick="backRiskList()">返回</button>
+            <button class="btn btn-default" onclick="riskReject()">退回</button>
+            <button class="btn btn-primary" onclick="riskPass()">审核通过</button>
+        </div>
+    </div>
+    <div class="info-card">
+        <div class="info-item"><span class="info-label">创建人：</span>风险合规部</div>
+        <div class="info-item"><span class="info-label">归属部门：</span>投资风险部</div>
+        <div class="info-item"><span class="info-label">前序任务处理人：</span>投资风险部</div>
+        <div class="info-item"><span class="info-label">任务到达时间：</span>2026-04-24</div>
+    </div>
+    <div class="step-bar">
+        <div class="step-item"><div class="step-dot pass">✓</div><span class="step-text">维护招募说明书要素</span></div>
+        <div class="step-line"></div>
+        <div class="step-item"><div class="step-dot">2</div><span class="step-text">审核招募说明书要素</span></div>
+    </div>
+    <div class="form-section">
+        <div class="section-title">基金业绩信息审核</div>
+        <div class="form-content">
+            <div class="form-row">
+                <label class="form-label">本次更新内容截止日</label>
+                <input type="text" class="form-input" value="2026-04-20" readonly>
+            </div>
+            <div class="form-row">
+                <label class="form-label">财报截止日</label>
+                <input type="text" class="form-input" value="2026-03-31" readonly>
+            </div>
+            <div class="table-box">
+                <label class="form-label">本次更新涉及产品</label>
+                <table>
+                    <tr><th>基金全称</th><th>基金代码</th><th>风险等级</th></tr>
+                    <tr><td>混合型权益精选基金</td><td>003366</td><td>R4</td></tr>
+                </table>
+            </div>
+            <div class="form-row">
+                <label class="form-label">基金业绩信息（已录入）</label>
+                <textarea class="form-textarea" readonly></textarea>
+            </div>
+            <div class="reject-area">
+                <label class="form-label">退回意见</label>
+                <textarea class="form-textarea" placeholder="录入问题说明、数据错误、内容缺失等意见，退回至经办修改"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 其他部门容器（保留不重复代码） -->
+<div id="officeMaintain" class="container hidden"></div>
+<div id="researchMaintain" class="container hidden"></div>
+<div id="marketListPage" class="container hidden"></div>
+<div id="innovationListPage" class="container hidden"></div>
+<div id="fundAccountListPage" class="container hidden"></div>
+
+<script>
+// 公共返回
+function backMain(){
+    document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));
+    document.getElementById('mainListPage').classList.remove('hidden');
+}
+// 投资风险部 返回列表
+function backRiskList(){
+    document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));
+    document.getElementById('riskListPage').classList.remove('hidden');
+}
+
+// 全部门入口跳转
+function openOfficeMaintain(){document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));document.getElementById('officeMaintain').classList.remove('hidden');}
+function openResearchMaintain(){document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));document.getElementById('researchMaintain').classList.remove('hidden');}
+function openMarketList(){document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));document.getElementById('marketListPage').classList.remove('hidden');}
+function openInnovationList(){document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));document.getElementById('innovationListPage').classList.remove('hidden');}
+function openFundAccountList(){document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));document.getElementById('fundAccountListPage').classList.remove('hidden');}
+function openRiskList(){
+    document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));
+    document.getElementById('riskListPage').classList.remove('hidden');
+}
+
+// 投资风险部 页面跳转
+function openRiskMaintain(){
+    document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));
+    document.getElementById('riskMaintain').classList.remove('hidden');
+}
+
+// 投资风险部 业务流程
+function riskSubmit(){
+    alert('提交成功，已生成投资风险部审核待办');
+    document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));
+    document.getElementById('riskAudit').classList.remove('hidden');
+    document.getElementById('batchAuditRisk').disabled = false;
+}
+function riskReject(){
+    openRiskMaintain();
+}
+function riskPass(){
+    backRiskList();
+}
+
+// 投资风险部 批量操作
+document.getElementById('batchSubmitRisk').onclick = function(){
+    alert('已勾选多条信息，统一提交至审核');
+    document.getElementById('batchAuditRisk').disabled = false;
+}
+document.getElementById('batchAuditRisk').onclick = function(){
+    alert('已勾选多条信息，统一审核通过');
+    backRiskList();
+}
+document.getElementById('checkAllRisk').onchange = function(){
+    document.querySelectorAll('.item-check-risk').forEach(item=>item.checked = this.checked);
+}
+</script>
+
+</body>
+</html>
