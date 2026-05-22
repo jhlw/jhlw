@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>业绩比较基准指数管理</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; background: #f0f2f5; color: #333; }
+.container { padding: 20px; max-width: 1400px; margin: 0 auto; }
+
+/* 查询区域 */
+.search-card {
+  background: #fff; border-radius: 4px; padding: 20px 24px 8px;
+  margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+.search-card .form-row {
+  display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 12px;
+}
+.search-card .form-item {
+  display: flex; align-items: center; gap: 8px;
+}
+.search-card .form-item label {
+  white-space: nowrap; font-size: 14px; color: #606266;
+}
+.search-card input, .search-card select {
+  width: 180px; height: 32px; border: 1px solid #dcdfe6; border-radius: 4px;
+  padding: 0 12px; font-size: 14px; outline: none;
+}
+.search-card input:focus, .search-card select:focus { border-color: #409eff; }
+.search-card .btn-row { display: flex; gap: 10px; }
+
+/* 按钮 */
+.btn { height: 32px; padding: 0 20px; border-radius: 4px; font-size: 14px;
+  cursor: pointer; border: 1px solid; display: inline-flex; align-items: center;
+  gap: 4px; transition: all 0.2s; }
+.btn-primary { background: #409eff; color: #fff; border-color: #409eff; }
+.btn-primary:hover { background: #66b1ff; border-color: #66b1ff; }
+.btn-success { background: #67c23a; color: #fff; border-color: #67c23a; }
+.btn-success:hover { background: #85ce61; border-color: #85ce61; }
+.btn-warning { background: #e6a23c; color: #fff; border-color: #e6a23c; }
+.btn-warning:hover { background: #ebb563; border-color: #ebb563; }
+.btn-danger { background: #f56c6c; color: #fff; border-color: #f56c6c; }
+.btn-danger:hover { background: #f78989; border-color: #f78989; }
+.btn-default { background: #fff; color: #606266; border-color: #dcdfe6; }
+.btn-default:hover { color: #409eff; border-color: #c6e2ff; background: #ecf5ff; }
+.btn-text { background: none; border: none; color: #409eff; padding: 0 8px;
+  cursor: pointer; font-size: 13px; }
+.btn-text:hover { color: #66b1ff; }
+.btn-text.danger { color: #f56c6c; }
+.btn-text.danger:hover { color: #f78989; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* 表格 */
+.table-card {
+  background: #fff; border-radius: 4px; padding: 20px 24px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+.table-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 16px;
+}
+.table-header h3 { font-size: 16px; font-weight: 600; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { background: #f5f7fa; color: #909399; font-weight: 500; padding: 12px 10px;
+  text-align: left; border-bottom: 1px solid #ebeef5; font-size: 13px; }
+td { padding: 12px 10px; border-bottom: 1px solid #ebeef5; color: #606266; }
+tr:hover td { background: #f5f7fa; }
+.col-actions { width: 180px; }
+
+/* 模态框遮罩 */
+.modal-overlay {
+  display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.45); z-index: 1000; justify-content: center;
+  align-items: flex-start; padding-top: 60px;
+}
+.modal-overlay.active { display: flex; }
+.modal { background: #fff; border-radius: 8px; width: 800px; max-height: 80vh;
+  display: flex; flex-direction: column; box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  animation: slideDown 0.25s ease; }
+.modal.wide { width: 960px; }
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.modal-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 24px; border-bottom: 1px solid #ebeef5;
+}
+.modal-header h3 { font-size: 16px; font-weight: 600; }
+.modal-close {
+  background: none; border: none; font-size: 20px; cursor: pointer;
+  color: #909399; line-height: 1;
+}
+.modal-close:hover { color: #303133; }
+.modal-body { padding: 24px; overflow-y: auto; flex: 1; }
+.modal-footer {
+  display: flex; justify-content: flex-end; gap: 10px;
+  padding: 12px 24px; border-top: 1px solid #ebeef5;
+}
+
+/* 表单 */
+.form-group { margin-bottom: 16px; display: flex; align-items: flex-start; }
+.form-group label {
+  width: 130px; text-align: right; padding-right: 12px; line-height: 32px;
+  font-size: 14px; color: #606266; flex-shrink: 0;
+}
+.form-group label.required::before { content: '*'; color: #f56c6c; margin-right: 4px; }
+.form-control {
+  flex: 1; height: 32px; border: 1px solid #dcdfe6; border-radius: 4px;
+  padding: 0 12px; font-size: 14px; outline: none;
+}
+.form-control:focus { border-color: #409eff; }
+textarea.form-control {
+  height: 72px; padding: 8px 12px; resize: vertical; line-height: 1.6;
+}
+select.form-control { cursor: pointer; }
+
+/* 子表 */
+.sub-table-wrapper {
+  flex: 1; border: 1px solid #ebeef5; border-radius: 4px; overflow: hidden;
+}
+.sub-table-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 12px; background: #fafafa; border-bottom: 1px solid #ebeef5;
+}
+.sub-table-header span { font-size: 13px; color: #909399; }
+.sub-table table { font-size: 13px; }
+.sub-table th { font-size: 12px; padding: 8px 6px; }
+.sub-table td { font-size: 13px; padding: 8px 6px; }
+.sub-table .col-actions { width: 120px; }
+
+/* 数据源查询弹窗 */
+.ds-search-bar {
+  display: flex; gap: 10px; margin-bottom: 16px; align-items: center;
+}
+.ds-search-bar input { width: 200px; }
+.ds-table-wrapper { max-height: 300px; overflow-y: auto; border: 1px solid #ebeef5;
+  border-radius: 4px; }
+
+/* 主数据源标签 */
+.tag { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 12px; }
+.tag-primary { background: #ecf5ff; color: #409eff; border: 1px solid #d9ecff; }
+.tag-backup  { background: #f0f9eb; color: #67c23a; border: 1px solid #e1f3d8; }
+.tag-foreign { background: #fdf6ec; color: #e6a23c; border: 1px solid #faecd8; }
+.tag-domestic{ background: #f4f4f5; color: #909399; border: 1px solid #e9e9eb; }
+
+.empty-tip { text-align: center; color: #c0c4cc; padding: 24px 0; font-size: 13px; }
+
+.pagination { display: flex; justify-content: flex-end; align-items: center;
+  padding-top: 16px; gap: 8px; font-size: 13px; color: #606266; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ========== 查询区域 ========== -->
+<div class="search-card">
+  <div class="form-row">
+    <div class="form-item">
+      <label>指数编码：</label>
+      <input type="text" id="sCode" placeholder="请输入指数编码">
+    </div>
+    <div class="form-item">
+      <label>指数名称：</label>
+      <input type="text" id="sName" placeholder="请输入指数名称">
+    </div>
+    <div class="form-item">
+      <label>是否外盘指数：</label>
+      <select id="sForeign">
+        <option value="">全部</option>
+        <option value="1">是</option>
+        <option value="0">否</option>
+      </select>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="doSearch()">🔍 查询</button>
+      <button class="btn btn-default" onclick="doReset()">↻ 重置</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 结果表格 ========== -->
+<div class="table-card">
+  <div class="table-header">
+    <h3>业绩比较基准指数列表</h3>
+    <button class="btn btn-primary" onclick="openAddModal()">+ 新增指数</button>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>指数编码</th>
+        <th>指数名称</th>
+        <th>是否为外盘指数</th>
+        <th>计价币种</th>
+        <th>主数据源</th>
+        <th>维护人</th>
+        <th class="col-actions">操作</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+  <div class="pagination">
+    <span>共 <b id="totalCount">0</b> 条</span>
+  </div>
+</div>
+
+</div>
+
+<!-- ========== 新增/修改 模态框 ========== -->
+<div class="modal-overlay" id="editModalOverlay">
+  <div class="modal wide">
+    <div class="modal-header">
+      <h3 id="editModalTitle">新增指数</h3>
+      <button class="modal-close" onclick="closeEditModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="required">指数编码：</label>
+        <input type="text" class="form-control" id="eCode" placeholder="系统自动生成" disabled>
+      </div>
+      <div class="form-group">
+        <label class="required">指数名称：</label>
+        <input type="text" class="form-control" id="eName" placeholder="请输入指数名称">
+      </div>
+      <div class="form-group">
+        <label class="required">计价币种：</label>
+        <select class="form-control" id="eCurrency">
+          <option value="">请选择币种</option>
+          <option value="CNY">CNY 人民币</option>
+          <option value="USD">USD 美元</option>
+          <option value="HKD">HKD 港币</option>
+          <option value="EUR">EUR 欧元</option>
+          <option value="GBP">GBP 英镑</option>
+          <option value="JPY">JPY 日元</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="required">是否外盘指数：</label>
+        <select class="form-control" id="eForeign">
+          <option value="0">否</option>
+          <option value="1">是</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>指数说明：</label>
+        <textarea class="form-control" id="eDesc" placeholder="请输入指数说明"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="required">数据来源：</label>
+        <div class="sub-table-wrapper">
+          <div class="sub-table-header">
+            <span>⚠ 同一指数需配置主数据源和备用数据源（双数据源）才可保存</span>
+            <button class="btn btn-success" style="height:28px;padding:0 12px;font-size:12px"
+                    onclick="openDsSelector()">+ 添加数据来源</button>
+          </div>
+          <div class="sub-table" style="min-height:80px">
+            <table>
+              <thead>
+                <tr>
+                  <th>数据来源名称</th>
+                  <th>指数名称</th>
+                  <th>指数编码</th>
+                  <th>数据源类别</th>
+                  <th class="col-actions">操作</th>
+                </tr>
+              </thead>
+              <tbody id="dsTableBody">
+                <tr><td colspan="5"><div class="empty-tip">暂未添加数据来源，请点击"添加数据来源"</div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-default" onclick="closeEditModal()">取消</button>
+      <button class="btn btn-primary" onclick="saveIndex()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 数据来源选择 模态框 ========== -->
+<div class="modal-overlay" id="dsSelectorOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>选择数据来源</h3>
+      <button class="modal-close" onclick="closeDsSelector()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="ds-search-bar">
+        <input type="text" class="form-control" id="dsKeyword" placeholder="数据来源名称 / 指数编码 / 指数名称">
+        <button class="btn btn-primary" onclick="searchDs()">查询</button>
+      </div>
+      <div class="ds-table-wrapper">
+        <table>
+          <thead>
+            <tr><th style="width:40px">选择</th><th>数据来源名称</th><th>指数名称</th><th>指数编码</th></tr>
+          </thead>
+          <tbody id="dsSelectBody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer" style="justify-content:space-between">
+      <span style="font-size:12px;color:#909399">默认万得(Wind)为主数据源，新增的第一个来源自动设为主数据源</span>
+      <div>
+        <button class="btn btn-default" onclick="closeDsSelector()">取消</button>
+        <button class="btn btn-primary" onclick="confirmDsSelection()">确认选择</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ==================== 模拟数据 ====================
+let dataSourceLib = [
+  { id: 1, dsName: '万得(Wind)',      idxCode: '000300', idxName: '沪深300指数' },
+  { id: 2, dsName: '万得(Wind)',      idxCode: '000905', idxName: '中证500指数' },
+  { id: 3, dsName: '万得(Wind)',      idxCode: '000852', idxName: '中证1000指数' },
+  { id: 4, dsName: '万得(Wind)',      idxCode: 'HSI',    idxName: '恒生指数' },
+  { id: 5, dsName: '万得(Wind)',      idxCode: 'SPX',    idxName: '标普500指数' },
+  { id: 6, dsName: '彭博(Bloomberg)', idxCode: '000300', idxName: '沪深300指数' },
+  { id: 7, dsName: '彭博(Bloomberg)', idxCode: 'SPX',    idxName: '标普500指数' },
+  { id: 8, dsName: '路透(Reuters)',   idxCode: '000300', idxName: '沪深300指数' },
+  { id: 9, dsName: '路透(Reuters)',   idxCode: 'HSI',    idxName: '恒生指数' },
+  { id: 10, dsName: 'CEIC',           idxCode: '000905', idxName: '中证500指数' },
+  { id: 11, dsName: 'Wind',           idxCode: 'IXIC',   idxName: '纳斯达克综合指数' },
+  { id: 12, dsName: 'Bloomberg',      idxCode: 'IXIC',   idxName: '纳斯达克综合指数' },
+];
+
+let indexList = [
+  { code: 'IDX202405001', name: '沪深300指数',          foreign: false, currency: 'CNY',
+    maintainer: '张三', dsList: [
+      { dsName: '万得(Wind)',      idxCode: '000300', idxName: '沪深300指数', type: 'main' },
+      { dsName: '彭博(Bloomberg)', idxCode: '000300', idxName: '沪深300指数', type: 'backup' },
+    ]},
+  { code: 'IDX202405002', name: '中证500指数',          foreign: false, currency: 'CNY',
+    maintainer: '张三', dsList: [
+      { dsName: '万得(Wind)', idxCode: '000905', idxName: '中证500指数', type: 'main' },
+      { dsName: 'CEIC',      idxCode: '000905', idxName: '中证500指数', type: 'backup' },
+    ]},
+  { code: 'IDX202405003', name: '恒生指数',            foreign: true,  currency: 'HKD',
+    maintainer: '李四', dsList: [
+      { dsName: '万得(Wind)',    idxCode: 'HSI', idxName: '恒生指数', type: 'main' },
+      { dsName: '路透(Reuters)', idxCode: 'HSI', idxName: '恒生指数', type: 'backup' },
+    ]},
+  { code: 'IDX202405004', name: '标普500指数',          foreign: true,  currency: 'USD',
+    maintainer: '李四', dsList: [
+      { dsName: '万得(Wind)',      idxCode: 'SPX', idxName: '标普500指数', type: 'main' },
+      { dsName: '彭博(Bloomberg)', idxCode: 'SPX', idxName: '标普500指数', type: 'backup' },
+    ]},
+];
+
+// 按索引名称模拟已存在于某基金方案中的指数
+let fundBindings = {
+  'IDX202405001': '华夏成长混合A',
+};
+
+let nextCodeId = 5;
+let editingCode = null;   // 编辑中的指数编码
+let tmpDsList = [];       // 编辑过程中临时数据来源列表
+let selectedDsIds = new Set(); // 数据源选择弹窗中选中的id
+
+// ==================== 查询功能 ====================
+function renderTable(data) {
+  let tbody = document.getElementById('tableBody');
+  if (!data.length) {
+    tbody.innerHTML = '<tr><td colspan="7"><div class="empty-tip">暂无数据</div></td></tr>';
+  } else {
+    tbody.innerHTML = data.map(row => `
+      <tr>
+        <td>${row.code}</td>
+        <td>${row.name}</td>
+        <td>${row.foreign ? '<span class="tag tag-foreign">是</span>'
+                            : '<span class="tag tag-domestic">否</span>'}</td>
+        <td>${row.currency}</td>
+        <td>${getMainDs(row)}</td>
+        <td>${row.maintainer}</td>
+        <td class="col-actions">
+          <button class="btn-text" onclick="openEditModal('${row.code}')">✎ 修改</button>
+          <button class="btn-text danger" onclick="deleteIndex('${row.code}')">✕ 删除</button>
+        </td>
+      </tr>
+    `).join('');
+  }
+  document.getElementById('totalCount').textContent = data.length;
+}
+
+function getMainDs(row) {
+  let main = row.dsList.find(d => d.type === 'main');
+  return main ? main.dsName : '-';
+}
+
+function doSearch() {
+  let code = document.getElementById('sCode').value.trim().toLowerCase();
+  let name = document.getElementById('sName').value.trim().toLowerCase();
+  let foreign = document.getElementById('sForeign').value;
+
+  let result = indexList.filter(row => {
+    if (code && !row.code.toLowerCase().includes(code)) return false;
+    if (name && !row.name.toLowerCase().includes(name)) return false;
+    if (foreign !== '' && row.foreign !== (foreign === '1')) return false;
+    return true;
+  });
+  renderTable(result);
+}
+
+function doReset() {
+  document.getElementById('sCode').value = '';
+  document.getElementById('sName').value = '';
+  document.getElementById('sForeign').value = '';
+  renderTable(indexList);
+}
+
+// ==================== 新增 ====================
+function openAddModal() {
+  editingCode = null;
+  document.getElementById('editModalTitle').textContent = '新增指数';
+  document.getElementById('eCode').value = '系统自动生成';
+  document.getElementById('eName').value = '';
+  document.getElementById('eCurrency').value = '';
+  document.getElementById('eForeign').value = '0';
+  document.getElementById('eDesc').value = '';
+  tmpDsList = [];
+  renderDsSubTable();
+  document.getElementById('editModalOverlay').classList.add('active');
+}
+
+// ==================== 修改 ====================
+function openEditModal(code) {
+  let row = indexList.find(r => r.code === code);
+  if (!row) return;
+  editingCode = code;
+  document.getElementById('editModalTitle').textContent = '修改指数';
+  document.getElementById('eCode').value = row.code;
+  document.getElementById('eName').value = row.name;
+  document.getElementById('eCurrency').value = row.currency;
+  document.getElementById('eForeign').value = row.foreign ? '1' : '0';
+  document.getElementById('eDesc').value = row.desc || '';
+  tmpDsList = JSON.parse(JSON.stringify(row.dsList));
+  renderDsSubTable();
+  document.getElementById('editModalOverlay').classList.add('active');
+}
+
+function closeEditModal() {
+  document.getElementById('editModalOverlay').classList.remove('active');
+}
+
+// ==================== 数据来源子表渲染 ====================
+function renderDsSubTable() {
+  let tbody = document.getElementById('dsTableBody');
+  if (!tmpDsList.length) {
+    tbody.innerHTML = '<tr><td colspan="5"><div class="empty-tip">暂未添加数据来源，请点击"添加数据来源"</div></td></tr>';
+  } else {
+    tbody.innerHTML = tmpDsList.map((d, i) => `
+      <tr>
+        <td>${d.dsName}</td>
+        <td>${d.idxName}</td>
+        <td>${d.idxCode}</td>
+        <td>
+          <select class="form-control" style="height:26px;padding:0 8px;font-size:12px;width:90px"
+                  onchange="changeDsType(${i}, this.value)">
+            <option value="main" ${d.type==='main'?'selected':''}>主数据源</option>
+            <option value="backup" ${d.type==='backup'?'selected':''}>备用数据源</option>
+          </select>
+        </td>
+        <td class="col-actions">
+          <button class="btn-text danger" onclick="removeDs(${i})">删除</button>
+        </td>
+      </tr>
+    `).join('');
+  }
+}
+
+function changeDsType(i, val) {
+  if (val === 'main') {
+    // 将其他主数据源改为备用
+    tmpDsList.forEach((d, j) => { if (j !== i) d.type = 'backup'; });
+  }
+  tmpDsList[i].type = val;
+  renderDsSubTable();
+}
+
+function removeDs(i) {
+  tmpDsList.splice(i, 1);
+  renderDsSubTable();
+}
+
+// ==================== 数据来源选择弹窗 ====================
+function openDsSelector() {
+  selectedDsIds.clear();
+  document.getElementById('dsKeyword').value = '';
+  renderDsSelectTable(dataSourceLib);
+  document.getElementById('dsSelectorOverlay').classList.add('active');
+}
+
+function closeDsSelector() {
+  document.getElementById('dsSelectorOverlay').classList.remove('active');
+}
+
+function searchDs() {
+  let kw = document.getElementById('dsKeyword').value.trim().toLowerCase();
+  if (!kw) { renderDsSelectTable(dataSourceLib); return; }
+  let result = dataSourceLib.filter(d =>
+    d.dsName.toLowerCase().includes(kw) ||
+    d.idxCode.toLowerCase().includes(kw) ||
+    d.idxName.toLowerCase().includes(kw)
+  );
+  renderDsSelectTable(result);
+}
+
+function renderDsSelectTable(data) {
+  let tbody = document.getElementById('dsSelectBody');
+  if (!data.length) {
+    tbody.innerHTML = '<tr><td colspan="4"><div class="empty-tip">无匹配数据来源</div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = data.map(d => `
+    <tr>
+      <td><input type="checkbox" ${selectedDsIds.has(d.id)?'checked':''}
+                 onchange="toggleDsSelect(${d.id}, this.checked)"></td>
+      <td>${d.dsName}</td>
+      <td>${d.idxName}</td>
+      <td>${d.idxCode}</td>
+    </tr>
+  `).join('');
+}
+
+function toggleDsSelect(id, checked) {
+  if (checked) selectedDsIds.add(id); else selectedDsIds.delete(id);
+}
+
+function confirmDsSelection() {
+  if (selectedDsIds.size === 0) {
+    alert('请至少选择一个数据来源'); return;
+  }
+  selectedDsIds.forEach(id => {
+    let ds = dataSourceLib.find(d => d.id === id);
+    if (ds) {
+      // 避免重复添加同数据源+同指数编码的组合
+      let exists = tmpDsList.find(d =>
+        d.dsName === ds.dsName && d.idxCode === ds.idxCode
+      );
+      if (!exists) {
+        let type = 'backup';
+        // 如果当前列表为空且是万得 -> 自动设为主数据源
+        if (tmpDsList.length === 0 && ds.dsName.includes('Wind')) {
+          type = 'main';
+        }
+        tmpDsList.push({
+          dsName: ds.dsName,
+          idxCode: ds.idxCode,
+          idxName: ds.idxName,
+          type: type
+        });
+      }
+    }
+  });
+  // 确保只有一个主数据源，默认万得为主
+  let hasMain = tmpDsList.some(d => d.type === 'main');
+  if (!hasMain && tmpDsList.length > 0) {
+    let windIdx = tmpDsList.findIndex(d => d.dsName.includes('Wind'));
+    if (windIdx >= 0) {
+      tmpDsList[windIdx].type = 'main';
+    } else {
+      tmpDsList[0].type = 'main';
+    }
+  }
+  renderDsSubTable();
+  closeDsSelector();
+}
+
+// ==================== 保存 ====================
+function saveIndex() {
+  let name = document.getElementById('eName').value.trim();
+  let currency = document.getElementById('eCurrency').value;
+  let foreign = document.getElementById('eForeign').value;
+  let desc = document.getElementById('eDesc').value.trim();
+
+  if (!name) { alert('请输入指数名称'); return; }
+  if (!currency) { alert('请选择计价币种'); return; }
+
+  // 校验双数据源
+  let hasMain = tmpDsList.some(d => d.type === 'main');
+  let hasBackup = tmpDsList.some(d => d.type === 'backup');
+  if (tmpDsList.length < 2 || !hasMain || !hasBackup) {
+    alert('请配置主数据源和备用数据源（至少各一个），才可保存！');
+    return;
+  }
+
+  if (!editingCode) {
+    // 新增
+    let code = 'IDX' + new Date().getFullYear() +
+      String(new Date().getMonth() + 1).padStart(2, '0') +
+      String(nextCodeId).padStart(3, '0');
+    nextCodeId++;
+    indexList.push({
+      code, name, foreign: foreign === '1', currency, desc,
+      maintainer: '当前用户',
+      dsList: JSON.parse(JSON.stringify(tmpDsList))
+    });
+  } else {
+    // 修改
+    let row = indexList.find(r => r.code === editingCode);
+    if (row) {
+      row.name = name;
+      row.foreign = foreign === '1';
+      row.currency = currency;
+      row.desc = desc;
+      row.dsList = JSON.parse(JSON.stringify(tmpDsList));
+    }
+  }
+
+  closeEditModal();
+  renderTable(indexList);
+}
+
+// ==================== 删除 ====================
+function deleteIndex(code) {
+  let row = indexList.find(r => r.code === code);
+  if (!row) return;
+
+  // 检查是否被某个基金的业绩比较基准方案使用
+  if (fundBindings[code]) {
+    alert('【' + row.name + '】已被【' + fundBindings[code] + '】业绩比较基准方案使用，不能删除。');
+    return;
+  }
+
+  if (!confirm('确定要删除【' + row.name + '】吗？此操作不可撤销。')) return;
+  indexList = indexList.filter(r => r.code !== code);
+  renderTable(indexList);
+}
+
+// ==================== 初始化 ====================
+document.getElementById('editModalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeEditModal();
+});
+document.getElementById('dsSelectorOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeDsSelector();
+});
+
+renderTable(indexList);
+</script>
+</body>
+</html>
