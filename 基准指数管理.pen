@@ -1253,6 +1253,7 @@
         {
           "type": "frame",
           "id": "qsL5E",
+          "name": "Frame",
           "width": 800,
           "fill": "#FFFFFF",
           "cornerRadius": 8,
@@ -2216,6 +2217,7 @@
                 {
                   "type": "text",
                   "id": "siZGw",
+                  "name": "✕",
                   "fill": "#909399",
                   "content": "✕",
                   "fontFamily": "Inter",
@@ -2227,6 +2229,7 @@
             {
               "type": "frame",
               "id": "Khr4n",
+              "name": "Frame",
               "width": "fill_container",
               "layout": "vertical",
               "gap": 16,
