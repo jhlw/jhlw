@@ -14,8 +14,6 @@
         body {
             background-color: #f5f7fa;
         }
-
-        /* 顶部主区域 */
         .header-top {
             background-color: #ffffff;
             padding: 20px 24px;
@@ -75,8 +73,6 @@
             font-size: 18px;
             cursor: pointer;
         }
-
-        /* 流程信息卡片 */
         .process-info-card {
             background-color: #f5f9ff;
             border-radius: 12px;
@@ -94,8 +90,6 @@
         .process-info-card p .gray-text {
             color: #999;
         }
-
-        /* 流程步骤条 */
         .process-step-bar {
             display: flex;
             align-items: center;
@@ -136,8 +130,6 @@
             font-size: 18px;
             cursor: pointer;
         }
-
-        /* 主内容区域 */
         .content {
             padding: 20px 24px;
             background-color: white;
@@ -183,14 +175,11 @@
             background-color: #f5f7fa;
             color: #666;
         }
-
-        /* 规则列表容器 - 修复按钮重叠 */
         .rule-list-wrap {
             margin: 0 15px;
             position: relative;
             margin-top: 10px;
         }
-        /* 新增开放规则按钮 */
         .btn-add-top {
             margin-bottom: 8px;
             background-color: #1377EB;
@@ -227,7 +216,6 @@
             font-weight: normal;
             color: #666;
         }
-        /* 操作按钮样式 */
         .opt-btn {
             border: none;
             background: none;
@@ -244,8 +232,6 @@
         .del-btn {
             color: #F56C6C;
         }
-
-        /* 开放期信息区域 */
         .open-period-area {
             margin: 15px;
             border: 1px solid #e4e7ed;
@@ -276,19 +262,14 @@
         .open-period-btns button:hover {
             background-color: #f5f7fa;
         }
-        /* 表格滚动 */
         .table-wrapper {
             overflow-x: auto;
         }
-
-        /* 多选框样式 */
         .multi-select {
             height: auto;
             min-height: 32px;
             padding: 4px 8px;
         }
-
-        /* 弹窗 */
         .modal {
             position: fixed;
             top: 0;
@@ -348,7 +329,6 @@
 </head>
 <body>
 
-<!-- 顶部区域 -->
 <div class="header-top">
     <div class="header-title-bar">
         <h1>专户开放申赎</h1>
@@ -366,7 +346,6 @@
         </div>
     </div>
 
-    <!-- 流程信息卡片 -->
     <div class="process-info-card">
         <div>
             <p>创建人：专户产品运维经理姓名</p>
@@ -380,7 +359,6 @@
         </div>
     </div>
 
-    <!-- 流程步骤条 -->
     <div class="process-step-bar">
         <div class="step-item">
             <div class="step-box active">录入开放期信息</div>
@@ -404,9 +382,7 @@
     </div>
 </div>
 
-<!-- 主内容区域 -->
 <div class="content">
-    <!-- 产品基本信息 -->
     <div class="form-section">
         <div class="section-header">产品基本信息</div>
         <div class="form-grid">
@@ -437,7 +413,6 @@
         </div>
     </div>
 
-    <!-- 开放规则 -->
     <div class="form-section">
         <div class="section-header">开放规则</div>
         <div class="form-grid">
@@ -454,7 +429,6 @@
             <div class="form-item"></div>
         </div>
 
-        <!-- 规则列表区域 -->
         <div class="rule-list-wrap">
             <button class="btn-add-top" onclick="openModal()">新增开放规则</button>
 
@@ -476,7 +450,6 @@
                 </table>
             </div>
 
-            <!-- 开放期信息区域（新增） -->
             <div class="open-period-area">
                 <div class="open-period-header">开放期信息</div>
                 <div class="open-period-btns">
@@ -510,7 +483,6 @@
     </div>
 </div>
 
-<!-- 新增开放规则弹窗 -->
 <div class="modal" id="ruleModal">
     <div class="modal-content">
         <div class="modal-header">
@@ -519,6 +491,7 @@
         </div>
         <div class="modal-body">
             <div class="checkbox-group">
+                <span>开放类型：</span>
                 <label><input type="checkbox" id="buy"> 开放申购</label>
                 <label><input type="checkbox" id="redeem"> 开放赎回</label>
             </div>
@@ -535,26 +508,14 @@
                     </div>
                     <div class="form-item">
                         <label>计算公式类型</label>
-                        <select id="f_type" disabled>
-                            <option value="产品成立对日">产品成立对日</option>
-                            <option value="指定月份">指定月份</option>
-                            <option value="指定周期">指定周期</option>
+                        <select id="f_type" disabled onchange="checkFirstTerm()">
+                            <option value="开放期起始日对日">开放期起始日对日</option>
+                            <option value="指定周数">指定周数</option>
+                            <option value="指定日期">指定日期</option>
                         </select>
                     </div>
                     <div class="form-item">
-                        <label>封闭期起始基准日</label>
-                        <select id="f_base" disabled>
-                            <option value="产品成立日">产品成立日</option>
-                        </select>
-                    </div>
-                    <div class="form-item">
-                        <label>封闭期限类型</label>
-                        <select id="f_term" disabled>
-                            <option value="首次封闭期限">首次封闭期限</option>
-                        </select>
-                    </div>
-                    <div class="form-item">
-                        <label>封闭期限类型单位</label>
+                        <label>封闭期限</label>
                         <select id="f_unit" disabled>
                             <option value="">请选择</option>
                             <option>一个月</option>
@@ -567,20 +528,7 @@
                     </div>
                     <div class="form-item">
                         <label>指定月份</label>
-                        <select id="f_month" class="multi-select" multiple disabled>
-                            <option value="1">1月</option>
-                            <option value="2">2月</option>
-                            <option value="3">3月</option>
-                            <option value="4">4月</option>
-                            <option value="5">5月</option>
-                            <option value="6">6月</option>
-                            <option value="7">7月</option>
-                            <option value="8">8月</option>
-                            <option value="9">9月</option>
-                            <option value="10">10月</option>
-                            <option value="11">11月</option>
-                            <option value="12">12月</option>
-                        </select>
+                        <input type="text" id="f_month" disabled>
                     </div>
                     <div class="form-item">
                         <label>指定周数</label>
@@ -623,26 +571,13 @@
                     <div class="form-item">
                         <label>计算公式类型</label>
                         <select id="s_type" disabled onchange="checkSecondTerm()">
-                            <option value="首次开放期起始日对日">首次开放期起始日对日</option>
-                            <option value="指定月份，指定周数">指定月份，指定周数</option>
+                            <option value="开放期起始日对日">开放期起始日对日</option>
+                            <option value="指定月份、指定周数">指定月份、指定周数</option>
                             <option value="指定日期">指定日期</option>
                         </select>
                     </div>
                     <div class="form-item">
-                        <label>开放期起始基准日</label>
-                        <select id="s_base" disabled onchange="checkSecondTerm()">
-                            <option value="首个开放期起始日">首个开放期起始日</option>
-                        </select>
-                    </div>
-                    <div class="form-item">
-                        <label>封闭期限类型</label>
-                        <select id="s_term" disabled>
-                            <option value="">请选择</option>
-                            <option>非首次封闭期限</option>
-                        </select>
-                    </div>
-                    <div class="form-item">
-                        <label>封闭期限类型单位</label>
+                        <label>封闭期限</label>
                         <select id="s_unit" disabled>
                             <option value="">请选择</option>
                             <option>一个月</option>
@@ -655,20 +590,7 @@
                     </div>
                     <div class="form-item">
                         <label>指定月份</label>
-                        <select id="s_month" class="multi-select" multiple disabled>
-                            <option value="1">1月</option>
-                            <option value="2">2月</option>
-                            <option value="3">3月</option>
-                            <option value="4">4月</option>
-                            <option value="5">5月</option>
-                            <option value="6">6月</option>
-                            <option value="7">7月</option>
-                            <option value="8">8月</option>
-                            <option value="9">9月</option>
-                            <option value="10">10月</option>
-                            <option value="11">11月</option>
-                            <option value="12">12月</option>
-                        </select>
+                        <input type="text" id="s_month" disabled>
                     </div>
                     <div class="form-item">
                         <label>指定周数</label>
@@ -711,29 +633,16 @@
                     <div class="form-item">
                         <label>计算公式类型</label>
                         <select id="l_type" disabled onchange="checkLongTerm()">
-                            <option value="滚动期限，上一开放起始日对日">滚动期限，上一开放起始日对日</option>
-                            <option value="滚动期限，指定周数">滚动期限，指定周数</option>
-                            <option value="滚动期限，指定日期">滚动期限，指定日期</option>
-                            <option value="指定月份，不指定">指定月份，不指定</option>
-                            <option value="指定月份，指定周数">指定月份，指定周数</option>
+                            <option value="开放期起始日对日">开放期起始日对日</option>
+                            <option value="指定周数">指定周数</option>
+                            <option value="指定日期">指定日期</option>
+                            <option value="指定月份，对日">指定月份，对日</option>
+                            <option value="指定月份、指定周数">指定月份、指定周数</option>
                             <option value="指定月份，指定日期">指定月份，指定日期</option>
                         </select>
                     </div>
                     <div class="form-item">
-                        <label>开放期起始基准日</label>
-                        <select id="l_base" disabled onchange="checkLongTerm()">
-                            <option value="上一个开放期起始日">上一个开放期起始日</option>
-                        </select>
-                    </div>
-                    <div class="form-item">
-                        <label>封闭期限类型</label>
-                        <select id="l_term" disabled>
-                            <option value="">请选择</option>
-                            <option>非首次封闭期限</option>
-                        </select>
-                    </div>
-                    <div class="form-item">
-                        <label>封闭期限类型单位</label>
+                        <label>封闭期限</label>
                         <select id="l_unit" disabled>
                             <option value="">请选择</option>
                             <option>一个月</option>
@@ -746,20 +655,7 @@
                     </div>
                     <div class="form-item">
                         <label>指定月份</label>
-                        <select id="l_month" class="multi-select" multiple disabled>
-                            <option value="1">1月</option>
-                            <option value="2">2月</option>
-                            <option value="3">3月</option>
-                            <option value="4">4月</option>
-                            <option value="5">5月</option>
-                            <option value="6">6月</option>
-                            <option value="7">7月</option>
-                            <option value="8">8月</option>
-                            <option value="9">9月</option>
-                            <option value="10">10月</option>
-                            <option value="11">11月</option>
-                            <option value="12">12月</option>
-                        </select>
+                        <input type="text" id="l_month" disabled>
                     </div>
                     <div class="form-item">
                         <label>指定周数</label>
@@ -800,7 +696,6 @@
     let ruleIndex = 1;
     let periodIndex = 1;
 
-    // 打开弹窗
     function openModal(){ 
         document.getElementById('ruleModal').style.display='flex'; 
         document.getElementById('buy').checked = false;
@@ -810,91 +705,160 @@
         document.getElementById('s_use').value = '否'; toggleSecond('否');
         document.getElementById('l_use').value = '否'; toggleLong('否');
     }
-    // 关闭弹窗
     function closeModal(){ document.getElementById('ruleModal').style.display='none'; }
     
-    // ==============================================
-    // 首次封闭期（严格按规则）
-    // ==============================================
     function toggleFirst(v){ 
         let dis = v === '否';
         document.getElementById('f_type').disabled = dis;
-        document.getElementById('f_base').disabled = dis;
-        document.getElementById('f_term').disabled = dis;
         document.getElementById('f_unit').disabled = dis;
         document.getElementById('f_month').disabled = dis;
         document.getElementById('f_week').disabled = dis;
         document.getElementById('f_weekday').disabled = dis;
         document.getElementById('f_day').disabled = dis;
         document.getElementById('f_endtype').disabled = dis;
+        
+        if (!dis) {
+            checkFirstTerm();
+        }
     }
 
-    // ==============================================
-    // 第二次封闭期（严格按规则）
-    // ==============================================
+    function checkFirstTerm() {
+        let type = document.getElementById('f_type').value;
+        resetFirstFields();
+        
+        switch(type) {
+            case '开放期起始日对日':
+                document.getElementById('f_unit').disabled = false;
+                document.getElementById('f_endtype').disabled = false;
+                document.getElementById('f_endtype').value = '对日';
+                break;
+            case '指定周数':
+                document.getElementById('f_unit').disabled = false;
+                document.getElementById('f_week').disabled = false;
+                document.getElementById('f_weekday').disabled = false;
+                break;
+            case '指定日期':
+                document.getElementById('f_unit').disabled = false;
+                document.getElementById('f_day').disabled = false;
+                break;
+        }
+    }
+
+    function resetFirstFields() {
+        document.getElementById('f_unit').disabled = true;
+        document.getElementById('f_month').disabled = true;
+        document.getElementById('f_week').disabled = true;
+        document.getElementById('f_weekday').disabled = true;
+        document.getElementById('f_day').disabled = true;
+        document.getElementById('f_endtype').disabled = true;
+    }
+
     function toggleSecond(v){ 
         let dis = v === '否';
         document.getElementById('s_type').disabled = dis;
-        document.getElementById('s_base').disabled = dis;
-        document.getElementById('s_term').disabled = dis;
         document.getElementById('s_unit').disabled = dis;
         document.getElementById('s_month').disabled = dis;
         document.getElementById('s_week').disabled = dis;
         document.getElementById('s_weekday').disabled = dis;
         document.getElementById('s_day').disabled = dis;
         document.getElementById('s_endtype').disabled = dis;
-        checkSecondTerm();
-    }
-
-    function checkSecondTerm(){
-        let type = document.getElementById('s_type').value;
-        let base = document.getElementById('s_base').value;
-        let disable = (type === '指定月份，指定周数' && base === '首个开放期起始日');
         
-        document.getElementById('s_term').disabled = disable;
-        document.getElementById('s_unit').disabled = disable;
-        if(disable){
-            document.getElementById('s_term').value = '';
-            document.getElementById('s_unit').value = '';
+        if (!dis) {
+            checkSecondTerm();
         }
     }
 
-    // ==============================================
-    // 存续封闭期（严格按规则）
-    // ==============================================
+    function checkSecondTerm() {
+        let type = document.getElementById('s_type').value;
+        resetSecondFields();
+        
+        switch(type) {
+            case '开放期起始日对日':
+                document.getElementById('s_unit').disabled = false;
+                document.getElementById('s_endtype').disabled = false;
+                document.getElementById('s_endtype').value = '对日';
+                break;
+            case '指定月份、指定周数':
+                document.getElementById('s_month').disabled = false;
+                document.getElementById('s_week').disabled = false;
+                document.getElementById('s_weekday').disabled = false;
+                break;
+            case '指定日期':
+                document.getElementById('s_unit').disabled = false;
+                document.getElementById('s_day').disabled = false;
+                break;
+        }
+    }
+
+    function resetSecondFields() {
+        document.getElementById('s_unit').disabled = true;
+        document.getElementById('s_month').disabled = true;
+        document.getElementById('s_week').disabled = true;
+        document.getElementById('s_weekday').disabled = true;
+        document.getElementById('s_day').disabled = true;
+        document.getElementById('s_endtype').disabled = true;
+    }
+
     function toggleLong(v){ 
         let dis = v === '否';
         document.getElementById('l_type').disabled = dis;
-        document.getElementById('l_base').disabled = dis;
-        document.getElementById('l_term').disabled = dis;
         document.getElementById('l_unit').disabled = dis;
         document.getElementById('l_month').disabled = dis;
         document.getElementById('l_week').disabled = dis;
         document.getElementById('l_weekday').disabled = dis;
         document.getElementById('l_day').disabled = dis;
         document.getElementById('l_endtype').disabled = dis;
-        checkLongTerm();
-    }
-
-    function checkLongTerm(){
-        let type = document.getElementById('l_type').value;
-        let base = document.getElementById('l_base').value;
-        let limitTypes = [
-            '指定月份，不指定',
-            '指定月份，指定周数',
-            '指定月份，指定日期'
-        ];
-        let disable = (limitTypes.includes(type) && base === '上一个开放期起始日');
         
-        document.getElementById('l_term').disabled = disable;
-        document.getElementById('l_unit').disabled = disable;
-        if(disable){
-            document.getElementById('l_term').value = '';
-            document.getElementById('l_unit').value = '';
+        if (!dis) {
+            checkLongTerm();
         }
     }
 
-    // 保存开放规则
+    function checkLongTerm() {
+        let type = document.getElementById('l_type').value;
+        resetLongFields();
+        
+        switch(type) {
+            case '开放期起始日对日':
+                document.getElementById('l_unit').disabled = false;
+                document.getElementById('l_endtype').disabled = false;
+                document.getElementById('l_endtype').value = '对日';
+                break;
+            case '指定周数':
+                document.getElementById('l_unit').disabled = false;
+                document.getElementById('l_week').disabled = false;
+                document.getElementById('l_weekday').disabled = false;
+                break;
+            case '指定日期':
+                document.getElementById('l_unit').disabled = false;
+                document.getElementById('l_day').disabled = false;
+                break;
+            case '指定月份，对日':
+                document.getElementById('l_month').disabled = false;
+                document.getElementById('l_endtype').disabled = false;
+                document.getElementById('l_endtype').value = '对日';
+                break;
+            case '指定月份、指定周数':
+                document.getElementById('l_month').disabled = false;
+                document.getElementById('l_week').disabled = false;
+                document.getElementById('l_weekday').disabled = false;
+                break;
+            case '指定月份，指定日期':
+                document.getElementById('l_month').disabled = false;
+                document.getElementById('l_day').disabled = false;
+                break;
+        }
+    }
+
+    function resetLongFields() {
+        document.getElementById('l_unit').disabled = true;
+        document.getElementById('l_month').disabled = true;
+        document.getElementById('l_week').disabled = true;
+        document.getElementById('l_weekday').disabled = true;
+        document.getElementById('l_day').disabled = true;
+        document.getElementById('l_endtype').disabled = true;
+    }
+
     function saveRule(){
         let type = [];
         if(document.getElementById('buy').checked) type.push('开放申购');
@@ -920,7 +884,6 @@
         closeModal();
     }
     
-    // 开放规则操作
     function viewRule(obj){ alert('查看开放规则'); }
     function editRule(obj){ alert('修改开放规则'); }
     function delRule(obj){ 
@@ -930,15 +893,8 @@
         rows.forEach((row, i) => { row.querySelector('td:first-child').textContent = i+1; ruleIndex = i+2; });
     }
 
-    // 开放期信息 - 生成首期
-    function generateFirst(){
-        addPeriodData('首期');
-    }
-    // 开放期信息 - 生成下期
-    function generateNext(){
-        addPeriodData('下期');
-    }
-    // 添加开放期数据
+    function generateFirst(){ addPeriodData('首期'); }
+    function generateNext(){ addPeriodData('下期'); }
     function addPeriodData(type){
         let tr = `<tr>
             <td>${periodIndex++}</td>
@@ -959,7 +915,6 @@
         </tr>`;
         document.getElementById('periodTableBody').innerHTML += tr;
     }
-    // 开放期操作
     function editPeriod(obj){ alert('修改开放期信息'); }
     function delPeriod(obj){ 
         obj.parentElement.parentElement.remove();
