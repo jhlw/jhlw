@@ -1,0 +1,17 @@
+{
+  "name": "ai-news",
+  "version": "1.0.0",
+  "description": "AI新闻聚合CLI工具 — 从TechCrunch/The Verge/Hacker News抓取AI相关文章，输出Markdown日报",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.100.1",
+    "rss-parser": "^3.13.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}
