@@ -645,16 +645,10 @@
                 <div class="bg-white p-5 rounded-b-lg">
                     <form id="recalculateForm" onsubmit="submitStep1(event)">
                         <div class="mb-6">
-                            <div class="flex flex-col">
-                                <label class="text-sm text-gray-700 mb-2 font-medium">交易日期 <span class="text-danger">*</span></label>
-                                <input type="date" id="recalcTradeDate" class="border rounded px-3 py-2 text-sm w-full bg-gray-100" required>
-                            </div>
-                        </div>
-                        <div class="mb-6">
                             <div class="flex justify-between items-center mb-3">
                                 <label class="text-sm text-gray-700 font-medium">指数点位信息 <span class="text-danger">*</span></label>
                                 <div class="flex gap-2">
-                                    <button type="button" onclick="openIndexSelectModal()" class="px-3 py-1 bg-primary/10 text-primary rounded text-sm flex items-center gap-1">
+                                    <button type="button" onclick="addBlankIndexRow()" class="px-3 py-1 bg-primary/10 text-primary rounded text-sm flex items-center gap-1">
                                         <i class="fa fa-plus"></i> 添加指数
                                     </button>
                                     <button type="button" onclick="batchImportIndex()" class="px-3 py-1 bg-success/10 text-success rounded text-sm flex items-center gap-1">
@@ -666,28 +660,27 @@
                                 <table class="w-full text-sm" id="indexPointsTable">
                                     <thead>
                                         <tr class="border-b border-gray-200 bg-gray-50">
-                                            <th class="text-left py-2 px-2 text-gray-500 w-1/4">指数代码</th>
-                                            <th class="text-left py-2 px-2 text-gray-500 w-1/4">指数名称</th>
-                                            <th class="text-right py-2 px-2 text-gray-500 w-1/4">重新获取点位</th>
-                                            <th class="text-right py-2 px-2 text-gray-500 w-1/4">手工录入点位</th>
+                                            <th class="text-left py-2 px-2 text-gray-500 w-1/5">交易日期</th>
+                                            <th class="text-left py-2 px-2 text-gray-500 w-1/5">指数代码</th>
+                                            <th class="text-left py-2 px-2 text-gray-500 w-1/5">指数名称</th>
+                                            <th class="text-right py-2 px-2 text-gray-500 w-1/5">手工录入点位</th>
                                             <th class="text-center py-2 px-2 text-gray-500 w-12">操作</th>
                                         </tr>
                                     </thead>
                                     <tbody id="indexPointsBody">
                                         <tr class="border-b border-gray-100">
                                             <td class="py-2 px-2">
+                                                <input type="date" class="border rounded px-2 py-1 text-sm w-full index-trade-date">
+                                            </td>
+                                            <td class="py-2 px-2">
                                                 <select class="border rounded px-2 py-1 text-sm w-full index-code" onchange="updateIndexName(this)">
+                                                    <option value="">请选择</option>
                                                     <option value="HS300">HS300</option>
                                                     <option value="ZZ500">ZZ500</option>
                                                     <option value="ZBZH">ZBZH</option>
                                                 </select>
                                             </td>
-                                            <td class="py-2 px-2 index-name">沪深300指数</td>
-                                            <td class="py-2 px-2 text-right">
-                                                <button type="button" onclick="fetchIndexPoint(this)" class="px-2 py-1 bg-wande/10 text-wande rounded text-xs">
-                                                    <i class="fa fa-download"></i> 获取
-                                                </button>
-                                            </td>
+                                            <td class="py-2 px-2 index-name"></td>
                                             <td class="py-2 px-2 text-right">
                                                 <input type="number" step="0.0001" class="border rounded px-2 py-1 text-sm w-full index-point" placeholder="0.0000">
                                             </td>
@@ -700,7 +693,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <p class="text-xs text-gray-500">注：手工录入点位优先级高于重新获取的点位，填写后将使用该值进行重算</p>
+                            <p class="text-xs text-gray-500">注：请手工录入指数收盘点位，填写后将使用该值进行重算</p>
                         </div>
                         <div class="flex flex-col mb-6">
                             <label class="text-sm text-gray-700 mb-2 font-medium">重算原因 <span class="text-danger">*</span></label>
@@ -782,16 +775,10 @@
                 <div class="bg-white p-5 rounded-b-lg">
                     <form id="rateForm" onsubmit="submitRate(event)">
                         <div class="mb-6">
-                            <div class="flex flex-col">
-                                <label class="text-sm text-gray-700 mb-2 font-medium">交易日期 <span class="text-danger">*</span></label>
-                                <input type="date" id="rateTradeDateVal" class="border rounded px-3 py-2 text-sm w-full bg-gray-100" required>
-                            </div>
-                        </div>
-                        <div class="mb-6">
                             <div class="flex justify-between items-center mb-3">
                                 <label class="text-sm text-gray-700 font-medium">汇率信息 <span class="text-danger">*</span></label>
                                 <div class="flex gap-2">
-                                    <button type="button" onclick="openCurrencySelectModal()" class="px-3 py-1 bg-primary/10 text-primary rounded text-sm flex items-center gap-1">
+                                    <button type="button" onclick="addBlankRateRow()" class="px-3 py-1 bg-primary/10 text-primary rounded text-sm flex items-center gap-1">
                                         <i class="fa fa-plus"></i> 添加货币对
                                     </button>
                                     <button type="button" onclick="batchImportRate()" class="px-3 py-1 bg-success/10 text-success rounded text-sm flex items-center gap-1">
@@ -803,28 +790,22 @@
                                 <table class="w-full text-sm" id="rateTable">
                                     <thead>
                                         <tr class="border-b border-gray-200 bg-gray-50">
-                                            <th class="text-left py-2 px-2 text-gray-500 w-1/4">货币对</th>
-                                            <th class="text-left py-2 px-2 text-gray-500 w-1/4">货币对名称</th>
-                                            <th class="text-right py-2 px-2 text-gray-500 w-1/4">重新获取汇率</th>
-                                            <th class="text-right py-2 px-2 text-gray-500 w-1/4">手工录入汇率</th>
+                                            <th class="text-left py-2 px-2 text-gray-500 w-1/5">交易日期</th>
+                                            <th class="text-left py-2 px-2 text-gray-500 w-1/5">外币代码</th>
+                                            <th class="text-left py-2 px-2 text-gray-500 w-1/5">货币对名称</th>
+                                            <th class="text-right py-2 px-2 text-gray-500 w-1/5">手工录入汇率</th>
                                             <th class="text-center py-2 px-2 text-gray-500 w-12">操作</th>
                                         </tr>
                                     </thead>
                                     <tbody id="rateBody">
                                         <tr class="border-b border-gray-100">
                                             <td class="py-2 px-2">
-                                                <select class="border rounded px-2 py-1 text-sm w-full currency-code" onchange="updateCurrencyName(this)">
-                                                    <option value="USD/CNY">USD/CNY</option>
-                                                    <option value="EUR/CNY">EUR/CNY</option>
-                                                    <option value="HKD/CNY">HKD/CNY</option>
-                                                </select>
+                                                <input type="date" class="border rounded px-2 py-1 text-sm w-full rate-trade-date">
                                             </td>
-                                            <td class="py-2 px-2 currency-name">美元兑人民币</td>
-                                            <td class="py-2 px-2 text-right">
-                                                <button type="button" onclick="fetchRate(this)" class="px-2 py-1 bg-wande/10 text-wande rounded text-xs">
-                                                    <i class="fa fa-download"></i> 获取
-                                                </button>
+                                            <td class="py-2 px-2">
+                                                <input type="text" class="border rounded px-2 py-1 text-sm w-full currency-code" placeholder="如：USD" maxlength="3" oninput="updateCurrencyName(this)">
                                             </td>
+                                            <td class="py-2 px-2 currency-name"></td>
                                             <td class="py-2 px-2 text-right">
                                                 <input type="number" step="0.0001" class="border rounded px-2 py-1 text-sm w-full rate-value" placeholder="0.0000">
                                             </td>
@@ -837,7 +818,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <p class="text-xs text-gray-500">注：手工录入汇率优先级高于重新获取的汇率，填写后将使用该值</p>
+                            <p class="text-xs text-gray-500">注：请手工录入汇率，输入外币代码后将自动显示中文名称</p>
                         </div>
                     </form>
                 </div>
@@ -913,7 +894,6 @@
             modal.classList.remove("hidden");
             modal.style.display = "flex";
             document.getElementById("recalculateForm").reset();
-            document.getElementById("recalcTradeDate").value = new Date().toISOString().split('T')[0];
             const now = new Date();
             const createTime = now.toLocaleString().replace(/\//g, '.').replace(' ', ' ');
             const taskTime = new Date(now.getTime() + 24 * 60 * 60 * 1000).toLocaleString().replace(/\//g, '.').replace(' ', ' ');
@@ -936,7 +916,6 @@
             modal.classList.remove("hidden");
             modal.style.display = "flex";
             document.getElementById("rateForm").reset();
-            document.getElementById("rateTradeDateVal").value = new Date().toISOString().split('T')[0];
             const now = new Date();
             const createTime = now.toLocaleString().replace(/\//g, '.').replace(' ', ' ');
             const taskTime = new Date(now.getTime() + 24 * 60 * 60 * 1000).toLocaleString().replace(/\//g, '.').replace(' ', ' ');
@@ -1526,6 +1505,36 @@
             alert('汇率数据导出功能已触发');
         }
 
+        // 新增空白指数行
+        function addBlankIndexRow() {
+            const tbody = document.getElementById('indexPointsBody');
+            const tr = document.createElement('tr');
+            tr.className = 'border-b border-gray-100';
+            tr.innerHTML = `
+                <td class="py-2 px-2">
+                    <input type="date" class="border rounded px-2 py-1 text-sm w-full index-trade-date">
+                </td>
+                <td class="py-2 px-2">
+                    <select class="border rounded px-2 py-1 text-sm w-full index-code" onchange="updateIndexName(this)">
+                        <option value="">请选择</option>
+                        <option value="HS300">HS300</option>
+                        <option value="ZZ500">ZZ500</option>
+                        <option value="ZBZH">ZBZH</option>
+                    </select>
+                </td>
+                <td class="py-2 px-2 index-name"></td>
+                <td class="py-2 px-2 text-right">
+                    <input type="number" step="0.0001" class="border rounded px-2 py-1 text-sm w-full index-point" placeholder="0.0000">
+                </td>
+                <td class="py-2 px-2 text-center">
+                    <button type="button" onclick="removeIndexRow(this)" class="text-danger text-xs">
+                        <i class="fa fa-trash"></i> 删除
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        }
+
         // 指数选择弹窗逻辑
         function openIndexSelectModal() {
             const listEl = document.getElementById('indexCheckList');
@@ -1566,16 +1575,14 @@
                 tr.className = 'border-b border-gray-100';
                 tr.innerHTML = `
                     <td class="py-2 px-2">
+                        <input type="date" class="border rounded px-2 py-1 text-sm w-full index-trade-date">
+                    </td>
+                    <td class="py-2 px-2">
                         <select class="border rounded px-2 py-1 text-sm w-full index-code" disabled>
                             <option value="${code}" selected>${code}</option>
                         </select>
                     </td>
                     <td class="py-2 px-2 index-name">${name}</td>
-                    <td class="py-2 px-2 text-right">
-                        <button type="button" onclick="fetchIndexPoint(this)" class="px-2 py-1 bg-wande/10 text-wande rounded text-xs">
-                            <i class="fa fa-download"></i> 获取
-                        </button>
-                    </td>
                     <td class="py-2 px-2 text-right">
                         <input type="number" step="0.0001" class="border rounded px-2 py-1 text-sm w-full index-point" placeholder="0.0000">
                     </td>
@@ -1590,16 +1597,55 @@
             closeIndexSelectModal();
         }
 
+        // 外币代码→中文名称映射
+        const currencyCodeName = {
+            'USD': '美元兑人民币',
+            'EUR': '欧元兑人民币',
+            'HKD': '港币兑人民币',
+            'JPY': '日元兑人民币',
+            'GBP': '英镑兑人民币',
+            'AUD': '澳元兑人民币',
+            'CAD': '加元兑人民币',
+            'CHF': '瑞郎兑人民币',
+            'SGD': '新元兑人民币',
+            'KRW': '韩元兑人民币'
+        };
+
+        // 新增空白汇率行
+        function addBlankRateRow() {
+            const tbody = document.getElementById('rateBody');
+            const tr = document.createElement('tr');
+            tr.className = 'border-b border-gray-100';
+            tr.innerHTML = `
+                <td class="py-2 px-2">
+                    <input type="date" class="border rounded px-2 py-1 text-sm w-full rate-trade-date">
+                </td>
+                <td class="py-2 px-2">
+                    <input type="text" class="border rounded px-2 py-1 text-sm w-full currency-code" placeholder="如：USD" maxlength="3" oninput="updateCurrencyName(this)">
+                </td>
+                <td class="py-2 px-2 currency-name"></td>
+                <td class="py-2 px-2 text-right">
+                    <input type="number" step="0.0001" class="border rounded px-2 py-1 text-sm w-full rate-value" placeholder="0.0000">
+                </td>
+                <td class="py-2 px-2 text-center">
+                    <button type="button" onclick="removeRateRow(this)" class="text-danger text-xs">
+                        <i class="fa fa-trash"></i> 删除
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        }
+
         // 货币对选择弹窗
         function openCurrencySelectModal() {
             const listEl = document.getElementById('currencyCheckList');
             listEl.innerHTML = '';
             const existCodes = [];
-            document.querySelectorAll('#rateBody .currency-code').forEach(sel => {
-                existCodes.push(sel.value);
+            document.querySelectorAll('#rateBody .currency-code').forEach(input => {
+                existCodes.push(input.value.toUpperCase());
             });
-            Object.keys(currencyBasic).forEach(code => {
-                const name = currencyBasic[code].name;
+            Object.keys(currencyCodeName).forEach(code => {
+                const name = currencyCodeName[code];
                 const disabled = existCodes.includes(code) ? 'disabled' : '';
                 const item = document.createElement('div');
                 item.className = 'flex items-center gap-2 py-2 border-b';
@@ -1624,22 +1670,18 @@
             }
             checks.forEach(check => {
                 const code = check.value;
-                const name = currencyBasic[code].name;
+                const name = currencyCodeName[code];
                 const tbody = document.getElementById('rateBody');
                 const tr = document.createElement('tr');
                 tr.className = 'border-b border-gray-100';
                 tr.innerHTML = `
                     <td class="py-2 px-2">
-                        <select class="border rounded px-2 py-1 text-sm w-full currency-code" disabled>
-                            <option value="${code}" selected>${code}</option>
-                        </select>
+                        <input type="date" class="border rounded px-2 py-1 text-sm w-full rate-trade-date">
+                    </td>
+                    <td class="py-2 px-2">
+                        <input type="text" class="border rounded px-2 py-1 text-sm w-full currency-code" value="${code}" maxlength="3" oninput="updateCurrencyName(this)">
                     </td>
                     <td class="py-2 px-2 currency-name">${name}</td>
-                    <td class="py-2 px-2 text-right">
-                        <button type="button" onclick="fetchRate(this)" class="px-2 py-1 bg-wande/10 text-wande rounded text-xs">
-                            <i class="fa fa-download"></i> 获取
-                        </button>
-                    </td>
                     <td class="py-2 px-2 text-right">
                         <input type="number" step="0.0001" class="border rounded px-2 py-1 text-sm w-full rate-value" placeholder="0.0000">
                     </td>
@@ -1688,7 +1730,7 @@
         function fetchIndexPoint(el) {
             const tr = el.closest('tr');
             const code = tr.querySelector('.index-code').value;
-            const date = document.getElementById('recalcTradeDate').value;
+            const date = tr.querySelector('.index-trade-date').value;
             const pointInput = tr.querySelector('.index-point');
             const point = indexDataSource[date]?.[code]?.confirmedValue || Math.random() * 10000;
             pointInput.value = point.toFixed(4);
@@ -1696,10 +1738,11 @@
         }
         function fetchRate(el) {
             const tr = el.closest('tr');
-            const code = tr.querySelector('.currency-code').value;
-            const date = document.getElementById('rateTradeDateVal').value;
+            const code = tr.querySelector('.currency-code').value.toUpperCase();
+            const date = tr.querySelector('.rate-trade-date').value;
             const rateInput = tr.querySelector('.rate-value');
-            const rate = rateDataSource[date]?.[code]?.confirmedValue || (7 + Math.random()).toFixed(4);
+            const pairCode = code + '/CNY';
+            const rate = rateDataSource[date]?.[pairCode]?.confirmedValue || (7 + Math.random()).toFixed(4);
             rateInput.value = rate;
             alert(`已获取汇率：${rate}`);
         }
@@ -1707,10 +1750,13 @@
             const tr = el.closest('tr');
             tr.querySelector('.index-name').textContent = indexBasic[el.value].name;
         }
-        // 自动带出货币对名称
+        // 自动带出货币对名称（根据外币代码）
         function updateCurrencyName(el) {
             const tr = el.closest('tr');
-            tr.querySelector('.currency-name').textContent = currencyBasic[el.value].name;
+            const code = el.value.toUpperCase();
+            el.value = code;
+            const name = currencyCodeName[code] || (code ? code + '/CNY' : '');
+            tr.querySelector('.currency-name').textContent = name;
         }
         function exportIndexPoint() {
             alert('指数点位导出功能已触发');
