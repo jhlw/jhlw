@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基金产品画像系统 - 专业投资分析平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
+    <style>
+        :root {
+            --primary-blue: #1a365d;
+            --secondary-gray: #2d3748;
+            --accent-gold: #d69e2e;
+            --success-green: #38a169;
+            --warning-orange: #dd6b20;
+            --danger-red: #e53e3e;
+            --info-blue: #3182ce;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #0f1419 0%, #1a202c 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        
+        .hero-bg {
+            background: url('./resources/hero-bg.png') center/cover;
+            position: relative;
+        }
+        
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(26, 54, 93, 0.3);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+        }
+        
+        .fund-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .fund-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .filter-tag {
+            background: var(--accent-gold);
+            color: #1a202c;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .positive {
+            color: var(--success-green);
+        }
+        
+        .negative {
+            color: var(--danger-red);
+        }
+        
+        .nav-link {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: var(--accent-gold);
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent-gold);
+        }
+        
+        .stats-card {
+            background: linear-gradient(135deg, rgba(214, 158, 46, 0.1) 0%, rgba(26, 54, 93, 0.1) 100%);
+        }
+        
+        .loading-skeleton {
+            background: linear-gradient(90deg, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-gray-900/90 backdrop-blur-md border-b border-gray-700/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-8">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-lg flex items-center justify-center">
+                            <span class="text-gray-900 font-bold text-sm">基</span>
+                        </div>
+                        <span class="text-xl font-bold text-white" style="font-family: 'Noto Serif SC', serif;">基金画像系统</span>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="nav-link active text-white hover:text-yellow-400 px-3 py-2 text-sm font-medium">首页</a>
+                    <a href="analysis.html" class="nav-link text-gray-300 hover:text-yellow-400 px-3 py-2 text-sm font-medium">基金分析</a>
+                    <a href="compare.html" class="nav-link text-gray-300 hover:text-yellow-400 px-3 py-2 text-sm font-medium">基金对比</a>
+                    <a href="risk.html" class="nav-link text-gray-300 hover:text-yellow-400 px-3 py-2 text-sm font-medium">风险评估</a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button class="p-2 text-gray-400 hover:text-white transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7H4l5-5v5z"/>
+                        </svg>
+                    </button>
+                    <button class="p-2 text-gray-400 hover:text-white transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero区域 -->
+    <section class="hero-bg pt-16 pb-12">
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-6 scroll-reveal" style="font-family: 'Noto Serif SC', serif;">
+                    专业基金产品画像系统
+                </h1>
+                <p class="text-xl text-gray-300 mb-8 max-w-3xl mx-auto scroll-reveal">
+                    基于大数据分析和人工智能技术，为投资机构提供全方位的基金产品评价、筛选和风险管理解决方案
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center scroll-reveal">
+                    <button onclick="scrollToSection('fund-filter')" class="px-8 py-3 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold rounded-lg transition-all duration-300 transform hover:scale-105">
+                        开始筛选基金
+                    </button>
+                    <button onclick="window.location.href='analysis.html'" class="px-8 py-3 border-2 border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-gray-900 font-semibold rounded-lg transition-all duration-300">
+                        查看详细分析
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 市场概览仪表板 -->
+    <section class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <div class="glass-card stats-card p-6 scroll-reveal">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-400 mb-1">市场总基金数</p>
+                            <p class="text-2xl font-bold text-white" id="total-funds">1,248</p>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="glass-card stats-card p-6 scroll-reveal">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-400 mb-1">平均年化收益</p>
+                            <p class="text-2xl font-bold text-green-400" id="avg-return">8.47%</p>
+                        </div>
+                        <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="glass-card stats-card p-6 scroll-reveal">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-400 mb-1">管理资产规模</p>
+                            <p class="text-2xl font-bold text-white" id="total-aum">2.8万亿</p>
+                        </div>
+                        <div class="w-12 h-12 bg-yellow-500/20 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="glass-card stats-card p-6 scroll-reveal">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-400 mb-1">今日涨跌比</p>
+                            <p class="text-2xl font-bold text-white" id="up-down-ratio">682:566</p>
+                        </div>
+                        <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 基金筛选和列表区域 -->
+    <section id="fund-filter" class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- 筛选面板 -->
+                <div class="lg:w-1/4">
+                    <div class="glass-card p-6 sticky top-24">
+                        <h3 class="text-lg font-semibold text-white mb-6 flex items-center">
+                            <svg class="w-5 h-5 mr-2 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+                            </svg>
+                            智能筛选器
+                        </h3>
+                        
+                        <!-- 基金类型筛选 -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-300 mb-3">基金类型</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="fund-type-filter rounded text-yellow-500 focus:ring-yellow-500" value="股票型" checked>
+                                    <span class="ml-2 text-sm text-gray-300">股票型</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="fund-type-filter rounded text-yellow-500 focus:ring-yellow-500" value="债券型" checked>
+                                    <span class="ml-2 text-sm text-gray-300">债券型</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="fund-type-filter rounded text-yellow-500 focus:ring-yellow-500" value="混合型" checked>
+                                    <span class="ml-2 text-sm text-gray-300">混合型</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="fund-type-filter rounded text-yellow-500 focus:ring-yellow-500" value="指数型" checked>
+                                    <span class="ml-2 text-sm text-gray-300">指数型</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="fund-type-filter rounded text-yellow-500 focus:ring-yellow-500" value="货币型" checked>
+                                    <span class="ml-2 text-sm text-gray-300">货币型</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- 风险等级筛选 -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-300 mb-3">风险等级</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="risk-filter rounded text-yellow-500 focus:ring-yellow-500" value="低风险" checked>
+                                    <span class="ml-2 text-sm text-gray-300">低风险</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="risk-filter rounded text-yellow-500 focus:ring-yellow-500" value="中低风险" checked>
+                                    <span class="ml-2 text-sm text-gray-300">中低风险</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="risk-filter rounded text-yellow-500 focus:ring-yellow-500" value="中风险" checked>
+                                    <span class="ml-2 text-sm text-gray-300">中风险</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="risk-filter rounded text-yellow-500 focus:ring-yellow-500" value="中高风险" checked>
+                                    <span class="ml-2 text-sm text-gray-300">中高风险</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="risk-filter rounded text-yellow-500 focus:ring-yellow-500" value="高风险" checked>
+                                    <span class="ml-2 text-sm text-gray-300">高风险</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- 收益范围筛选 -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-300 mb-3">年化收益范围</label>
+                            <div class="space-y-3">
+                                <input type="range" id="return-range" min="-20" max="50" value="50" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                                <div class="flex justify-between text-xs text-gray-400">
+                                    <span>-20%</span>
+                                    <span id="return-value">50%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 基金规模筛选 -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-300 mb-3">基金规模</label>
+                            <select id="size-filter" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                                <option value="all">全部规模</option>
+                                <option value="small">小于10亿</option>
+                                <option value="medium">10亿-100亿</option>
+                                <option value="large">大于100亿</option>
+                            </select>
+                        </div>
+                        
+                        <!-- 操作按钮 -->
+                        <div class="space-y-3">
+                            <button onclick="applyFilters()" class="w-full bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold py-2 px-4 rounded-lg transition-colors">
+                                应用筛选
+                            </button>
+                            <button onclick="clearFilters()" class="w-full border border-gray-600 hover:border-gray-500 text-gray-300 font-semibold py-2 px-4 rounded-lg transition-colors">
+                                清除筛选
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 基金列表区域 -->
+                <div class="lg:w-3/4">
+                    <!-- 搜索和排序 -->
+                    <div class="flex flex-col sm:flex-row gap-4 mb-6">
+                        <div class="flex-1">
+                            <div class="relative">
+                                <input type="text" id="search-input" placeholder="搜索基金名称或代码..." class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 pl-10 text-white placeholder-gray-400 focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                                <svg class="absolute left-3 top-2.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <select id="sort-select" class="bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-yellow-500">
+                                <option value="return-desc">收益降序</option>
+                                <option value="return-asc">收益升序</option>
+                                <option value="risk-asc">风险升序</option>
+                                <option value="risk-desc">风险降序</option>
+                                <option value="size-desc">规模降序</option>
+                                <option value="size-asc">规模升序</option>
+                            </select>
+                            <button onclick="toggleView()" class="bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white hover:bg-gray-700 transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 筛选标签 -->
+                    <div id="filter-tags" class="flex flex-wrap gap-2 mb-6"></div>
+                    
+                    <!-- 基金列表 -->
+                    <div id="fund-list" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                        <!-- 基金卡片将通过JavaScript动态生成 -->
+                    </div>
+                    
+                    <!-- 加载更多 -->
+                    <div class="text-center mt-8">
+                        <button id="load-more" class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors">
+                            加载更多基金
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-gray-900 border-t border-gray-700 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <p class="text-gray-400">&copy; 2024 基金产品画像系统. 专业投资分析平台.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>

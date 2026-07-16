@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基金分析 - 基金产品画像系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #1a365d;
+            --secondary-gray: #2d3748;
+            --accent-gold: #d69e2e;
+            --success-green: #38a169;
+            --warning-orange: #dd6b20;
+            --danger-red: #e53e3e;
+            --info-blue: #3182ce;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #0f1419 0%, #1a202c 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+        }
+        
+        .nav-link {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: var(--accent-gold);
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent-gold);
+        }
+        
+        .positive {
+            color: var(--success-green);
+        }
+        
+        .negative {
+            color: var(--danger-red);
+        }
+        
+        .chart-container {
+            height: 400px;
+            width: 100%;
+        }
+        
+        .metric-card {
+            transition: all 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .time-selector {
+            display: flex;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 4px;
+        }
+        
+        .time-selector button {
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .time-selector button.active {
+            background: var(--accent-gold);
+            color: #1a202c;
+        }
+        
+        .time-selector button:not(.active) {
+            color: #e2e8f0;
+        }
+        
+        .time-selector button:not(.active):hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s ease;
+        }
+        
+        .fund-selector {
+            position: relative;
+        }
+        
+        .fund-selector-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(26, 54, 93, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 10;
+            display: none;
+        }
+        
+        .fund-selector-dropdown.show {
+            display: block;
+        }
+        
+        .fund-option {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .fund-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .fund-option:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-gray-900/90 backdrop-blur-md border-b border-gray-700/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-8">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-lg flex items-center justify-center">
+                            <span class="text-gray-900 font-bold text-sm">基</span>
+                        </div>
+                        <span class="text-xl font-bold text-white" style="font-family: 'Noto Serif SC', serif;">基金画像系统</span>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="nav-link text-gray-300 hover:text-yellow-400 px-3 py-2 text-sm font-medium">首页</a>
+                    <a href="analysis.html" class="nav-link active text-white hover:text-yellow-400 px-3 py-2 text-sm font-medium">基金分析</a>
+                    <a href="compare.html" class="nav-link text-gray-300 hover:text-yellow-400 px-3 py-2 text-sm font-medium">基金对比</a>
+                    <a href="risk.html" class="nav-link text-gray-300 hover:text-yellow-400 px-3 py-2 text-sm font-medium">风险评估</a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <div class="fund-selector">
+                        <input type="text" id="fund-search" placeholder="搜索基金..." class="bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:ring-2 focus:ring-yellow-500 focus:border-transparent w-64">
+                        <div id="fund-dropdown" class="fund-selector-dropdown"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 基金基本信息卡片 -->
+    <section class="pt-20 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="glass-card p-6 scroll-reveal">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+                    <div class="flex-1">
+                        <div class="flex items-center space-x-4 mb-4">
+                            <h1 id="fund-name" class="text-2xl font-bold text-white" style="font-family: 'Noto Serif SC', serif;">
+                                华夏成长混合
+                            </h1>
+                            <span id="fund-code" class="px-3 py-1 bg-blue-500/20 text-blue-300 text-sm rounded-full">000001</span>
+                            <div id="fund-stars" class="flex items-center space-x-1">
+                                <!-- 星级评分将通过JavaScript生成 -->
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                            <div>
+                                <p class="text-sm text-gray-400 mb-1">最新净值</p>
+                                <p id="current-nav" class="text-xl font-bold text-white">1.2345</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-400 mb-1">日涨跌幅</p>
+                                <p id="daily-change" class="text-xl font-bold positive">+2.34%</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-400 mb-1">年化收益</p>
+                                <p id="annual-return" class="text-xl font-bold text-green-400">15.67%</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-400 mb-1">基金规模</p>
+                                <p id="fund-size" class="text-xl font-bold text-white">156.8亿</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex flex-wrap gap-2">
+                            <span id="fund-type" class="px-3 py-1 bg-blue-500/20 text-blue-300 text-sm rounded">混合型</span>
+                            <span id="risk-level" class="px-3 py-1 bg-yellow-500/20 text-yellow-300 text-sm rounded">中风险</span>
+                            <span id="fund-manager" class="px-3 py-1 bg-purple-500/20 text-purple-300 text-sm rounded">基金经理：张三</span>
+                            <span id="fund-company" class="px-3 py-1 bg-green-500/20 text-green-300 text-sm rounded">华夏基金</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 lg:mt-0 lg:ml-8">
+                        <div class="flex space-x-3">
+                            <button onclick="addToCompare()" class="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold py-2 px-4 rounded-lg transition-colors">
+                                添加对比
+                            </button>
+                            <button onclick="toggleFavorite()" id="favorite-btn" class="border border-gray-600 hover:border-gray-500 text-gray-300 font-semibold py-2 px-4 rounded-lg transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 业绩分析图表 -->
+    <section class="py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- 收益走势图 -->
+                <div class="lg:col-span-2">
+                    <div class="glass-card p-6 scroll-reveal">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+                            <h3 class="text-lg font-semibold text-white mb-4 sm:mb-0">收益走势分析</h3>
+                            <div class="time-selector">
+                                <button class="time-btn active" data-period="1M">1月</button>
+                                <button class="time-btn" data-period="3M">3月</button>
+                                <button class="time-btn" data-period="6M">6月</button>
+                                <button class="time-btn" data-period="1Y">1年</button>
+                                <button class="time-btn" data-period="3Y">3年</button>
+                                <button class="time-btn" data-period="5Y">5年</button>
+                            </div>
+                        </div>
+                        <div id="performance-chart" class="chart-container"></div>
+                    </div>
+                </div>
+                
+                <!-- 关键指标 -->
+                <div class="space-y-6">
+                    <div class="glass-card metric-card p-6 scroll-reveal">
+                        <h4 class="text-sm font-medium text-gray-400 mb-4">关键业绩指标</h4>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-300">夏普比率</span>
+                                <span class="text-sm font-semibold text-white">1.23</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-300">最大回撤</span>
+                                <span class="text-sm font-semibold text-red-400">-18.45%</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-300">波动率</span>
+                                <span class="text-sm font-semibold text-white">22.15%</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-300">信息比率</span>
+                                <span class="text-sm font-semibold text-white">0.87</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-300">跟踪误差</span>
+                                <span class="text-sm font-semibold text-white">4.32%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card metric-card p-6 scroll-reveal">
+                        <h4 class="text-sm font-medium text-gray-400 mb-4">风险评级</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-sm text-gray-300">综合评级</span>
+                                    <span class="text-sm font-semibold text-yellow-400">★★★★☆</span>
+                                </div>
+                                <div class="w-full bg-gray-700 rounded-full h-2">
+                                    <div class="bg-yellow-500 h-2 rounded-full" style="width: 80%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-sm text-gray-300">收益能力</span>
+                                    <span class="text-sm font-semibold text-green-400">★★★★★</span>
+                                </div>
+                                <div class="w-full bg-gray-700 rounded-full h-2">
+                                    <div class="bg-green-500 h-2 rounded-full" style="width: 95%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-sm text-gray-300">风控能力</span>
+                                    <span class="text-sm font-semibold text-blue-400">★★★★☆</span>
+                                </div>
+                                <div class="w-full bg-gray-700 rounded-full h-2">
+                                    <div class="bg-blue-500 h-2 rounded-full" style="width: 75%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 持仓分析和对比 -->
+    <section class="py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- 行业分布 -->
+                <div class="glass-card p-6 scroll-reveal">
+                    <h3 class="text-lg font-semibold text-white mb-6">行业分布</h3>
+                    <div id="industry-chart" class="chart-container"></div>
+                </div>
+                
+                <!-- 重仓股 -->
+                <div class="glass-card p-6 scroll-reveal">
+                    <h3 class="text-lg font-semibold text-white mb-6">重仓股TOP10</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-6 h-6 bg-yellow-500 rounded-full flex items-center justify-center text-xs font-bold text-gray-900">1</span>
+                                <span class="text-white font-medium">贵州茅台</span>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm text-white font-semibold">8.45%</p>
+                                <p class="text-xs text-green-400">+2.34%</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-6 h-6 bg-gray-400 rounded-full flex items-center justify-center text-xs font-bold text-gray-900">2</span>
+                                <span class="text-white font-medium">五粮液</span>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm text-white font-semibold">6.78%</p>
+                                <p class="text-xs green-400">+1.56%</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-6 h-6 bg-orange-600 rounded-full flex items-center justify-center text-xs font-bold text-white">3</span>
+                                <span class="text-white font-medium">中国平安</span>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm text-white font-semibold">5.23%</p>
+                                <p class="text-xs text-red-400">-0.89%</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-6 h-6 bg-gray-600 rounded-full flex items-center justify-center text-xs font-bold text-white">4</span>
+                                <span class="text-white font-medium">招商银行</span>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm text-white font-semibold">4.67%</p>
+                                <p class="text-xs text-green-400">+0.45%</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-6 h-6 bg-gray-700 rounded-full flex items-center justify-center text-xs font-bold text-white">5</span>
+                                <span class="text-white font-medium">腾讯控股</span>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm text-white font-semibold">4.12%</p>
+                                <p class="text-xs text-green-400">+1.23%</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 pt-4 border-t border-gray-700">
+                        <button class="w-full text-center text-sm text-blue-400 hover:text-blue-300 transition-colors">
+                            查看完整持仓 →
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 同类对比和基金经理 -->
+    <section class="py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- 同类基金对比 -->
+                <div class="glass-card p-6 scroll-reveal">
+                    <h3 class="text-lg font-semibold text-white mb-6">同类基金对比</h3>
+                    <div id="comparison-chart" class="chart-container"></div>
+                </div>
+                
+                <!-- 基金经理信息 -->
+                <div class="glass-card p-6 scroll-reveal">
+                    <h3 class="text-lg font-semibold text-white mb-6">基金经理</h3>
+                    <div class="flex items-start space-x-4 mb-6">
+                        <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                            <span class="text-white font-bold text-lg">张</span>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-lg font-semibold text-white mb-1">张三</h4>
+                            <p class="text-sm text-gray-400 mb-2">从业年限：12年 | 管理基金：8只</p>
+                            <p class="text-sm text-gray-300 leading-relaxed">
+                                清华大学经济学硕士，拥有15年证券从业经验。专注于成长型股票投资，擅长挖掘具有长期竞争优势的优质企业。
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="text-center p-4 bg-gray-800/50 rounded-lg">
+                            <p class="text-2xl font-bold text-green-400">15.67%</p>
+                            <p class="text-sm text-gray-400">平均年化收益</p>
+                        </div>
+                        <div class="text-center p-4 bg-gray-800/50 rounded-lg">
+                            <p class="text-2xl font-bold text-blue-400">1.23</p>
+                            <p class="text-sm text-gray-400">平均夏普比率</p>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <h5 class="text-sm font-medium text-gray-400">投资理念</h5>
+                        <p class="text-sm text-gray-300 leading-relaxed">
+                            坚持价值投资理念，通过深入研究企业基本面，寻找具有持续竞争优势和良好成长性的优质公司，长期持有分享企业成长收益。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-gray-900 border-t border-gray-700 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <p class="text-gray-400">&copy; 2024 基金产品画像系统. 专业投资分析平台.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="analysis.js"></script>
+</body>
+</html>

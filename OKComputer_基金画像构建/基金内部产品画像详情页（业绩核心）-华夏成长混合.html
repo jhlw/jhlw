@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>产品画像详情 - 华夏成长混合 000001</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+  <style>
+    .card-title-sm {
+      font-size: 14px;
+      color: #666;
+    }
+    .num-good {
+      color: #009944;
+      font-weight: 600;
+    }
+    .num-bad {
+      color: #dc3545;
+      font-weight: 600;
+    }
+    .num-warn {
+      color: #fd7e14;
+      font-weight: 600;
+    }
+    .tag-s {
+      background-color: #009944;
+      color: #fff;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+    .tag-a {
+      background-color: #28a745;
+      color: #fff;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+    .tag-b {
+      background-color: #6c757d;
+      color: #fff;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+    .tag-c {
+      background-color: #fd7e14;
+      color: #fff;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+    .tag-d {
+      background-color: #dc3545;
+      color: #fff;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+    .header-bar {
+      background-color: #f0f7ff;
+      border: 1px solid #cfe2ff;
+      border-radius: 6px;
+    }
+    .tab-content {
+      padding-top: 20px;
+    }
+    .canvas-box {
+      height: 320px;
+    }
+  </style>
+</head>
+<body class="bg-light">
+<div class="container-fluid p-4">
+  <!-- 面包屑+顶部操作栏 -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a href="#">产品生命周期管理</a></li>
+        <li class="breadcrumb-item"><a href="#">产品列表</a></li>
+        <li class="breadcrumb-item active">华夏成长混合 000001</li>
+      </ol>
+    </nav>
+    <div>
+      <button class="btn btn-primary btn-sm">导出业绩评价报告</button>
+      <button class="btn btn-outline-secondary btn-sm ms-2">查看历史快照</button>
+      <button class="btn btn-outline-secondary btn-sm ms-2">返回列表</button>
+    </div>
+  </div>
+
+  <!-- 全局筛选控件 -->
+  <div class="row mb-3">
+    <div class="col-auto">
+      <label class="form-label">统计截止日期</label>
+      <input type="date" class="form-control form-control-sm" value="2025-12-31">
+    </div>
+    <div class="col-auto">
+      <label class="form-label">业绩统计周期</label>
+      <select class="form-select form-select-sm">
+        <option>近1月</option>
+        <option>近3月</option>
+        <option>近6月</option>
+        <option selected>近1年</option>
+        <option>近3年</option>
+        <option>经理任职期</option>
+        <option>成立以来</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- 产品基础通栏卡片（华夏成长混合真实信息） -->
+  <div class="header-bar p-3 mb-4">
+    <div class="row g-2">
+      <div class="col-md-2">
+        <span class="card-title-sm">内部ID</span>
+        <div>HX-FP-000001</div>
+      </div>
+      <div class="col-md-2">
+        <span class="card-title-sm">产品代码</span>
+        <div>000001</div>
+      </div>
+      <div class="col-md-2">
+        <span class="card-title-sm">产品类型</span>
+        <div>偏股混合型 R4中高风险</div>
+      </div>
+      <div class="col-md-2">
+        <span class="card-title-sm">运作方式</span>
+        <div>开放式 无持有期</div>
+      </div>
+      <div class="col-md-2">
+        <span class="card-title-sm">成立日期</span>
+        <div>2001-12-18</div>
+      </div>
+      <div class="col-md-2">
+        <span class="card-title-sm">现任基金经理</span>
+        <div>郑煜（2020-08-04任职）</div>
+      </div>
+      <div class="col-md-2 mt-2">
+        <span class="card-title-sm">当前规模</span>
+        <div>32.75 亿元</div>
+      </div>
+      <div class="col-md-2 mt-2">
+        <span class="card-title-sm">托管行</span>
+        <div>建设银行</div>
+      </div>
+      <div class="col-md-4 mt-2">
+        <span class="card-title-sm">合同业绩基准</span>
+        <div>沪深300指数收益率×70% + 中债国债总指数收益率×30%</div>
+      </div>
+      <div class="col-md-4 mt-2">
+        <span class="card-title-sm">内部考核基准</span>
+        <div>万得偏股混合基金指数×95% + 活期存款利率×5%</div>
+      </div>
+      <div class="col-md-4 mt-2">
+        <span class="card-title-sm">业绩综合评级</span>
+        <div><span class="tag-a">A级 优质稳定</span> 公司老牌核心产品</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 核心业绩总览看板 4卡片并排 -->
+  <div class="row mb-4">
+    <!-- 卡片1 综合得分 -->
+    <div class="col-md-3">
+      <div class="card h-100">
+        <div class="card-header bg-light">综合业绩得分</div>
+        <div class="card-body">
+          <h2 class="num-good mb-2">84 分</h2>
+          <div class="mb-2"><span class="tag-a">A级 优质稳定</span></div>
+          <div class="mb-3 text-secondary small">分层标签：重点扶持池</div>
+          <div class="small">
+            打分权重：<br>
+            中长期超额30%｜风险收益25%<br>
+            同类排名20%｜回撤15%｜风格10%
+          </div>
+          <p class="mt-2 small text-success">无重大业绩预警风险</p>
+        </div>
+      </div>
+    </div>
+    <!-- 卡片2 收益指标 -->
+    <div class="col-md-3">
+      <div class="card h-100">
+        <div class="card-header bg-light">核心收益指标</div>
+        <div class="card-body small">
+          <div class="d-flex justify-content-between mb-2">
+            <span>近3年年化收益</span>
+            <span class="num-good">+11.83%</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span>近3年年化超额</span>
+            <span class="num-good">+2.96%</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span>经理任职年化</span>
+            <span class="num-good">+12.65%</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span>近1年盈利月份占比</span>
+            <span>72%</span>
+          </div>
+          <div class="d-flex justify-content-between">
+            <span>36月超额滚动胜率</span>
+            <span>65%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 卡片3 风险回撤 -->
+    <div class="col-md-3">
+      <div class="card h-100">
+        <div class="card-header bg-light">风险调整&回撤</div>
+        <div class="card-body small">
+          <div class="d-flex justify-content-between mb-2">
+            <span>夏普比率</span>
+            <span class="num-good">0.87</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span>卡玛比率</span>
+            <span class="num-good">1.24</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span>近3年最大回撤</span>
+            <span class="num-warn">23.71%</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span>下行波动率</span>
+            <span>8.63%</span>
+          </div>
+          <div class="d-flex justify-content-between">
+            <span>回撤修复天数</span>
+            <span>64天</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 卡片4 同类排名 -->
+    <div class="col-md-3">
+      <div class="card h-100">
+        <div class="card-header bg-light">同类对标排名</div>
+        <div class="card-body small">
+          <div class="d-flex justify-content-between mb-2">
+            <span>近1年百分位</span>
+            <span class="num-good">21%</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span>近3年百分位</span>
+            <span class="num-good">24%</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span>公司内同策略</span>
+            <span>3 / 15</span>
+          </div>
+          <div class="d-flex justify-content-between">
+            <span>相对中位数超额</span>
+            <span class="num-good">+4.15%</span>
+          </div>
+          <div class="mt-2 text-success small">排名长期稳定前25%梯队</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 净值趋势大图 -->
+  <div class="card mb-4">
+    <div class="card-header bg-light">净值走势对比（华夏成长混合 / 合同基准 / 内部考核基准）</div>
+    <div class="card-body canvas-box">
+      <canvas id="trendChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Tab切换区域 -->
+  <ul class="nav nav-tabs" id="productTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="tab-performance" data-bs-toggle="tab" data-bs-target="#panel-performance" type="button">业绩评价（默认）</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="tab-base" data-bs-toggle="tab" data-bs-target="#panel-base" type="button">基础主体画像</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="tab-compliance" data-bs-toggle="tab" data-bs-target="#panel-compliance" type="button">合规法律画像</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="tab-invest" data-bs-toggle="tab" data-bs-target="#panel-invest" type="button">投资运作画像</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="tab-trade" data-bs-toggle="tab" data-bs-target="#panel-trade" type="button">申赎运营画像</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="tab-cost" data-bs-toggle="tab" data-bs-target="#panel-cost" type="button">费用财税画像</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="tab-channel" data-bs-toggle="tab" data-bs-target="#panel-channel" type="button">渠道经营评价</button>
+    </li>
+  </ul>
+  <div class="tab-content" id="tabContent">
+    <!-- Tab1 业绩评价 核心页面 -->
+    <div class="tab-pane fade show active" id="panel-performance" role="tabpanel">
+      <!-- 1.全周期收益表格 -->
+      <div class="card mb-4">
+        <div class="card-header bg-light">全周期收益明细</div>
+        <div class="card-body table-responsive">
+          <table class="table table-sm table-bordered">
+            <thead class="table-light">
+              <tr>
+                <th>统计周期</th>
+                <th>区间收益率</th>
+                <th>年化收益率</th>
+                <th>相对合同基准超额</th>
+                <th>相对内部考核超额</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>近1月</td>
+                <td class="num-good">+1.06%</td>
+                <td>-</td>
+                <td class="num-good">+0.35%</td>
+                <td class="num-good">+0.27%</td>
+              </tr>
+              <tr>
+                <td>近3月</td>
+                <td class="num-good">+3.12%</td>
+                <td>-</td>
+                <td class="num-good">+0.96%</td>
+                <td class="num-good">+0.73%</td>
+              </tr>
+              <tr>
+                <td>近6月</td>
+                <td class="num-good">+5.47%</td>
+                <td>-</td>
+                <td class="num-good">+1.82%</td>
+                <td class="num-good">+1.39%</td>
+              </tr>
+              <tr>
+                <td>近1年</td>
+                <td class="num-good">+11.68%</td>
+                <td class="num-good">+11.68%</td>
+                <td class="num-good">+3.92%</td>
+                <td class="num-good">+2.87%</td>
+              </tr>
+              <tr>
+                <td>近3年</td>
+                <td class="num-good">+39.54%</td>
+                <td class="num-good">+11.83%</td>
+                <td class="num-good">+12.16%</td>
+                <td class="num-good">+9.23%</td>
+              </tr>
+              <tr>
+                <td>经理任职期(2020-08至今)</td>
+                <td class="num-good">+46.32%</td>
+                <td class="num-good">+12.65%</td>
+                <td class="num-good">+10.93%</td>
+                <td class="num-good">+8.66%</td>
+              </tr>
+              <tr>
+                <td>成立以来(2001-12至今)</td>
+                <td class="num-good">+986.75%</td>
+                <td class="num-good">+10.12%</td>
+                <td class="num-good">+22.48%</td>
+                <td class="num-good">+17.21%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 2.业绩归因 + 风格校验 -->
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-header bg-light">Brinson业绩归因（近3年累计超额）</div>
+            <div class="card-body canvas-box">
+              <canvas id="attributionChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-header bg-light">风格合规校验</div>
+            <div class="card-body small">
+              <div class="d-flex justify-content-between mb-3">
+                <span>风格漂移分值（阈值30）</span>
+                <span class="num-good">19 分</span>
+              </div>
+              <div class="mb-3">
+                <span class="fw-bold">持仓风格匹配：</span>
+                <p class="mb-0">中长期均衡成长风格，大盘成长持仓占比68%，贴合合同投资定位</p>
+              </div>
+              <div class="mb-3">
+                <span class="fw-bold">行业偏离控制：</span>
+                <p class="mb-0">单一行业最高持仓26%，严格遵守合同集中度约束</p>
+              </div>
+              <div class="alert alert-success mt-3 p-2">
+                判定结论：轻微风格轮动，无大幅漂移，策略执行稳定合规
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3.基金经理变更前后对比 -->
+      <div class="card mb-4">
+        <div class="card-header bg-light">分阶段业绩对比（现任经理2020-08-04接管）</div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6 border-end">
+              <h6 class="text-secondary">变更前 2017.06-2020.08</h6>
+              <div class="d-flex justify-content-between small mb-2">
+                <span>区间年化收益</span>
+                <span>+7.46%</span>
+              </div>
+              <div class="d-flex justify-content-between small mb-2">
+                <span>年化超额收益</span>
+                <span>+1.12%</span>
+              </div>
+              <div class="d-flex justify-content-between small mb-2">
+                <span>阶段最大回撤</span>
+                <span>27.35%</span>
+              </div>
+              <div class="d-flex justify-content-between small">
+                <span>同类排名百分位</span>
+                <span>42%</span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <h6 class="text-success">变更后 2020.08-2025.12</h6>
+              <div class="d-flex justify-content-between small mb-2">
+                <span>区间年化收益</span>
+                <span class="num-good">+12.65%</span>
+              </div>
+              <div class="d-flex justify-content-between small mb-2">
+                <span>年化超额收益</span>
+                <span class="num-good">+2.96%</span>
+              </div>
+              <div class="d-flex justify-content-between small mb-2">
+                <span>阶段最大回撤</span>
+                <span class="num-good">23.71%</span>
+              </div>
+              <div class="d-flex justify-content-between small">
+                <span>同类排名百分位</span>
+                <span class="num-good">24%</span>
+              </div>
+            </div>
+          </div>
+          <div class="alert alert-success mt-3 p-2 mb-0">
+            定性判断：现任基金经理接管后收益、超额、回撤控制、行业排名全面优化，管理能力持续兑现
+          </div>
+        </div>
+      </div>
+
+      <!-- 4.业绩风险清单 & 跟踪计划 -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-header bg-light">业绩负面风险筛查清单</div>
+            <div class="card-body small">
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" disabled>
+                <label class="form-check-label">近3年年化超额持续为负</label>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" disabled>
+                <label class="form-check-label">连续3季度跑输考核基准</label>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" disabled>
+                <label class="form-check-label">卡玛/夏普显著低于同类均值</label>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" disabled>
+                <label class="form-check-label">风格漂移分值超30分</label>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" disabled>
+                <label class="form-check-label">同类排名长期后25%</label>
+              </div>
+              <div class="mt-3 text-secondary">
+                潜在小幅隐患：2025Q4成长板块回调，短期超额小幅收窄，属于市场风格阶段性波动
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-header bg-light">后续业绩跟踪计划</div>
+            <div class="card-body small">
+              <div class="mb-2"><span class="fw-bold">观察周期：</span>2026年上半年</div>
+              <div class="mb-2"><span class="fw-bold">重点监控指标：</span>季度超额收益、风格漂移分值、年度最大回撤、季度同类排名</div>
+              <div class="mb-2"><span class="fw-bold">预警阈值：</span>连续两季度超额转负、漂移分＞30、排名滑落至后50%</div>
+              <div><span class="fw-bold">复审时间：</span>2026-06-30 半年度专项业绩评审</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab2 基础画像 -->
+    <div class="tab-pane fade" id="panel-base" role="tabpanel">
+      <div class="card p-3">
+        <h6>基础主体信息</h6>
+        <p>产品全称：华夏成长证券投资基金；份额类别：A；风险等级R4；登记机构：中国结算；销售渠道：银行、券商、互联网平台、直销；战略标签：老牌旗舰权益、零售主力产品</p>
+      </div>
+    </div>
+    <!-- Tab3 合规画像 -->
+    <div class="tab-pane fade" id="panel-compliance" role="tabpanel">
+      <div class="card p-3">备案批复文号、基金合同、托管协议、股票/债券投资比例约束、集中度红线、历次合同变更、无监管处罚记录、定期信息披露台账</div>
+    </div>
+    <!-- Tab4 投资运作 -->
+    <div class="tab-pane fade" id="panel-invest" role="tabpanel">
+      <div class="card p-3">股票仓位60%-95%，债券0-40%；基金经理郑煜；禁止高风险衍生品；行业单一上限30%；投资风格均衡成长；持仓前十大个股集中度可控</div>
+    </div>
+    <!-- Tab5 申赎运营 -->
+    <div class="tab-pane fade" id="panel-trade" role="tabpanel">
+      <div class="card p-3">起购10元，无持有期；7天赎回惩罚费率1.5%；支持定投、互转；分红默认现金分红；无单日大额永久限购机制</div>
+    </div>
+    <!-- Tab6 费用财税 -->
+    <div class="card p-3">管理费1.5%/年，托管费0.25%/年；前端申购阶梯费率；赎回按持有时间分档计税；增值税简易计税模式</div>
+    </div>
+    <!-- Tab7 渠道经营 -->
+    <div class="tab-pane fade" id="panel-channel" role="tabpanel">
+      <div class="card p-3">客户以零售个人为主，银行渠道保有量第一；年度管理费贡献稳定；无迷你基金预警；客户长期留存率优秀</div>
+    </div>
+  </div>
+
+  <!-- 底部功能栏 -->
+  <div class="mt-4 p-3 bg-white border rounded">
+    <div class="row">
+      <div class="col-md-4">
+        <h6>历史快照记录</h6>
+        <span class="badge bg-secondary me-1">2025-12-31</span>
+        <span class="badge bg-secondary me-1">2025-09-30</span>
+        <span class="badge bg-secondary me-1">2025-06-30</span>
+      </div>
+      <div class="col-md-4">
+        <h6>内部评审台账</h6>
+        <span class="text-success">2025年度评审：A级优质，持续重点资源倾斜</span>
+      </div>
+      <div class="col-md-4">
+        <h6>快捷跳转</h6>
+        <a href="#" class="btn btn-sm btn-outline-primary me-2">基金经理画像</a>
+        <a href="#" class="btn btn-sm btn-outline-primary me-2">同类产品对比</a>
+        <a href="#" class="btn btn-sm btn-outline-primary">监管报表导出</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // 净值趋势图 华夏成长混合走势数据
+  const trendCtx = document.getElementById('trendChart').getContext('2d');
+  new Chart(trendCtx, {
+    type: 'line',
+    data: {
+      labels: ['2023-01','2023-07','2024-01','2024-07','2025-01','2025-07','2025-12'],
+      datasets: [
+        { label: '华夏成长混合', data: [100,107.2,113.5,119.4,126.8,133.2,139.54], borderColor:'#0d6efd', tension:0.3 },
+        { label: '合同业绩基准', data: [100,103.8,106.9,110.7,114.6,118.5,127.38], borderColor:'#6c757d', tension:0.3 },
+        { label: '内部考核基准', data: [100,104.5,107.8,111.6,115.9,120.4,130.31], borderColor:'#198754', tension:0.3 }
+      ]
+    },
+    options: { responsive:true, maintainAspectRatio:false, plugins:{title:{display:true,text:"累计净值走势(基数100)"}}
+  });
+
+  // Brinson业绩归因柱状图
+  const attrCtx = document.getElementById('attributionChart').getContext('2d');
+  new Chart(attrCtx, {
+    type: 'bar',
+    data: {
+      labels: ['资产配置','行业选择','个股精选','交互效应'],
+      datasets: [{
+        label:'超额贡献(%)',
+        data:[1.05,1.43,1.98,-0.50],
+        backgroundColor:['#0d6efd','#198754','#ffc107','#dc3545']
+      }]
+    },
+    options:{ responsive:true, maintainAspectRatio:false }
+  });
+</script>
+</body>
+</html>

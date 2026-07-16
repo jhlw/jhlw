@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>风险评估 - 基金产品画像系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #1a365d;
+            --secondary-gray: #2d3748;
+            --accent-gold: #d69e2e;
+            --success-green: #38a169;
+            --warning-orange: #dd6b20;
+            --danger-red: #e53e3e;
+            --info-blue: #3182ce;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #0f1419 0%, #1a202c 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+        }
+        
+        .nav-link {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: var(--accent-gold);
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent-gold);
+        }
+        
+        .positive {
+            color: var(--success-green);
+        }
+        
+        .negative {
+            color: var(--danger-red);
+        }
+        
+        .chart-container {
+            height: 500px;
+            width: 100%;
+        }
+        
+        .risk-gauge {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+        }
+        
+        .risk-level-indicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        
+        .risk-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .risk-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s ease;
+        }
+        
+        .portfolio-builder {
+            border: 2px dashed #4a5568;
+            transition: all 0.3s ease;
+        }
+        
+        .portfolio-builder.drag-over {
+            border-color: var(--accent-gold);
+            background: rgba(214, 158, 46, 0.05);
+        }
+        
+        .portfolio-item {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+        
+        .slider-container {
+            position: relative;
+            margin: 20px 0;
+        }
+        
+        .slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #4a5568;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent-gold);
+            cursor: pointer;
+        }
+        
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent-gold);
+            cursor: pointer;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-gray-900/90 backdrop-blur-md border-b border-gray-700/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-8">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-lg flex items-center justify-center">
+                            <span class="text-gray-900 font-bold text-sm">基</span>
+                        </div>
+                        <span class="text-xl font-bold text-white" style="font-family: 'Noto Serif SC', serif;">基金画像系统</span>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="nav-link text-gray-300 hover:text-yellow-400 px-3 py-2 text-sm font-medium">首页</a>
+                    <a href="analysis.html" class="nav-link text-gray-300 hover:text-yellow-400 px-3 py-2 text-sm font-medium">基金分析</a>
+                    <a href="compare.html" class="nav-link text-gray-300 hover:text-yellow-400 px-3 py-2 text-sm font-medium">基金对比</a>
+                    <a href="risk.html" class="nav-link active text-white hover:text-yellow-400 px-3 py-2 text-sm font-medium">风险评估</a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button onclick="runStressTest()" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors">
+                        压力测试
+                    </button>
+                    <button onclick="generateReport()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors">
+                        生成报告
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面标题 -->
+    <section class="pt-20 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-3xl font-bold text-white mb-4" style="font-family: 'Noto Serif SC', serif;">
+                    风险评估与投资管理
+                </h1>
+                <p class="text-gray-300 max-w-2xl mx-auto">
+                    专业的风险评估工具和组合管理功能，帮助您识别投资风险，构建最优投资组合，实现风险收益平衡
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 风险矩阵图 -->
+    <section class="py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="glass-card p-6 scroll-reveal">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6">
+                    <h3 class="text-lg font-semibold text-white mb-4 lg:mb-0">风险-收益矩阵</h3>
+                    <div class="flex flex-wrap gap-4">
+                        <select id="fund-type-filter" class="bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-yellow-500">
+                            <option value="all">全部类型</option>
+                            <option value="股票型">股票型</option>
+                            <option value="债券型">债券型</option>
+                            <option value="混合型">混合型</option>
+                            <option value="指数型">指数型</option>
+                            <option value="货币型">货币型</option>
+                        </select>
+                        <select id="risk-filter" class="bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-yellow-500">
+                            <option value="all">全部风险等级</option>
+                            <option value="低风险">低风险</option>
+                            <option value="中低风险">中低风险</option>
+                            <option value="中风险">中风险</option>
+                            <option value="中高风险">中高风险</option>
+                            <option value="高风险">高风险</option>
+                        </select>
+                        <button onclick="updateRiskMatrix()" class="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold py-2 px-4 rounded-lg transition-colors">
+                            更新矩阵
+                        </button>
+                    </div>
+                </div>
+                <div id="risk-matrix-chart" class="chart-container"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 风险指标仪表板 -->
+    <section class="py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="glass-card p-6 scroll-reveal">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="text-sm font-medium text-gray-400">平均夏普比率</h4>
+                        <div class="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center">
+                            <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold text-white mb-2" id="avg-sharpe">1.23</p>
+                    <p class="text-sm text-gray-400">风险调整后收益</p>
+                </div>
+                
+                <div class="glass-card p-6 scroll-reveal">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="text-sm font-medium text-gray-400">最大回撤中位数</h4>
+                        <div class="w-8 h-8 bg-red-500/20 rounded-lg flex items-center justify-center">
+                            <svg class="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold text-white mb-2" id="median-drawdown">-18.45%</p>
+                    <p class="text-sm text-gray-400">历史最大损失</p>
+                </div>
+                
+                <div class="glass-card p-6 scroll-reveal">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="text-sm font-medium text-gray-400">波动率平均值</h4>
+                        <div class="w-8 h-8 bg-yellow-500/20 rounded-lg flex items-center justify-center">
+                            <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold text-white mb-2" id="avg-volatility">22.15%</p>
+                    <p class="text-sm text-gray-400">收益波动程度</p>
+                </div>
+                
+                <div class="glass-card p-6 scroll-reveal">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="text-sm font-medium text-gray-400">风险预警基金</h4>
+                        <div class="w-8 h-8 bg-orange-500/20 rounded-lg flex items-center justify-center">
+                            <svg class="w-4 h-4 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold text-white mb-2" id="risk-alerts">12</p>
+                    <p class="text-sm text-gray-400">需要关注</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 投资组合构建器 -->
+    <section class="py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- 组合构建 -->
+                <div class="glass-card p-6 scroll-reveal">
+                    <h3 class="text-lg font-semibold text-white mb-6">投资组合构建器</h3>
+                    
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-300 mb-3">投资目标</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button class="investment-goal-btn active bg-yellow-500 text-gray-900 font-semibold py-2 px-4 rounded-lg transition-colors" data-goal="balanced">
+                                平衡型
+                            </button>
+                            <button class="investment-goal-btn bg-gray-700 text-gray-300 font-semibold py-2 px-4 rounded-lg transition-colors" data-goal="growth">
+                                成长型
+                            </button>
+                            <button class="investment-goal-btn bg-gray-700 text-gray-300 font-semibold py-2 px-4 rounded-lg transition-colors" data-goal="conservative">
+                                保守型
+                            </button>
+                            <button class="investment-goal-btn bg-gray-700 text-gray-300 font-semibold py-2 px-4 rounded-lg transition-colors" data-goal="aggressive">
+                                激进型
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-300 mb-3">风险承受能力</label>
+                        <div class="slider-container">
+                            <input type="range" id="risk-tolerance" min="1" max="10" value="5" class="slider">
+                            <div class="flex justify-between text-xs text-gray-400 mt-2">
+                                <span>保守</span>
+                                <span>适中</span>
+                                <span>激进</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-300 mb-3">投资期限</label>
+                        <select id="investment-horizon" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-yellow-500">
+                            <option value="short">短期（1年以内）</option>
+                            <option value="medium" selected>中期（1-5年）</option>
+                            <option value="long">长期（5年以上）</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h4 class="text-sm font-medium text-gray-300 mb-3">推荐基金组合</h4>
+                        <div id="recommended-portfolio" class="space-y-3">
+                            <!-- 推荐组合将通过JavaScript生成 -->
+                        </div>
+                    </div>
+                    
+                    <button onclick="optimizePortfolio()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors">
+                        优化组合配置
+                    </button>
+                </div>
+                
+                <!-- 组合分析结果 -->
+                <div class="glass-card p-6 scroll-reveal">
+                    <h3 class="text-lg font-semibold text-white mb-6">组合风险分析</h3>
+                    
+                    <div class="mb-6">
+                        <div id="portfolio-risk-chart" class="chart-container"></div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="text-center p-4 bg-gray-800/50 rounded-lg">
+                            <p class="text-sm text-gray-400 mb-1">预期年化收益</p>
+                            <p id="expected-return" class="text-xl font-bold text-green-400">12.45%</p>
+                        </div>
+                        <div class="text-center p-4 bg-gray-800/50 rounded-lg">
+                            <p class="text-sm text-gray-400 mb-1">组合波动率</p>
+                            <p id="portfolio-volatility" class="text-xl font-bold text-yellow-400">18.67%</p>
+                        </div>
+                        <div class="text-center p-4 bg-gray-800/50 rounded-lg">
+                            <p class="text-sm text-gray-400 mb-1">夏普比率</p>
+                            <p id="portfolio-sharpe" class="text-xl font-bold text-blue-400">0.67</p>
+                        </div>
+                        <div class="text-center p-4 bg-gray-800/50 rounded-lg">
+                            <p class="text-sm text-gray-400 mb-1">VaR(95%)</p>
+                            <p id="portfolio-var" class="text-xl font-bold text-red-400">-8.23%</p>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <h4 class="text-sm font-medium text-gray-400">风险提示</h4>
+                        <div id="risk-warnings" class="space-y-2">
+                            <div class="flex items-start space-x-2 p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+                                <svg class="w-4 h-4 text-yellow-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+                                </svg>
+                                <p class="text-sm text-yellow-300">组合集中度较高，建议分散投资</p>
+                            </div>
+                            <div class="flex items-start space-x-2 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                                <svg class="w-4 h-4 text-blue-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <p class="text-sm text-blue-300">市场波动可能影响短期收益</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 压力测试结果 -->
+    <section class="py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="glass-card p-6 scroll-reveal">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold text-white">压力测试结果</h3>
+                    <div class="flex space-x-2">
+                        <button onclick="runScenario('market-crash')" class="bg-red-600 hover:bg-red-700 text-white text-sm font-semibold py-2 px-3 rounded transition-colors">
+                            市场崩盘
+                        </button>
+                        <button onclick="runScenario('interest-rate-rise')" class="bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold py-2 px-3 rounded transition-colors">
+                            加息周期
+                        </button>
+                        <button onclick="runScenario('economic-recession')" class="bg-yellow-600 hover:bg-yellow-700 text-white text-sm font-semibold py-2 px-3 rounded transition-colors">
+                            经济衰退
+                        </button>
+                    </div>
+                </div>
+                <div id="stress-test-chart" class="chart-container"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 风险预警列表 -->
+    <section class="py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="glass-card p-6 scroll-reveal">
+                <h3 class="text-lg font-semibold text-white mb-6">风险预警基金</h3>
+                <div class="space-y-4" id="risk-alerts-list">
+                    <!-- 风险预警列表将通过JavaScript生成 -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-gray-900 border-t border-gray-700 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <p class="text-gray-400">&copy; 2024 基金产品画像系统. 专业投资分析平台.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="risk.js"></script>
+</body>
+</html>
