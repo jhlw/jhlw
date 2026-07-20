@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>建信基金 · 产品谱系管理驾驶舱</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js">
+    </script>
+    <style>
+        :root {
+            --bg: #f0f2f5;
+            --card-bg: #ffffff;
+            --primary: #1e3a5f;
+            --primary-light: #2c5f8a;
+            --accent: #d4a853;
+            --text: #2c3e50;
+            --text-secondary: #6b7d8e;
+            --border: #e2e8f0;
+            --shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.10);
+            --danger: #e74c3c;
+            --danger-bg: #fef2f2;
+            --warning: #f59e0b;
+            --warning-bg: #fffbeb;
+            --success: #10b981;
+            --success-bg: #ecfdf5;
+            --info: #3b82f6;
+            --radius: 10px;
+            --radius-sm: 6px;
+            --transition: 0.2s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 16px;
+        }
+
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 14px 24px;
+            box-shadow: var(--shadow);
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .top-bar .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .top-bar .logo-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #1e3a5f, #2c5f8a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .top-bar h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.3px;
+            white-space: nowrap;
+        }
+        .top-bar .subtitle {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+        .top-bar .meta-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            flex-wrap: wrap;
+        }
+        .top-bar .meta-info .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--success);
+            display: inline-block;
+            margin-right: 6px;
+            animation: pulse-dot 2s infinite;
+        }
+        @keyframes pulse-dot {
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+            }
+        }
+        .filter-pill {
+            padding: 7px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: #fff;
+            font-size: 12px;
+            cursor: pointer;
+            color: var(--text);
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        .filter-pill:hover {
+            border-color: var(--primary-light);
+            color: var(--primary);
+            background: #f8fafc;
+        }
+        .filter-pill.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        .stat-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: default;
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+        .stat-card .stat-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            letter-spacing: 0.3px;
+            font-weight: 500;
+        }
+        .stat-card .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+        .stat-card .stat-change {
+            font-size: 12px;
+            margin-top: 6px;
+            font-weight: 500;
+        }
+        .stat-card .stat-change.up {
+            color: var(--success);
+        }
+        .stat-card .stat-change.down {
+            color: var(--danger);
+        }
+        .stat-card.warning-card {
+            border-left: 4px solid var(--danger);
+        }
+        .stat-card.warning-card .stat-value {
+            color: var(--danger);
+        }
+        .stat-card .accent-stripe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            border-radius: var(--radius) var(--radius) 0 0;
+        }
+        .stat-card .accent-stripe.blue {
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+        }
+        .stat-card .accent-stripe.green {
+            background: linear-gradient(90deg, #10b981, #34d399);
+        }
+        .stat-card .accent-stripe.amber {
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+        }
+        .stat-card .accent-stripe.red {
+            background: linear-gradient(90deg, #e74c3c, #f87171);
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 2fr 1.2fr 1.8fr;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: 1.3fr 1.8fr 1.5fr;
+            gap: 14px;
+        }
+        .panel {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 16px 18px;
+            transition: var(--transition);
+        }
+        .panel:hover {
+            box-shadow: var(--shadow-lg);
+        }
+        .panel .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .panel .panel-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--primary);
+            letter-spacing: -0.2px;
+        }
+        .panel .panel-badge {
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 12px;
+            background: #f1f5f9;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+        .chart-container {
+            width: 100%;
+            height: 380px;
+        }
+        .chart-container-sm {
+            width: 100%;
+            height: 340px;
+        }
+        .chart-container-lg {
+            width: 100%;
+            height: 420px;
+        }
+        .double-chart {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            height: 380px;
+        }
+        .double-chart .mini-chart {
+            height: 100%;
+            min-height: 160px;
+        }
+
+        .alert-table-wrap {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .alert-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        .alert-table th {
+            background: #f8fafc;
+            padding: 10px 8px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        .alert-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+        .alert-table tr:hover td {
+            background: #fafbfc;
+        }
+        .alert-table .tag-danger {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 10px;
+            background: var(--danger-bg);
+            color: var(--danger);
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .alert-table .tag-warning {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 10px;
+            background: var(--warning-bg);
+            color: var(--warning);
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .alert-table .highlight-row {
+            background: #fffbfb !important;
+        }
+        .blink-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--danger);
+            margin-right: 6px;
+            animation: blink 1.2s infinite;
+        }
+        @keyframes blink {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        @media (max-width: 1400px) {
+            .main-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .bottom-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .stat-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .double-chart {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (max-width: 900px) {
+            .main-grid,
+            .bottom-grid {
+                grid-template-columns: 1fr;
+            }
+            .stat-cards {
+                grid-template-columns: 1fr 1fr;
+            }
+            .double-chart {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+            .chart-container,
+            .chart-container-sm,
+            .chart-container-lg {
+                height: 300px;
+            }
+            .top-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .stat-card .stat-value {
+                font-size: 26px;
+            }
+        }
+        @media (max-width: 500px) {
+            .stat-cards {
+                grid-template-columns: 1fr;
+            }
+            .chart-container,
+            .chart-container-sm,
+            .chart-container-lg {
+                height: 250px;
+            }
+            .double-chart .mini-chart {
+                height: 220px;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #b0b7c3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="logo-area">
+            <div class="logo-icon">建</div>
+            <div>
+                <h1>建信基金 · 产品谱系管理驾驶舱</h1>
+                <div class="subtitle">CCB Principal Asset Management — Product Spectrum Dashboard</div>
+            </div>
+        </div>
+        <div class="meta-info">
+            <span><span class="dot"></span>数据更新：2026-07-20 08:30</span>
+            <span>数据频次：每日</span>
+            <button class="filter-pill active">全部产品</button>
+            <button class="filter-pill">公募</button>
+            <button class="filter-pill">专户</button>
+            <button class="filter-pill">养老金</button>
+        </div>
+    </div>
+
+    <div class="stat-cards">
+        <div class="stat-card">
+            <div class="accent-stripe blue"></div>
+            <div class="stat-label">📦 产品总数</div>
+            <div class="stat-value">68</div>
+            <div class="stat-change up">▲ 3 较上季度</div>
+        </div>
+        <div class="stat-card">
+            <div class="accent-stripe green"></div>
+            <div class="stat-label">💰 管理总规模</div>
+            <div class="stat-value">1.36<span style="font-size:16px;font-weight:500;"> 万亿</span></div>
+            <div class="stat-change up">▲ 4.2% 较上月</div>
+        </div>
+        <div class="stat-card">
+            <div class="accent-stripe amber"></div>
+            <div class="stat-label">📈 本月净流入</div>
+            <div class="stat-value">182.6<span style="font-size:16px;font-weight:500;"> 亿</span></div>
+            <div class="stat-change up">▲ 8.9% 环比</div>
+        </div>
+        <div class="stat-card warning-card">
+            <div class="accent-stripe red"></div>
+            <div class="stat-label">⚠️ 迷你/清盘预警</div>
+            <div class="stat-value">5</div>
+            <div class="stat-change down">▼ 需关注</div>
+        </div>
+    </div>
+
+    <div class="main-grid">
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-title">📋 产品总览矩阵（建信基金）</span>
+                <span class="panel-badge">资产大类 × 策略细分 | 气泡=规模（亿元）</span>
+            </div>
+            <div class="chart-container-lg" id="chart-matrix"></div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-title">📊 规模结构分布</span>
+                <span class="panel-badge">资产大类 & 资金来源</span>
+            </div>
+            <div class="double-chart">
+                <div class="mini-chart" id="chart-scale-asset"></div>
+                <div class="mini-chart" id="chart-scale-source"></div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-title">🎯 风险收益定位图</span>
+                <span class="panel-badge">气泡=规模 | 十字线=同类均值 | 含预警产品</span>
+            </div>
+            <div class="chart-container-lg" id="chart-risk-return"></div>
+        </div>
+    </div>
+
+    <div class="bottom-grid">
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-title">🔄 产品生命周期</span>
+                <span class="panel-badge">状态分布</span>
+            </div>
+            <div class="chart-container-sm" id="chart-lifecycle"></div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-title">💧 近12个月现金流趋势</span>
+                <span class="panel-badge">单位：亿元 | 按资产大类</span>
+            </div>
+            <div class="chart-container-sm" id="chart-cashflow"></div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-title">🚨 预警监控列表</span>
+                <span class="panel-badge" style="background:#fef2f2;color:#e74c3c;">实时</span>
+            </div>
+            <div class="alert-table-wrap">
+                <table class="alert-table">
+                    <thead>
+                        <tr>
+                            <th>产品名称</th>
+                            <th>规模(亿)</th>
+                            <th>持有人</th>
+                            <th>预警类型</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="highlight-row">
+                            <td><span class="blink-dot"></span>建信量化事件驱动混合</td>
+                            <td style="color:#e74c3c;font-weight:700;">0.21</td>
+                            <td style="color:#e74c3c;">168</td>
+                            <td><span class="tag-danger">清盘预警</span></td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td><span class="blink-dot"></span>建信现代服务业混合</td>
+                            <td style="color:#e74c3c;font-weight:700;">0.27</td>
+                            <td style="color:#e74c3c;">142</td>
+                            <td><span class="tag-danger">清盘预警</span></td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td><span class="blink-dot"></span>建信港股通精选混合</td>
+                            <td style="color:#e74c3c;font-weight:700;">0.33</td>
+                            <td style="color:#e74c3c;">195</td>
+                            <td><span class="tag-danger">清盘预警</span></td>
+                        </tr>
+                        <tr>
+                            <td>建信鑫利回报混合</td>
+                            <td style="color:#f59e0b;font-weight:600;">0.48</td>
+                            <td>234</td>
+                            <td><span class="tag-warning">规模预警</span></td>
+                        </tr>
+                        <tr>
+                            <td>建信可转债增强债券</td>
+                            <td>22.5</td>
+                            <td>7,890</td>
+                            <td><span class="tag-warning">业绩预警</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="margin-top:10px;font-size:11px;color:var(--text-secondary);text-align:right;">
+                近30天触发预警 <strong style="color:#e74c3c;">5</strong> 次 |
+                <a href="#" style="color:var(--info);">查看全部 →</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const colorPalette = {
+                equity: '#e74c3c',
+                fixedIncome: '#3b82f6',
+                hybrid: '#8b5cf6',
+                money: '#10b981',
+                alternative: '#f59e0b',
+            };
+
+            // ==================== 图表1：产品总览矩阵（建信基金产品线） ====================
+            function initMatrixChart() {
+                const dom = document.getElementById('chart-matrix');
+                const chart = echarts.init(dom);
+
+                const xCategories = ['权益', '固定收益', '混合', '货币', '另类'];
+                const yCategories = [
+                    '全市场精选', '行业主题', '量化指增', '被动指数',
+                    '纯债', '固收+', '可转债', '偏股混合', '偏债混合',
+                    '货币类', 'REITs', 'FOF'
+                ];
+
+                // 热力图数据：[xIndex, yIndex, totalScale]  规模单位：亿元
+                const heatmapData = [
+                    [0, 0, 480],   // 权益-全市场精选（建信改革红利、建信健康民生等）
+                    [0, 1, 210],   // 权益-行业主题（建信新能源、建信医疗等）
+                    [0, 2, 150],   // 权益-量化指增（建信中证500指增等）
+                    [0, 3, 820],   // 权益-被动指数（建信中证500ETF、沪深300ETF等）
+                    [1, 4, 2200],  // 固收-纯债（建信纯债、建信稳定增利等）
+                    [1, 5, 980],   // 固收-固收+（建信稳定得利、建信双息红利等）
+                    [1, 6, 45],    // 固收-可转债（建信可转债增强）
+                    [2, 7, 380],   // 混合-偏股混合（建信优化配置、建信核心精选等）
+                    [2, 8, 520],   // 混合-偏债混合（建信稳健回报、建信安心保本等）
+                    [3, 9, 6200],  // 货币-货币类（建信现金添利、建信天添益等）
+                    [4, 10, 180],  // 另类-REITs（建信中关村REIT、建信普洛斯REIT等）
+                    [4, 11, 95],   // 另类-FOF（建信优享稳健养老FOF等）
+                ];
+
+                const detailMap = {
+                    '0-0': '建信改革红利混合(180亿) 建信健康民生混合(160亿) 建信中国制造2025(140亿) | 合计480亿 | R4',
+                    '0-1': '建信新能源行业混合(90亿) 建信医疗健康混合(72亿) 建信信息产业混合(48亿) | 合计210亿 | R4',
+                    '0-2': '建信中证500指数增强(80亿) 建信沪深300指数增强(70亿) | 合计150亿 | R4',
+                    '0-3': '建信中证500ETF(320亿) 建信沪深300ETF(280亿) 建信创业板ETF(120亿) 建信MSCI中国A股ETF(100亿) | 合计820亿 | R4',
+                    '1-4': '建信纯债债券(680亿) 建信稳定增利债券(550亿) 建信中短债(420亿) 建信利率债(350亿) 建信信用增强(200亿) | 合计2200亿 | R2',
+                    '1-5': '建信稳定得利混合(380亿) 建信双息红利债券(320亿) 建信收益增强(280亿) | 合计980亿 | R3',
+                    '1-6': '建信可转债增强债券(45亿) | R3',
+                    '2-7': '建信优化配置混合(140亿) 建信核心精选混合(120亿) 建信优势动力混合(120亿) | 合计380亿 | R4',
+                    '2-8': '建信稳健回报混合(210亿) 建信安心保本混合(180亿) 建信灵活配置混合(130亿) | 合计520亿 | R3',
+                    '3-9': '建信现金添利货币(2800亿) 建信天添益货币(1800亿) 建信嘉薪宝货币(1600亿) | 合计6200亿 | R1',
+                    '4-10': '建信中关村REIT(90亿) 建信普洛斯REIT(60亿) 建信东久REIT(30亿) | 合计180亿 | R4',
+                    '4-11': '建信优享稳健养老FOF(45亿) 建信优享平衡养老FOF(30亿) 建信优享进取养老FOF(20亿) | 合计95亿 | R3',
+                };
+
+                const option = {
+                    tooltip: {
+                        position: 'top',
+                        backgroundColor: 'rgba(30,58,95,0.95)',
+                        borderColor: 'transparent',
+                        textStyle: { color: '#fff', fontSize: 12 },
+                        formatter: function(params) {
+                            const key = params.data[0] + '-' + params.data[1];
+                            const detail = detailMap[key] || '暂无产品布局';
+                            const xLabel = xCategories[params.data[0]];
+                            const yLabel = yCategories[params.data[1]];
+                            const val = params.data[2];
+                            if (val > 0) {
+                                return `<strong>${xLabel} — ${yLabel}</strong><br/>${detail}<br/>合计规模：<b>${val}亿</b>`;
+                            }
+                            return `<strong>${xLabel} — ${yLabel}</strong><br/>🈳 暂无产品布局<br/><span style="color:#f59e0b;">⚠️ 潜在空白赛道</span>`;
+                        }
+                    },
+                    grid: {
+                        left: '12%',
+                        right: '8%',
+                        top: '6%',
+                        bottom: '8%',
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: xCategories,
+                        splitArea: { show: true },
+                        axisLabel: {
+                            fontSize: 12,
+                            fontWeight: 600,
+                            color: '#1e3a5f',
+                            rotate: 0,
+                        },
+                        axisLine: { lineStyle: { color: '#cbd5e1' } },
+                    },
+                    yAxis: {
+                        type: 'category',
+                        data: yCategories,
+                        splitArea: { show: true },
+                        axisLabel: {
+                            fontSize: 11,
+                            fontWeight: 500,
+                            color: '#475569',
+                        },
+                        axisLine: { lineStyle: { color: '#cbd5e1' } },
+                    },
+                    visualMap: {
+                        min: 0,
+                        max: 6200,
+                        calculable: true,
+                        orient: 'horizontal',
+                        bottom: '0%',
+                        left: 'center',
+                        itemWidth: 18,
+                        itemHeight: 120,
+                        textStyle: { color: '#64748b', fontSize: 10 },
+                        inRange: {
+                            color: ['#f8fafc', '#e0f0ff', '#b3d9ff', '#6db3f2', '#2c7fb8', '#1a5276']
+                        },
+                        seriesIndex: 0,
+                    },
+                    series: [{
+                        name: '产品规模(亿)',
+                        type: 'heatmap',
+                        data: heatmapData,
+                        label: {
+                            show: true,
+                            fontSize: 10,
+                            fontWeight: 700,
+                            color: '#1e3a5f',
+                            formatter: function(p) { return p.data[2] > 0 ? p.data[2] + '亿' : ''; }
+                        },
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 16,
+                                shadowColor: 'rgba(0,0,0,0.3)',
+                                borderColor: '#1e3a5f',
+                                borderWidth: 2,
+                            }
+                        },
+                        itemStyle: {
+                            borderColor: '#fff',
+                            borderWidth: 2,
+                            borderRadius: 4,
+                        },
+                    }]
+                };
+
+                chart.setOption(option);
+                chart.on('click', function(params) {
+                    if (params.data && params.data[2] > 0) {
+                        const xLabel = xCategories[params.data[0]];
+                        const yLabel = yCategories[params.data[1]];
+                        alert(`【下钻模拟】\n资产大类：${xLabel}\n策略细分：${yLabel}\n\n实际系统中将跳转至建信基金该类别产品明细页。`);
+                    }
+                });
+                window.addEventListener('resize', () => chart.resize());
+                return chart;
+            }
+
+            // ==================== 图表2：规模结构-按资产大类（建信基金） ====================
+            function initScaleAssetChart() {
+                const dom = document.getElementById('chart-scale-asset');
+                const chart = echarts.init(dom);
+                const option = {
+                    title: {
+                        text: '按资产大类',
+                        left: 'center',
+                        top: 6,
+                        textStyle: { fontSize: 13, fontWeight: 600, color: '#1e3a5f' }
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: '{b}: {c}亿 ({d}%)',
+                        backgroundColor: 'rgba(30,58,95,0.9)',
+                        borderColor: 'transparent',
+                        textStyle: { color: '#fff', fontSize: 12 }
+                    },
+                    legend: {
+                        bottom: 0,
+                        textStyle: { fontSize: 10, color: '#64748b' },
+                        itemWidth: 10,
+                        itemHeight: 10,
+                    },
+                    series: [{
+                        type: 'pie',
+                        radius: ['52%', '78%'],
+                        center: ['50%', '50%'],
+                        avoidLabelOverlap: false,
+                        itemStyle: {
+                            borderRadius: 6,
+                            borderColor: '#fff',
+                            borderWidth: 3,
+                        },
+                        label: {
+                            show: true,
+                            position: 'outside',
+                            formatter: '{b}\n{d}%',
+                            fontSize: 10,
+                            color: '#475569',
+                        },
+                        emphasis: {
+                            label: { fontSize: 14, fontWeight: 'bold' },
+                            scaleSize: 12,
+                        },
+                        data: [
+                            { value: 1660, name: '权益', itemStyle: { color: colorPalette.equity } },
+                            { value: 3225, name: '固定收益', itemStyle: { color: colorPalette.fixedIncome } },
+                            { value: 900, name: '混合', itemStyle: { color: colorPalette.hybrid } },
+                            { value: 6200, name: '货币', itemStyle: { color: colorPalette.money } },
+                            { value: 275, name: '另类', itemStyle: { color: colorPalette.alternative } },
+                        ]
+                    }]
+                };
+                chart.setOption(option);
+                window.addEventListener('resize', () => chart.resize());
+                return chart;
+            }
+
+            // ==================== 图表3：规模结构-按资金来源 ====================
+            function initScaleSourceChart() {
+                const dom = document.getElementById('chart-scale-source');
+                const chart = echarts.init(dom);
+                const option = {
+                    title: {
+                        text: '按资金来源',
+                        left: 'center',
+                        top: 6,
+                        textStyle: { fontSize: 13, fontWeight: 600, color: '#1e3a5f' }
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: '{b}: {c}亿 ({d}%)',
+                        backgroundColor: 'rgba(30,58,95,0.9)',
+                        borderColor: 'transparent',
+                        textStyle: { color: '#fff', fontSize: 12 }
+                    },
+                    legend: {
+                        bottom: 0,
+                        textStyle: { fontSize: 10, color: '#64748b' },
+                        itemWidth: 10,
+                        itemHeight: 10,
+                    },
+                    series: [{
+                        type: 'pie',
+                        radius: ['52%', '78%'],
+                        center: ['50%', '50%'],
+                        avoidLabelOverlap: false,
+                        itemStyle: {
+                            borderRadius: 6,
+                            borderColor: '#fff',
+                            borderWidth: 3,
+                        },
+                        label: {
+                            show: true,
+                            position: 'outside',
+                            formatter: '{b}\n{d}%',
+                            fontSize: 10,
+                            color: '#475569',
+                        },
+                        emphasis: {
+                            label: { fontSize: 14, fontWeight: 'bold' },
+                            scaleSize: 12,
+                        },
+                        data: [
+                            { value: 7200, name: '机构客户', itemStyle: { color: '#3b82f6' } },
+                            { value: 4800, name: '零售客户', itemStyle: { color: '#10b981' } },
+                            { value: 1100, name: '内部自营/关联方', itemStyle: { color: '#8b5cf6' } },
+                            { value: 500, name: '投顾组合', itemStyle: { color: '#f59e0b' } },
+                        ]
+                    }]
+                };
+                chart.setOption(option);
+                window.addEventListener('resize', () => chart.resize());
+                return chart;
+            }
+
+            // ==================== 图表4：风险收益定位气泡图（建信基金代表性产品） ====================
+            function initRiskReturnChart() {
+                const dom = document.getElementById('chart-risk-return');
+                const chart = echarts.init(dom);
+
+                const normalProducts = [
+                    { name: '建信改革红利混合', volatility: 21, return: 14.2, scale: 180, assetClass: '权益', risk: 'R4' },
+                    { name: '建信健康民生混合', volatility: 19, return: 12.8, scale: 160, assetClass: '权益', risk: 'R4' },
+                    { name: '建信新能源混合', volatility: 25, return: 16.5, scale: 90, assetClass: '权益', risk: 'R4' },
+                    { name: '建信医疗健康混合', volatility: 23, return: 8.9, scale: 72, assetClass: '权益', risk: 'R4' },
+                    { name: '建信中证500指增', volatility: 18, return: 10.3, scale: 80, assetClass: '权益', risk: 'R4' },
+                    { name: '建信中证500ETF', volatility: 19.5, return: 9.8, scale: 320, assetClass: '权益', risk: 'R4' },
+                    { name: '建信沪深300ETF', volatility: 17, return: 8.5, scale: 280, assetClass: '权益', risk: 'R4' },
+                    { name: '建信纯债债券A', volatility: 1.2, return: 3.8, scale: 680, assetClass: '固定收益', risk: 'R2' },
+                    { name: '建信稳定增利债券', volatility: 1.5, return: 4.2, scale: 550, assetClass: '固定收益', risk: 'R2' },
+                    { name: '建信稳定得利混合', volatility: 4.2, return: 5.8, scale: 380, assetClass: '固定收益', risk: 'R3' },
+                    { name: '建信可转债增强', volatility: 11.5, return: 7.8, scale: 45, assetClass: '固定收益', risk: 'R3' },
+                    { name: '建信优化配置混合', volatility: 16, return: 9.5, scale: 140, assetClass: '混合', risk: 'R4' },
+                    { name: '建信核心精选混合', volatility: 15.5, return: 10.2, scale: 120, assetClass: '混合', risk: 'R4' },
+                    { name: '建信稳健回报混合', volatility: 5.0, return: 6.5, scale: 210, assetClass: '混合', risk: 'R3' },
+                    { name: '建信现金添利货币', volatility: 0.1, return: 2.3, scale: 2800, assetClass: '货币', risk: 'R1' },
+                    { name: '建信中关村REIT', volatility: 9.5, return: 6.2, scale: 90, assetClass: '另类', risk: 'R4' },
+                    { name: '建信优享稳健养老FOF', volatility: 7.2, return: 5.6, scale: 45, assetClass: '另类', risk: 'R3' },
+                ];
+
+                const warningProducts = [
+                    { name: '⚠建信量化事件驱动', volatility: 27, return: -9, scale: 0.21, assetClass: '权益', isWarning: true },
+                    { name: '⚠建信现代服务业', volatility: 26, return: -7.5, scale: 0.27, assetClass: '权益', isWarning: true },
+                    { name: '⚠建信港股通精选', volatility: 24, return: -5.8, scale: 0.33, assetClass: '权益', isWarning: true },
+                    { name: '⚠建信鑫利回报', volatility: 20, return: -4.2, scale: 0.48, assetClass: '混合', isWarning: true },
+                ];
+
+                const option = {
+                    tooltip: {
+                        trigger: 'item',
+                        backgroundColor: 'rgba(30,58,95,0.95)',
+                        borderColor: 'transparent',
+                        textStyle: { color: '#fff', fontSize: 12 },
+                        formatter: function(p) {
+                            const d = p.data;
+                            const warningTag = d.isWarning ? '<br/><span style="color:#e74c3c;">⚠ 迷你产品预警</span>' : '';
+                            return `<strong>${d.name}</strong><br/>
+                            年化收益率：<b>${d.return}%</b><br/>
+                            年化波动率：<b>${d.volatility}%</b><br/>
+                            规模：<b>${d.scale}亿</b><br/>
+                            资产大类：${d.assetClass} | 风险等级：${d.risk || 'R4'}${warningTag}`;
+                        }
+                    },
+                    legend: {
+                        data: ['权益', '固定收益', '混合', '货币', '另类', '预警产品'],
+                        bottom: 0,
+                        textStyle: { fontSize: 10, color: '#64748b' },
+                        itemWidth: 12,
+                        itemHeight: 12,
+                    },
+                    grid: {
+                        left: '12%',
+                        right: '10%',
+                        top: '8%',
+                        bottom: '14%',
+                        containLabel: true,
+                    },
+                    xAxis: {
+                        type: 'value',
+                        name: '年化波动率 (%)',
+                        nameTextStyle: { fontSize: 11, color: '#64748b', fontWeight: 500 },
+                        min: 0,
+                        max: 32,
+                        splitLine: { lineStyle: { color: '#f1f5f9', type: 'dashed' } },
+                        axisLabel: { fontSize: 10, color: '#94a3b8' },
+                    },
+                    yAxis: {
+                        type: 'value',
+                        name: '年化收益率 (%)',
+                        nameTextStyle: { fontSize: 11, color: '#64748b', fontWeight: 500 },
+                        min: -12,
+                        max: 20,
+                        splitLine: { lineStyle: { color: '#f1f5f9', type: 'dashed' } },
+                        axisLabel: { fontSize: 10, color: '#94a3b8' },
+                    },
+                    markLine: {
+                        silent: true,
+                        symbol: 'none',
+                        lineStyle: { color: '#94a3b8', type: 'dotted', width: 1.5 },
+                        data: [
+                            { xAxis: 14, label: { formatter: '市场均值波动', fontSize: 10, color: '#94a3b8' } },
+                            { yAxis: 6, label: { formatter: '市场均值收益', fontSize: 10, color: '#94a3b8' } },
+                        ]
+                    },
+                    series: [
+                        ...Object.entries(colorPalette).map(([key, color]) => ({
+                            name: {
+                                'equity': '权益',
+                                'fixedIncome': '固定收益',
+                                'hybrid': '混合',
+                                'money': '货币',
+                                'alternative': '另类'
+                            } [key],
+                            type: 'scatter',
+                            symbolSize: function(data) {
+                                return Math.max(14, Math.min(60, Math.sqrt(data.scale) * 6));
+                            },
+                            itemStyle: {
+                                color: color,
+                                shadowBlur: 8,
+                                shadowColor: 'rgba(0,0,0,0.15)',
+                                borderColor: '#fff',
+                                borderWidth: 1.5,
+                                borderRadius: 2,
+                                opacity: 0.85,
+                            },
+                            emphasis: {
+                                scale: 2,
+                                shadowBlur: 20,
+                                opacity: 1,
+                            },
+                            label: {
+                                show: true,
+                                formatter: function(p) { return p.data.name.length > 8 ? p.data.name.substring(0, 8) + '...' : p.data.name; },
+                                position: 'top',
+                                fontSize: 9,
+                                color: '#475569',
+                                distance: 8,
+                            },
+                            data: normalProducts.filter(p => {
+                                const map = { 'equity': '权益', 'fixedIncome': '固定收益', 'hybrid': '混合', 'money': '货币', 'alternative': '另类' };
+                                return p.assetClass === map[key];
+                            }).map(p => ({
+                                name: p.name,
+                                value: [p.volatility, p.return],
+                                scale: p.scale,
+                                assetClass: p.assetClass,
+                                risk: p.risk,
+                                volatility: p.volatility,
+                                return: p.return,
+                            })),
+                        })),
+                        {
+                            name: '预警产品',
+                            type: 'scatter',
+                            symbolSize: function(data) { return Math.max(18, Math.min(40, Math.sqrt(data.scale) * 10)); },
+                            itemStyle: {
+                                color: 'transparent',
+                                borderColor: '#e74c3c',
+                                borderWidth: 3,
+                                borderType: 'dashed',
+                                shadowBlur: 12,
+                                shadowColor: 'rgba(231,76,60,0.5)',
+                                opacity: 1,
+                            },
+                            emphasis: {
+                                scale: 2.5,
+                                shadowBlur: 24,
+                                borderWidth: 4,
+                            },
+                            label: {
+                                show: true,
+                                formatter: function(p) { const name = p.data.name.replace('⚠', ''); return '⚠' + (name.length > 6 ? name.substring(0, 6) + '..' : name); },
+                                position: 'bottom',
+                                fontSize: 9,
+                                color: '#e74c3c',
+                                fontWeight: 700,
+                                distance: 10,
+                            },
+                            data: warningProducts.map(p => ({
+                                name: p.name,
+                                value: [p.volatility, p.return],
+                                scale: p.scale,
+                                assetClass: p.assetClass,
+                                isWarning: true,
+                                volatility: p.volatility,
+                                return: p.return,
+                            })),
+                            z: 10,
+                        }
+                    ],
+                };
+
+                chart.setOption(option);
+                window.addEventListener('resize', () => chart.resize());
+                return chart;
+            }
+
+            // ==================== 图表5：产品生命周期 ====================
+            function initLifecycleChart() {
+                const dom = document.getElementById('chart-lifecycle');
+                const chart = echarts.init(dom);
+                const categories = ['孵化期', '募集期', '正常运作', '迷你/清盘预警', '已清盘(近一年)'];
+                const counts = [3, 2, 58, 5, 0];
+                const scales = [25, 40, 13500, 1.29, 0];
+                const colors = ['#94a3b8', '#60a5fa', '#10b981', '#e74c3c', '#cbd5e1'];
+
+                const option = {
+                    tooltip: {
+                        trigger: 'axis',
+                        backgroundColor: 'rgba(30,58,95,0.9)',
+                        borderColor: 'transparent',
+                        textStyle: { color: '#fff', fontSize: 12 },
+                        formatter: function(params) {
+                            const idx = params[0].dataIndex;
+                            return `<strong>${categories[idx]}</strong><br/>产品数量：<b>${counts[idx]}只</b><br/>合计规模：<b>${scales[idx]}亿</b>`;
+                        }
+                    },
+                    grid: { left: '8%', right: '8%', top: '8%', bottom: '10%', containLabel: true },
+                    xAxis: {
+                        type: 'category',
+                        data: categories,
+                        axisLabel: { fontSize: 10, color: '#475569', rotate: 15, fontWeight: 500 },
+                        axisLine: { lineStyle: { color: '#cbd5e1' } },
+                    },
+                    yAxis: {
+                        type: 'value',
+                        name: '产品数量(只)',
+                        nameTextStyle: { fontSize: 10, color: '#94a3b8' },
+                        min: 0,
+                        max: 68,
+                        interval: 10,
+                        splitLine: { lineStyle: { color: '#f1f5f9', type: 'dashed' } },
+                        axisLabel: { fontSize: 10, color: '#94a3b8' },
+                    },
+                    series: [{
+                        type: 'bar',
+                        data: counts.map((v, i) => ({
+                            value: v,
+                            itemStyle: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                    { offset: 0, color: colors[i] },
+                                    { offset: 1, color: colors[i] + '99' }
+                                ]),
+                                borderRadius: [8, 8, 0, 0],
+                                shadowBlur: 6,
+                                shadowColor: 'rgba(0,0,0,0.1)',
+                            }
+                        })),
+                        barWidth: '45%',
+                        label: {
+                            show: true,
+                            position: 'top',
+                            fontWeight: 700,
+                            fontSize: 13,
+                            color: '#1e3a5f',
+                            formatter: '{c}只',
+                        },
+                    }]
+                };
+                chart.setOption(option);
+                window.addEventListener('resize', () => chart.resize());
+                return chart;
+            }
+
+            // ==================== 图表6：现金流趋势 ====================
+            function initCashflowChart() {
+                const dom = document.getElementById('chart-cashflow');
+                const chart = echarts.init(dom);
+                const months = ['2025-08','2025-09','2025-10','2025-11','2025-12','2026-01','2026-02','2026-03','2026-04','2026-05','2026-06','2026-07'];
+                const shortLabels = ['8月','9月','10月','11月','12月','1月','2月','3月','4月','5月','6月','7月'];
+
+                const equityFlow = [25, -8, 35, -12, 42, 18, -20, 32, -5, 45, 15, -3];
+                const fixedIncomeFlow = [85, 62, 95, 70, 110, 88, 72, 105, 55, 130, 92, 108];
+                const hybridFlow = [18, -5, 22, 8, 15, -2, 10, 20, 5, 28, 12, 16];
+                const moneyFlow = [-120, 180, -90, 150, -60, 190, -110, 160, -80, 210, -30, 85];
+                const alternativeFlow = [6, 3, 8, 2, 7, 5, 6, 9, 3, 11, 6, 5];
+
+                const option = {
+                    tooltip: {
+                        trigger: 'axis',
+                        backgroundColor: 'rgba(30,58,95,0.9)',
+                        borderColor: 'transparent',
+                        textStyle: { color: '#fff', fontSize: 11 },
+                        formatter: function(params) {
+                            let html = `<strong>${months[params[0].dataIndex]}</strong><br/>`;
+                            params.forEach(p => {
+                                const val = p.value;
+                                const sign = val >= 0 ? '+' : '';
+                                const color = val >= 0 ? '#10b981' : '#e74c3c';
+                                html += `${p.marker} ${p.seriesName}：<span style="color:${color};font-weight:600;">${sign}${val}亿</span><br/>`;
+                            });
+                            html += `<hr style="border-color:rgba(255,255,255,0.2);margin:4px 0;"/>合计：<b>${params.reduce((s,p)=>s+p.value,0).toFixed(1)}亿</b>`;
+                            return html;
+                        }
+                    },
+                    legend: {
+                        data: ['权益', '固定收益', '混合', '货币', '另类'],
+                        bottom: 0,
+                        textStyle: { fontSize: 10, color: '#64748b' },
+                        itemWidth: 14,
+                        itemHeight: 2,
+                    },
+                    grid: { left: '6%', right: '6%', top: '8%', bottom: '16%', containLabel: true },
+                    xAxis: {
+                        type: 'category',
+                        data: shortLabels,
+                        boundaryGap: false,
+                        axisLabel: { fontSize: 10, color: '#94a3b8' },
+                        axisLine: { lineStyle: { color: '#cbd5e1' } },
+                    },
+                    yAxis: {
+                        type: 'value',
+                        name: '净流入(亿)',
+                        nameTextStyle: { fontSize: 10, color: '#94a3b8' },
+                        splitLine: { lineStyle: { color: '#f1f5f9', type: 'dashed' } },
+                        axisLabel: { fontSize: 10, color: '#94a3b8' },
+                    },
+                    series: [
+                        {
+                            name: '权益', type: 'line', data: equityFlow, smooth: true,
+                            lineStyle: { color: colorPalette.equity, width: 2 },
+                            itemStyle: { color: colorPalette.equity }, symbol: 'circle', symbolSize: 5,
+                            areaStyle: { color: new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(231,76,60,0.25)'},{offset:1,color:'rgba(231,76,60,0.02)'}])}
+                        },
+                        {
+                            name: '固定收益', type: 'line', data: fixedIncomeFlow, smooth: true,
+                            lineStyle: { color: colorPalette.fixedIncome, width: 2.5 },
+                            itemStyle: { color: colorPalette.fixedIncome }, symbol: 'circle', symbolSize: 5,
+                            areaStyle: { color: new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(59,130,246,0.3)'},{offset:1,color:'rgba(59,130,246,0.02)'}])}
+                        },
+                        {
+                            name: '混合', type: 'line', data: hybridFlow, smooth: true,
+                            lineStyle: { color: colorPalette.hybrid, width: 2 },
+                            itemStyle: { color: colorPalette.hybrid }, symbol: 'diamond', symbolSize: 5,
+                            areaStyle: { color: new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(139,92,246,0.2)'},{offset:1,color:'rgba(139,92,246,0.02)'}])}
+                        },
+                        {
+                            name: '货币', type: 'line', data: moneyFlow, smooth: true,
+                            lineStyle: { color: colorPalette.money, width: 2, type: 'dashed' },
+                            itemStyle: { color: colorPalette.money }, symbol: 'triangle', symbolSize: 6,
+                        },
+                        {
+                            name: '另类', type: 'line', data: alternativeFlow, smooth: true,
+                            lineStyle: { color: colorPalette.alternative, width: 2 },
+                            itemStyle: { color: colorPalette.alternative }, symbol: 'rect', symbolSize: 5,
+                        },
+                    ]
+                };
+                chart.setOption(option);
+                window.addEventListener('resize', () => chart.resize());
+                return chart;
+            }
+
+            const charts = [
+                initMatrixChart(),
+                initScaleAssetChart(),
+                initScaleSourceChart(),
+                initRiskReturnChart(),
+                initLifecycleChart(),
+                initCashflowChart()
+            ];
+
+            window.addEventListener('resize', () => charts.forEach(c => { try { c.resize(); } catch (e) {} }));
+
+            console.log('✅ 建信基金产品谱系管理驾驶舱已启动');
+            console.log('   数据总规模：1.36万亿 | 产品总数：68只');
+            console.log('   热力图覆盖12个策略赛道，货币基金规模最大（6200亿）');
+        })();
+    </script>
+</body>
+</html>

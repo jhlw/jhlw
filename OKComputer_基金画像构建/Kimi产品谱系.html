@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>建信基金产品谱系管理驾驶舱</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    background: #f1f5f9;
+    color: #1e293b;
+    min-height: 100vh;
+  }
+  .dashboard { max-width: 1600px; margin: 0 auto; padding: 20px; }
+  .db-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+  .db-title { font-size: 24px; font-weight: 700; color: #1e293b; display: flex; align-items: center; gap: 10px; }
+  .db-title .icon { width: 36px; height: 36px; background: linear-gradient(135deg, #0066b3, #003d6b); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; }
+  .db-subtitle { font-size: 13px; color: #64748b; margin-top: 4px; margin-left: 46px; }
+  .db-meta { display: flex; align-items: center; gap: 12px; }
+  .db-date { font-size: 12px; color: #64748b; background: white; padding: 6px 14px; border-radius: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+  .refresh-btn { background: #0066b3; color: white; border: none; padding: 6px 16px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: all 0.2s; }
+  .refresh-btn:hover { background: #005a9e; }
+  .kpi-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 20px; }
+  .kpi-card { background: white; border-radius: 12px; padding: 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: all 0.2s; position: relative; overflow: hidden; }
+  .kpi-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+  .kpi-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 12px 12px 0 0; }
+  .kpi-card.c-blue::before { background: #0066b3; }
+  .kpi-card.c-green::before { background: #10b981; }
+  .kpi-card.c-amber::before { background: #f59e0b; }
+  .kpi-card.c-purple::before { background: #8b5cf6; }
+  .kpi-card.c-red::before { background: #ef4444; }
+  .kpi-label { font-size: 12px; color: #64748b; margin-bottom: 6px; }
+  .kpi-value { font-size: 28px; font-weight: 700; color: #1e293b; line-height: 1.2; }
+  .kpi-value small { font-size: 14px; font-weight: 400; color: #94a3b8; }
+  .kpi-delta { font-size: 12px; margin-top: 6px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+  .kpi-delta.up { color: #10b981; }
+  .kpi-delta.down { color: #ef4444; }
+  .kpi-delta.warn { color: #f59e0b; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .panel { background: white; border-radius: 12px; padding: 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+  .panel-title { font-size: 14px; font-weight: 700; color: #334155; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .panel-title::before { content: ''; display: inline-block; width: 4px; height: 16px; border-radius: 2px; }
+  .panel-blue .panel-title::before { background: #0066b3; }
+  .panel-green .panel-title::before { background: #10b981; }
+  .panel-amber .panel-title::before { background: #f59e0b; }
+  .panel-red .panel-title::before { background: #ef4444; }
+  .panel-purple .panel-title::before { background: #8b5cf6; }
+  .panel-cyan .panel-title::before { background: #06b6d4; }
+  .tab-bar { display: flex; gap: 4px; margin-bottom: 14px; background: #f1f5f9; padding: 4px; border-radius: 8px; }
+  .tab-btn { flex: 1; padding: 8px 0; border: none; background: transparent; border-radius: 6px; font-size: 12px; font-weight: 600; color: #64748b; cursor: pointer; transition: all 0.2s; }
+  .tab-btn.active { background: white; color: #1e293b; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+  .tab-btn:hover:not(.active) { color: #334155; }
+  .chart-container { width: 100%; height: 260px; }
+  .chart-container-sm { width: 100%; height: 200px; }
+  .table-compact { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .table-compact th { text-align: left; padding: 8px 6px; color: #64748b; font-weight: 600; border-bottom: 1px solid #e2e8f0; background: #f8fafc; }
+  .table-compact td { padding: 8px 6px; border-bottom: 1px solid #f1f5f9; color: #334155; }
+  .table-compact tr:hover td { background: #f8fafc; }
+  .table-compact tr.warn td { background: #fef2f2; }
+  .table-compact tr.warn:hover td { background: #fee2e2; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+  .badge-r1 { background: #d1fae5; color: #065f46; }
+  .badge-r2 { background: #ccfbf1; color: #115e59; }
+  .badge-r3 { background: #fef3c7; color: #92400e; }
+  .badge-r4 { background: #ffedd5; color: #9a3412; }
+  .badge-r5 { background: #fee2e2; color: #991b1b; }
+  .badge-warn { background: #fee2e2; color: #991b1b; }
+  .badge-ok { background: #d1fae5; color: #065f46; }
+  .badge-info { background: #dbeafe; color: #1e40af; }
+  .badge-gray { background: #f1f5f9; color: #475569; }
+  .progress-track { height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; margin-top: 4px; }
+  .progress-fill { height: 100%; border-radius: 3px; transition: width 0.8s ease; }
+  .alert-box { background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 12px 14px; display: flex; align-items: flex-start; gap: 10px; margin-bottom: 14px; }
+  .alert-box.warn { background: #fffbeb; border-color: #fcd34d; }
+  .alert-box.info { background: #eff6ff; border-color: #bfdbfe; }
+  .alert-icon { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+  .alert-text { font-size: 12px; color: #7f1d1d; line-height: 1.5; }
+  .alert-text.warn { color: #92400e; }
+  .alert-text.info { color: #1e40af; }
+  .channel-flow { display: flex; flex-wrap: wrap; gap: 8px; }
+  .channel-pill { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 6px 14px; font-size: 12px; display: flex; align-items: center; gap: 6px; transition: all 0.2s; cursor: pointer; }
+  .channel-pill:hover { background: #f1f5f9; transform: translateY(-1px); }
+  .channel-pill .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .channel-pill .val { font-weight: 700; color: #1e293b; }
+  .channel-pill .pct { color: #94a3b8; font-size: 11px; }
+  .insight-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .insight-card { padding: 16px; border-radius: 10px; border-left: 4px solid; }
+  .insight-card.green { background: #f0fdf4; border-left-color: #10b981; }
+  .insight-card.amber { background: #fffbeb; border-left-color: #f59e0b; }
+  .insight-card.blue { background: #eff6ff; border-left-color: #0066b3; }
+  .insight-card .insight-title { font-weight: 700; margin-bottom: 8px; font-size: 13px; }
+  .insight-card.green .insight-title { color: #065f46; }
+  .insight-card.amber .insight-title { color: #92400e; }
+  .insight-card.blue .insight-title { color: #1e40af; }
+  .insight-card .insight-body { font-size: 12px; color: #374151; line-height: 1.7; }
+  .filter-bar { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+  .filter-select { padding: 6px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 12px; color: #334155; background: white; cursor: pointer; }
+  .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); z-index: 1000; align-items: center; justify-content: center; }
+  .modal-overlay.active { display: flex; }
+  .modal-content { background: white; border-radius: 16px; width: 90%; max-width: 720px; max-height: 85vh; overflow-y: auto; padding: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+  .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .modal-title { font-size: 16px; font-weight: 700; }
+  .modal-close { background: none; border: none; font-size: 20px; cursor: pointer; color: #94a3b8; }
+  .modal-close:hover { color: #475569; }
+  @media (max-width: 1200px) { .kpi-row { grid-template-columns: repeat(3, 1fr); } .grid-2 { grid-template-columns: 1fr; } .grid-3 { grid-template-columns: 1fr; } .insight-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 768px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } .db-header { flex-direction: column; align-items: flex-start; } }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .panel { animation: fadeIn 0.4s ease; }
+  .kpi-card { animation: fadeIn 0.4s ease; }
+</style>
+<base target="_blank">
+</head>
+<body>
+
+<div class="dashboard">
+  <!-- Header -->
+  <div class="db-header">
+    <div>
+      <div class="db-title">
+        <div class="icon">🏦</div>
+        建信基金产品谱系管理驾驶舱
+      </div>
+      <div class="db-subtitle">建信基金管理有限责任公司 · 银行系公募基金 · 产品谱系 v2.0</div>
+    </div>
+    <div class="db-meta">
+      <div class="db-date">📅 数据日期：2026年7月20日</div>
+      <button class="refresh-btn" onclick="refreshData()">🔄 刷新数据</button>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="kpi-row">
+    <div class="kpi-card c-blue">
+      <div class="kpi-label">公募基金总数</div>
+      <div class="kpi-value">186<small> 只</small></div>
+      <div class="kpi-delta up">📈 同比 +8只</div>
+    </div>
+    <div class="kpi-card c-green">
+      <div class="kpi-label">总管理规模</div>
+      <div class="kpi-value">12,900<small> 亿</small></div>
+      <div class="kpi-delta up">📈 同比 +6.2%</div>
+    </div>
+    <div class="kpi-card c-amber">
+      <div class="kpi-label">年管理费收入</div>
+      <div class="kpi-value">32.5<small> 亿</small></div>
+      <div class="kpi-delta up">📈 同比 +4.8%</div>
+    </div>
+    <div class="kpi-card c-purple">
+      <div class="kpi-label">平均单产品规模</div>
+      <div class="kpi-value">69.4<small> 亿</small></div>
+      <div class="kpi-delta up">📈 货币基金拉高均值</div>
+    </div>
+    <div class="kpi-card c-red">
+      <div class="kpi-label">清盘预警产品</div>
+      <div class="kpi-value">3<small> 只</small></div>
+      <div class="kpi-delta warn">⚠️ 需关注处置方案</div>
+    </div>
+  </div>
+
+  <!-- Alerts -->
+  <div class="alert-box">
+    <span class="alert-icon">🚨</span>
+    <span class="alert-text"><strong>清盘预警紧急通知：</strong>建信责任ETF（规模0.7亿）连续多个季度低于5000万清盘线，ESG主题市场热度下降导致资金持续流出。建议评估转型为宽基ETF或启动有序清盘程序。</span>
+  </div>
+  <div class="alert-box warn">
+    <span class="alert-icon">⚡</span>
+    <span class="alert-text warn"><strong>银行系特征提示：</strong>货币+固收占比74.0%，权益仅14.0%。作为银行系基金公司，固收是基本盘，但权益类产品"多而不强"——52只权益产品仅8只规模>50亿。建议加强权益投研能力建设。</span>
+  </div>
+
+  <!-- Row 1: Type Distribution + Tier Analysis -->
+  <div class="grid-2">
+    <div class="panel panel-blue">
+      <div class="panel-title">产品类型规模分布</div>
+      <div class="filter-bar">
+        <select class="filter-select" id="typeFilter" onchange="updateTypeChart()">
+          <option value="scale">按规模</option>
+          <option value="count">按数量</option>
+          <option value="income">按收入</option>
+        </select>
+      </div>
+      <div id="chartType" class="chart-container"></div>
+    </div>
+
+    <div class="panel panel-green">
+      <div class="panel-title">规模分层结构（金字塔分析）</div>
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTierView('scale')">按规模</button>
+        <button class="tab-btn" onclick="switchTierView('income')">按收入</button>
+        <button class="tab-btn" onclick="switchTierView('count')">按数量</button>
+        <button class="tab-btn" onclick="switchTierView('avg')">平均规模</button>
+      </div>
+      <div id="chartTier" class="chart-container"></div>
+      <div style="margin-top:8px; padding:10px; background:#f0fdf4; border-radius:8px; font-size:11px; color:#065f46;">
+        💡 旗舰产品（>50亿）42只占22.6%，贡献73.3%规模。建信现金添利单只规模1414.7亿，占公司总规模11.0%，集中度风险需关注。
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 2: Status + Risk -->
+  <div class="grid-2">
+    <div class="panel panel-amber">
+      <div class="panel-title">生命周期状态分布</div>
+      <div id="chartStatus" class="chart-container-sm"></div>
+      <table class="table-compact" style="margin-top:10px;">
+        <tr><th>状态</th><th>产品数</th><th>规模（亿）</th><th>规模占比</th><th>健康度</th></tr>
+        <tr><td><span class="badge badge-ok">正常运作</span></td><td>152</td><td>10,850</td><td>84.1%</td><td><div class="progress-track"><div class="progress-fill" style="width:84%;background:#10b981;"></div></div></td></tr>
+        <tr><td><span class="badge badge-info">建仓期</span></td><td>10</td><td>680</td><td>5.3%</td><td><div class="progress-track"><div class="progress-fill" style="width:5%;background:#3b82f6;"></div></div></td></tr>
+        <tr><td><span class="badge badge-info">募集期</span></td><td>14</td><td>890</td><td>6.9%</td><td><div class="progress-track"><div class="progress-fill" style="width:7%;background:#f59e0b;"></div></div></td></tr>
+        <tr><td><span class="badge badge-warn">暂停申赎</span></td><td>7</td><td>120</td><td>0.9%</td><td><div class="progress-track"><div class="progress-fill" style="width:1%;background:#f97316;"></div></div></td></tr>
+        <tr><td><span class="badge badge-warn">清盘预警</span></td><td>3</td><td>360</td><td>2.8%</td><td><div class="progress-track"><div class="progress-fill" style="width:3%;background:#ef4444;"></div></div></td></tr>
+      </table>
+    </div>
+
+    <div class="panel panel-red">
+      <div class="panel-title">风险等级规模分布</div>
+      <div id="chartRisk" class="chart-container-sm"></div>
+      <div style="margin-top:10px; padding:12px; background:#fef2f2; border-radius:8px; font-size:12px; color:#7f1d1d;">
+        <strong>风险结构分析：</strong>低风险产品（R1+R2）占比69.6%，体现银行系基金公司稳健风格。R5产品虽仅4.0%规模，但权益类产品中R5占比达28.8%，需关注权益产品波动对零售客户的影响。
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 3: Performance Trend + Channel -->
+  <div class="grid-2">
+    <div class="panel panel-purple">
+      <div class="panel-title">各类型产品近一年收益走势</div>
+      <div id="chartTrend" class="chart-container"></div>
+    </div>
+    <div class="panel panel-cyan">
+      <div class="panel-title">渠道规模分布（银行系特征）</div>
+      <div id="chartChannel" class="chart-container"></div>
+    </div>
+  </div>
+
+  <!-- Row 4: Star Products + Warning List -->
+  <div class="grid-2">
+    <div class="panel panel-purple">
+      <div class="panel-title">🏆 旗舰产品TOP10（规模>50亿）</div>
+      <div style="max-height:320px; overflow-y:auto;">
+        <table class="table-compact">
+          <tr><th>排名</th><th>产品名称</th><th>类型</th><th>规模(亿)</th><th>近1年收益</th><th>基金经理</th><th>操作</th></tr>
+          <tr><td>🥇</td><td><strong>建信现金添利货币A</strong></td><td><span class="badge badge-r1">货币</span></td><td>1,414.7</td><td style="color:#10b981;font-weight:600;">+1.8%</td><td>吴沛文/于倩倩</td><td><a href="#" onclick="showDetail('F0001')" style="color:#0066b3;font-size:11px;">详情</a></td></tr>
+          <tr><td>🥈</td><td><strong>建信货币A</strong></td><td><span class="badge badge-r1">货币</span></td><td>389.2</td><td style="color:#10b981;font-weight:600;">+1.7%</td><td>吴沛文/先轲宇</td><td><a href="#" onclick="showDetail('F0002')" style="color:#0066b3;font-size:11px;">详情</a></td></tr>
+          <tr><td>🥉</td><td><strong>建信现金增利货币A</strong></td><td><span class="badge badge-r1">货币</span></td><td>356.8</td><td style="color:#10b981;font-weight:600;">+1.8%</td><td>陈建良</td><td><a href="#" onclick="showDetail('F0003')" style="color:#0066b3;font-size:11px;">详情</a></td></tr>
+          <tr><td>4</td><td>建信纯债债券A</td><td><span class="badge badge-r2">固收</span></td><td>298.5</td><td style="color:#10b981;font-weight:600;">+4.3%</td><td>彭紫云/黎颖芳</td><td><a href="#" onclick="showDetail('F0004')" style="color:#0066b3;font-size:11px;">详情</a></td></tr>
+          <tr><td>5</td><td>建信短债债券A</td><td><span class="badge badge-r2">固收</span></td><td>245.6</td><td style="color:#10b981;font-weight:600;">+2.9%</td><td>李星佑/吴沛文</td><td><a href="#" onclick="showDetail('F0005')" style="color:#0066b3;font-size:11px;">详情</a></td></tr>
+          <tr><td>6</td><td>建信鑫悦90天滚动持有中短债</td><td><span class="badge badge-r2">固收</span></td><td>198.3</td><td style="color:#10b981;font-weight:600;">+2.8%</td><td>彭紫云/陈建良</td><td><a href="#" onclick="showDetail('F0006')" style="color:#0066b3;font-size:11px;">详情</a></td></tr>
+          <tr><td>7</td><td>建信稳定增利债券A</td><td><span class="badge badge-r2">固收</span></td><td>187.4</td><td style="color:#10b981;font-weight:600;">+3.5%</td><td>黎颖芳</td><td><a href="#" onclick="showDetail('F0007')" style="color:#0066b3;font-size:11px;">详情</a></td></tr>
+          <tr><td>8</td><td>建信鑫福60天持有期中短债</td><td><span class="badge badge-r2">固收</span></td><td>156.2</td><td style="color:#10b981;font-weight:600;">+2.5%</td><td>彭紫云/胡泽元</td><td><a href="#" onclick="showDetail('F0008')" style="color:#0066b3;font-size:11px;">详情</a></td></tr>
+          <tr><td>9</td><td>建信信用增强债券</td><td><span class="badge badge-r2">固收</span></td><td>142.1</td><td style="color:#10b981;font-weight:600;">+3.2%</td><td>李菁</td><td><a href="#" onclick="showDetail('F0009')" style="color:#0066b3;font-size:11px;">详情</a></td></tr>
+          <tr><td>10</td><td>建信嘉薪宝货币A</td><td><span class="badge badge-r1">货币</span></td><td>138.9</td><td style="color:#10b981;font-weight:600;">+1.9%</td><td>于倩倩</td><td><a href="#" onclick="showDetail('F0010')" style="color:#0066b3;font-size:11px;">详情</a></td></tr>
+        </table>
+      </div>
+      <div style="margin-top:8px; font-size:11px; color:#64748b;">
+        前10大产品合计规模3,527.7亿，占总规模27.3%。TOP10中货币基金4只、固收类6只，无权益产品进入前十。
+      </div>
+    </div>
+
+    <div class="panel panel-red">
+      <div class="panel-title">⚠️ 需关注产品清单</div>
+      <div style="max-height:320px; overflow-y:auto;">
+        <table class="table-compact">
+          <tr><th>产品</th><th>类型</th><th>规模</th><th>状态</th><th>风险</th><th>建议动作</th></tr>
+          <tr class="warn"><td><strong>建信责任ETF</strong></td><td>权益</td><td>0.7亿</td><td><span class="badge badge-warn">清盘预警</span></td><td>R4</td><td style="color:#ef4444;font-weight:600;">🚨启动应急</td></tr>
+          <tr class="warn"><td><strong>建信灵活配置混合C</strong></td><td>混合</td><td>6.6亿</td><td><span class="badge badge-warn">清盘预警</span></td><td>R3</td><td style="color:#f59e0b;font-weight:600;">⚡评估转型</td></tr>
+          <tr class="warn"><td><strong>建信睿怡纯债债券</strong></td><td>固收</td><td>2.8亿</td><td><span class="badge badge-warn">清盘预警</span></td><td>R2</td><td style="color:#f59e0b;font-weight:600;">⚡评估合并</td></tr>
+          <tr><td>建信中小盘先锋股票</td><td>权益</td><td>3.2亿</td><td><span class="badge badge-ok">正常</span></td><td>R5</td><td style="color:#94a3b8;">👁️持续观察</td></tr>
+          <tr><td>建信互联网+产业升级股票</td><td>权益</td><td>4.5亿</td><td><span class="badge badge-ok">正常</span></td><td>R5</td><td style="color:#94a3b8;">👁️持续观察</td></tr>
+          <tr><td>建信港股通精选混合</td><td>混合</td><td>5.8亿</td><td><span class="badge badge-info">暂停申赎</span></td><td>R4</td><td style="color:#f59e0b;font-weight:600;">⚡恢复评估</td></tr>
+          <tr><td>建信MSCI中国A股指数增强</td><td>权益</td><td>8.2亿</td><td><span class="badge badge-ok">正常</span></td><td>R4</td><td style="color:#94a3b8;">👁️持续观察</td></tr>
+        </table>
+      </div>
+      <div style="margin-top:10px; padding:10px; background:#fef2f2; border-radius:8px; font-size:11px; color:#991b1b;">
+        🚨 <strong>异常关注：</strong>建信责任ETF规模仅0.7亿，为全公司最小产品。该产品跟踪上证社会责任指数，ESG主题近年市场热度下降。建议评估转型为宽基ETF（如沪深300ETF）或启动有序清盘。
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 5: Matrix + Manager Load -->
+  <div class="grid-2">
+    <div class="panel panel-green">
+      <div class="panel-title">🔍 产品类型 × 规模分层矩阵</div>
+      <div id="chartMatrix" class="chart-container"></div>
+      <div style="margin-top:8px; font-size:11px; color:#64748b;">
+        💡 货币类产品旗舰集中度最高（13只旗舰），固收类产品分布最均衡。权益类产品在中型区间扎堆（18只），但旗舰仅8只，"腰部产品"过多。
+      </div>
+    </div>
+    <div class="panel panel-blue">
+      <div class="panel-title">👤 基金经理负荷分布</div>
+      <div id="chartManager" class="chart-container"></div>
+      <div style="margin-top:8px; font-size:11px; color:#64748b;">
+        💡 张溢麟管理产品触发2个预警（建信责任ETF等），且管理规模仅180亿。建议评估其能力圈匹配度。陈建良、吴沛文管理规模超1500亿，是固收条线核心支柱。
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 6: Strategic Insights -->
+  <div class="panel" style="margin-bottom:20px;">
+    <div class="panel-title panel-purple">💡 管理者决策建议（基于建信基金谱系分析）</div>
+    <div class="insight-grid">
+      <div class="insight-card green">
+        <div class="insight-title">🎯 银行系优势巩固</div>
+        <div class="insight-body">
+          货币+固收占比74.0%，是建信的核心护城河。建行渠道（直销+网银）贡献32.6%规模，是其他银行系公司难以复制的优势。建议继续深化与母行协同，发力"理财替代"策略，将短债、固收+产品作为银行渠道主推品种，目标未来一年固收+规模提升20%。
+        </div>
+      </div>
+      <div class="insight-card amber">
+        <div class="insight-title">⚡ 权益短板突破</div>
+        <div class="insight-body">
+          52只权益产品仅8只规模>50亿（15.4%），TOP10中无权益产品。作为银行系公司，权益投研能力是长期短板。建议：①引进外部权益投研人才；②选择1-2只已有一定基础的权益产品（如建信改革红利股票）集中资源打造旗舰；③与建行私行合作，以"固收+权益"组合形式提升权益产品渗透率。
+        </div>
+      </div>
+      <div class="insight-card blue">
+        <div class="insight-title">🛡️ 集中度风险管控</div>
+        <div class="insight-body">
+          建信现金添利单只规模1414.7亿，占公司总规模11.0%，且为货币基金，若发生巨额赎回将引发流动性危机。建议：①设置单产品规模上限（如不超过总AUM的8%）；②引导客户分散至建信货币、建信现金增利等同类型产品；③建立货币基金流动性互助机制，防范系统性赎回风险。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="text-align:center; font-size:11px; color:#94a3b8; padding:20px;">
+    建信基金产品谱系管理系统 v2.0 · 数据更新频率：T+1 · 股东：中国建设银行(65%) / 信安金融(25%) / 华电产融(10%)
+  </div>
+</div>
+
+<!-- Detail Modal -->
+<div class="modal-overlay" id="detailModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title">📋 产品详情 - <span id="modalProductName">建信现金添利货币A</span></div>
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+    </div>
+    <div id="modalBody">
+      <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; margin-bottom:16px;">
+        <div style="padding:12px; background:#f8fafc; border-radius:8px;">
+          <div style="font-size:11px; color:#64748b;">产品代码</div>
+          <div style="font-size:14px; font-weight:700;">000693</div>
+        </div>
+        <div style="padding:12px; background:#f8fafc; border-radius:8px;">
+          <div style="font-size:11px; color:#64748b;">最新规模</div>
+          <div style="font-size:14px; font-weight:700; color:#0066b3;">1,414.7亿</div>
+        </div>
+        <div style="padding:12px; background:#f8fafc; border-radius:8px;">
+          <div style="font-size:11px; color:#64748b;">基金经理</div>
+          <div style="font-size:14px; font-weight:700;">吴沛文 / 于倩倩 / 先轲宇</div>
+        </div>
+        <div style="padding:12px; background:#f8fafc; border-radius:8px;">
+          <div style="font-size:11px; color:#64748b;">生命周期</div>
+          <div style="font-size:14px; font-weight:700; color:#10b981;">正常运作</div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:16px;">
+        <div style="font-size:13px; font-weight:700; margin-bottom:8px;">📊 产品谱系血缘</div>
+        <div style="padding:12px; background:#f0fdf4; border-radius:8px; border-left:3px solid #10b981;">
+          <div style="font-size:12px; line-height:1.8;">
+            <strong>母产品：</strong>建信现金添利货币（系列旗舰）<br>
+            <strong>份额结构：</strong><br>
+            ├─ 建信现金添利货币A（000693）- 个人零售<br>
+            ├─ 建信现金添利货币B（003164）- 机构客户<br>
+            └─ 建信现金添利货币C（018607）- 互联网渠道<br>
+            <strong>同策略产品：</strong><br>
+            ├─ 建信货币A/B（530002/003185）- 389亿<br>
+            ├─ 建信现金增利货币A/B（003393/003394）- 357亿<br>
+            ├─ 建信嘉薪宝货币A/B（000686/000687）- 139亿<br>
+            └─ 建信天添益货币A/B（003393/003394）- 86亿<br>
+            <strong>渠道关联：</strong>建行网银/手机银行"速盈"底层资产之一
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:16px;">
+        <div style="font-size:13px; font-weight:700; margin-bottom:8px;">📈 规模与收益趋势</div>
+        <div style="padding:12px; background:#eff6ff; border-radius:8px; border-left:3px solid #0066b3;">
+          <div style="font-size:12px; line-height:1.8; color:#1e40af;">
+            <strong>规模变化：</strong>2024年末1264亿 → 2025年末1414.7亿（+11.9%）<br>
+            <strong>七日年化收益：</strong>1.305%（2026-07-19）<br>
+            <strong>万份收益：</strong>0.3562元<br>
+            <strong>费率结构：</strong>管理费0.30% / 托管费0.05% / 销售服务费0.01%<br>
+            <strong>主要持仓：</strong>同业存单40.2%、政策性金融债8.2%、买入返售20.7%
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size:13px; font-weight:700; margin-bottom:8px;">✅ 管理者关注要点</div>
+        <div style="padding:12px; background:#fffbeb; border-radius:8px; border-left:3px solid #f59e0b;">
+          <div style="font-size:12px; line-height:1.8; color:#92400e;">
+            <strong>集中度风险：</strong>单只产品占公司总规模11.0%，若发生200亿以上巨额赎回，将触发流动性应急预案。建议引导客户向建信货币分流。<br>
+            <strong>费率竞争：</strong>互联网渠道货币基金费率战激烈，建议评估是否推出"低费率版"以应对余额宝、零钱通竞争。<br>
+            <strong>监管合规：</strong>需确保剩余期限和杠杆率符合货币基金新规要求，防范监管风险。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ========== Data ==========
+const typeData = {
+  scale: [
+    { name: '货币类', value: 5160, count: 18, income: 52000 },
+    { name: '固收类', value: 4380, count: 68, income: 131400 },
+    { name: '权益类', value: 1800, count: 52, income: 108000 },
+    { name: '混合类', value: 980, count: 32, income: 29400 },
+    { name: '另类/专户/QDII', value: 580, count: 16, income: 34800 }
+  ],
+  count: [
+    { name: '货币类', value: 18 },
+    { name: '固收类', value: 68 },
+    { name: '权益类', value: 52 },
+    { name: '混合类', value: 32 },
+    { name: '另类/专户/QDII', value: 16 }
+  ],
+  income: [
+    { name: '货币类', value: 52000 },
+    { name: '固收类', value: 131400 },
+    { name: '权益类', value: 108000 },
+    { name: '混合类', value: 29400 },
+    { name: '另类/专户/QDII', value: 34800 }
+  ]
+};
+
+const tierData = {
+  scale: { categories: ['微型(<2亿)', '小型(2-5亿)', '中型(5-20亿)', '大型(20-50亿)', '旗舰(>50亿)'], values: [45, 168, 892, 2345, 9450], counts: [12, 28, 56, 48, 42] },
+  income: { categories: ['微型(<2亿)', '小型(2-5亿)', '中型(5-20亿)', '大型(20-50亿)', '旗舰(>50亿)'], values: [320, 1450, 12800, 48500, 168000], counts: [12, 28, 56, 48, 42] },
+  count: { categories: ['微型(<2亿)', '小型(2-5亿)', '中型(5-20亿)', '大型(20-50亿)', '旗舰(>50亿)'], values: [12, 28, 56, 48, 42], counts: [12, 28, 56, 48, 42] },
+  avg: { categories: ['微型(<2亿)', '小型(2-5亿)', '中型(5-20亿)', '大型(20-50亿)', '旗舰(>50亿)'], values: [1.2, 3.5, 11.2, 35.6, 225.0], counts: [12, 28, 56, 48, 42] }
+};
+
+const statusData = [
+  { name: '正常运作', value: 10850, count: 152 },
+  { name: '建仓期', value: 680, count: 10 },
+  { name: '募集期', value: 890, count: 14 },
+  { name: '暂停申赎', value: 120, count: 7 },
+  { name: '清盘预警', value: 360, count: 3 }
+];
+
+const riskData = [
+  { name: 'R1 低风险', value: 5160, count: 18 },
+  { name: 'R2 中低风险', value: 3820, count: 52 },
+  { name: 'R3 中等风险', value: 2280, count: 58 },
+  { name: 'R4 中高风险', value: 1120, count: 38 },
+  { name: 'R5 高风险', value: 520, count: 20 }
+];
+
+const channelData = [
+  { name: '建行直销/网银', value: 4200 },
+  { name: '其他银行代销', value: 3150 },
+  { name: '第三方互联网', value: 1850 },
+  { name: '券商渠道', value: 980 },
+  { name: '机构直销', value: 1520 },
+  { name: '保险/年金', value: 890 },
+  { name: '自有/关联方', value: 310 }
+];
+
+const trendData = {
+  months: ['2025-08', '2025-09', '2025-10', '2025-11', '2025-12', '2026-01', '2026-02', '2026-03', '2026-04', '2026-05', '2026-06', '2026-07'],
+  series: {
+    '货币类': [1.8, 1.8, 1.7, 1.7, 1.8, 1.8, 1.7, 1.7, 1.8, 1.8, 1.7, 1.8],
+    '固收类': [3.5, 3.4, 3.6, 3.8, 4.1, 3.9, 4.0, 4.2, 4.3, 4.4, 4.5, 4.6],
+    '权益类': [4.2, 3.8, 5.5, 6.8, 8.2, 6.5, 7.8, 9.2, 10.5, 12.1, 11.8, 13.2],
+    '混合类': [3.2, 2.9, 3.8, 4.5, 5.2, 4.8, 5.0, 5.6, 6.2, 6.8, 7.0, 7.5],
+    '另类/专户': [2.5, 2.2, 2.8, 3.5, 4.2, 3.8, 4.0, 4.5, 5.0, 5.3, 5.6, 6.0]
+  }
+};
+
+const matrixData = {
+  categories: ['货币类', '固收类', '权益类', '混合类', '另类/专户'],
+  tiers: ['微型(<2亿)', '小型(2-5亿)', '中型(5-20亿)', '大型(20-50亿)', '旗舰(>50亿)'],
+  data: [
+    [0, 0, 1, 4, 13],
+    [2, 6, 22, 18, 20],
+    [4, 10, 18, 12, 8],
+    [3, 8, 10, 8, 3],
+    [3, 4, 5, 6, 2]
+  ]
+};
+
+const managerData = [
+  { name: '陈建良', products: 16, scale: 1850, warn: 0 },
+  { name: '吴沛文', products: 14, scale: 1680, warn: 0 },
+  { name: '于倩倩', products: 12, scale: 1420, warn: 0 },
+  { name: '黎颖芳', products: 10, scale: 980, warn: 0 },
+  { name: '彭紫云', products: 18, scale: 856, warn: 1 },
+  { name: '先轲宇', products: 11, scale: 720, warn: 0 },
+  { name: '李星佑', products: 9, scale: 580, warn: 0 },
+  { name: '张溢麟', products: 8, scale: 180, warn: 2 }
+];
+
+// ========== Chart Instances ==========
+let chartType, chartTier, chartStatus, chartRisk, chartTrend, chartChannel, chartMatrix, chartManager;
+
+function initCharts() {
+  chartType = echarts.init(document.getElementById('chartType'));
+  chartTier = echarts.init(document.getElementById('chartTier'));
+  chartStatus = echarts.init(document.getElementById('chartStatus'));
+  chartRisk = echarts.init(document.getElementById('chartRisk'));
+  chartTrend = echarts.init(document.getElementById('chartTrend'));
+  chartChannel = echarts.init(document.getElementById('chartChannel'));
+  chartMatrix = echarts.init(document.getElementById('chartMatrix'));
+  chartManager = echarts.init(document.getElementById('chartManager'));
+
+  updateTypeChart();
+  updateTierChart('scale');
+  updateStatusChart();
+  updateRiskChart();
+  updateTrendChart();
+  updateChannelChart();
+  updateMatrixChart();
+  updateManagerChart();
+
+  window.addEventListener('resize', () => {
+    chartType.resize(); chartTier.resize(); chartStatus.resize(); chartRisk.resize();
+    chartTrend.resize(); chartChannel.resize(); chartMatrix.resize(); chartManager.resize();
+  });
+}
+
+function updateTypeChart() {
+  const filter = document.getElementById('typeFilter').value;
+  const data = typeData[filter];
+  const colors = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444'];
+
+  const option = {
+    tooltip: {
+      trigger: 'item',
+      formatter: function(params) {
+        const d = data[params.dataIndex];
+        let html = '<strong>' + params.name + '</strong><br/>';
+        if (filter === 'scale') html += '规模：' + params.value + '亿（' + params.percent + '%）<br/>产品数：' + d.count + '只<br/>收入：' + (d.income/10000).toFixed(2) + '亿';
+        else if (filter === 'count') html += '产品数：' + params.value + '只（' + params.percent + '%）';
+        else html += '收入：' + (params.value/10000).toFixed(2) + '亿（' + params.percent + '%）';
+        return html;
+      }
+    },
+    legend: { orient: 'vertical', right: 10, top: 'center', textStyle: { fontSize: 11 } },
+    series: [{
+      type: 'pie',
+      radius: ['45%', '70%'],
+      center: ['35%', '50%'],
+      avoidLabelOverlap: false,
+      itemStyle: { borderRadius: 6, borderColor: '#fff', borderWidth: 2 },
+      label: { show: false },
+      emphasis: { label: { show: true, fontSize: 14, fontWeight: 'bold' } },
+      data: data.map((d, i) => ({ name: d.name, value: d.value, itemStyle: { color: colors[i] } }))
+    }]
+  };
+  chartType.setOption(option);
+}
+
+function switchTierView(view) {
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  updateTierChart(view);
+}
+
+function updateTierChart(view) {
+  const d = tierData[view];
+  const unit = view === 'scale' ? '亿' : view === 'income' ? '万' : view === 'avg' ? '亿' : '只';
+  const colors = ['#94a3b8', '#60a5fa', '#3b82f6', '#2563eb', '#1e40af'];
+
+  const option = {
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: { type: 'shadow' },
+      formatter: function(params) {
+        const idx = params[0].dataIndex;
+        return '<strong>' + d.categories[idx] + '</strong><br/>' + (view === 'count' ? '产品数' : view === 'income' ? '收入' : '规模') + '：' + params[0].value + unit + '<br/>产品数：' + d.counts[idx] + '只';
+      }
+    },
+    grid: { left: '3%', right: '4%', bottom: '3%', top: '10%', containLabel: true },
+    xAxis: {
+      type: 'category',
+      data: d.categories,
+      axisLabel: { fontSize: 11, color: '#64748b' },
+      axisLine: { lineStyle: { color: '#e2e8f0' } }
+    },
+    yAxis: {
+      type: 'value',
+      axisLabel: { fontSize: 11, color: '#64748b' },
+      splitLine: { lineStyle: { color: '#f1f5f9' } }
+    },
+    series: [{
+      type: 'bar',
+      barWidth: '50%',
+      data: d.values.map((v, i) => ({
+        value: v,
+        itemStyle: { color: colors[i], borderRadius: [4, 4, 0, 0] }
+      })),
+      label: {
+        show: true,
+        position: 'top',
+        fontSize: 11,
+        fontWeight: 'bold',
+        formatter: function(p) {
+          return view === 'income' ? (p.value/10000).toFixed(1) + '亿' : p.value + unit;
+        }
+      }
+    }]
+  };
+  chartTier.setOption(option, true);
+}
+
+function updateStatusChart() {
+  const colors = { '正常运作': '#10b981', '建仓期': '#3b82f6', '募集期': '#f59e0b', '暂停申赎': '#f97316', '清盘预警': '#ef4444' };
+  const option = {
+    tooltip: {
+      trigger: 'item',
+      formatter: function(p) {
+        const item = statusData.find(d => d.name === p.name);
+        return '<strong>' + p.name + '</strong><br/>规模：' + p.value + '亿（' + p.percent + '%）<br/>产品数：' + item.count + '只';
+      }
+    },
+    legend: { bottom: 0, textStyle: { fontSize: 11 } },
+    series: [{
+      type: 'pie',
+      radius: ['35%', '60%'],
+      center: ['50%', '45%'],
+      itemStyle: { borderRadius: 4, borderColor: '#fff', borderWidth: 2 },
+      label: { show: true, fontSize: 11, formatter: '{b}\n{d}%' },
+      data: statusData.map(d => ({ name: d.name, value: d.value, itemStyle: { color: colors[d.name] } }))
+    }]
+  };
+  chartStatus.setOption(option);
+}
+
+function updateRiskChart() {
+  const colors = ['#10b981', '#34d399', '#f59e0b', '#f97316', '#ef4444'];
+  const option = {
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: { type: 'shadow' },
+      formatter: function(params) {
+        const item = riskData[params[0].dataIndex];
+        return '<strong>' + params[0].name + '</strong><br/>规模：' + params[0].value + '亿<br/>产品数：' + item.count + '只';
+      }
+    },
+    grid: { left: '3%', right: '4%', bottom: '3%', top: '10%', containLabel: true },
+    xAxis: {
+      type: 'category',
+      data: riskData.map(d => d.name),
+      axisLabel: { fontSize: 10, color: '#64748b', rotate: 15 },
+      axisLine: { lineStyle: { color: '#e2e8f0' } }
+    },
+    yAxis: {
+      type: 'value',
+      axisLabel: { fontSize: 11, color: '#64748b' },
+      splitLine: { lineStyle: { color: '#f1f5f9' } }
+    },
+    series: [{
+      type: 'bar',
+      barWidth: '45%',
+      data: riskData.map((d, i) => ({
+        value: d.value,
+        itemStyle: { color: colors[i], borderRadius: [4, 4, 0, 0] }
+      })),
+      label: { show: true, position: 'top', fontSize: 11, fontWeight: 'bold', formatter: '{c}亿' }
+    }]
+  };
+  chartRisk.setOption(option);
+}
+
+function updateTrendChart() {
+  const colors = { '货币类': '#3b82f6', '固收类': '#10b981', '权益类': '#f59e0b', '混合类': '#8b5cf6', '另类/专户': '#ef4444' };
+  const option = {
+    tooltip: { trigger: 'axis' },
+    legend: { top: 0, textStyle: { fontSize: 11 } },
+    grid: { left: '3%', right: '4%', bottom: '3%', top: '15%', containLabel: true },
+    xAxis: {
+      type: 'category',
+      boundaryGap: false,
+      data: trendData.months,
+      axisLabel: { fontSize: 10, color: '#64748b' },
+      axisLine: { lineStyle: { color: '#e2e8f0' } }
+    },
+    yAxis: {
+      type: 'value',
+      axisLabel: { fontSize: 11, color: '#64748b', formatter: '{value}%' },
+      splitLine: { lineStyle: { color: '#f1f5f9' } }
+    },
+    series: Object.keys(trendData.series).map(name => ({
+      name: name,
+      type: 'line',
+      smooth: true,
+      symbol: 'circle',
+      symbolSize: 6,
+      lineStyle: { width: 2 },
+      itemStyle: { color: colors[name] },
+      data: trendData.series[name].map(v => (v * 100).toFixed(1))
+    }))
+  };
+  chartTrend.setOption(option);
+}
+
+function updateChannelChart() {
+  const option = {
+    tooltip: {
+      trigger: 'item',
+      formatter: function(p) {
+        return '<strong>' + p.name + '</strong><br/>规模：' + p.value + '亿（' + p.percent + '%）';
+      }
+    },
+    legend: { orient: 'vertical', right: 10, top: 'center', textStyle: { fontSize: 11 } },
+    series: [{
+      type: 'pie',
+      radius: '65%',
+      center: ['35%', '50%'],
+      roseType: 'area',
+      itemStyle: { borderRadius: 4, borderColor: '#fff', borderWidth: 2 },
+      label: { show: false },
+      data: channelData.map((d, i) => ({
+        name: d.name,
+        value: d.value,
+        itemStyle: { color: ['#0066b3', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#94a3b8'][i] }
+      }))
+    }]
+  };
+  chartChannel.setOption(option);
+}
+
+function updateMatrixChart() {
+  const data = [];
+  matrixData.data.forEach((row, i) => {
+    row.forEach((val, j) => {
+      data.push([j, i, val]);
+    });
+  });
+
+  const option = {
+    tooltip: {
+      position: 'top',
+      formatter: function(p) {
+        return '<strong>' + matrixData.categories[p.value[1]] + '</strong><br/>' + matrixData.tiers[p.value[0]] + '<br/>产品数：' + p.value[2] + '只';
+      }
+    },
+    grid: { left: '12%', right: '8%', bottom: '15%', top: '5%' },
+    xAxis: {
+      type: 'category',
+      data: matrixData.tiers,
+      axisLabel: { fontSize: 10, color: '#64748b', rotate: 20 },
+      axisLine: { lineStyle: { color: '#e2e8f0' } },
+      splitArea: { show: true, areaStyle: { color: ['#fff', '#f8fafc'] } }
+    },
+    yAxis: {
+      type: 'category',
+      data: matrixData.categories,
+      axisLabel: { fontSize: 11, color: '#64748b' },
+      axisLine: { lineStyle: { color: '#e2e8f0' } },
+      splitArea: { show: true, areaStyle: { color: ['#fff', '#f8fafc'] } }
+    },
+    visualMap: {
+      min: 0, max: 25, calculable: true, orient: 'horizontal', left: 'center', bottom: '0%',
+      inRange: { color: ['#f0f9ff', '#3b82f6', '#1e3a8a'] },
+      textStyle: { fontSize: 10 }
+    },
+    series: [{
+      type: 'heatmap',
+      data: data,
+      label: { show: true, fontSize: 12, fontWeight: 'bold', color: '#1e293b' },
+      itemStyle: { borderColor: '#fff', borderWidth: 2, borderRadius: 4 }
+    }]
+  };
+  chartMatrix.setOption(option);
+}
+
+function updateManagerChart() {
+  const option = {
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: { type: 'shadow' },
+      formatter: function(params) {
+        const m = managerData[params[0].dataIndex];
+        let html = '<strong>' + m.name + '</strong><br/>管理规模：' + m.scale + '亿<br/>产品数：' + m.products + '只';
+        if (m.warn > 0) html += '<br/><span style="color:#ef4444;">⚠️ 预警产品：' + m.warn + '只</span>';
+        return html;
+      }
+    },
+    grid: { left: '3%', right: '8%', bottom: '3%', top: '5%', containLabel: true },
+    xAxis: {
+      type: 'value',
+      axisLabel: { fontSize: 11, color: '#64748b' },
+      splitLine: { lineStyle: { color: '#f1f5f9' } }
+    },
+    yAxis: {
+      type: 'category',
+      data: managerData.map(d => d.name),
+      axisLabel: { fontSize: 11, color: '#64748b' },
+      axisLine: { lineStyle: { color: '#e2e8f0' } }
+    },
+    series: [{
+      type: 'bar',
+      barWidth: '55%',
+      data: managerData.map(d => ({
+        value: d.scale,
+        itemStyle: { color: d.warn > 0 ? '#ef4444' : '#0066b3', borderRadius: [0, 4, 4, 0] }
+      })),
+      label: {
+        show: true,
+        position: 'right',
+        fontSize: 11,
+        fontWeight: 'bold',
+        formatter: function(p) {
+          const m = managerData[p.dataIndex];
+          return m.warn > 0 ? p.value + '亿 ⚠️' : p.value + '亿';
+        }
+      }
+    }]
+  };
+  chartManager.setOption(option);
+}
+
+function showDetail(productId) {
+  document.getElementById('detailModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('detailModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('detailModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+function refreshData() {
+  const btn = document.querySelector('.refresh-btn');
+  btn.textContent = '⏳ 刷新中...';
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = '🔄 刷新数据';
+    btn.disabled = false;
+    alert('数据已刷新至最新状态（模拟）');
+  }, 1500);
+}
+
+document.addEventListener('DOMContentLoaded', initCharts);
+</script>
+
+</body>
+</html>

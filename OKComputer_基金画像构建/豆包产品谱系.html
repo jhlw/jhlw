@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>建信基金产品谱系全景管理看板</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        success: '#00B42A',
+                        danger: '#F53F3F',
+                        warning: '#FF7D00',
+                        info: '#86909C',
+                        ccb: '#003D8F'
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .card-shadow {
+                box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+            }
+            .chart-container {
+                height: 360px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- 顶部标题栏 -->
+    <header class="bg-white card-shadow">
+        <div class="px-6 py-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-[22px] font-bold text-ccb">建信基金产品谱系全景管理看板</h1>
+                <p class="text-sm text-gray-500 mt-1">管理层视角 · 全产品线经营数据总览</p>
+            </div>
+            <div class="text-right">
+                <p class="text-sm text-gray-600">数据更新时间：2026-07-20</p>
+                <p class="text-xs text-gray-400 mt-1">数据范围：全牌照存续公募产品</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="p-6 space-y-6">
+        <!-- 核心指标总览 -->
+        <section class="grid grid-cols-6 gap-4">
+            <div class="bg-white rounded-lg p-5 card-shadow">
+                <p class="text-sm text-gray-500">总管理规模</p>
+                <p class="text-2xl font-bold text-gray-800 mt-2">10,177.72<span class="text-sm font-normal ml-1">亿元</span></p>
+                <p class="text-xs text-danger mt-2">↑ 4.53% 较年初</p>
+            </div>
+            <div class="bg-white rounded-lg p-5 card-shadow">
+                <p class="text-sm text-gray-500">存续产品总数</p>
+                <p class="text-2xl font-bold text-gray-800 mt-2">354<span class="text-sm font-normal ml-1">只</span></p>
+                <p class="text-xs text-danger mt-2">↑ 26只 较年初</p>
+            </div>
+            <div class="bg-white rounded-lg p-5 card-shadow">
+                <p class="text-sm text-gray-500">非货币公募规模</p>
+                <p class="text-2xl font-bold text-gray-800 mt-2">2,163.40<span class="text-sm font-normal ml-1">亿元</span></p>
+                <p class="text-xs text-danger mt-2">↑ 8.17% 较年初</p>
+            </div>
+            <div class="bg-white rounded-lg p-5 card-shadow">
+                <p class="text-sm text-gray-500">今年新发产品</p>
+                <p class="text-2xl font-bold text-gray-800 mt-2">31<span class="text-sm font-normal ml-1">只</span></p>
+                <p class="text-xs text-gray-500 mt-2">完成年度目标 77.5%</p>
+            </div>
+            <div class="bg-white rounded-lg p-5 card-shadow">
+                <p class="text-sm text-gray-500">今年清盘产品</p>
+                <p class="text-2xl font-bold text-gray-800 mt-2">7<span class="text-sm font-normal ml-1">只</span></p>
+                <p class="text-xs text-gray-500 mt-2">迷你产品占比 3.95%</p>
+            </div>
+            <div class="bg-white rounded-lg p-5 card-shadow">
+                <p class="text-sm text-gray-500">行业规模排名</p>
+                <p class="text-2xl font-bold text-gray-800 mt-2">第11<span class="text-sm font-normal ml-1">位</span></p>
+                <p class="text-xs text-danger mt-2">↑ 1位 较上季度</p>
+            </div>
+        </section>
+
+        <!-- 第一行：大类结构 + 风险分布 -->
+        <section class="grid grid-cols-2 gap-6">
+            <div class="bg-white rounded-lg card-shadow p-5">
+                <h3 class="text-base font-semibold text-gray-800 mb-4">大类产品规模结构</h3>
+                <div id="categoryChart" class="chart-container"></div>
+            </div>
+            <div class="bg-white rounded-lg card-shadow p-5">
+                <h3 class="text-base font-semibold text-gray-800 mb-4">风险等级分布</h3>
+                <div id="riskChart" class="chart-container"></div>
+            </div>
+        </section>
+
+        <!-- 第二行：赛道布局矩阵 -->
+        <section class="bg-white rounded-lg card-shadow p-5">
+            <h3 class="text-base font-semibold text-gray-800 mb-4">赛道布局矩阵（非货维度 · 规模-业绩分布）</h3>
+            <div id="trackMatrix" class="chart-container"></div>
+        </section>
+
+        <!-- 第三行：产品梯队 + 生命周期 + 战略进度 -->
+        <section class="grid grid-cols-3 gap-6">
+            <!-- 产品梯队表 -->
+            <div class="col-span-2 bg-white rounded-lg card-shadow p-5">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-base font-semibold text-gray-800">核心产品梯队</h3>
+                    <div class="flex space-x-1 text-sm">
+                        <button class="tab-btn px-3 py-1 rounded bg-primary text-white" data-tab="star">明星产品</button>
+                        <button class="tab-btn px-3 py-1 rounded bg-gray-100 text-gray-600 hover:bg-gray-200" data-tab="potential">潜力产品</button>
+                        <button class="tab-btn px-3 py-1 rounded bg-gray-100 text-gray-600 hover:bg-gray-200" data-tab="optimize">待优化产品</button>
+                    </div>
+                </div>
+                <!-- 明星产品表格 -->
+                <div id="star-tab" class="tab-content">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-gray-200 text-gray-500 text-left">
+                                <th class="pb-2 font-normal">产品代码</th>
+                                <th class="pb-2 font-normal">产品名称</th>
+                                <th class="pb-2 font-normal">产品类型</th>
+                                <th class="pb-2 font-normal text-right">规模(亿)</th>
+                                <th class="pb-2 font-normal text-right">今年收益</th>
+                                <th class="pb-2 font-normal">基金经理</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-700">
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="py-3">000693</td>
+                                <td class="py-3">建信现金添利货币A</td>
+                                <td class="py-3">货币市场型</td>
+                                <td class="py-3 text-right">865.42</td>
+                                <td class="py-3 text-right text-danger">2.15%</td>
+                                <td class="py-3">先轲宇</td>
+                            </tr>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="py-3">000108</td>
+                                <td class="py-3">建信纯债债券A</td>
+                                <td class="py-3">中长期纯债</td>
+                                <td class="py-3 text-right">247.68</td>
+                                <td class="py-3 text-right text-danger">3.28%</td>
+                                <td class="py-3">彭紫云</td>
+                            </tr>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="py-3">530008</td>
+                                <td class="py-3">建信稳定增利债券A</td>
+                                <td class="py-3">二级债基</td>
+                                <td class="py-3 text-right">186.35</td>
+                                <td class="py-3 text-right text-danger">4.72%</td>
+                                <td class="py-3">尹润泉</td>
+                            </tr>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="py-3">510090</td>
+                                <td class="py-3">建信沪深300ETF</td>
+                                <td class="py-3">被动指数型</td>
+                                <td class="py-3 text-right">98.76</td>
+                                <td class="py-3 text-right text-danger">8.34%</td>
+                                <td class="py-3">赵云煜</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="py-3">000592</td>
+                                <td class="py-3">建信改革红利股票</td>
+                                <td class="py-3">主动股票型</td>
+                                <td class="py-3 text-right">62.19</td>
+                                <td class="py-3 text-right text-danger">14.26%</td>
+                                <td class="py-3">陶灿</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- 潜力产品表格 -->
+                <div id="potential-tab" class="tab-content hidden">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-gray-200 text-gray-500 text-left">
+                                <th class="pb-2 font-normal">产品代码</th>
+                                <th class="pb-2 font-normal">产品名称</th>
+                                <th class="pb-2 font-normal">产品类型</th>
+                                <th class="pb-2 font-normal text-right">规模(亿)</th>
+                                <th class="pb-2 font-normal text-right">今年收益</th>
+                                <th class="pb-2 font-normal">基金经理</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-700">
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="py-3">019428</td>
+                                <td class="py-3">建信电子行业股票A</td>
+                                <td class="py-3">主动股票型</td>
+                                <td class="py-3 text-right">12.85</td>
+                                <td class="py-3 text-right text-danger">37.62%</td>
+                                <td class="py-3">何珅华</td>
+                            </tr>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="py-3">017436</td>
+                                <td class="py-3">建信新材料精选股票A</td>
+                                <td class="py-3">主动股票型</td>
+                                <td class="py-3 text-right">8.62</td>
+                                <td class="py-3 text-right text-danger">28.41%</td>
+                                <td class="py-3">张湘龙</td>
+                            </tr>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="py-3">000464</td>
+                                <td class="py-3">建信裕利灵活配置混合</td>
+                                <td class="py-3">灵活配置型</td>
+                                <td class="py-3 text-right">15.73</td>
+                                <td class="py-3 text-right text-danger">52.18%</td>
+                                <td class="py-3">叶乐天</td>
+                            </tr>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="py-3">000478</td>
+                                <td class="py-3">建信中证500指数增强A</td>
+                                <td class="py-3">指数增强型</td>
+                                <td class="py-3 text-right">26.49</td>
+                                <td class="py-3 text-right text-danger">11.75%</td>
+                                <td class="py-3">叶乐天</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="py-3">018146</td>
+                                <td class="py-3">建信新兴市场混合(QDII)A</td>
+                                <td class="py-3">QDII混合型</td>
+                                <td class="py-3 text-right">2.15</td>
+                                <td class="py-3 text-right text-danger">72.54%</td>
+                                <td class="py-3">李博涵</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- 待优化产品表格 -->
+                <div id="optimize-tab" class="tab-content hidden">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-gray-200 text-gray-500 text-left">
+                                <th class="pb-2 font-normal">产品代码</th>
+                                <th class="pb-2 font-normal">产品名称</th>
+                                <th class="pb-2 font-normal">产品类型</th>
+                                <th class="pb-2 font-normal text-right">规模(亿)</th>
+                                <th class="pb-2 font-normal text-right">今年收益</th>
+                                <th class="pb-2 font-normal">基金经理</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-700">
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="py-3">017083</td>
+                                <td class="py-3">建信医疗创新股票A</td>
+                                <td class="py-3">主动股票型</td>
+                                <td class="py-3 text-right">0.52</td>
+                                <td class="py-3 text-right text-success">-5.82%</td>
+                                <td class="py-3">潘龙玲</td>
+                            </tr>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="py-3">009876</td>
+                                <td class="py-3">建信创新中国混合</td>
+                                <td class="py-3">偏股混合型</td>
+                                <td class="py-3 text-right">0.38</td>
+                                <td class="py-3 text-right text-success">-7.24%</td>
+                                <td class="py-3">许杰</td>
+                            </tr>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="py-3">530020</td>
+                                <td class="py-3">建信可转债债券A</td>
+                                <td class="py-3">可转债型</td>
+                                <td class="py-3 text-right">1.72</td>
+                                <td class="py-3 text-right text-success">-3.57%</td>
+                                <td class="py-3">尹润泉</td>
+                            </tr>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="py-3">005259</td>
+                                <td class="py-3">建信龙头企业股票</td>
+                                <td class="py-3">主动股票型</td>
+                                <td class="py-3 text-right">0.69</td>
+                                <td class="py-3 text-right text-success">-4.91%</td>
+                                <td class="py-3">刘克飞</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="py-3">159985</td>
+                                <td class="py-3">建信易盛能源化工期货ETF</td>
+                                <td class="py-3">商品衍生品</td>
+                                <td class="py-3 text-right">0.21</td>
+                                <td class="py-3 text-right text-success">-1.76%</td>
+                                <td class="py-3">朱金钰</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 右侧：生命周期+战略进度 -->
+            <div class="space-y-6">
+                <!-- 生命周期分布 -->
+                <div class="bg-white rounded-lg card-shadow p-5">
+                    <h3 class="text-base font-semibold text-gray-800 mb-4">产品生命周期分布</h3>
+                    <div id="lifecycleChart" style="height: 200px; width: 100%;"></div>
+                </div>
+                <!-- 战略对齐进度 -->
+                <div class="bg-white rounded-lg card-shadow p-5">
+                    <h3 class="text-base font-semibold text-gray-800 mb-4">年度战略目标进度</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-600">权益类产品规模占比提升</span>
+                                <span class="text-gray-800 font-medium">62.5%</span>
+                            </div>
+                            <div class="w-full bg-gray-100 rounded-full h-2">
+                                <div class="bg-primary h-2 rounded-full" style="width: 62.5%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-600">固收+产品线布局完善</span>
+                                <span class="text-gray-800 font-medium">85.2%</span>
+                            </div>
+                            <div class="w-full bg-gray-100 rounded-full h-2">
+                                <div class="bg-primary h-2 rounded-full" style="width: 85.2%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-600">养老专属产品规模突破</span>
+                                <span class="text-gray-800 font-medium">41.8%</span>
+                            </div>
+                            <div class="w-full bg-gray-100 rounded-full h-2">
+                                <div class="bg-warning h-2 rounded-full" style="width: 41.8%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-600">指数产品品类全覆盖</span>
+                                <span class="text-gray-800 font-medium">88.7%</span>
+                            </div>
+                            <div class="w-full bg-gray-100 rounded-full h-2">
+                                <div class="bg-success h-2 rounded-full" style="width: 88.7%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-600">迷你产品清盘/转型</span>
+                                <span class="text-gray-800 font-medium">53.4%</span>
+                            </div>
+                            <div class="w-full bg-gray-100 rounded-full h-2">
+                                <div class="bg-primary h-2 rounded-full" style="width: 53.4%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // 标签页切换功能
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tab = btn.dataset.tab;
+                // 切换按钮样式
+                tabBtns.forEach(b => {
+                    b.classList.remove('bg-primary', 'text-white');
+                    b.classList.add('bg-gray-100', 'text-gray-600');
+                });
+                btn.classList.remove('bg-gray-100', 'text-gray-600');
+                btn.classList.add('bg-primary', 'text-white');
+                // 切换内容
+                tabContents.forEach(content => {
+                    content.classList.add('hidden');
+                });
+                document.getElementById(`${tab}-tab`).classList.remove('hidden');
+            });
+        });
+
+        // 1. 大类产品规模结构环形图（建信基金2026二季度数据）
+        const categoryChart = echarts.init(document.getElementById('categoryChart'));
+        const categoryOption = {
+            tooltip: {
+                trigger: 'item',
+                formatter: '{b}: {c}亿元 ({d}%)'
+            },
+            legend: {
+                orient: 'vertical',
+                right: 10,
+                top: 'center',
+                itemWidth: 12,
+                itemHeight: 12,
+                textStyle: {
+                    fontSize: 12,
+                    color: '#666'
+                }
+            },
+            series: [
+                {
+                    name: '规模占比',
+                    type: 'pie',
+                    radius: ['45%', '70%'],
+                    center: ['35%', '50%'],
+                    avoidLabelOverlap: false,
+                    itemStyle: {
+                        borderRadius: 4,
+                        borderColor: '#fff',
+                        borderWidth: 2
+                    },
+                    label: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        label: {
+                            show: true,
+                            fontSize: 14,
+                            fontWeight: 'bold'
+                        }
+                    },
+                    labelLine: {
+                        show: false
+                    },
+                    data: [
+                        { value: 8120.15, name: '货币市场基金' },
+                        { value: 1452.84, name: '债券型基金' },
+                        { value: 225.37, name: '股票型基金' },
+                        { value: 165.42, name: '混合型基金' },
+                        { value: 142.68, name: 'FOF基金' },
+                        { value: 71.26, name: '另类及QDII' }
+                    ],
+                    color: ['#003D8F', '#165DFF', '#36CFC9', '#722ED1', '#FF7D00', '#00B42A']
+                }
+            ]
+        };
+        categoryChart.setOption(categoryOption);
+
+        // 2. 风险等级分布图（建信基金实例数据）
+        const riskChart = echarts.init(document.getElementById('riskChart'));
+        const riskOption = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            legend: {
+                data: ['产品数量', '规模(亿元)'],
+                top: 0,
+                textStyle: {
+                    fontSize: 12,
+                    color: '#666'
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                top: '15%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+                data: ['R1(低风险)', 'R2(中低风险)', 'R3(中风险)', 'R4(中高风险)', 'R5(高风险)'],
+                axisLabel: {
+                    fontSize: 12,
+                    color: '#666'
+                }
+            },
+            yAxis: [
+                {
+                    type: 'value',
+                    name: '产品数量(只)',
+                    position: 'left',
+                    axisLabel: {
+                        color: '#666'
+                    }
+                },
+                {
+                    type: 'value',
+                    name: '规模(亿元)',
+                    position: 'right',
+                    axisLabel: {
+                        color: '#666'
+                    }
+                }
+            ],
+            series: [
+                {
+                    name: '产品数量',
+                    type: 'bar',
+                    barWidth: 20,
+                    data: [128, 112, 76, 34, 4],
+                    itemStyle: {
+                        color: '#165DFF',
+                        borderRadius: [4, 4, 0, 0]
+                    }
+                },
+                {
+                    name: '规模(亿元)',
+                    type: 'bar',
+                    yAxisIndex: 1,
+                    barWidth: 20,
+                    data: [8520.6, 1245.3, 318.7, 89.4, 3.72],
+                    itemStyle: {
+                        color: '#003D8F',
+                        borderRadius: [4, 4, 0, 0]
+                    }
+                }
+            ]
+        };
+        riskChart.setOption(riskOption);
+
+        // 3. 赛道布局矩阵散点图（非货维度）
+        const trackMatrix = echarts.init(document.getElementById('trackMatrix'));
+        const trackOption = {
+            tooltip: {
+                formatter: function (param) {
+                    return `${param.data[3]}<br/>规模占比: ${param.data[0]}%<br/>同类业绩分位: ${param.data[1]}%<br/>产品数量: ${param.data[2]}只`;
+                }
+            },
+            grid: {
+                left: '5%',
+                right: '10%',
+                bottom: '10%',
+                top: '10%'
+            },
+            xAxis: {
+                type: 'value',
+                name: '非货规模占比(%)',
+                nameLocation: 'middle',
+                nameGap: 25,
+                min: 0,
+                max: 35,
+                splitLine: {
+                    lineStyle: {
+                        type: 'dashed',
+                        color: '#eee'
+                    }
+                }
+            },
+            yAxis: {
+                type: 'value',
+                name: '同类业绩分位(%)',
+                nameLocation: 'middle',
+                nameGap: 35,
+                min: 0,
+                max: 100,
+                splitLine: {
+                    lineStyle: {
+                        type: 'dashed',
+                        color: '#eee'
+                    }
+                }
+            },
+            series: [
+                {
+                    type: 'scatter',
+                    symbolSize: function (data) {
+                        return Math.sqrt(data[2]) * 7;
+                    },
+                    data: [
+                        [32.6, 76, 32, '纯债基金'],
+                        [18.2, 72, 15, '短债基金'],
+                        [12.4, 68, 28, '指数基金'],
+                        [9.8, 72, 12, '固收+策略'],
+                        [8.7, 58, 18, '主动权益'],
+                        [6.5, 82, 5, '红利策略'],
+                        [4.2, 38, 11, '行业主题'],
+                        [3.6, 65, 7, '指数增强'],
+                        [2.8, 52, 8, 'FOF产品'],
+                        [2.1, 61, 6, '养老产品'],
+                        [1.5, 55, 4, '商品另类'],
+                        [1.1, 74, 3, 'QDII产品']
+                    ],
+                    itemStyle: {
+                        color: '#003D8F',
+                        opacity: 0.7
+                    },
+                    label: {
+                        show: true,
+                        formatter: function(param) {
+                            return param.data[3];
+                        },
+                        position: 'top',
+                        fontSize: 11,
+                        color: '#333'
+                    },
+                    markLine: {
+                        silent: true,
+                        lineStyle: {
+                            type: 'dashed',
+                            color: '#999'
+                        },
+                        data: [
+                            {
+                                xAxis: 8.3,
+                                label: {
+                                    show: true,
+                                    position: 'end',
+                                    formatter: '规模平均线',
+                                    fontSize: 10
+                                }
+                            },
+                            {
+                                yAxis: 50,
+                                label: {
+                                    show: true,
+                                    position: 'end',
+                                    formatter: '业绩中位数',
+                                    fontSize: 10
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        };
+        trackMatrix.setOption(trackOption);
+
+        // 4. 生命周期分布图
+        const lifecycleChart = echarts.init(document.getElementById('lifecycleChart'));
+        const lifecycleOption = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                top: '10%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'value',
+                axisLabel: {
+                    show: false
+                },
+                axisLine: {
+                    show: false
+                },
+                axisTick: {
+                    show: false
+                },
+                splitLine: {
+                    show: false
+                }
+            },
+            yAxis: {
+                type: 'category',
+                data: ['存续运作', '募集发行', '审批中', '预研规划', '已清算'],
+                axisLabel: {
+                    fontSize: 12,
+                    color: '#666'
+                }
+            },
+            series: [
+                {
+                    type: 'bar',
+                    barWidth: 16,
+                    data: [336, 7, 11, 9, 41],
+                    itemStyle: {
+                        color: function(params) {
+                            const colors = ['#003D8F', '#00B42A', '#FF7D00', '#722ED1', '#86909C'];
+                            return colors[params.dataIndex];
+                        },
+                        borderRadius: [0, 4, 4, 0]
+                    },
+                    label: {
+                        show: true,
+                        position: 'right',
+                        fontSize: 12,
+                        color: '#333',
+                        formatter: '{c}只'
+                    }
+                }
+            ]
+        };
+        lifecycleChart.setOption(lifecycleOption);
+
+        // 窗口自适应
+        window.addEventListener('resize', () => {
+            categoryChart.resize();
+            riskChart.resize();
+            trackMatrix.resize();
+            lifecycleChart.resize();
+        });
+    </script>
+</body>
+</html>
