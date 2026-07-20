@@ -1430,6 +1430,7 @@ function updateShelfChart() {
       axisLabel: { fontSize: 10, color: '#334155', fontWeight: 500 },
       axisLine: { lineStyle: { color: '#cbd5e1' } }
     },
+    color: ['#ef4444', '#10b981', '#0066b3'],
     series: [
       {
         name: '本年下架',
@@ -1437,7 +1438,7 @@ function updateShelfChart() {
         stack: 'total',
         data: shelfData.removed.map((v, i) => ({
           value: v,
-          itemStyle: { color: '#ef4444', borderRadius: v > 0 && shelfData.added[i] === 0 ? [0, 4, 4, 0] : 0 }
+          itemStyle: { borderRadius: v > 0 && shelfData.added[i] === 0 ? [0, 4, 4, 0] : 0 }
         })),
         barWidth: '40%',
         label: { show: true, position: 'inside', fontSize: 10, fontWeight: 600, color: '#fff', formatter: function(p) { return p.value > 0 ? '-' + p.value : ''; } }
@@ -1448,7 +1449,7 @@ function updateShelfChart() {
         stack: 'total',
         data: shelfData.added.map(v => ({
           value: v,
-          itemStyle: { color: '#10b981', borderRadius: [0, 4, 4, 0] }
+          itemStyle: { borderRadius: [0, 4, 4, 0] }
         })),
         label: { show: true, position: 'inside', fontSize: 10, fontWeight: 600, color: '#fff', formatter: function(p) { return p.value > 0 ? '+' + p.value : ''; } }
       },
@@ -1458,7 +1459,7 @@ function updateShelfChart() {
         barGap: '30%',
         data: shelfData.current.map(v => ({
           value: v,
-          itemStyle: { color: '#0066b3', borderRadius: [0, 4, 4, 0] }
+          itemStyle: { borderRadius: [0, 4, 4, 0] }
         })),
         barWidth: '35%',
         label: { show: true, position: 'right', fontSize: 11, fontWeight: 700, color: '#0066b3', formatter: '{c}只' }
