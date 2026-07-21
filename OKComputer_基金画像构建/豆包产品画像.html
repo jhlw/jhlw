@@ -1462,7 +1462,9 @@
                 type: 'line',
                 smooth: true,
                 data: d.y,
-                lineStyle: { color: '#003D8F', width: 2 },
+                color: '#003D8F',
+                lineStyle: { width: 2 },
+                itemStyle: { color: '#003D8F' },
                 areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                     { offset: 0, color: 'rgba(0,61,143,0.2)' },
                     { offset: 1, color: 'rgba(0,61,143,0.02)' }
@@ -1474,7 +1476,9 @@
                     type: 'line',
                     smooth: true,
                     data: d.yBenchmark,
-                    lineStyle: { color: '#94a3b8', width: 1.5, type: 'dashed' },
+                    color: '#94a3b8',
+                    lineStyle: { width: 1.5, type: 'dashed' },
+                    itemStyle: { color: '#94a3b8' },
                     symbol: 'none'
                 });
             }
