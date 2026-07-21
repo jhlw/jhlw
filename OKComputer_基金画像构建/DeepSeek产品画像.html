@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>建信改革红利混合 · 产品画像</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <style>
+        :root {
+            --bg: #f5f7fa;
+            --card-bg: #ffffff;
+            --primary: #1e3a5f;
+            --primary-light: #2c5f8a;
+            --text: #2c3e50;
+            --text-secondary: #6b7d8e;
+            --border: #e2e8f0;
+            --shadow: 0 2px 12px rgba(0,0,0,0.06);
+            --radius: 10px;
+            --radius-sm: 6px;
+            --success: #10b981;
+            --danger: #e74c3c;
+            --warning: #f59e0b;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: var(--bg);
+            padding: 20px;
+            color: var(--text);
+            line-height: 1.5;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .breadcrumb {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+        .breadcrumb a {
+            color: var(--primary-light);
+            text-decoration: none;
+        }
+        .product-hero {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2c5f8a 100%);
+            color: #fff;
+            border-radius: var(--radius);
+            padding: 24px 28px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+        }
+        .product-hero .title-section h1 {
+            font-size: 26px;
+            font-weight: 700;
+            margin: 0 0 4px;
+        }
+        .product-hero .title-section .code {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-right: 10px;
+        }
+        .product-hero .status-badge {
+            background: var(--success);
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .product-hero .risk-badge {
+            background: #fff;
+            color: #e74c3c;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .grid-3col {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            box-shadow: var(--shadow);
+        }
+        .card h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--primary);
+            margin: 0 0 12px;
+            border-left: 4px solid var(--primary-light);
+            padding-left: 10px;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        .info-row span:last-child {
+            font-weight: 600;
+            color: var(--text);
+        }
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        .tag {
+            background: #eef2ff;
+            color: #4338ca;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .chart-container {
+            width: 100%;
+            height: 260px;
+        }
+        .warning-note {
+            background: #fef2f2;
+            border-left: 4px solid var(--danger);
+            padding: 10px 14px;
+            font-size: 13px;
+            border-radius: 6px;
+            color: #b91c1c;
+            margin-top: 12px;
+        }
+        @media (max-width: 700px) {
+            .grid-2col, .grid-3col {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- 面包屑导航 -->
+    <div class="breadcrumb">
+        <a href="#">产品谱系驾驶舱</a> &gt; 
+        <a href="#">权益</a> &gt; 
+        <a href="#">全市场精选</a> &gt; 
+        <strong>建信改革红利混合</strong>
+    </div>
+
+    <!-- 产品头部 -->
+    <div class="product-hero">
+        <div class="title-section">
+            <h1>建信改革红利股票型证券投资基金</h1>
+            <div style="margin-top: 4px;">
+                <span class="code">基金代码: 000592.OF</span>
+                <span class="code">成立日期: 2014-05-14</span>
+            </div>
+        </div>
+        <div style="display: flex; align-items: center;">
+            <span class="status-badge">🟢 正常运作</span>
+            <span class="risk-badge">R4 ⚠</span>
+        </div>
+    </div>
+
+    <!-- 卡片区域 -->
+    <div class="grid-2col">
+        <!-- 基础信息卡片 -->
+        <div class="card">
+            <h3>📋 基础身份</h3>
+            <div class="info-row"><span>基金全称</span><span>建信改革红利股票型证券投资基金</span></div>
+            <div class="info-row"><span>基金简称</span><span>建信改革红利混合</span></div>
+            <div class="info-row"><span>基金代码</span><span>000592.OF</span></div>
+            <div class="info-row"><span>运作方式</span><span>契约型开放式</span></div>
+            <div class="info-row"><span>托管人</span><span>中国建设银行</span></div>
+            <div class="info-row"><span>基金经理</span><span>张三（2019-01-08至今）</span></div>
+            <div class="info-row"><span>成立日期</span><span>2014-05-14</span></div>
+        </div>
+
+        <!-- 投资策略卡片 -->
+        <div class="card">
+            <h3>📈 投资策略与基准</h3>
+            <div class="info-row"><span>投资目标</span><span>挖掘受益于改革红利的优质企业</span></div>
+            <div class="info-row"><span>业绩基准</span><span>80%×沪深300 + 20%×中证综合债</span></div>
+            <div class="info-row"><span>资产配置</span><span>股票80%-95%，债券0%-20%</span></div>
+            <div class="info-row"><span>投资策略</span><span>自下而上精选个股，聚焦国企改革、产业升级</span></div>
+            <div class="info-row"><span>风格箱</span><span>大盘成长</span></div>
+            <div class="tags">
+                <span class="tag">主动选股</span>
+                <span class="tag">改革红利</span>
+                <span class="tag">大盘成长</span>
+                <span class="tag">中高风险</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 风险收益 + 规模持有人 -->
+    <div class="grid-2col">
+        <div class="card">
+            <h3>📊 风险收益指标（近1年）</h3>
+            <div class="info-row"><span>最新净值</span><span>2.8540（2026-07-19）</span></div>
+            <div class="info-row"><span>年化收益率</span><span>+14.20%</span></div>
+            <div class="info-row"><span>最大回撤</span><span>-18.30%</span></div>
+            <div class="info-row"><span>年化波动率</span><span>21.00%</span></div>
+            <div class="info-row"><span>夏普比率</span><span>0.65</span></div>
+            <div class="info-row"><span>同类排名分位</span><span>前35% (约前1/3)</span></div>
+            <div class="chart-container" id="chart-return"></div>
+        </div>
+
+        <div class="card">
+            <h3>👥 规模与持有人</h3>
+            <div class="info-row"><span>资产净值</span><span>180.5亿元</span></div>
+            <div class="info-row"><span>份额规模</span><span>63.2亿份</span></div>
+            <div class="info-row"><span>持有人户数</span><span>5.8万户</span></div>
+            <div class="info-row"><span>机构持有比例</span><span>42.5%</span></div>
+            <div class="info-row"><span>单一客户集中度</span><span>8.2%（最大客户）</span></div>
+            <div class="chart-container" id="chart-aum"></div>
+        </div>
+    </div>
+
+    <!-- 标签与生命周期 -->
+    <div class="grid-3col">
+        <div class="card">
+            <h3>🏷️ 谱系标签</h3>
+            <div class="tags" style="margin-top:12px;">
+                <span class="tag">权益</span>
+                <span class="tag">主动管理</span>
+                <span class="tag">全市场精选</span>
+                <span class="tag">改革红利</span>
+                <span class="tag">大盘成长</span>
+                <span class="tag">R4</span>
+                <span class="tag">日开</span>
+                <span class="tag">无持有期</span>
+            </div>
+        </div>
+        <div class="card">
+            <h3>🔄 生命周期事件</h3>
+            <div class="info-row"><span>当前状态</span><span style="color:var(--success);">正常运作</span></div>
+            <div class="info-row"><span>最近分红</span><span>2024-12-15 (每份0.12元)</span></div>
+            <div class="info-row"><span>基金经理变更</span><span>2019-01-08 张三上任</span></div>
+            <div class="info-row"><span>最近规模异动</span><span>2026-03 单月净流入+25亿</span></div>
+        </div>
+        <div class="card">
+            <h3>⚙️ 运营与合规</h3>
+            <div class="info-row"><span>TA系统</span><span>中登TA</span></div>
+            <div class="info-row"><span>费率</span><span>管理费1.50% / 托管费0.25%</span></div>
+            <div class="info-row"><span>申购起点</span><span>1元（直销）</span></div>
+            <div class="info-row"><span>封闭期/持有期</span><span>无</span></div>
+            <div class="info-row"><span>流动性标签</span><span>每日开放，T+1赎回到账</span></div>
+        </div>
+    </div>
+
+    <div class="warning-note">
+        ⚠️ 集中度提示：单一行业暴露（信息技术）占比35%，超过内部30%预警线，建议投研关注。
+    </div>
+</div>
+
+<script>
+    (function() {
+        // 近一年净值走势（模拟）
+        const domReturn = document.getElementById('chart-return');
+        const chartReturn = echarts.init(domReturn);
+        const months = ['2025-08','2025-09','2025-10','2025-11','2025-12','2026-01','2026-02','2026-03','2026-04','2026-05','2026-06','2026-07'];
+        const navData = [2.50, 2.62, 2.55, 2.78, 2.85, 2.70, 2.88, 3.02, 2.95, 3.10, 3.20, 2.85];
+        chartReturn.setOption({
+            tooltip: { trigger: 'axis' },
+            grid: { left: '3%', right: '4%', top: 10, bottom: 20, containLabel: true },
+            xAxis: { type: 'category', data: months, axisLabel: { fontSize: 9, rotate: 30 }, axisLine: { lineStyle: { color: '#cbd5e1' } } },
+            yAxis: { type: 'value', min: 2.2, max: 3.4, splitLine: { lineStyle: { color: '#f1f5f9', type: 'dashed' } }, axisLabel: { fontSize: 10 } },
+            series: [{
+                data: navData, type: 'line', smooth: true,
+                lineStyle: { color: '#3b82f6', width: 2 },
+                areaStyle: { color: new echarts.graphic.LinearGradient(0,0,0,1, [{offset:0,color:'rgba(59,130,246,0.3)'},{offset:1,color:'rgba(59,130,246,0.02)'}])},
+                symbol: 'none',
+            }]
+        });
+
+        // 规模变动（近6季度）
+        const domAum = document.getElementById('chart-aum');
+        const chartAum = echarts.init(domAum);
+        const quarters = ['Q1','Q2','Q3','Q4','Q1','Q2'];
+        const aumData = [150, 165, 148, 170, 155, 180.5];
+        chartAum.setOption({
+            tooltip: { trigger: 'axis' },
+            grid: { left: '3%', right: '4%', top: 10, bottom: 20, containLabel: true },
+            xAxis: { type: 'category', data: quarters, axisLabel: { fontSize: 9 }, axisLine: { lineStyle: { color: '#cbd5e1' } } },
+            yAxis: { type: 'value', min: 120, splitLine: { lineStyle: { color: '#f1f5f9', type: 'dashed' } }, axisLabel: { fontSize: 10 } },
+            series: [{
+                data: aumData, type: 'bar',
+                itemStyle: { color: '#10b981', borderRadius: [4,4,0,0] },
+                barWidth: '40%',
+                label: { show: true, position: 'top', fontSize: 10, fontWeight: 600, color: '#1e3a5f' }
+            }]
+        });
+
+        window.addEventListener('resize', () => { chartReturn.resize(); chartAum.resize(); });
+    })();
+</script>
+</body>
+</html>

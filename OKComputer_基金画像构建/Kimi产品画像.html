@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>基金产品画像系统 - 产品详情</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    background: #f8fafc;
+    color: #1e293b;
+  }
+  .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #1e3a5f, #0f172a);
+    color: white;
+    padding: 24px 32px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .header-left { flex: 1; }
+  .header-title { font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+  .header-sub { font-size: 13px; color: #94a3b8; margin-top: 6px; }
+  .header-tags { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .header-tag {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    color: #e2e8f0;
+  }
+  .header-right { text-align: right; }
+  .health-score {
+    width: 90px; height: 90px;
+    border-radius: 50%;
+    background: conic-gradient(#10b981 0% 78%, #e2e8f0 78% 100%);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .health-score-inner {
+    width: 74px; height: 74px;
+    background: #0f172a;
+    border-radius: 50%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+  .health-score-value { font-size: 24px; font-weight: 700; color: #10b981; }
+  .health-score-label { font-size: 10px; color: #94a3b8; }
+
+  /* Score cards row */
+  .score-row {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .score-card {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    text-align: center;
+  }
+  .score-card-label { font-size: 11px; color: #64748b; margin-bottom: 6px; }
+  .score-card-value { font-size: 20px; font-weight: 700; }
+  .score-card-value.green { color: #10b981; }
+  .score-card-value.amber { color: #f59e0b; }
+  .score-card-value.red { color: #ef4444; }
+  .score-card-bar {
+    height: 4px;
+    background: #e2e8f0;
+    border-radius: 2px;
+    margin-top: 8px;
+    overflow: hidden;
+  }
+  .score-card-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.8s ease;
+  }
+
+  /* Grid layouts */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+
+  .panel {
+    background: white;
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  .panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .panel-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #334155;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .panel-title::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 16px;
+    border-radius: 2px;
+    background: #3b82f6;
+  }
+  .panel-title.green::before { background: #10b981; }
+  .panel-title.amber::before { background: #f59e0b; }
+  .panel-title.red::before { background: #ef4444; }
+  .panel-title.purple::before { background: #8b5cf6; }
+  .panel-title.cyan::before { background: #06b6d4; }
+  .panel-badge {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+  .panel-badge.green { background: #d1fae5; color: #065f46; }
+  .panel-badge.amber { background: #fef3c7; color: #92400e; }
+  .panel-badge.red { background: #fee2e2; color: #991b1b; }
+
+  .chart-box { width: 100%; height: 220px; }
+  .chart-box-sm { width: 100%; height: 160px; }
+
+  /* Info list */
+  .info-list { font-size: 12px; }
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  .info-row:last-child { border-bottom: none; }
+  .info-label { color: #64748b; }
+  .info-value { font-weight: 600; color: #1e293b; }
+  .info-value.green { color: #10b981; }
+  .info-value.red { color: #ef4444; }
+  .info-value.amber { color: #f59e0b; }
+
+  /* Tag cloud */
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .tag-item {
+    padding: 5px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tag-item:hover { transform: translateY(-1px); }
+  .tag-invest { background: #dbeafe; color: #1e40af; }
+  .tag-risk { background: #fee2e2; color: #991b1b; }
+  .tag-client { background: #d1fae5; color: #065f46; }
+  .tag-oper { background: #fef3c7; color: #92400e; }
+  .tag-strat { background: #f3e8ff; color: #6b21a8; }
+
+  /* Table */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .data-table th {
+    text-align: left;
+    padding: 8px 6px;
+    color: #64748b;
+    font-weight: 600;
+    border-bottom: 1px solid #e2e8f0;
+    background: #f8fafc;
+  }
+  .data-table td {
+    padding: 8px 6px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  .data-table tr:hover td { background: #f8fafc; }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    padding-left: 20px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #e2e8f0;
+  }
+  .timeline-item {
+    position: relative;
+    padding-bottom: 16px;
+    font-size: 12px;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -17px;
+    top: 3px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #3b82f6;
+    border: 2px solid white;
+    box-shadow: 0 0 0 2px #e2e8f0;
+  }
+  .timeline-item.warn::before { background: #f59e0b; }
+  .timeline-item.danger::before { background: #ef4444; }
+  .timeline-item.success::before { background: #10b981; }
+  .timeline-date { color: #94a3b8; font-size: 11px; margin-bottom: 2px; }
+  .timeline-text { color: #334155; }
+  .timeline-text strong { color: #1e293b; }
+
+  /* Radar legend */
+  .radar-legend {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 8px;
+    font-size: 11px;
+  }
+  .radar-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .radar-legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* Compare bar */
+  .compare-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .compare-label { width: 80px; font-size: 11px; color: #64748b; text-align: right; flex-shrink: 0; }
+  .compare-track { flex: 1; height: 20px; background: #f1f5f9; border-radius: 4px; position: relative; overflow: hidden; }
+  .compare-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+  .compare-value { width: 50px; font-size: 11px; font-weight: 700; text-align: left; flex-shrink: 0; }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+    background: #f1f5f9;
+    padding: 4px;
+    border-radius: 8px;
+  }
+  .tab {
+    flex: 1;
+    padding: 8px 0;
+    border: none;
+    background: transparent;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tab.active { background: white; color: #1e293b; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+  .tab:hover:not(.active) { color: #334155; }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Responsive */
+  @media (max-width: 1200px) {
+    .score-row { grid-template-columns: repeat(3, 1fr); }
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 768px) {
+    .score-row { grid-template-columns: repeat(2, 1fr); }
+    .header { flex-direction: column; }
+    .header-right { text-align: left; }
+  }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .panel { animation: fadeIn 0.4s ease; }
+</style>
+<base target="_blank">
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <div class="header-title">
+        📊 建信现金添利货币A · 产品画像
+        <span class="panel-badge green" style="margin-left:8px;">正常运作</span>
+      </div>
+      <div class="header-sub">
+        产品代码：000693 &nbsp;|&nbsp; 成立日期：2014-09-17 &nbsp;|&nbsp; 基金经理：吴沛文 / 于倩倩 / 先轲宇 &nbsp;|&nbsp; 最新规模：1,414.7亿
+      </div>
+      <div class="header-tags">
+        <span class="header-tag">#货币型</span>
+        <span class="header-tag">#R1低风险</span>
+        <span class="header-tag">#旗舰产品</span>
+        <span class="header-tag">#建行渠道主力</span>
+        <span class="header-tag">#个人客户为主</span>
+        <span class="header-tag">#运营平稳</span>
+        <span class="header-tag">#规模集中度高</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <div style="font-size:12px;color:#94a3b8;margin-bottom:6px;">产品健康度评分</div>
+      <div class="health-score">
+        <div class="health-score-inner">
+          <div class="health-score-value">78</div>
+          <div class="health-score-label">良好</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Score Cards -->
+  <div class="score-row">
+    <div class="score-card">
+      <div class="score-card-label">规模健康度</div>
+      <div class="score-card-value green">95</div>
+      <div class="score-card-bar"><div class="score-card-bar-fill" style="width:95%;background:#10b981;"></div></div>
+    </div>
+    <div class="score-card">
+      <div class="score-card-label">收益健康度</div>
+      <div class="score-card-value green">82</div>
+      <div class="score-card-bar"><div class="score-card-bar-fill" style="width:82%;background:#10b981;"></div></div>
+    </div>
+    <div class="score-card">
+      <div class="score-card-label">客户健康度</div>
+      <div class="score-card-value amber">68</div>
+      <div class="score-card-bar"><div class="score-card-bar-fill" style="width:68%;background:#f59e0b;"></div></div>
+    </div>
+    <div class="score-card">
+      <div class="score-card-label">风险健康度</div>
+      <div class="score-card-value green">88</div>
+      <div class="score-card-bar"><div class="score-card-bar-fill" style="width:88%;background:#10b981;"></div></div>
+    </div>
+    <div class="score-card">
+      <div class="score-card-label">财务健康度</div>
+      <div class="score-card-value green">85</div>
+      <div class="score-card-bar"><div class="score-card-bar-fill" style="width:85%;background:#10b981;"></div></div>
+    </div>
+    <div class="score-card">
+      <div class="score-card-label">运营健康度</div>
+      <div class="score-card-value green">90</div>
+      <div class="score-card-bar"><div class="score-card-bar-fill" style="width:90%;background:#10b981;"></div></div>
+    </div>
+  </div>
+
+  <!-- Row 1: Identity + Investment -->
+  <div class="grid-2">
+    <!-- 身份画像 -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">🆔 身份画像</div>
+        <span class="panel-badge green">契约型</span>
+      </div>
+      <div class="info-list">
+        <div class="info-row"><span class="info-label">产品全称</span><span class="info-value">建信现金添利货币市场基金A</span></div>
+        <div class="info-row"><span class="info-label">产品代码</span><span class="info-value">000693（A类）/ 003164（B类）/ 018607（C类）</span></div>
+        <div class="info-row"><span class="info-label">基金类型</span><span class="info-value">货币市场型</span></div>
+        <div class="info-row"><span class="info-label">运作方式</span><span class="info-value">契约型开放式</span></div>
+        <div class="info-row"><span class="info-label">业绩基准</span><span class="info-value">七天通知存款利率（税后）</span></div>
+        <div class="info-row"><span class="info-label">管理费</span><span class="info-value">0.30%/年</span></div>
+        <div class="info-row"><span class="info-label">托管费</span><span class="info-value">0.05%/年</span></div>
+        <div class="info-row"><span class="info-label">销售服务费</span><span class="info-value">A类0.01% / C类0.25%</span></div>
+        <div class="info-row"><span class="info-label">最低申购额</span><span class="info-value">1元</span></div>
+        <div class="info-row"><span class="info-label">赎回规则</span><span class="info-value">T+1到账，无赎回费</span></div>
+        <div class="info-row"><span class="info-label">估值方式</span><span class="info-value">摊余成本法+影子定价</span></div>
+        <div class="info-row"><span class="info-label">注册登记机构</span><span class="info-value">建信基金TA</span></div>
+      </div>
+    </div>
+
+    <!-- 投资画像 -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title green">📈 投资画像</div>
+        <span class="panel-badge green">低风险</span>
+      </div>
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('inv-asset')">资产配置</button>
+        <button class="tab" onclick="switchTab('inv-credit')">信用分布</button>
+        <button class="tab" onclick="switchTab('inv-maturity')">期限结构</button>
+      </div>
+      <div id="inv-asset" class="tab-content active">
+        <div id="chartAsset" class="chart-box-sm"></div>
+      </div>
+      <div id="inv-credit" class="tab-content">
+        <div id="chartCredit" class="chart-box-sm"></div>
+      </div>
+      <div id="inv-maturity" class="tab-content">
+        <div id="chartMaturity" class="chart-box-sm"></div>
+      </div>
+      <div class="info-list" style="margin-top:10px;">
+        <div class="info-row"><span class="info-label">组合久期</span><span class="info-value">78天</span></div>
+        <div class="info-row"><span class="info-label">平均剩余期限</span><span class="info-value">92天</span></div>
+        <div class="info-row"><span class="info-label">杠杆水平</span><span class="info-value">108.5%（监管上限120%）</span></div>
+        <div class="info-row"><span class="info-label">影子定价偏离度</span><span class="info-value green">+0.03%（正常）</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 2: Customer + Financial -->
+  <div class="grid-2">
+    <!-- 客户画像 -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title purple">👥 客户画像</div>
+        <span class="panel-badge green">个人为主</span>
+      </div>
+      <div class="grid-2" style="margin-bottom:12px;">
+        <div id="chartHolder" class="chart-box-sm"></div>
+        <div id="chartChannel" class="chart-box-sm"></div>
+      </div>
+      <div class="info-list">
+        <div class="info-row"><span class="info-label">持有人户数</span><span class="info-value">1,256,800户</span></div>
+        <div class="info-row"><span class="info-label">个人投资者占比</span><span class="info-value">82.3%</span></div>
+        <div class="info-row"><span class="info-label">机构投资者占比</span><span class="info-value">17.7%</span></div>
+        <div class="info-row"><span class="info-label">最大单一持有人</span><span class="info-value amber">某城商行 · 8.2%</span></div>
+        <div class="info-row"><span class="info-label">前十大持有人合计</span><span class="info-value amber">23.6%</span></div>
+        <div class="info-row"><span class="info-label">平均持有期</span><span class="info-value">45天</span></div>
+        <div class="info-row"><span class="info-label">定投占比</span><span class="info-value">12.5%</span></div>
+        <div class="info-row"><span class="info-label">客户复购率</span><span class="info-value green">68.2%</span></div>
+      </div>
+    </div>
+
+    <!-- 财务画像 -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title amber">💰 财务画像</div>
+        <span class="panel-badge green">盈利</span>
+      </div>
+      <div id="chartFinance" class="chart-box-sm"></div>
+      <div class="info-list" style="margin-top:10px;">
+        <div class="info-row"><span class="info-label">年管理费收入</span><span class="info-value green">4.24亿</span></div>
+        <div class="info-row"><span class="info-label">年托管费收入</span><span class="info-value">0.71亿</span></div>
+        <div class="info-row"><span class="info-label">年销售服务费</span><span class="info-value">0.14亿</span></div>
+        <div class="info-row"><span class="info-label">投研成本分摊</span><span class="info-value">0.35亿</span></div>
+        <div class="info-row"><span class="info-label">运营成本分摊</span><span class="info-value">0.18亿</span></div>
+        <div class="info-row"><span class="info-label">渠道返点成本</span><span class="info-value">0.85亿</span></div>
+        <div class="info-row"><span class="info-label">单产品净利润</span><span class="info-value green">3.71亿</span></div>
+        <div class="info-row"><span class="info-label">利润率</span><span class="info-value green">71.2%</span></div>
+        <div class="info-row"><span class="info-label">近1月规模变化</span><span class="info-value green">+2.3%</span></div>
+        <div class="info-row"><span class="info-label">近3月规模变化</span><span class="info-value green">+5.8%</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 3: Lifecycle + Risk -->
+  <div class="grid-2">
+    <!-- 生命周期画像 -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title cyan">🔄 生命周期画像</div>
+        <span class="panel-badge green">成熟期</span>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item success">
+          <div class="timeline-date">2014-09-17</div>
+          <div class="timeline-text"><strong>产品成立</strong> · 初始规模2.5亿</div>
+        </div>
+        <div class="timeline-item success">
+          <div class="timeline-date">2015-03-20</div>
+          <div class="timeline-text"><strong>规模突破10亿</strong> · 接入建行网银渠道</div>
+        </div>
+        <div class="timeline-item success">
+          <div class="timeline-date">2016-11-08</div>
+          <div class="timeline-text"><strong>规模突破100亿</strong> · 成为建行"速盈"底层资产</div>
+        </div>
+        <div class="timeline-item success">
+          <div class="timeline-date">2018-06-15</div>
+          <div class="timeline-text"><strong>新增B类份额</strong> · 面向机构投资者</div>
+        </div>
+        <div class="timeline-item success">
+          <div class="timeline-date">2020-12-31</div>
+          <div class="timeline-text"><strong>规模突破500亿</strong> · 年度净申购186亿</div>
+        </div>
+        <div class="timeline-item success">
+          <div class="timeline-date">2023-03-12</div>
+          <div class="timeline-text"><strong>新增C类份额</strong> · 面向互联网渠道</div>
+        </div>
+        <div class="timeline-item warn">
+          <div class="timeline-date">2024-06-01</div>
+          <div class="timeline-text"><strong>规模突破1000亿</strong> · 集中度风险预警触发</div>
+        </div>
+        <div class="timeline-item warn">
+          <div class="timeline-date">2025-12-31</div>
+          <div class="timeline-text"><strong>规模达1414.7亿</strong> · 占公司总规模11.0%，集中度管控启动</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 风险画像 -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title red">⚠️ 风险画像</div>
+        <span class="panel-badge amber">2项预警</span>
+      </div>
+      <div id="chartRisk" class="chart-box-sm"></div>
+      <div style="margin-top:12px;">
+        <table class="data-table">
+          <tr><th>风险类型</th><th>指标值</th><th>阈值</th><th>状态</th></tr>
+          <tr><td>流动性风险</td><td>高流动性资产32.5%</td><td>≥30%</td><td><span style="color:#10b981;font-weight:600;">✅ 正常</span></td></tr>
+          <tr><td>集中度风险</td><td>单一客户8.2%</td><td>≤10%</td><td><span style="color:#f59e0b;font-weight:600;">⚠️ 接近阈值</span></td></tr>
+          <tr><td>集中度风险</td><td>前十大23.6%</td><td>≤30%</td><td><span style="color:#10b981;font-weight:600;">✅ 正常</span></td></tr>
+          <tr><td>杠杆风险</td><td>108.5%</td><td>≤120%</td><td><span style="color:#10b981;font-weight:600;">✅ 正常</span></td></tr>
+          <tr><td>偏离度风险</td><td>影子定价+0.03%</td><td>≤0.5%</td><td><span style="color:#10b981;font-weight:600;">✅ 正常</span></td></tr>
+          <tr><td>公司集中度</td><td>占公司总量11.0%</td><td>≤8%</td><td><span style="color:#ef4444;font-weight:600;">🚨 超标</span></td></tr>
+          <tr><td>巨额赎回</td><td>近30天最大单日净赎回</td><td>≤5%</td><td><span style="color:#10b981;font-weight:600;">✅ 正常（1.2%）</span></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 4: Competitive + Operational -->
+  <div class="grid-2">
+    <!-- 竞争画像 -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">🏆 竞争画像</div>
+        <span class="panel-badge green">同类前20%</span>
+      </div>
+      <div id="chartCompete" class="chart-box-sm"></div>
+      <div style="margin-top:12px;">
+        <table class="data-table">
+          <tr><th>对比维度</th><th>本产品</th><th>同类平均</th><th>排名</th></tr>
+          <tr><td>近1年收益</td><td><strong>+1.80%</strong></td><td>+1.72%</td><td><span style="color:#10b981;">前18%</span></td></tr>
+          <tr><td>七日年化</td><td><strong>1.82%</strong></td><td>1.75%</td><td><span style="color:#10b981;">前15%</span></td></tr>
+          <tr><td>管理费率</td><td><strong>0.30%</strong></td><td>0.27%</td><td><span style="color:#f59e0b;">略高</span></td></tr>
+          <tr><td>规模排名</td><td><strong>第1名</strong></td><td>-</td><td><span style="color:#10b981;">🥇 行业第1</span></td></tr>
+          <tr><td>波动率</td><td><strong>0.02%</strong></td><td>0.03%</td><td><span style="color:#10b981;">更稳定</span></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- 运营画像 -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">⚙️ 运营画像</div>
+        <span class="panel-badge green">运营平稳</span>
+      </div>
+      <div class="grid-2" style="margin-bottom:12px;">
+        <div>
+          <div style="font-size:12px;font-weight:700;color:#334155;margin-bottom:8px;">TA运营指标</div>
+          <div class="info-list">
+            <div class="info-row"><span class="info-label">日均申赎笔数</span><span class="info-value">12,580笔</span></div>
+            <div class="info-row"><span class="info-label">日均申赎金额</span><span class="info-value">8.6亿</span></div>
+            <div class="info-row"><span class="info-label">巨额赎回触发</span><span class="info-value green">0次（近30天）</span></div>
+            <div class="info-row"><span class="info-label">份额登记差错率</span><span class="info-value green">0.0003%</span></div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:#334155;margin-bottom:8px;">估值运营指标</div>
+          <div class="info-list">
+            <div class="info-row"><span class="info-label">估值完成时效</span><span class="info-value green">T日18:30前</span></div>
+            <div class="info-row"><span class="info-label">估值差异次数</span><span class="info-value green">0次（本月）</span></div>
+            <div class="info-row"><span class="info-label">停牌证券数量</span><span class="info-value">0只</span></div>
+            <div class="info-row"><span class="info-label">估值质量评分</span><span class="info-value green">98.5分</span></div>
+          </div>
+        </div>
+      </div>
+      <div style="border-top:1px solid #f1f5f9;padding-top:12px;">
+        <div style="font-size:12px;font-weight:700;color:#334155;margin-bottom:8px;">信息披露指标</div>
+        <div class="info-list">
+          <div class="info-row"><span class="info-label">定期报告披露及时率</span><span class="info-value green">100%</span></div>
+          <div class="info-row"><span class="info-label">临时公告数量（近1年）</span><span class="info-value">3次</span></div>
+          <div class="info-row"><span class="info-label">监管问询次数</span><span class="info-value green">0次</span></div>
+          <div class="info-row"><span class="info-label">客户投诉数量（近1年）</span><span class="info-value green">12件（已处理）</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 5: Tag Cloud + Compare -->
+  <div class="grid-2">
+    <!-- 产品标签云 -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title purple">🏷️ 产品标签云</div>
+        <span style="font-size:11px;color:#94a3b8;">点击标签筛选同类产品</span>
+      </div>
+      <div class="tag-cloud">
+        <span class="tag-item tag-invest">#货币型</span>
+        <span class="tag-item tag-invest">#摊余成本法</span>
+        <span class="tag-item tag-invest">#短久期</span>
+        <span class="tag-item tag-risk">#R1低风险</span>
+        <span class="tag-item tag-risk">#低波动</span>
+        <span class="tag-item tag-client">#个人客户为主</span>
+        <span class="tag-item tag-client">#建行渠道主力</span>
+        <span class="tag-item tag-client">#高复购率</span>
+        <span class="tag-item tag-strat">#旗舰产品</span>
+        <span class="tag-item tag-strat">#规模集中度高</span>
+        <span class="tag-item tag-strat">#理财替代</span>
+        <span class="tag-item tag-oper">#运营平稳</span>
+        <span class="tag-item tag-oper">#披露合规</span>
+        <span class="tag-item tag-invest">#同业存单为主</span>
+        <span class="tag-item tag-risk">#集中度预警</span>
+        <span class="tag-item tag-client">#互联网渠道增长</span>
+        <span class="tag-item tag-strat">#母行协同</span>
+        <span class="tag-item tag-invest">#高流动性资产</span>
+      </div>
+      <div style="margin-top:16px;padding:12px;background:#f8fafc;border-radius:8px;font-size:12px;color:#64748b;line-height:1.6;">
+        <strong>标签生成规则：</strong><br>
+        • <span style="color:#1e40af;">蓝色标签</span>：投资维度，由持仓分析算法自动生成<br>
+        • <span style="color:#991b1b;">红色标签</span>：风险维度，由风控系统监控自动生成<br>
+        • <span style="color:#065f46;">绿色标签</span>：客户维度，由TA与销售数据统计生成<br>
+        • <span style="color:#92400e;">黄色标签</span>：运营维度，由运营系统监控生成<br>
+        • <span style="color:#6b21a8;">紫色标签</span>：战略维度，由产品委员会人工标注
+      </div>
+    </div>
+
+    <!-- 画像对比 -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">📊 画像对比：vs 建信货币A</div>
+        <span style="font-size:11px;color:#94a3b8;">同策略产品横向对比</span>
+      </div>
+      <div style="margin-bottom:16px;">
+        <div class="compare-bar">
+          <span class="compare-label">规模</span>
+          <div class="compare-track">
+            <div class="compare-fill" style="width:100%;background:#3b82f6;"></div>
+          </div>
+          <span class="compare-value">1414亿</span>
+        </div>
+        <div class="compare-bar">
+          <span class="compare-label"></span>
+          <div class="compare-track">
+            <div class="compare-fill" style="width:28%;background:#94a3b8;"></div>
+          </div>
+          <span class="compare-value" style="color:#94a3b8;">389亿</span>
+        </div>
+
+        <div class="compare-bar">
+          <span class="compare-label">费率</span>
+          <div class="compare-track">
+            <div class="compare-fill" style="width:90%;background:#3b82f6;"></div>
+          </div>
+          <span class="compare-value">0.30%</span>
+        </div>
+        <div class="compare-bar">
+          <span class="compare-label"></span>
+          <div class="compare-track">
+            <div class="compare-fill" style="width:100%;background:#94a3b8;"></div>
+          </div>
+          <span class="compare-value" style="color:#94a3b8;">0.33%</span>
+        </div>
+
+        <div class="compare-bar">
+          <span class="compare-label">收益</span>
+          <div class="compare-track">
+            <div class="compare-fill" style="width:100%;background:#3b82f6;"></div>
+          </div>
+          <span class="compare-value">1.80%</span>
+        </div>
+        <div class="compare-bar">
+          <span class="compare-label"></span>
+          <div class="compare-track">
+            <div class="compare-fill" style="width:94%;background:#94a3b8;"></div>
+          </div>
+          <span class="compare-value" style="color:#94a3b8;">1.70%</span>
+        </div>
+
+        <div class="compare-bar">
+          <span class="compare-label">客户数</span>
+          <div class="compare-track">
+            <div class="compare-fill" style="width:100%;background:#3b82f6;"></div>
+          </div>
+          <span class="compare-value">125万</span>
+        </div>
+        <div class="compare-bar">
+          <span class="compare-label"></span>
+          <div class="compare-track">
+            <div class="compare-fill" style="width:35%;background:#94a3b8;"></div>
+          </div>
+          <span class="compare-value" style="color:#94a3b8;">43万</span>
+        </div>
+      </div>
+      <div style="padding:12px;background:#eff6ff;border-radius:8px;font-size:12px;color:#1e40af;line-height:1.6;">
+        <strong>对比结论：</strong>现金添利在规模、客户数上显著领先，但费率略低于建信货币。建议引导互联网渠道新增客户向建信货币分流，降低现金添利集中度风险。
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 6: Full Radar -->
+  <div class="panel" style="margin-bottom:20px;">
+    <div class="panel-header">
+      <div class="panel-title">🎯 八维画像雷达图</div>
+      <span style="font-size:11px;color:#94a3b8;">vs 同类型产品平均 / 公司内平均</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:20px;">
+      <div id="chartRadar" style="width:100%;height:320px;"></div>
+    </div>
+    <div class="radar-legend">
+      <div class="radar-legend-item"><span class="radar-legend-dot" style="background:#3b82f6;"></span>本产品</div>
+      <div class="radar-legend-item"><span class="radar-legend-dot" style="background:#94a3b8;"></span>同类平均</div>
+      <div class="radar-legend-item"><span class="radar-legend-dot" style="background:#f59e0b;"></span>公司内平均</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="text-align:center;font-size:11px;color:#94a3b8;padding:20px;">
+    基金产品画像系统 v1.0 · 数据更新：T+1 · 画像生成时间：2026-07-20 18:30 · 数据来源：估值/TA/投资交易/销售/风控/合规/财务系统
+  </div>
+</div>
+
+<script>
+// ========== Charts ==========
+let chartAsset, chartCredit, chartMaturity, chartHolder, chartChannel, chartFinance, chartRiskRadar, chartCompete, chartRadar;
+
+function initCharts() {
+  chartAsset = echarts.init(document.getElementById('chartAsset'));
+  chartCredit = echarts.init(document.getElementById('chartCredit'));
+  chartMaturity = echarts.init(document.getElementById('chartMaturity'));
+  chartHolder = echarts.init(document.getElementById('chartHolder'));
+  chartChannel = echarts.init(document.getElementById('chartChannel'));
+  chartFinance = echarts.init(document.getElementById('chartFinance'));
+  chartRiskRadar = echarts.init(document.getElementById('chartRisk'));
+  chartCompete = echarts.init(document.getElementById('chartCompete'));
+  chartRadar = echarts.init(document.getElementById('chartRadar'));
+
+  renderAssetChart();
+  renderCreditChart();
+  renderMaturityChart();
+  renderHolderChart();
+  renderChannelChart();
+  renderFinanceChart();
+  renderRiskRadarChart();
+  renderCompeteChart();
+  renderRadarChart();
+
+  window.addEventListener('resize', () => {
+    chartAsset.resize(); chartCredit.resize(); chartMaturity.resize();
+    chartHolder.resize(); chartChannel.resize(); chartFinance.resize();
+    chartRiskRadar.resize(); chartCompete.resize(); chartRadar.resize();
+  });
+}
+
+function renderAssetChart() {
+  chartAsset.setOption({
+    tooltip: { trigger: 'item' },
+    series: [{
+      type: 'pie',
+      radius: ['40%', '65%'],
+      center: ['50%', '50%'],
+      label: { show: true, fontSize: 11, formatter: '{b}\n{d}%' },
+      data: [
+        { name: '同业存单', value: 40.2, itemStyle: { color: '#3b82f6' } },
+        { name: '买入返售', value: 20.7, itemStyle: { color: '#10b981' } },
+        { name: '政策性金融债', value: 8.2, itemStyle: { color: '#f59e0b' } },
+        { name: '银行存款', value: 18.5, itemStyle: { color: '#8b5cf6' } },
+        { name: '国债/央票', value: 7.8, itemStyle: { color: '#06b6d4' } },
+        { name: '其他', value: 4.6, itemStyle: { color: '#94a3b8' } }
+      ]
+    }]
+  });
+}
+
+function renderCreditChart() {
+  chartCredit.setOption({
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+    grid: { left: '3%', right: '4%', bottom: '3%', top: '10%', containLabel: true },
+    xAxis: { type: 'category', data: ['AAA', 'AA+', 'AA', 'AA-', 'A+及以下'], axisLabel: { fontSize: 10 } },
+    yAxis: { type: 'value', axisLabel: { fontSize: 10, formatter: '{value}%' } },
+    series: [{
+      type: 'bar',
+      barWidth: '50%',
+      data: [
+        { value: 68.5, itemStyle: { color: '#10b981', borderRadius: [4, 4, 0, 0] } },
+        { value: 22.3, itemStyle: { color: '#3b82f6', borderRadius: [4, 4, 0, 0] } },
+        { value: 6.8, itemStyle: { color: '#f59e0b', borderRadius: [4, 4, 0, 0] } },
+        { value: 1.9, itemStyle: { color: '#f97316', borderRadius: [4, 4, 0, 0] } },
+        { value: 0.5, itemStyle: { color: '#ef4444', borderRadius: [4, 4, 0, 0] } }
+      ],
+      label: { show: true, position: 'top', fontSize: 10, formatter: '{c}%' }
+    }]
+  });
+}
+
+function renderMaturityChart() {
+  chartMaturity.setOption({
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+    grid: { left: '3%', right: '4%', bottom: '3%', top: '10%', containLabel: true },
+    xAxis: { type: 'category', data: ['0-30天', '31-60天', '61-90天', '91-120天', '>120天'], axisLabel: { fontSize: 10 } },
+    yAxis: { type: 'value', axisLabel: { fontSize: 10, formatter: '{value}%' } },
+    series: [{
+      type: 'bar',
+      barWidth: '50%',
+      data: [
+        { value: 35.2, itemStyle: { color: '#10b981', borderRadius: [4, 4, 0, 0] } },
+        { value: 28.6, itemStyle: { color: '#3b82f6', borderRadius: [4, 4, 0, 0] } },
+        { value: 22.4, itemStyle: { color: '#f59e0b', borderRadius: [4, 4, 0, 0] } },
+        { value: 10.5, itemStyle: { color: '#8b5cf6', borderRadius: [4, 4, 0, 0] } },
+        { value: 3.3, itemStyle: { color: '#ef4444', borderRadius: [4, 4, 0, 0] } }
+      ],
+      label: { show: true, position: 'top', fontSize: 10, formatter: '{c}%' }
+    }]
+  });
+}
+
+function renderHolderChart() {
+  chartHolder.setOption({
+    tooltip: { trigger: 'item' },
+    series: [{
+      type: 'pie',
+      radius: '65%',
+      center: ['50%', '50%'],
+      label: { show: true, fontSize: 11, formatter: '{b}\n{d}%' },
+      data: [
+        { name: '个人投资者', value: 82.3, itemStyle: { color: '#3b82f6' } },
+        { name: '机构投资者', value: 17.7, itemStyle: { color: '#10b981' } }
+      ]
+    }]
+  });
+}
+
+function renderChannelChart() {
+  chartChannel.setOption({
+    tooltip: { trigger: 'item' },
+    series: [{
+      type: 'pie',
+      radius: ['40%', '65%'],
+      center: ['50%', '50%'],
+      label: { show: true, fontSize: 10, formatter: '{b}\n{d}%' },
+      data: [
+        { name: '建行网银/手机银行', value: 45, itemStyle: { color: '#0066b3' } },
+        { name: '第三方互联网', value: 28, itemStyle: { color: '#3b82f6' } },
+        { name: '建行柜台', value: 15, itemStyle: { color: '#10b981' } },
+        { name: '机构直销', value: 8, itemStyle: { color: '#f59e0b' } },
+        { name: '其他银行', value: 4, itemStyle: { color: '#94a3b8' } }
+      ]
+    }]
+  });
+}
+
+function renderFinanceChart() {
+  chartFinance.setOption({
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+    grid: { left: '3%', right: '8%', bottom: '3%', top: '10%', containLabel: true },
+    xAxis: { type: 'value', axisLabel: { fontSize: 10, formatter: '{value}亿' } },
+    yAxis: {
+      type: 'category',
+      data: ['管理费收入', '托管费收入', '销售服务费', '投研成本', '运营成本', '渠道返点', '净利润'],
+      axisLabel: { fontSize: 10 }
+    },
+    series: [{
+      type: 'bar',
+      barWidth: '60%',
+      data: [
+        { value: 4.24, itemStyle: { color: '#3b82f6', borderRadius: [0, 4, 4, 0] } },
+        { value: 0.71, itemStyle: { color: '#60a5fa', borderRadius: [0, 4, 4, 0] } },
+        { value: 0.14, itemStyle: { color: '#93c5fd', borderRadius: [0, 4, 4, 0] } },
+        { value: -0.35, itemStyle: { color: '#f97316', borderRadius: [4, 0, 0, 4] } },
+        { value: -0.18, itemStyle: { color: '#fb923c', borderRadius: [4, 0, 0, 4] } },
+        { value: -0.85, itemStyle: { color: '#fdba74', borderRadius: [4, 0, 0, 4] } },
+        { value: 3.71, itemStyle: { color: '#10b981', borderRadius: [0, 4, 4, 0] } }
+      ],
+      label: { show: true, position: 'right', fontSize: 10, formatter: function(p) { return p.value > 0 ? '+' + p.value + '亿' : p.value + '亿'; } }
+    }]
+  });
+}
+
+function renderRiskRadarChart() {
+  chartRiskRadar.setOption({
+    radar: {
+      indicator: [
+        { name: '流动性', max: 100 },
+        { name: '集中度', max: 100 },
+        { name: '杠杆', max: 100 },
+        { name: '偏离度', max: 100 },
+        { name: '信用', max: 100 },
+        { name: '运营', max: 100 }
+      ],
+      radius: '65%',
+      axisName: { fontSize: 10 }
+    },
+    series: [{
+      type: 'radar',
+      data: [
+        {
+          value: [92, 55, 88, 95, 90, 96],
+          name: '本产品',
+          areaStyle: { color: 'rgba(59, 130, 246, 0.2)' },
+          lineStyle: { color: '#3b82f6', width: 2 },
+          itemStyle: { color: '#3b82f6' }
+        }
+      ]
+    }]
+  });
+}
+
+function renderCompeteChart() {
+  chartCompete.setOption({
+    tooltip: { trigger: 'axis' },
+    legend: { top: 0, textStyle: { fontSize: 10 } },
+    grid: { left: '3%', right: '4%', bottom: '3%', top: '18%', containLabel: true },
+    xAxis: {
+      type: 'category',
+      data: ['近1月', '近3月', '近6月', '近1年', '近2年', '近3年'],
+      axisLabel: { fontSize: 10 }
+    },
+    yAxis: {
+      type: 'value',
+      axisLabel: { fontSize: 10, formatter: '{value}%' }
+    },
+    series: [
+      {
+        name: '本产品',
+        type: 'line',
+        smooth: true,
+        data: [0.15, 0.45, 0.92, 1.80, 3.65, 5.42],
+        lineStyle: { color: '#3b82f6', width: 2 },
+        itemStyle: { color: '#3b82f6' }
+      },
+      {
+        name: '同类平均',
+        type: 'line',
+        smooth: true,
+        data: [0.14, 0.42, 0.85, 1.72, 3.48, 5.15],
+        lineStyle: { color: '#94a3b8', width: 2 },
+        itemStyle: { color: '#94a3b8' }
+      }
+    ]
+  });
+}
+
+function renderRadarChart() {
+  chartRadar.setOption({
+    tooltip: {},
+    legend: { bottom: 0, textStyle: { fontSize: 11 } },
+    radar: {
+      indicator: [
+        { name: '规模健康', max: 100 },
+        { name: '收益健康', max: 100 },
+        { name: '客户健康', max: 100 },
+        { name: '风险健康', max: 100 },
+        { name: '财务健康', max: 100 },
+        { name: '运营健康', max: 100 },
+        { name: '竞争健康', max: 100 },
+        { name: '生命周期', max: 100 }
+      ],
+      radius: '60%',
+      axisName: { fontSize: 11 }
+    },
+    series: [{
+      type: 'radar',
+      data: [
+        {
+          value: [95, 82, 68, 88, 85, 90, 78, 75],
+          name: '本产品',
+          areaStyle: { color: 'rgba(59, 130, 246, 0.2)' },
+          lineStyle: { color: '#3b82f6', width: 2 },
+          itemStyle: { color: '#3b82f6' }
+        },
+        {
+          value: [55, 70, 62, 75, 60, 78, 65, 70],
+          name: '同类平均',
+          areaStyle: { color: 'rgba(148, 163, 184, 0.15)' },
+          lineStyle: { color: '#94a3b8', width: 2 },
+          itemStyle: { color: '#94a3b8' }
+        },
+        {
+          value: [60, 68, 58, 72, 55, 75, 60, 68],
+          name: '公司内平均',
+          areaStyle: { color: 'rgba(245, 158, 11, 0.15)' },
+          lineStyle: { color: '#f59e0b', width: 2 },
+          itemStyle: { color: '#f59e0b' }
+        }
+      ]
+    }]
+  });
+}
+
+// ========== Tab Switch ==========
+function switchTab(tabId) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  setTimeout(() => {
+    if (tabId === 'inv-asset') chartAsset.resize();
+    if (tabId === 'inv-credit') chartCredit.resize();
+    if (tabId === 'inv-maturity') chartMaturity.resize();
+  }, 10);
+}
+
+document.addEventListener('DOMContentLoaded', initCharts);
+</script>
+
+</body>
+</html>

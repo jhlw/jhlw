@@ -129,6 +129,49 @@
   @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   .panel { animation: fadeIn 0.4s ease; }
   .kpi-card { animation: fadeIn 0.4s ease; }
+
+  /* 优化: 全局展开/折叠按钮 */
+  .layer-controls { display: flex; gap: 8px; align-items: center; }
+  .layer-ctrl-btn { background: white; border: 1px solid #e2e8f0; padding: 5px 12px; border-radius: 6px; font-size: 11px; color: #64748b; cursor: pointer; transition: all 0.2s; font-weight: 600; }
+  .layer-ctrl-btn:hover { background: #f1f5f9; color: #334155; border-color: #cbd5e1; }
+  .layer-ctrl-btn:active { transform: scale(0.97); }
+
+  /* 优化: 返回顶部 */
+  .back-to-top { position: fixed; bottom: 32px; right: 32px; width: 44px; height: 44px; background: #0066b3; color: white; border: none; border-radius: 50%; font-size: 18px; cursor: pointer; box-shadow: 0 4px 16px rgba(0,102,179,0.35); z-index: 999; opacity: 0; transform: translateY(20px); pointer-events: none; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
+  .back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .back-to-top:hover { background: #005a9e; transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,102,179,0.45); }
+
+  /* 优化: 快速搜索 */
+  .quick-search { position: relative; display: flex; align-items: center; }
+  .quick-search input { padding: 6px 32px 6px 14px; border: 1px solid #e2e8f0; border-radius: 20px; font-size: 12px; width: 190px; color: #334155; background: white; outline: none; transition: all 0.25s; }
+  .quick-search input:focus { border-color: #0066b3; box-shadow: 0 0 0 2px rgba(0,102,179,0.1); width: 260px; }
+  .quick-search input::placeholder { color: #94a3b8; }
+  .quick-search .search-icon { position: absolute; right: 10px; font-size: 14px; color: #94a3b8; pointer-events: none; }
+  .search-results { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #e2e8f0; border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); max-height: 320px; overflow-y: auto; z-index: 100; margin-top: 4px; }
+  .search-results.active { display: block; }
+  .search-result-item { padding: 10px 14px; cursor: pointer; font-size: 12px; border-bottom: 1px solid #f1f5f9; transition: background 0.15s; display: flex; justify-content: space-between; align-items: center; }
+  .search-result-item:last-child { border-bottom: none; }
+  .search-result-item:hover { background: #eff6ff; }
+  .search-result-item .sr-name { font-weight: 600; color: #1e293b; }
+  .search-result-item .sr-type { font-size: 10px; padding: 1px 6px; border-radius: 8px; }
+  .search-result-item .sr-scale { color: #64748b; font-size: 11px; }
+  .search-no-result { padding: 16px; text-align: center; font-size: 12px; color: #94a3b8; }
+
+  /* 优化: 预警条关闭按钮 */
+  .alert-box { position: relative; }
+  .alert-dismiss { position: absolute; top: 8px; right: 12px; background: none; border: none; font-size: 16px; cursor: pointer; color: #94a3b8; padding: 2px 6px; border-radius: 4px; transition: all 0.2s; line-height: 1; }
+  .alert-dismiss:hover { color: #475569; background: rgba(0,0,0,0.05); }
+  .alert-box.dismissed { animation: alertSlideOut 0.35s ease forwards; }
+  @keyframes alertSlideOut { to { opacity: 0; max-height: 0; padding-top: 0; padding-bottom: 0; margin-top: 0; margin-bottom: 0; overflow: hidden; border-width: 0; } }
+
+  /* 优化: 平滑滚动 */
+  html { scroll-behavior: smooth; }
+
+  /* 优化: 层级导航指示点 */
+  .layer-nav-dots { display: flex; gap: 6px; align-items: center; margin-left: 10px; }
+  .layer-nav-dot { width: 7px; height: 7px; border-radius: 50%; background: #cbd5e1; transition: all 0.3s; cursor: pointer; }
+  .layer-nav-dot.active { background: #0066b3; transform: scale(1.5); }
+  .layer-nav-dot:hover { background: #94a3b8; }
 </style>
 <base>
 </head>
@@ -142,9 +185,13 @@
         <div class="icon">🏦</div>
         建信基金产品谱系管理驾驶舱
       </div>
-      <div class="db-subtitle">建信基金管理有限责任公司 · 银行系公募基金 · 产品谱系 v2.0</div>
+      <div class="db-subtitle">建信基金管理有限责任公司 · 银行系公募基金 · 产品谱系 v2.0 &nbsp;|&nbsp; <a href="javascript:void(0)" onclick="expandAllLayers()" style="color:#94a3b8;text-decoration:none;">全部展开</a> / <a href="javascript:void(0)" onclick="collapseAllLayers()" style="color:#94a3b8;text-decoration:none;">全部折叠</a></div>
     </div>
     <div class="db-meta">
+      <div class="quick-search">
+        <input type="text" id="productSearch" placeholder="🔍 搜索产品（名称/代码/经理）..." oninput="handleSearch(this.value)" onfocus="handleSearch(this.value)" onblur="setTimeout(() => document.getElementById('searchResults').classList.remove('active'), 200)">
+        <div class="search-results" id="searchResults"></div>
+      </div>
       <div class="db-date">📅 数据日期：2026年7月20日</div>
       <button class="refresh-btn" onclick="refreshData()">🔄 刷新数据</button>
     </div>
@@ -191,11 +238,13 @@
   </div>
 
   <!-- Alerts -->
-  <div class="alert-box">
+  <div class="alert-box" id="alert1">
+    <button class="alert-dismiss" onclick="dismissAlert('alert1')" title="关闭">&times;</button>
     <span class="alert-icon">🚨</span>
     <span class="alert-text"><strong>清盘预警紧急通知：</strong>建信责任ETF（规模0.7亿）连续多个季度低于5000万清盘线，ESG主题市场热度下降导致资金持续流出。建议评估转型为宽基ETF或启动有序清盘程序。</span>
   </div>
-  <div class="alert-box warn">
+  <div class="alert-box warn" id="alert2">
+    <button class="alert-dismiss" onclick="dismissAlert('alert2')" title="关闭">&times;</button>
     <span class="alert-icon">⚡</span>
     <span class="alert-text warn"><strong>银行系特征提示：</strong>货币+固收占比74.0%，权益仅14.0%。作为银行系基金公司，固收是基本盘，但权益类产品"多而不强"——52只权益产品仅8只规模>50亿。建议加强权益投研能力建设。</span>
   </div>
@@ -1870,8 +1919,145 @@ function refreshData() {
   }, 1500);
 }
 
-document.addEventListener('DOMContentLoaded', initCharts);
+// ========== 优化功能 ==========
+function initOptimizations() {
+  // 返回顶部按钮显隐
+  var backBtn = document.getElementById('backToTop');
+  if (backBtn) {
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 600) { backBtn.classList.add('visible'); }
+      else { backBtn.classList.remove('visible'); }
+    });
+  }
+  // 层级导航点高亮
+  window.addEventListener('scroll', updateLayerNavDots);
+}
+
+function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+// 全部展开/折叠四层
+function expandAllLayers() {
+  document.querySelectorAll('.layer-header').forEach(function(h) { h.classList.remove('collapsed'); });
+  document.querySelectorAll('.layer-body').forEach(function(b) { b.classList.remove('collapsed'); });
+}
+function collapseAllLayers() {
+  document.querySelectorAll('.layer-header').forEach(function(h) { h.classList.add('collapsed'); });
+  document.querySelectorAll('.layer-body').forEach(function(b) { b.classList.add('collapsed'); });
+}
+
+// 跳到指定层级
+function scrollToLayer(idx) {
+  var headers = document.querySelectorAll('.layer-header');
+  if (headers[idx]) {
+    headers[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // 如果该层已折叠则展开
+    if (headers[idx].classList.contains('collapsed')) { toggleLayer(headers[idx]); }
+  }
+}
+
+// 层级导航点更新
+function updateLayerNavDots() {
+  var dots = document.querySelectorAll('#layerNavDots .layer-nav-dot');
+  var headers = document.querySelectorAll('.layer-header');
+  var current = 0;
+  headers.forEach(function(h, i) {
+    var rect = h.getBoundingClientRect();
+    if (rect.top <= window.innerHeight / 2) { current = i; }
+  });
+  dots.forEach(function(d, i) {
+    d.classList.toggle('active', i === current);
+  });
+}
+
+// 关闭预警条
+function dismissAlert(id) {
+  var el = document.getElementById(id);
+  if (el) {
+    el.classList.add('dismissed');
+    setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 400);
+  }
+}
+
+// 产品快速搜索
+var productSearchIndex = [
+  { n:'建信现金添利货币A', c:'000693', t:'货币类', s:'1414.7亿', m:'吴沛文/于倩倩/先轲宇', id:'F0001' },
+  { n:'建信货币A', c:'530002', t:'货币类', s:'389.2亿', m:'吴沛文/先轲宇', id:'F0002' },
+  { n:'建信现金增利货币A', c:'003393', t:'货币类', s:'356.8亿', m:'陈建良', id:'F0003' },
+  { n:'建信纯债债券A', c:'531021', t:'固收类', s:'298.5亿', m:'彭紫云/黎颖芳', id:'F0004' },
+  { n:'建信短债债券A', c:'006581', t:'固收类', s:'245.6亿', m:'李星佑/吴沛文', id:'F0005' },
+  { n:'建信鑫悦90天滚动持有中短债', c:'014855', t:'固收类', s:'198.3亿', m:'彭紫云/陈建良', id:'F0006' },
+  { n:'建信稳定增利债券A', c:'531009', t:'固收类', s:'187.4亿', m:'黎颖芳', id:'F0007' },
+  { n:'建信鑫福60天持有期中短债', c:'016035', t:'固收类', s:'156.2亿', m:'彭紫云/胡泽元', id:'F0008' },
+  { n:'建信信用增强债券', c:'165311', t:'固收类', s:'142.1亿', m:'李菁', id:'F0009' },
+  { n:'建信嘉薪宝货币A', c:'000686', t:'货币类', s:'138.9亿', m:'于倩倩', id:'F0010' },
+  { n:'建信责任ETF', c:'510090', t:'权益类', s:'0.7亿', m:'张溢麟', id:'' },
+  { n:'建信灵活配置混合C', c:'002281', t:'混合类', s:'6.6亿', m:'', id:'' },
+  { n:'建信睿怡纯债债券', c:'003393', t:'固收类', s:'2.8亿', m:'', id:'' },
+  { n:'建信中证A500ETF联接A', c:'022442', t:'权益类', s:'48.5亿', m:'张溢麟', id:'' },
+  { n:'建信红利低波ETF', c:'512530', t:'权益类', s:'35.2亿', m:'张溢麟/刘思远', id:'' },
+  { n:'建信科技成长混合A', c:'019756', t:'混合类', s:'22.8亿', m:'王剑', id:'' },
+  { n:'建信中短债增强债券A', c:'022443', t:'固收类', s:'58.6亿', m:'彭紫云/胡泽元', id:'' },
+  { n:'建信改革红利股票', c:'000592', t:'权益类', s:'85亿', m:'', id:'' },
+  { n:'建信优化配置混合', c:'530005', t:'混合类', s:'88亿', m:'', id:'' },
+  { n:'建信中证500ETF', c:'510500', t:'权益类', s:'320亿', m:'', id:'' }
+];
+
+function handleSearch(query) {
+  var resultsEl = document.getElementById('searchResults');
+  if (!query || query.trim().length < 1) {
+    resultsEl.classList.remove('active');
+    resultsEl.innerHTML = '';
+    return;
+  }
+  var q = query.trim().toLowerCase();
+  var matched = productSearchIndex.filter(function(p) {
+    return p.n.toLowerCase().indexOf(q) !== -1 || p.c.indexOf(q) !== -1 || p.m.toLowerCase().indexOf(q) !== -1;
+  });
+  if (matched.length === 0) {
+    resultsEl.innerHTML = '<div class="search-no-result">未找到匹配产品</div>';
+  } else {
+    resultsEl.innerHTML = matched.slice(0, 8).map(function(p) {
+      var typeClass = p.t === '货币类' ? 'badge-r1' : p.t === '固收类' ? 'badge-r2' : p.t === '权益类' ? 'badge-ok' : p.t === '混合类' ? 'badge-info' : 'badge-gray';
+      return '<div class="search-result-item" onclick="handleSearchSelect(\'' + p.id + '\', \'' + p.n + '\')" onmousedown="event.preventDefault()"><span><span class="sr-name">' + p.n + '</span> <span style="font-size:10px;color:#94a3b8;">' + p.c + '</span></span><span><span class="sr-type badge ' + typeClass + '">' + p.t + '</span> <span class="sr-scale">' + p.s + '</span></span></div>';
+    }).join('');
+  }
+  resultsEl.classList.add('active');
+}
+
+function handleSearchSelect(productId, productName) {
+  document.getElementById('searchResults').classList.remove('active');
+  document.getElementById('productSearch').value = productName;
+  if (productId) {
+    showDetail(productId);
+  } else {
+    alert('产品"' + productName + '"暂无详情页，请在产品列表中查看。');
+  }
+}
+
+// 点击空白处关闭搜索结果
+document.addEventListener('click', function(e) {
+  var searchBox = document.querySelector('.quick-search');
+  if (searchBox && !searchBox.contains(e.target)) {
+    document.getElementById('searchResults').classList.remove('active');
+  }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  initCharts();
+  initOptimizations();
+});
 </script>
+
+<!-- 优化: 返回顶部按钮 -->
+<button class="back-to-top" id="backToTop" onclick="scrollToTop()" title="返回顶部">&#9650;</button>
+
+<!-- 优化: 层级快速导航 -->
+<div style="position:fixed;right:32px;top:50%;transform:translateY(-50%);z-index:998;display:flex;flex-direction:column;align-items:center;gap:10px;" id="layerNavDots">
+  <div class="layer-nav-dot active" title="公司级总览" onclick="scrollToLayer(0)" style="width:10px;height:10px;"></div>
+  <div class="layer-nav-dot" title="业务大类分布" onclick="scrollToLayer(1)"></div>
+  <div class="layer-nav-dot" title="策略与赛道" onclick="scrollToLayer(2)"></div>
+  <div class="layer-nav-dot" title="产品梯队矩阵" onclick="scrollToLayer(3)"></div>
+</div>
 
 </body>
 </html>
