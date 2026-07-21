@@ -1,0 +1,73 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - link "← 返回产品列表" [ref=e5] [cursor=pointer]:
+          - /url: "#"
+        - generic [ref=e7]:
+          - generic [ref=e8]:
+            - heading "建信纯债债券A" [level=1] [ref=e9]
+            - generic [ref=e10]: 正常运作
+            - generic [ref=e12]: 固收旗舰产品
+          - paragraph [ref=e13]: 产品代码：530021 | 所属谱系：固收类 — 纯债/利率债
+      - generic [ref=e14]:
+        - paragraph [ref=e15]: 数据更新时间：2026-07-17（基于公募季报/半年报公开数据）
+        - paragraph [ref=e16]: 数据来源：产品主数据系统 / 估值系统 / TA系统
+  - main [ref=e17]:
+    - generic [ref=e18]:
+      - generic [ref=e19]:
+        - paragraph [ref=e20]: 最新总规模
+        - paragraph [ref=e21]: 35.63亿元
+        - paragraph [ref=e22]: ↑ 1.82% 较上季
+      - generic [ref=e23]:
+        - paragraph [ref=e24]: 今年以来收益率
+        - paragraph [ref=e25]: 1.70%
+        - paragraph [ref=e26]: 同类排名前 38% | 超额基准 -0.46%
+      - generic [ref=e27]:
+        - paragraph [ref=e28]: 风险等级
+        - paragraph [ref=e29]: R2中低风险
+        - paragraph [ref=e30]: 适配投资者：C2 及以上
+      - generic [ref=e31]:
+        - paragraph [ref=e32]: 产品健康度评分
+        - paragraph [ref=e33]: 85分
+        - paragraph [ref=e34]: 评级：良好 | 纯债条线中上
+    - generic [ref=e35]:
+      - generic [ref=e36]:
+        - generic [ref=e37] [cursor=pointer]: 基础概览
+        - generic [ref=e38] [cursor=pointer]: 投资特征
+        - generic [ref=e39] [cursor=pointer]: 运营规则
+        - generic [ref=e40] [cursor=pointer]: 渠道客群
+        - generic [ref=e41] [cursor=pointer]: 经营分析
+        - generic [ref=e42] [cursor=pointer]: 竞争画像
+        - generic [ref=e43] [cursor=pointer]: 基金经理
+      - generic [ref=e45]:
+        - generic [ref=e46]:
+          - generic [ref=e48]:
+            - heading "净值走势" [level=4] [ref=e49]
+            - generic [ref=e50]:
+              - button "近一年" [ref=e51] [cursor=pointer]
+              - button "近三年" [ref=e52] [cursor=pointer]
+              - button "近五年" [ref=e53] [cursor=pointer]
+              - button "成立以来" [ref=e54] [cursor=pointer]
+          - generic [ref=e57]:
+            - heading "规模变动" [level=4] [ref=e58]
+            - generic [ref=e59]:
+              - button "近一年" [ref=e60] [cursor=pointer]
+              - button "近三年" [ref=e61] [cursor=pointer]
+              - button "近五年" [ref=e62] [cursor=pointer]
+              - button "成立以来" [ref=e63] [cursor=pointer]
+        - generic [ref=e65]:
+          - heading "基础信息" [level=4] [ref=e66]
+          - generic [ref=e67]:
+            - generic [ref=e68]: 基金全称：建信纯债债券型证券投资基金
+            - generic [ref=e69]: 基金代码：530021（A类）
+            - generic [ref=e70]: 成立日期：2012-11-15
+            - generic [ref=e71]: 运作方式：开放式
+            - generic [ref=e72]: 基金管理人：建信基金管理有限责任公司
+            - generic [ref=e73]: 基金托管人：中国工商银行股份有限公司
+            - generic [ref=e74]: 现任基金经理：黎颖芳、彭紫云
+            - generic [ref=e75]: 任职日期：2019-07-17（彭紫云）
+            - generic [ref=e76]: 业绩比较基准：中债综合财富指数
+            - generic [ref=e77]: 计价币种：人民币
+            - generic [ref=e78]: 份额类别：A类 / C类（530021 / 531021）
+            - generic [ref=e79]: 产品状态：正常开放申赎

@@ -1,0 +1,2 @@
+[     379ms] [ERROR] Failed to load resource: net::ERR_SOCKET_NOT_CONNECTED @ https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap:0
+[   19085ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_RESET @ http://localhost:8766/Kimi%E4%BA%A7%E5%93%81%E8%B0%B1%E7%B3%BB.html:0
