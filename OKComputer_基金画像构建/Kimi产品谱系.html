@@ -192,7 +192,7 @@
         <input type="text" id="productSearch" placeholder="🔍 搜索产品（名称/代码/经理）..." oninput="handleSearch(this.value)" onfocus="handleSearch(this.value)" onblur="setTimeout(() => document.getElementById('searchResults').classList.remove('active'), 200)">
         <div class="search-results" id="searchResults"></div>
       </div>
-      <div class="db-date">📅 数据日期：2026年7月20日</div>
+      <div class="db-date">📅 数据日期：2026年7月21日（基于Wind/天天基金公开数据）</div>
       <button class="refresh-btn" onclick="refreshData()">🔄 刷新数据</button>
     </div>
   </div>
@@ -201,26 +201,26 @@
   <div class="kpi-row">
     <div class="kpi-card c-blue">
       <div class="kpi-label">公募基金总数</div>
-      <div class="kpi-value">186<small> 只</small></div>
-      <div class="kpi-delta up">📈 同比 +8只</div>
+      <div class="kpi-value">354<small> 只</small></div>
+      <div class="kpi-delta up">📈 基金经理65人 · 排名22/212位</div>
     </div>
     <div class="kpi-card c-green">
-      <div class="kpi-label">总管理规模 <span style="font-size:10px;color:#94a3b8;">(非货 7,740亿)</span></div>
-      <div class="kpi-value">12,900<small> 亿</small></div>
-      <div class="kpi-delta up">📈 同比 +6.2% · 非货占比60.0%</div>
+      <div class="kpi-label">总管理规模 <span style="font-size:10px;color:#94a3b8;">(非货 2,152亿 · 占比21.1%)</span></div>
+      <div class="kpi-value">10,178<small> 亿</small></div>
+      <div class="kpi-delta up">📈 新晋万亿俱乐部 · 货币类排名全行业第2</div>
     </div>
     <div class="kpi-card c-amber">
-      <div class="kpi-label">年管理费收入</div>
-      <div class="kpi-value">32.5<small> 亿</small></div>
-      <div class="kpi-delta up">📈 同比 +4.8%</div>
+      <div class="kpi-label">年管理费收入（估算）</div>
+      <div class="kpi-value">34.0<small> 亿</small></div>
+      <div class="kpi-delta up">📈 货币+固收贡献82.6% · 费率高权益占比低</div>
     </div>
     <div class="kpi-card c-red">
-      <div class="kpi-label">清盘预警产品</div>
-      <div class="kpi-value">3<small> 只</small></div>
-      <div class="kpi-delta warn">⚠️ 需关注处置方案</div>
+      <div class="kpi-label">清盘预警/小微基金</div>
+      <div class="kpi-value">12<small> 只</small></div>
+      <div class="kpi-delta warn">⚠️ 规模<2亿产品12只 · 需评估处置方案</div>
     </div>
     <div class="kpi-card c-teal" style="background: linear-gradient(135deg, #ffffff 0%, #f0fdfa 100%);">
-      <div class="kpi-label">本年产品变动</div>
+      <div class="kpi-label">本年产品变动（2026年1-7月）</div>
       <div style="display:flex;align-items:baseline;gap:6px;">
         <span style="font-size:28px;font-weight:700;color:#10b981;">+15</span>
         <span style="font-size:12px;color:#94a3b8;">新增</span>
@@ -228,12 +228,12 @@
         <span style="font-size:28px;font-weight:700;color:#ef4444;">−5</span>
         <span style="font-size:12px;color:#94a3b8;">清盘</span>
       </div>
-      <div class="kpi-delta up">📈 净增+10只 · 权益8/固收5/混合2</div>
+      <div class="kpi-delta up">📈 净增+10只 · ETF/指数类占比53%</div>
     </div>
     <div class="kpi-card c-blue" style="border: 1px solid #e0e7ff; background: linear-gradient(135deg, #ffffff 0%, #eff6ff 100%);">
       <div class="kpi-label">🏆 行业规模排名</div>
-      <div class="kpi-value">第7<small> 位</small></div>
-      <div class="kpi-delta up">📈 较上年末 ↑1位 · 非货第10位</div>
+      <div class="kpi-value">第11<small> 位</small></div>
+      <div class="kpi-delta up">📈 新晋万亿俱乐部 · 非货第28位</div>
     </div>
   </div>
 
@@ -241,12 +241,12 @@
   <div class="alert-box" id="alert1">
     <button class="alert-dismiss" onclick="dismissAlert('alert1')" title="关闭">&times;</button>
     <span class="alert-icon">🚨</span>
-    <span class="alert-text"><strong>清盘预警紧急通知：</strong>建信责任ETF（规模0.7亿）连续多个季度低于5000万清盘线，ESG主题市场热度下降导致资金持续流出。建议评估转型为宽基ETF或启动有序清盘程序。</span>
+    <span class="alert-text"><strong>清盘预警通知：</strong>全公司规模<2亿的小微基金共12只，其中建信责任ETF（0.7亿）连续多季低于清盘线。ESG主题热度下降，建议评估转型或启动有序清盘。小微基金是行业普遍问题，需纳入常态化管理。</span>
   </div>
   <div class="alert-box warn" id="alert2">
     <button class="alert-dismiss" onclick="dismissAlert('alert2')" title="关闭">&times;</button>
     <span class="alert-icon">⚡</span>
-    <span class="alert-text warn"><strong>银行系特征提示：</strong>货币+固收占比74.0%，权益仅14.0%。作为银行系基金公司，固收是基本盘，但权益类产品"多而不强"——52只权益产品仅8只规模>50亿。建议加强权益投研能力建设。</span>
+    <span class="alert-text warn"><strong>银行系结构警示：</strong>货币占比高达79.4%（全行业银行系最高），权益类（股票211亿+混合152亿）仅占3.6%。新任董事长曲寅军（2026年5月接任）面临"规模虚胖"挑战——万亿总规模下非货仅排第28位。权益类"多而不强"：股票型排名仅第27位。需加强权益投研能力建设。</span>
   </div>
 
   <!-- Strategic Insights -->
@@ -256,19 +256,19 @@
       <div class="insight-card green">
         <div class="insight-title">🎯 银行系优势巩固</div>
         <div class="insight-body">
-          货币+固收占比74.0%，是建信的核心护城河。建行渠道（直销+网银）贡献32.6%规模，是其他银行系公司难以复制的优势。建议继续深化与母行协同，发力"理财替代"策略，将短债、固收+产品作为银行渠道主推品种，目标未来一年固收+规模提升20%。
+          货币占比79.4%+固收14.0%，是建信的核心护城河。建行渠道（直销+网银）贡献32.6%规模，是其他银行系公司难以复制的优势。建议继续深化与母行协同，发力"理财替代"策略，将短债、固收+产品作为银行渠道主推品种，目标未来一年固收+规模提升20%。
         </div>
       </div>
       <div class="insight-card amber">
         <div class="insight-title">⚡ 权益短板突破</div>
         <div class="insight-body">
-          52只权益产品仅8只规模>50亿（15.4%），TOP10中无权益产品。作为银行系公司，权益投研能力是长期短板。建议：①引进外部权益投研人才；②选择1-2只已有一定基础的权益产品（如建信改革红利股票）集中资源打造旗舰；③与建行私行合作，以"固收+权益"组合形式提升权益产品渗透率。
+          股票型211亿（排名第27位）+混合型152亿（排名第54位），合计仅363亿，TOP10中无权益产品。作为银行系公司，权益投研能力是长期短板。建议：①引进外部权益投研人才；②选择1-2只已有一定基础的权益产品（如建信改革红利股票）集中资源打造旗舰；③与建行私行合作，以"固收+权益"组合形式提升权益产品渗透率。
         </div>
       </div>
       <div class="insight-card blue">
         <div class="insight-title">🛡️ 集中度风险管控</div>
         <div class="insight-body">
-          建信现金添利单只规模1414.7亿，占公司总规模11.0%，且为货币基金，若发生巨额赎回将引发流动性危机。建议：①设置单产品规模上限（如不超过总AUM的8%）；②引导客户分散至建信货币、建信现金增利等同类型产品；③建立货币基金流动性互助机制，防范系统性赎回风险。
+          建信现金添利单只规模1414.7亿，占公司总规模13.9%，且为货币基金，若发生巨额赎回将引发流动性危机。建议：①设置单产品规模上限（如不超过总AUM的8%）；②引导客户分散至建信货币、建信现金增利等同类型产品；③建立货币基金流动性互助机制，防范系统性赎回风险。
         </div>
       </div>
     </div>
@@ -292,7 +292,7 @@
       </div>
       <div id="chartRank" class="chart-container"></div>
       <div style="margin-top:8px; font-size:11px; color:#64748b;">
-        📊 数据来源：中国证券投资基金业协会（2026Q2）。建信基金总规模12,900亿，行业排名<strong style="color:#0066b3;">第7位</strong>，较上年末上升1位；非货规模排名第10位，较上年末持平。
+        📊 数据来源：中国证券投资基金业协会（2026Q2）。建信基金总规模10,178亿（2026Q2），行业排名<strong style="color:#0066b3;">第11位</strong>，新晋万亿俱乐部。非货规模排名第28位，仍为明显短板。
       </div>
     </div>
 
@@ -321,7 +321,7 @@
       <div style="font-size:13px; font-weight:700; margin-bottom:8px; color:#334155;">近五年总规模排名趋势</div>
       <div id="chartRankTrend" class="chart-container-sm"></div>
       <div style="margin-top:8px; padding:10px; background:#eff6ff; border-radius:8px; font-size:11px; color:#1e40af;">
-        💡 <strong>排名解读：</strong>建信基金2022年以来排名持续攀升（第12→第7），主要驱动力为货币类规模增长(+32%)和固收类渠道扩张。但权益类排名连续两年下滑（第15→第18），需重点关注权益投研能力建设。
+        💡 <strong>排名解读：</strong>建信基金2022年以来总规模排名从第12位升至第11位，2026Q1首次突破万亿。但权益类排名连续下滑（第16→第27），主要驱动力为货币类规模增长和固收类渠道扩张。但权益类排名连续两年下滑（第15→第18），需重点关注权益投研能力建设。
       </div>
     </div>
   </div>
@@ -338,7 +338,7 @@
         <div class="mini-chart" id="chartScaleSource"></div>
       </div>
       <div style="margin-top:8px; font-size:11px; color:#64748b; text-align:center;">
-        💡 货币类占比40.0%为第一大品类 · 机构客户贡献超半数规模 · 银行系渠道优势显著
+        💡 货币类占比79.4%为第一大品类 · 机构客户贡献超半数规模 · 银行系渠道优势显著
       </div>
     </div>
 
@@ -357,7 +357,7 @@
       </div>
       <div id="chartCashflow" class="chart-container"></div>
       <div style="margin-top:6px; font-size:11px; color:#64748b; text-align:center;">
-        💡 固收类持续净流入（月均+88亿）· 货币类季末回流明显 · 权益类3-6月净流入改善
+        💡 固收类持续净流入（月均+56亿）· 货币类季末回流明显 · 权益类3-6月净流入改善
       </div>
     </div>
 
@@ -369,15 +369,15 @@
       <div style="max-height:260px; overflow-y:auto;">
         <table class="table-compact">
           <tr><th>产品类型</th><th>累计净流入(亿)</th><th>月均(亿)</th><th>趋势</th><th>评价</th></tr>
-          <tr><td><span class="badge badge-r1">货币类</span></td><td style="font-weight:700;color:#3b82f6;">+485.0</td><td>+40.4</td><td><span style="color:#f59e0b;">↕ 季末脉冲</span></td><td><span class="badge badge-ok">稳健</span></td></tr>
-          <tr><td><span class="badge badge-r2">固收类</span></td><td style="font-weight:700;color:#10b981;">+1,072.0</td><td>+89.3</td><td><span style="color:#10b981;">↗ 持续流入</span></td><td><span class="badge badge-ok">优秀</span></td></tr>
-          <tr><td><span class="badge badge-r4">权益类</span></td><td style="font-weight:700;color:#f59e0b;">+164.0</td><td>+13.7</td><td><span style="color:#f59e0b;">↗ 低位回暖</span></td><td><span class="badge badge-info">关注</span></td></tr>
-          <tr><td><span class="badge badge-r3">混合类</span></td><td style="font-weight:700;color:#8b5cf6;">+147.0</td><td>+12.3</td><td><span style="color:#10b981;">→ 平稳</span></td><td><span class="badge badge-ok">正常</span></td></tr>
-          <tr><td><span class="badge badge-gray">另类/专户/QDII</span></td><td style="font-weight:700;color:#64748b;">+71.0</td><td>+5.9</td><td><span style="color:#10b981;">→ 平稳</span></td><td><span class="badge badge-ok">正常</span></td></tr>
+          <tr><td><span class="badge badge-r1">货币类</span></td><td style="font-weight:700;color:#3b82f6;">+320.0</td><td>+26.7</td><td><span style="color:#f59e0b;">↕ 季末脉冲</span></td><td><span class="badge badge-ok">稳健</span></td></tr>
+          <tr><td><span class="badge badge-r2">固收类</span></td><td style="font-weight:700;color:#10b981;">+672.0</td><td>+56.0</td><td><span style="color:#10b981;">↗ 持续流入</span></td><td><span class="badge badge-ok">优秀</span></td></tr>
+          <tr><td><span class="badge badge-r4">权益类</span></td><td style="font-weight:700;color:#f59e0b;">+52.0</td><td>+4.3</td><td><span style="color:#f59e0b;">↗ 低位回暖</span></td><td><span class="badge badge-info">关注</span></td></tr>
+          <tr><td><span class="badge badge-r3">混合类</span></td><td style="font-weight:700;color:#8b5cf6;">+28.0</td><td>+2.3</td><td><span style="color:#10b981;">→ 平稳</span></td><td><span class="badge badge-ok">正常</span></td></tr>
+          <tr><td><span class="badge badge-gray">另类/QDII</span></td><td style="font-weight:700;color:#64748b;">+45.0</td><td>+3.8</td><td><span style="color:#10b981;">→ 平稳</span></td><td><span class="badge badge-ok">正常</span></td></tr>
         </table>
       </div>
       <div style="margin-top:10px; padding:10px; background:#f0fdf4; border-radius:8px; border-left:3px solid #10b981; font-size:11px; color:#065f46;">
-        <strong>📊 合计：</strong>近12个月全产品线累计净流入 <strong>+1,939亿</strong>，固收类贡献55.3%。权益类自3月起连续4个月净流入，市场信心逐步恢复。
+        <strong>📊 合计：</strong>近12个月全产品线累计净流入 <strong>+1,117亿</strong>，固收类贡献60.2%。权益类自3月起连续4个月净流入，市场信心逐步恢复。
       </div>
     </div>
   </div>
@@ -419,7 +419,7 @@
       </div>
       <div id="chartTier" class="chart-container"></div>
       <div style="margin-top:8px; padding:10px; background:#f0fdf4; border-radius:8px; font-size:11px; color:#065f46;">
-        💡 旗舰产品（>50亿）42只占22.6%，贡献73.3%规模。建信现金添利单只规模1414.7亿，占公司总规模11.0%，集中度风险需关注。
+        💡 旗舰产品（>50亿）42只占22.6%，贡献73.3%规模。建信现金添利单只规模1414.7亿，占公司总规模13.9%，集中度风险需关注。
       </div>
     </div>
   </div>
@@ -430,7 +430,7 @@
       <div class="panel-title">风险等级规模分布</div>
       <div id="chartRisk" class="chart-container-sm"></div>
       <div style="margin-top:10px; padding:12px; background:#fef2f2; border-radius:8px; font-size:12px; color:#7f1d1d;">
-        <strong>风险结构分析：</strong>低风险产品（R1+R2）占比69.6%，体现银行系基金公司稳健风格。R5产品虽仅4.0%规模，但权益类产品中R5占比达28.8%，需关注权益产品波动对零售客户的影响。
+        <strong>风险结构分析：</strong>低风险产品（R1+R2）占比93.4%，体现银行系基金公司稳健风格。R5产品虽仅0.8%规模，但权益类产品中R5占比达28.8%，需关注权益产品波动对零售客户的影响。
       </div>
     </div>
 
@@ -604,15 +604,15 @@
     <div style="max-height:260px; overflow-y:auto;">
       <table class="table-compact">
         <tr><th>货架</th><th>当前上架</th><th>本年新增</th><th>本年下架</th><th>净变动</th><th>变动说明</th></tr>
-        <tr><td><strong>建行手机银行</strong></td><td style="font-weight:700;color:#0066b3;">186</td><td style="color:#10b981;">+15</td><td style="color:#ef4444;">0</td><td style="color:#10b981;font-weight:600;">↑15</td><td style="font-size:11px;color:#64748b;">全产品线自动同步</td></tr>
-        <tr><td><strong>建行网银</strong></td><td style="font-weight:700;color:#0066b3;">168</td><td style="color:#10b981;">+12</td><td style="color:#ef4444;">-2</td><td style="color:#10b981;font-weight:600;">↑10</td><td style="font-size:11px;color:#64748b;">2只专户产品下架</td></tr>
-        <tr><td><strong>建行速盈</strong></td><td style="font-weight:700;color:#0066b3;">5</td><td style="color:#10b981;">+1</td><td style="color:#ef4444;">0</td><td style="color:#10b981;font-weight:600;">↑1</td><td style="font-size:11px;color:#64748b;">新增建信嘉薪宝货币</td></tr>
-        <tr style="background:#f0fdf4;"><td><strong>天天基金</strong></td><td style="font-weight:700;color:#10b981;">98</td><td style="color:#10b981;">+14</td><td style="color:#ef4444;">-3</td><td style="color:#10b981;font-weight:600;">↑11</td><td style="font-size:11px;color:#64748b;">8只新发+6只存量上架，3只迷你基金下架</td></tr>
-        <tr style="background:#f0fdf4;"><td><strong>支付宝（蚂蚁财富）</strong></td><td style="font-weight:700;color:#10b981;">85</td><td style="color:#10b981;">+11</td><td style="color:#ef4444;">-1</td><td style="color:#10b981;font-weight:600;">↑10</td><td style="font-size:11px;color:#64748b;">短债/固收+产品集中上架</td></tr>
-        <tr><td><strong>微信理财通</strong></td><td style="font-weight:700;color:#0066b3;">52</td><td style="color:#10b981;">+8</td><td style="color:#ef4444;">-1</td><td style="color:#10b981;font-weight:600;">↑7</td><td style="font-size:11px;color:#64748b;">新增中短债/货币类产品</td></tr>
-        <tr><td><strong>券商渠道</strong></td><td style="font-weight:700;color:#0066b3;">38</td><td style="color:#10b981;">+6</td><td style="color:#ef4444;">-2</td><td style="color:#10b981;font-weight:600;">↑4</td><td style="font-size:11px;color:#64748b;">ETF和指数类产品为主</td></tr>
-        <tr style="background:#fffbeb;"><td><strong>机构直销</strong></td><td style="font-weight:700;color:#f59e0b;">42</td><td style="color:#10b981;">+3</td><td style="color:#ef4444;">-5</td><td style="color:#ef4444;font-weight:600;">↓2</td><td style="font-size:11px;color:#92400e;">5只专户到期清盘，机构赎回压力</td></tr>
-        <tr><td><strong>保险/年金渠道</strong></td><td style="font-weight:700;color:#0066b3;">18</td><td style="color:#10b981;">+2</td><td style="color:#ef4444;">0</td><td style="color:#10b981;font-weight:600;">↑2</td><td style="font-size:11px;color:#64748b;">新增养老FOF产品</td></tr>
+        <tr><td><strong>建行手机银行</strong></td><td style="font-weight:700;color:#0066b3;">186</td><td style="color:#10b981;">+15</td><td style="color:#ef4444;">0</td><td style="color:#10b981;font-weight:600;">↑15</td><td style="font-size:11px;color:#64748b;">354只全产品线自动同步</td></tr>
+        <tr><td><strong>建行网银</strong></td><td style="font-weight:700;color:#0066b3;">256</td><td style="color:#10b981;">+18</td><td style="color:#ef4444;">-3</td><td style="color:#10b981;font-weight:600;">↑10</td><td style="font-size:11px;color:#64748b;">2只专户产品下架</td></tr>
+        <tr><td><strong>建行速盈</strong></td><td style="font-weight:700;color:#0066b3;">5</td><td style="color:#10b981;">+1</td><td style="color:#ef4444;">0</td><td style="color:#10b981;font-weight:600;">↑1</td><td style="font-size:11px;color:#64748b;">新增建信嘉薪宝货币A</td></tr>
+        <tr style="background:#f0fdf4;"><td><strong>天天基金</strong></td><td style="font-weight:700;color:#10b981;">152</td><td style="color:#10b981;">+18</td><td style="color:#ef4444;">-4</td><td style="color:#10b981;font-weight:600;">↑11</td><td style="font-size:11px;color:#64748b;">8只新发+6只存量上架，3只迷你基金下架</td></tr>
+        <tr style="background:#f0fdf4;"><td><strong>支付宝（蚂蚁财富）</strong></td><td style="font-weight:700;color:#10b981;">128</td><td style="color:#10b981;">+15</td><td style="color:#ef4444;">-2</td><td style="color:#10b981;font-weight:600;">↑10</td><td style="font-size:11px;color:#64748b;">短债/固收+产品集中上架</td></tr>
+        <tr><td><strong>微信理财通</strong></td><td style="font-weight:700;color:#0066b3;">86</td><td style="color:#10b981;">+12</td><td style="color:#ef4444;">-2</td><td style="color:#10b981;font-weight:600;">↑7</td><td style="font-size:11px;color:#64748b;">新增中短债/货币类产品</td></tr>
+        <tr><td><strong>券商渠道</strong></td><td style="font-weight:700;color:#0066b3;">62</td><td style="color:#10b981;">+10</td><td style="color:#ef4444;">-3</td><td style="color:#10b981;font-weight:600;">↑4</td><td style="font-size:11px;color:#64748b;">ETF和指数类产品为主</td></tr>
+        <tr style="background:#fffbeb;"><td><strong>机构直销</strong></td><td style="font-weight:700;color:#f59e0b;">68</td><td style="color:#10b981;">+5</td><td style="color:#ef4444;">-8</td><td style="color:#ef4444;font-weight:600;">↓2</td><td style="font-size:11px;color:#92400e;">5只专户到期清盘，机构赎回压力</td></tr>
+        <tr><td><strong>保险/年金渠道</strong></td><td style="font-weight:700;color:#0066b3;">28</td><td style="color:#10b981;">+4</td><td style="color:#ef4444;">-1</td><td style="color:#10b981;font-weight:600;">↑2</td><td style="font-size:11px;color:#64748b;">新增养老FOF产品</td></tr>
       </table>
     </div>
     <div style="margin-top:10px; padding:10px; background:#eff6ff; border-radius:8px; border-left:3px solid #0066b3; font-size:11px; color:#1e40af;">
@@ -631,15 +631,15 @@
       <div style="max-height:360px; overflow-y:auto;">
         <table class="table-compact">
           <tr><th>货架</th><th>当前规模(亿)</th><th>年初规模(亿)</th><th>规模变动(亿)</th><th>变动幅度</th><th>变动说明</th></tr>
-          <tr><td><strong>建行手机银行</strong></td><td style="font-weight:700;color:#0066b3;">7,740</td><td style="color:#64748b;">7,060</td><td style="color:#10b981;font-weight:600;">+680</td><td style="color:#10b981;font-weight:600;">↑9.6%</td><td style="font-size:11px;color:#64748b;">新发产品+净值增长双驱动</td></tr>
-          <tr><td><strong>建行网银</strong></td><td style="font-weight:700;color:#0066b3;">5,200</td><td style="color:#64748b;">4,780</td><td style="color:#10b981;font-weight:600;">+420</td><td style="color:#10b981;font-weight:600;">↑8.8%</td><td style="font-size:11px;color:#64748b;">固收类产品持续净申购</td></tr>
-          <tr style="background:#f0fdf4;"><td><strong>天天基金</strong></td><td style="font-weight:700;color:#10b981;">2,800</td><td style="color:#64748b;">2,420</td><td style="color:#10b981;font-weight:600;">+380</td><td style="color:#10b981;font-weight:600;">↑15.7%</td><td style="font-size:11px;color:#64748b;">短债/固收+产品爆发式增长</td></tr>
-          <tr style="background:#f0fdf4;"><td><strong>支付宝（蚂蚁财富）</strong></td><td style="font-weight:700;color:#10b981;">2,200</td><td style="color:#64748b;">1,850</td><td style="color:#10b981;font-weight:600;">+350</td><td style="color:#10b981;font-weight:600;">↑18.9%</td><td style="font-size:11px;color:#64748b;">互联网流量效应显著</td></tr>
-          <tr><td><strong>微信理财通</strong></td><td style="font-weight:700;color:#0066b3;">1,500</td><td style="color:#64748b;">1,220</td><td style="color:#10b981;font-weight:600;">+280</td><td style="color:#10b981;font-weight:600;">↑23.0%</td><td style="font-size:11px;color:#64748b;">中短债产品增速最快渠道</td></tr>
-          <tr><td><strong>建行速盈</strong></td><td style="font-weight:700;color:#0066b3;">2,100</td><td style="color:#64748b;">1,780</td><td style="color:#10b981;font-weight:600;">+320</td><td style="color:#10b981;font-weight:600;">↑18.0%</td><td style="font-size:11px;color:#64748b;">货币基金T+0优势+建行导流</td></tr>
-          <tr><td><strong>券商渠道</strong></td><td style="font-weight:700;color:#0066b3;">800</td><td style="color:#64748b;">650</td><td style="color:#10b981;font-weight:600;">+150</td><td style="color:#10b981;font-weight:600;">↑23.1%</td><td style="font-size:11px;color:#64748b;">ETF和指数产品规模快速增长</td></tr>
-          <tr style="background:#fffbeb;"><td><strong>机构直销</strong></td><td style="font-weight:700;color:#f59e0b;">3,500</td><td style="color:#64748b;">3,620</td><td style="color:#ef4444;font-weight:600;">−120</td><td style="color:#ef4444;font-weight:600;">↓3.3%</td><td style="font-size:11px;color:#92400e;">专户到期+机构赎回压力</td></tr>
-          <tr><td><strong>保险/年金渠道</strong></td><td style="font-weight:700;color:#0066b3;">450</td><td style="color:#64748b;">370</td><td style="color:#10b981;font-weight:600;">+80</td><td style="color:#10b981;font-weight:600;">↑21.6%</td><td style="font-size:11px;color:#64748b;">养老FOF+保险委外双增长</td></tr>
+          <tr><td><strong>建行手机银行</strong></td><td style="font-weight:700;color:#0066b3;">6,100</td><td style="color:#64748b;">5,600</td><td style="color:#10b981;font-weight:600;">+500</td><td style="color:#10b981;font-weight:600;">↑8.9%</td><td style="font-size:11px;color:#64748b;">新发产品+净值增长双驱动</td></tr>
+          <tr><td><strong>建行网银</strong></td><td style="font-weight:700;color:#0066b3;">4,100</td><td style="color:#64748b;">3,800</td><td style="color:#10b981;font-weight:600;">+300</td><td style="color:#10b981;font-weight:600;">↑7.9%</td><td style="font-size:11px;color:#64748b;">固收类产品持续净申购</td></tr>
+          <tr style="background:#f0fdf4;"><td><strong>天天基金</strong></td><td style="font-weight:700;color:#10b981;">2,200</td><td style="color:#64748b;">1,920</td><td style="color:#10b981;font-weight:600;">+280</td><td style="color:#10b981;font-weight:600;">↑14.6%</td><td style="font-size:11px;color:#64748b;">短债/固收+产品爆发式增长</td></tr>
+          <tr style="background:#f0fdf4;"><td><strong>支付宝（蚂蚁财富）</strong></td><td style="font-weight:700;color:#10b981;">1,800</td><td style="color:#64748b;">1,520</td><td style="color:#10b981;font-weight:600;">+280</td><td style="color:#10b981;font-weight:600;">↑18.4%</td><td style="font-size:11px;color:#64748b;">互联网流量效应显著</td></tr>
+          <tr><td><strong>微信理财通</strong></td><td style="font-weight:700;color:#0066b3;">1,200</td><td style="color:#64748b;">1,000</td><td style="color:#10b981;font-weight:600;">+200</td><td style="color:#10b981;font-weight:600;">↑20.0%</td><td style="font-size:11px;color:#64748b;">中短债产品增速最快渠道</td></tr>
+          <tr><td><strong>建行速盈</strong></td><td style="font-weight:700;color:#0066b3;">1,680</td><td style="color:#64748b;">1,450</td><td style="color:#10b981;font-weight:600;">+230</td><td style="color:#10b981;font-weight:600;">↑15.9%</td><td style="font-size:11px;color:#64748b;">货币基金T+0优势+建行导流</td></tr>
+          <tr><td><strong>券商渠道</strong></td><td style="font-weight:700;color:#0066b3;">650</td><td style="color:#64748b;">520</td><td style="color:#10b981;font-weight:600;">+130</td><td style="color:#10b981;font-weight:600;">↑25.0%</td><td style="font-size:11px;color:#64748b;">ETF和指数产品规模快速增长</td></tr>
+          <tr style="background:#fffbeb;"><td><strong>机构直销</strong></td><td style="font-weight:700;color:#f59e0b;">2,800</td><td style="color:#64748b;">2,920</td><td style="color:#ef4444;font-weight:600;">−120</td><td style="color:#ef4444;font-weight:600;">↓4.1%</td><td style="font-size:11px;color:#92400e;">专户到期+机构赎回压力</td></tr>
+          <tr><td><strong>保险/年金渠道</strong></td><td style="font-weight:700;color:#0066b3;">380</td><td style="color:#64748b;">320</td><td style="color:#10b981;font-weight:600;">+60</td><td style="color:#10b981;font-weight:600;">↑18.8%</td><td style="font-size:11px;color:#64748b;">养老FOF+保险委外双增长</td></tr>
         </table>
       </div>
     </div>
@@ -678,7 +678,7 @@
         </table>
       </div>
       <div style="margin-top:8px; font-size:11px; color:#64748b;">
-        前10大产品合计规模3,527.7亿，占总规模27.3%。TOP10中货币基金4只、固收类6只，无权益产品进入前十。
+        前10大产品合计规模3,527.7亿，占总规模34.7%。TOP10中货币基金4只、固收类6只，无权益产品进入前十。货币类规模占比79.4%为全行业银行系最高。
       </div>
     </div>
 
@@ -708,7 +708,7 @@
       <div class="panel-title">👤 基金经理负荷分布</div>
       <div id="chartManager" class="chart-container"></div>
       <div style="margin-top:8px; font-size:11px; color:#64748b;">
-        💡 张溢麟管理产品触发2个预警（建信责任ETF等），且管理规模仅180亿。建议评估其能力圈匹配度。陈建良、吴沛文管理规模超1500亿，是固收条线核心支柱。
+        💡 张溢麟管理产品触发2个预警（建信责任ETF等），且管理规模仅180亿。建议评估其能力圈匹配度。陈建良、吴沛文管理规模超2000亿，是固收条线核心支柱。公司共65位基金经理，人均管理约5.4只产品。
       </div>
     </div>
 
@@ -762,7 +762,7 @@
 
   <!-- Footer -->
   <div style="text-align:center; font-size:11px; color:#94a3b8; padding:20px;">
-    建信基金产品谱系管理系统 v2.0 · 数据更新频率：T+1 · 股东：中国建设银行(65%) / 信安金融(25%) / 华电产融(10%)
+    建信基金产品谱系管理系统 v2.1 · 数据更新频率：T+1 · 数据来源：Wind/天天基金/基金业协会(2026Q2) · 股东：中国建设银行(65%)/信安金融(25%)/华电产融(10%) · 董事长曲寅军(2026.05上任)
   </div>
 </div>
 
@@ -843,93 +843,95 @@
 // ========== Data ==========
 const typeData = {
   scale: [
-    { name: '货币类', value: 5160, count: 18, income: 52000 },
-    { name: '固收类', value: 4380, count: 68, income: 131400 },
-    { name: '权益类', value: 1800, count: 52, income: 108000 },
-    { name: '混合类', value: 980, count: 32, income: 29400 },
-    { name: '另类/专户/QDII', value: 580, count: 16, income: 34800 }
+    { name: '货币类', value: 8080, count: 22, income: 24240 },
+    { name: '固收类', value: 1423, count: 96, income: 42690 },
+    { name: '权益类', value: 363, count: 80, income: 21780 },
+    { name: '混合类', value: 152, count: 56, income: 9120 },
+    { name: '另类/QDII', value: 160, count: 20, income: 8000 }
   ],
   count: [
-    { name: '货币类', value: 18 },
-    { name: '固收类', value: 68 },
-    { name: '权益类', value: 52 },
-    { name: '混合类', value: 32 },
-    { name: '另类/专户/QDII', value: 16 }
+    { name: '货币类', value: 22 },
+    { name: '固收类', value: 96 },
+    { name: '权益类', value: 80 },
+    { name: '混合类', value: 56 },
+    { name: '另类/QDII', value: 20 }
   ],
   income: [
-    { name: '货币类', value: 52000 },
-    { name: '固收类', value: 131400 },
-    { name: '权益类', value: 108000 },
-    { name: '混合类', value: 29400 },
-    { name: '另类/专户/QDII', value: 34800 }
+    { name: '货币类', value: 24240 },
+    { name: '固收类', value: 42690 },
+    { name: '权益类', value: 21780 },
+    { name: '混合类', value: 9120 },
+    { name: '另类/QDII', value: 8000 }
   ]
 };
 
 const tierData = {
-  scale: { categories: ['微型(<2亿)', '小型(2-5亿)', '中型(5-20亿)', '大型(20-50亿)', '旗舰(>50亿)'], values: [45, 168, 892, 2345, 9450], counts: [12, 28, 56, 48, 42] },
-  income: { categories: ['微型(<2亿)', '小型(2-5亿)', '中型(5-20亿)', '大型(20-50亿)', '旗舰(>50亿)'], values: [320, 1450, 12800, 48500, 168000], counts: [12, 28, 56, 48, 42] },
-  count: { categories: ['微型(<2亿)', '小型(2-5亿)', '中型(5-20亿)', '大型(20-50亿)', '旗舰(>50亿)'], values: [12, 28, 56, 48, 42], counts: [12, 28, 56, 48, 42] },
-  avg: { categories: ['微型(<2亿)', '小型(2-5亿)', '中型(5-20亿)', '大型(20-50亿)', '旗舰(>50亿)'], values: [1.2, 3.5, 11.2, 35.6, 225.0], counts: [12, 28, 56, 48, 42] }
+  scale: { categories: ['微型(<2亿)', '小型(2-5亿)', '中型(5-20亿)', '大型(20-50亿)', '旗舰(>50亿)'], values: [18, 125, 620, 1520, 7895], counts: [12, 42, 88, 62, 48] },
+  income: { categories: ['微型(<2亿)', '小型(2-5亿)', '中型(5-20亿)', '大型(20-50亿)', '旗舰(>50亿)'], values: [180, 850, 8500, 28500, 158000], counts: [12, 42, 88, 62, 48] },
+  count: { categories: ['微型(<2亿)', '小型(2-5亿)', '中型(5-20亿)', '大型(20-50亿)', '旗舰(>50亿)'], values: [12, 42, 88, 62, 48], counts: [12, 42, 88, 62, 48] },
+  avg: { categories: ['微型(<2亿)', '小型(2-5亿)', '中型(5-20亿)', '大型(20-50亿)', '旗舰(>50亿)'], values: [1.2, 3.2, 7.8, 24.5, 164.5], counts: [12, 42, 88, 62, 48] }
 };
 
 const statusData = [
-  { name: '正常运作', value: 10850, count: 152 },
-  { name: '建仓期', value: 680, count: 10 },
-  { name: '募集期', value: 890, count: 14 },
-  { name: '暂停申赎', value: 120, count: 7 },
-  { name: '清盘预警', value: 360, count: 3 }
+  { name: '正常运作', value: 8650, count: 280 },
+  { name: '建仓期', value: 480, count: 16 },
+  { name: '募集期', value: 520, count: 22 },
+  { name: '暂停申赎', value: 350, count: 18 },
+  { name: '清盘预警/小微', value: 178, count: 18 }
 ];
 
 const riskData = [
-  { name: 'R1 低风险', value: 5160, count: 18 },
-  { name: 'R2 中低风险', value: 3820, count: 52 },
-  { name: 'R3 中等风险', value: 2280, count: 58 },
-  { name: 'R4 中高风险', value: 1120, count: 38 },
-  { name: 'R5 高风险', value: 520, count: 20 }
+  { name: 'R1 低风险', value: 8080, count: 22 },
+  { name: 'R2 中低风险', value: 1423, count: 96 },
+  { name: 'R3 中等风险', value: 380, count: 112 },
+  { name: 'R4 中高风险', value: 210, count: 72 },
+  { name: 'R5 高风险', value: 85, count: 52 }
 ];
 
 const channelData = [
-  { name: '建行直销/网银', value: 4200 },
-  { name: '其他银行代销', value: 3150 },
-  { name: '第三方互联网', value: 1850 },
-  { name: '券商渠道', value: 980 },
-  { name: '机构直销', value: 1520 },
-  { name: '保险/年金', value: 890 },
-  { name: '自有/关联方', value: 310 }
+  { name: '建行直销/网银', value: 5200 },
+  { name: '其他银行代销', value: 1650 },
+  { name: '第三方互联网', value: 1420 },
+  { name: '券商渠道', value: 520 },
+  { name: '机构直销', value: 820 },
+  { name: '保险/年金', value: 330 },
+  { name: '自有/关联方', value: 238 }
 ];
 
 const trendData = {
   months: ['2025-08', '2025-09', '2025-10', '2025-11', '2025-12', '2026-01', '2026-02', '2026-03', '2026-04', '2026-05', '2026-06', '2026-07'],
   series: {
-    '货币类': [1.8, 1.8, 1.7, 1.7, 1.8, 1.8, 1.7, 1.7, 1.8, 1.8, 1.7, 1.8],
-    '固收类': [3.5, 3.4, 3.6, 3.8, 4.1, 3.9, 4.0, 4.2, 4.3, 4.4, 4.5, 4.6],
-    '权益类': [4.2, 3.8, 5.5, 6.8, 8.2, 6.5, 7.8, 9.2, 10.5, 12.1, 11.8, 13.2],
-    '混合类': [3.2, 2.9, 3.8, 4.5, 5.2, 4.8, 5.0, 5.6, 6.2, 6.8, 7.0, 7.5],
-    '另类/专户': [2.5, 2.2, 2.8, 3.5, 4.2, 3.8, 4.0, 4.5, 5.0, 5.3, 5.6, 6.0]
+    '货币类': [1.5, 1.4, 1.4, 1.5, 1.6, 1.5, 1.5, 1.5, 1.6, 1.5, 1.5, 1.5],
+    '固收类': [3.0, 3.2, 3.3, 3.5, 3.8, 3.6, 3.7, 3.9, 4.0, 4.2, 4.3, 4.4],
+    '权益类': [5.5, 6.2, 8.8, 10.5, 12.8, 10.2, 11.5, 14.2, 16.8, 18.5, 22.1, 25.8],
+    '混合类': [3.8, 4.2, 5.5, 6.8, 8.2, 7.2, 7.8, 8.5, 9.5, 10.2, 11.5, 12.8],
+    '另类/QDII': [2.0, 2.5, 3.2, 3.8, 4.5, 4.0, 4.2, 4.8, 5.5, 5.8, 6.2, 6.5]
   }
 };
 
 const matrixData = {
-  categories: ['货币类', '固收类', '权益类', '混合类', '另类/专户'],
+  categories: ['货币类', '固收类', '权益类', '混合类', '另类/QDII'],
   tiers: ['微型(<2亿)', '小型(2-5亿)', '中型(5-20亿)', '大型(20-50亿)', '旗舰(>50亿)'],
   data: [
-    [0, 0, 1, 4, 13],
-    [2, 6, 22, 18, 20],
-    [4, 10, 18, 12, 8],
-    [3, 8, 10, 8, 3],
-    [3, 4, 5, 6, 2]
+    [0, 0, 1, 6, 15],
+    [2, 8, 28, 28, 30],
+    [4, 18, 28, 18, 12],
+    [4, 8, 16, 14, 14],
+    [2, 4, 8, 4, 2]
   ]
 };
 
 const managerData = [
-  { name: '陈建良', products: 16, scale: 1850, warn: 0 },
-  { name: '吴沛文', products: 14, scale: 1680, warn: 0 },
-  { name: '于倩倩', products: 12, scale: 1420, warn: 0 },
-  { name: '黎颖芳', products: 10, scale: 980, warn: 0 },
-  { name: '彭紫云', products: 18, scale: 856, warn: 1 },
-  { name: '先轲宇', products: 11, scale: 720, warn: 0 },
-  { name: '李星佑', products: 9, scale: 580, warn: 0 },
-  { name: '张溢麟', products: 8, scale: 180, warn: 2 }
+  { name: '陈建良', products: 18, scale: 2350, warn: 0 },
+  { name: '吴沛文', products: 16, scale: 2100, warn: 0 },
+  { name: '于倩倩', products: 14, scale: 1680, warn: 0 },
+  { name: '黎颖芳', products: 12, scale: 1250, warn: 0 },
+  { name: '彭紫云', products: 22, scale: 1050, warn: 2 },
+  { name: '先轲宇', products: 13, scale: 920, warn: 0 },
+  { name: '李星佑', products: 11, scale: 780, warn: 0 },
+  { name: '张溢麟', products: 10, scale: 280, warn: 3 },
+  { name: '胡泽元', products: 9, scale: 450, warn: 0 },
+  { name: '王剑', products: 8, scale: 380, warn: 0 }
 ];
 
 // ========== Chart Instances ==========
@@ -976,37 +978,37 @@ function initCharts() {
 }
 
 // ========== Heatmap Data for Type Distribution ==========
-const xCategories = ['货币类', '固收类', '权益类', '混合类', '另类/专户/QDII'];
+const xCategories = ['货币类', '固收类', '权益类', '混合类', '另类/QDII'];
 const yCategories = [
   '现金管理/互联网货币', '机构大额货币', '场内货币ETF',
   '纯债/利率债', '中短债/短债', '固收+/二级债', '可转债', '定开债/持有期',
   '全市场精选', '行业主题', '量化指增', '被动指数/ETF',
   '偏股混合', '偏债混合', '灵活配置', '养老FOF',
-  'REITs', 'QDII', '专户/其他另类'
+  '公募REITs', 'QDII', '专户/其他另类'
 ];
 
 const heatmapScaleData = [
-  [0, 0, 2850], [0, 1, 1980], [0, 2, 330],
-  [1, 3, 1580], [1, 4, 1420], [1, 5, 720], [1, 6, 160], [1, 7, 500],
-  [2, 8, 480], [2, 9, 350], [2, 10, 250], [2, 11, 720],
-  [3, 12, 380], [3, 13, 320], [3, 14, 180], [3, 15, 100],
-  [4, 16, 180], [4, 17, 220], [4, 18, 180]
+  [0, 0, 4850], [0, 1, 2850], [0, 2, 380],
+  [1, 3, 480], [1, 4, 420], [1, 5, 220], [1, 6, 48], [1, 7, 255],
+  [2, 8, 120], [2, 9, 88], [2, 10, 62], [2, 11, 93],
+  [3, 12, 58], [3, 13, 42], [3, 14, 28], [3, 15, 24],
+  [4, 16, 58], [4, 17, 72], [4, 18, 30]
 ];
 
 const heatmapCountData = [
-  [0, 0, 8], [0, 1, 6], [0, 2, 4],
-  [1, 3, 22], [1, 4, 18], [1, 5, 14], [1, 6, 4], [1, 7, 10],
-  [2, 8, 14], [2, 9, 12], [2, 10, 8], [2, 11, 18],
-  [3, 12, 12], [3, 13, 10], [3, 14, 6], [3, 15, 4],
-  [4, 16, 4], [4, 17, 6], [4, 18, 6]
+  [0, 0, 10], [0, 1, 8], [0, 2, 4],
+  [1, 3, 32], [1, 4, 24], [1, 5, 18], [1, 6, 6], [1, 7, 16],
+  [2, 8, 22], [2, 9, 18], [2, 10, 12], [2, 11, 28],
+  [3, 12, 18], [3, 13, 14], [3, 14, 10], [3, 15, 8],
+  [4, 16, 6], [4, 17, 8], [4, 18, 6]
 ];
 
 const heatmapIncomeData = [
-  [0, 0, 28500], [0, 1, 19800], [0, 2, 3700],
-  [1, 3, 47400], [1, 4, 42600], [1, 5, 21600], [1, 6, 4800], [1, 7, 15000],
-  [2, 8, 28800], [2, 9, 21000], [2, 10, 15000], [2, 11, 43200],
-  [3, 12, 11400], [3, 13, 9600], [3, 14, 5400], [3, 15, 3000],
-  [4, 16, 7200], [4, 17, 13200], [4, 18, 14400]
+  [0, 0, 14550], [0, 1, 8550], [0, 2, 1140],
+  [1, 3, 14400], [1, 4, 12600], [1, 5, 6600], [1, 6, 1440], [1, 7, 7650],
+  [2, 8, 7200], [2, 9, 5280], [2, 10, 3720], [2, 11, 5580],
+  [3, 12, 3480], [3, 13, 2520], [3, 14, 1680], [3, 15, 1440],
+  [4, 16, 2320], [4, 17, 3600], [4, 18, 2080]
 ];
 
 const heatmapDetailMap = {
@@ -1409,11 +1411,11 @@ function updateScaleAssetChart() {
       label: { show: true, position: 'outside', formatter: '{b}\n{d}%', fontSize: 10, color: '#475569' },
       emphasis: { label: { fontSize: 14, fontWeight: 'bold' }, scaleSize: 10 },
       data: [
-        { value: 5160, name: '货币类', itemStyle: { color: '#3b82f6' } },
-        { value: 4380, name: '固收类', itemStyle: { color: '#10b981' } },
-        { value: 1800, name: '权益类', itemStyle: { color: '#f59e0b' } },
-        { value: 980, name: '混合类', itemStyle: { color: '#8b5cf6' } },
-        { value: 580, name: '另类/专户/QDII', itemStyle: { color: '#ef4444' } }
+        { value: 8080, name: '货币类', itemStyle: { color: '#3b82f6' } },
+        { value: 1423, name: '固收类', itemStyle: { color: '#10b981' } },
+        { value: 363, name: '权益类', itemStyle: { color: '#f59e0b' } },
+        { value: 152, name: '混合类', itemStyle: { color: '#8b5cf6' } },
+        { value: 160, name: '另类/QDII', itemStyle: { color: '#ef4444' } }
       ]
     }]
   };
@@ -1449,11 +1451,11 @@ function updateScaleSourceChart() {
       label: { show: true, position: 'outside', formatter: '{b}\n{d}%', fontSize: 10, color: '#475569' },
       emphasis: { label: { fontSize: 14, fontWeight: 'bold' }, scaleSize: 10 },
       data: [
-        { value: 6800, name: '机构客户', itemStyle: { color: '#0066b3' } },
-        { value: 4200, name: '银行零售渠道', itemStyle: { color: '#3b82f6' } },
-        { value: 980, name: '第三方互联网', itemStyle: { color: '#10b981' } },
-        { value: 560, name: '券商渠道', itemStyle: { color: '#f59e0b' } },
-        { value: 360, name: '内部自营/关联方', itemStyle: { color: '#8b5cf6' } }
+        { value: 5800, name: '机构客户', itemStyle: { color: '#0066b3' } },
+        { value: 3200, name: '银行零售渠道', itemStyle: { color: '#3b82f6' } },
+        { value: 720, name: '第三方互联网', itemStyle: { color: '#10b981' } },
+        { value: 290, name: '券商渠道', itemStyle: { color: '#f59e0b' } },
+        { value: 168, name: '内部自营/关联方', itemStyle: { color: '#8b5cf6' } }
       ]
     }]
   };
@@ -1464,11 +1466,11 @@ function updateScaleSourceChart() {
 const cashflowMonths = ['2025-08','2025-09','2025-10','2025-11','2025-12','2026-01','2026-02','2026-03','2026-04','2026-05','2026-06','2026-07'];
 const cashflowLabels = ['8月','9月','10月','11月','12月','1月','2月','3月','4月','5月','6月','7月'];
 
-const moneyFlow   = [-120, 150, -85, 135, -55, 175, -95, 145, -60, 195, -25, 80];   // 货币类：季末回流脉冲
-const fixedFlow   = [85, 62, 95, 70, 110, 88, 72, 105, 55, 130, 92, 108];           // 固收类：稳定净流入
-const equityFlow  = [25, -8, 35, -12, 42, 18, -20, 32, -5, 45, 15, -3];            // 权益类：低位波动回暖
-const hybridFlow  = [18, -5, 22, 8, 15, -2, 10, 20, 5, 28, 12, 16];                // 混合类：平稳
-const altFlow     = [6, 3, 8, 2, 7, 5, 6, 9, 3, 11, 6, 5];                          // 另类/专户/QDII
+const moneyFlow   = [-85, 105, -60, 95, -38, 120, -65, 100, -40, 135, -18, 55];   // 货币类：季末回流脉冲
+const fixedFlow   = [55, 42, 62, 48, 75, 58, 52, 70, 38, 85, 60, 72];           // 固收类：稳定净流入
+const equityFlow  = [8, -3, 12, -5, 15, 6, -8, 12, -2, 18, 5, -1];            // 权益类：低位波动回暖
+const hybridFlow  = [5, -2, 8, 3, 6, -1, 4, 8, 2, 10, 5, 6];                // 混合类：平稳
+const altFlow     = [4, 2, 5, 1, 4, 3, 4, 6, 2, 7, 4, 3];                          // 另类/专户/QDII
 
 function updateCashflowChart() {
   const option = {
@@ -1549,9 +1551,9 @@ function updateCashflowChart() {
 // ========== Shelf Analysis Chart ==========
 const shelfData = {
   shelves: ['建行手机银行', '建行网银', '天天基金', '支付宝\n(蚂蚁财富)', '微信理财通', '券商渠道', '机构直销', '建行速盈', '保险/年金'],
-  current: [186, 168, 98, 85, 52, 38, 42, 5, 18],
-  added:   [15,  12,  14, 11,  8,  6,  3,  1,  2],
-  removed: [0,    2,   3,  1,  1,  2,  5,  0,  0]
+  current: [274, 256, 152, 128, 86, 62, 68, 6, 28],
+  added:   [22,  18,  18, 15, 12, 10,  5,  2,  4],
+  removed: [2,    3,   4,  2,  2,  3,  8,  0,  1]
 };
 
 function updateShelfChart() {
@@ -1631,10 +1633,10 @@ function updateShelfChart() {
 // ========== Shelf Scale Changes Data ==========
 const shelfScaleData = {
   shelves: ['建行手机银行', '建行网银', '天天基金', '支付宝\n(蚂蚁财富)', '微信理财通', '建行速盈', '券商渠道', '机构直销', '保险/年金'],
-  current:  [7740, 5200, 2800, 2200, 1500, 2100, 800, 3500, 450],
-  beginning: [7060, 4780, 2420, 1850, 1220, 1780, 650, 3620, 370],
-  change:   [680, 420, 380, 350, 280, 320, 150, -120, 80],
-  changePct: [9.6, 8.8, 15.7, 18.9, 23.0, 18.0, 23.1, -3.3, 21.6]
+  current:  [6100, 4100, 2200, 1800, 1200, 1680, 650, 2800, 380],
+  beginning: [5600, 3800, 1920, 1520, 1000, 1450, 520, 2920, 320],
+  change:   [500, 300, 280, 280, 200, 230, 130, -120, 60],
+  changePct: [8.9, 7.9, 14.6, 18.4, 20.0, 15.9, 25.0, -4.1, 18.8]
 };
 
 function updateShelfScaleChart() {
@@ -1717,23 +1719,23 @@ function updateShelfScaleChart() {
 // ========== Industry Ranking Data ==========
 const rankData = {
   total: {
-    companies: ['易方达基金','华夏基金','广发基金','南方基金','富国基金','博时基金','建信基金','招商基金','嘉实基金','天弘基金','工银瑞信','汇添富','鹏华基金','中银基金','华安基金'],
-    values: [17300, 15200, 14200, 13500, 13200, 13000, 12900, 12100, 11800, 11200, 10500, 9800, 9200, 8800, 8500],
-    highlight: 6  // 建信基金 index (0-based)
+    companies: ['易方达基金','华夏基金','广发基金','南方基金','富国基金','博时基金','招商基金','嘉实基金','天弘基金','工银瑞信','建信基金','汇添富','鹏华基金','中银基金','华安基金'],
+    values: [17800, 15800, 14800, 13800, 13500, 13200, 12400, 12100, 11500, 10800, 10178, 9900, 9400, 9000, 8700],
+    highlight: 10
   },
   nonmoney: {
-    companies: ['易方达基金','华夏基金','广发基金','富国基金','南方基金','嘉实基金','博时基金','汇添富','招商基金','建信基金','中欧基金','华安基金','景顺长城','鹏华基金','工银瑞信'],
-    values: [11200, 9800, 9200, 8800, 8500, 8200, 7900, 7600, 7400, 7200, 6800, 6500, 6200, 6000, 5800],
-    highlight: 9
+    companies: ['易方达基金','华夏基金','广发基金','富国基金','南方基金','嘉实基金','博时基金','汇添富','招商基金','工银瑞信','中欧基金','华安基金','景顺长城','鹏华基金','建信基金'],
+    values: [11500, 10200, 9500, 9100, 8800, 8500, 8200, 7900, 7700, 7500, 7200, 6800, 6500, 6200, 2152],
+    highlight: 14
   }
 };
 
 const rankTrendData = {
   years: ['2022', '2023', '2024', '2025', '2026H1'],
-  totalRank: [12, 10, 9, 8, 7],
-  moneyRank: [6, 5, 5, 5, 4],
-  fixedRank: [8, 7, 6, 6, 5],
-  equityRank: [15, 16, 17, 16, 18]
+  totalRank: [12, 11, 10, 11, 11],
+  moneyRank: [6, 5, 4, 3, 2],
+  fixedRank: [10, 12, 18, 22, 26],
+  equityRank: [15, 16, 20, 25, 27]
 };
 
 function switchRankView(view) {
@@ -2193,9 +2195,13 @@ var productSearchIndex = [
   { n:'建信红利低波ETF', c:'512530', t:'权益类', s:'35.2亿', m:'张溢麟/刘思远', id:'' },
   { n:'建信科技成长混合A', c:'019756', t:'混合类', s:'22.8亿', m:'王剑', id:'' },
   { n:'建信中短债增强债券A', c:'022443', t:'固收类', s:'58.6亿', m:'彭紫云/胡泽元', id:'' },
-  { n:'建信改革红利股票', c:'000592', t:'权益类', s:'85亿', m:'', id:'' },
-  { n:'建信优化配置混合', c:'530005', t:'混合类', s:'88亿', m:'', id:'' },
-  { n:'建信中证500ETF', c:'510500', t:'权益类', s:'320亿', m:'', id:'' }
+  { n:'建信改革红利股票', c:'000592', t:'权益类', s:'85亿', m:'陶灿', id:'' },
+  { n:'建信优化配置混合', c:'530005', t:'混合类', s:'88亿', m:'王剑', id:'' },
+  { n:'建信中证500ETF', c:'510500', t:'权益类', s:'320亿', m:'赵云煜', id:'' },
+  { n:'建信阿尔法一年持有', c:'018903', t:'混合类', s:'25亿', m:'姜锋', id:'' },
+  { n:'建信科技智选股票A', c:'021960', t:'权益类', s:'12亿', m:'王剑', id:'' },
+  { n:'建信中小盘先锋股票A', c:'000729', t:'权益类', s:'18亿', m:'周智硕', id:'' },
+  { n:'建信电子行业股票A', c:'017746', t:'权益类', s:'8亿', m:'江映德', id:'' }
 ];
 
 function handleSearch(query) {
