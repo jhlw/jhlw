@@ -12,47 +12,47 @@
             theme: {
                 extend: {
                     colors: {
-                        ink:      '#1A1715',
-                        'ink-soft':'#6B6560',
-                        paper:    '#F7F6F3',
-                        'card-bg':'#FCFCFA',
-                        rule:     '#E4E0D8',
-                        brand:    '#003D8F',
-                        'brand-light':'#E8EEF6',
+                        ink:      '#303133',
+                        'ink-soft':'#606266',
+                        paper:    '#F4F8FC',
+                        'card-bg':'#FFFFFF',
+                        rule:     '#D7E2EB',
+                        brand:    '#1D6EB6',
+                        'brand-light':'#F0F5FD',
                         positive: '#2D6A4F',
-                        'pos-light':'#E8F0EB',
+                        'pos-light':'#EDF5F0',
                         negative: '#C0392B',
-                        'neg-light':'#F9ECEA',
+                        'neg-light':'#FBEEED',
                         warning:  '#B8650A',
-                        'warn-light':'#FDF3E5',
-                        link:     '#1E5CB3',
-                        accent:   '#5B5F8F',
-                        'accent-light':'#EDEDF6',
+                        'warn-light':'#FDF5ED',
+                        link:     '#409EFF',
+                        accent:   '#D4940B',
+                        'accent-light':'#FFF8E8',
                     }
                 }
             }
         }
     </script>
     <style>
-        /* ===== Design Tokens ===== */
+        /* ===== Design Tokens — 建信基金官网色系 ===== */
         :root {
-            --paper:     #F7F6F3;
-            --card-bg:   #FCFCFA;
-            --ink:       #1A1715;
-            --ink-soft:  #6B6560;
-            --ink-muted: #999590;
-            --rule:      #E4E0D8;
-            --brand:     #003D8F;
-            --brand-lt:  #E8EEF6;
+            --paper:     #F4F8FC;
+            --card-bg:   #FFFFFF;
+            --ink:       #303133;
+            --ink-soft:  #606266;
+            --ink-muted: #909399;
+            --rule:      #D7E2EB;
+            --brand:     #1D6EB6;
+            --brand-lt:  #F0F5FD;
             --positive:  #2D6A4F;
-            --pos-lt:    #E8F0EB;
+            --pos-lt:    #EDF5F0;
             --negative:  #C0392B;
-            --neg-lt:    #F9ECEA;
+            --neg-lt:    #FBEEED;
             --warning:   #B8650A;
-            --warn-lt:   #FDF3E5;
-            --link:      #1E5CB3;
-            --accent:    #5B5F8F;
-            --accent-lt: #EDEDF6;
+            --warn-lt:   #FDF5ED;
+            --link:      #409EFF;
+            --accent:    #D4940B;
+            --accent-lt: #FFF8E8;
         }
 
         body {
@@ -190,7 +190,7 @@
         }
         .data-table td {
             padding: 10px 0;
-            border-bottom: 1px solid #EDEAE4;
+            border-bottom: 1px solid #EBEEF5;
             color: var(--ink);
         }
         .data-table tr:last-child td { border-bottom: none; }
@@ -226,13 +226,13 @@
         .tag-neg    { background: var(--neg-lt);  color: var(--negative); }
         .tag-warn   { background: var(--warn-lt); color: var(--warning); }
         .tag-accent { background: var(--accent-lt); color: var(--accent); }
-        .tag-muted  { background: #F2F0EC; color: var(--ink-soft); }
+        .tag-muted  { background: #EBEEF5; color: var(--ink-soft); }
         .tag-outline { background: transparent; border: 1px solid var(--rule); color: var(--ink-soft); }
 
         /* ===== Progress bars ===== */
         .progress-bar {
             height: 6px;
-            background: #EDEAE4;
+            background: #EBEEF5;
             border-radius: 3px;
             overflow: hidden;
         }
@@ -250,7 +250,7 @@
         .range-btn-group {
             display: flex;
             gap: 2px;
-            background: #F0EEE8;
+            background: #EBEEF5;
             border-radius: 6px;
             padding: 3px;
         }
@@ -296,7 +296,7 @@
             cursor: pointer;
             transition: background 0.15s;
         }
-        .manager-card-header:hover { background: #FAFAF7; }
+        .manager-card-header:hover { background: #F5F8FB; }
         .manager-avatar {
             width: 48px; height: 48px;
             border-radius: 50%;
@@ -308,8 +308,8 @@
             flex-shrink: 0;
             color: #fff;
         }
-        .manager-avatar.av-1 { background: #003D8F; }
-        .manager-avatar.av-2 { background: #5B5F8F; }
+        .manager-avatar.av-1 { background: #1D6EB6; }
+        .manager-avatar.av-2 { background: #D4940B; }
         .manager-card-body {
             max-height: 500px;
             overflow: hidden;
@@ -338,10 +338,10 @@
             font-size: 13px;
             line-height: 1.6;
         }
-        .callout-info  { background: var(--brand-lt); border: 1px solid #D0DDF0; color: #1A3A6B; }
+        .callout-info  { background: var(--brand-lt); border: 1px solid #C8DCF0; color: #1A4A7B; }
         .callout-pos   { background: var(--pos-lt);  border: 1px solid #D0E5D8; color: #1F4A38; }
-        .callout-warn  { background: var(--warn-lt); border: 1px solid #F0DFC0; color: #6B3A05; }
-        .callout-neg   { background: var(--neg-lt);  border: 1px solid #F0D0CD; color: #6B1F1A; }
+        .callout-warn  { background: var(--warn-lt); border: 1px solid #F0D8B0; color: #8B5E0A; }
+        .callout-neg   { background: var(--neg-lt);  border: 1px solid #F0C8C5; color: #8B1F1A; }
 
         /* ===== Contrast bars (for competitor comparison) ===== */
         .contrast-row {
@@ -359,7 +359,7 @@
         }
         .contrast-bar-wrap {
             flex: 1;
-            background: #EDEAE4;
+            background: #EBEEF5;
             border-radius: 3px;
             height: 20px;
             overflow: hidden;
@@ -370,7 +370,7 @@
             transition: width 0.5s ease;
         }
         .contrast-bar.primary { background: var(--brand); }
-        .contrast-bar.secondary { background: #B0B8C0; }
+        .contrast-bar.secondary { background: #A8B8C8; }
         .contrast-bar.pos { background: var(--positive); }
         .contrast-val {
             width: 56px;
@@ -445,7 +445,7 @@
 <body>
 
 <!-- 顶部导航 -->
-<header class="sticky top-0 z-10" style="background: rgba(247,246,243,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--rule);">
+<header class="sticky top-0 z-10" style="background: rgba(244,248,252,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--rule);">
     <div class="px-6 py-3 flex justify-between items-center">
         <div class="flex items-center gap-4">
             <a href="#" class="text-sm font-medium text-ink-soft hover:text-ink transition-colors no-underline">← 返回产品列表</a>
@@ -1063,8 +1063,8 @@
                         <h4 class="text-sm font-semibold text-ink mb-3">同类产品竞争雷达图</h4>
                         <div id="competeRadarChart" class="chart-box"></div>
                         <div class="flex justify-center gap-6 mt-2 text-xs text-ink-soft">
-                            <span class="flex items-center gap-1"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#003D8F;"></span> 本产品</span>
-                            <span class="flex items-center gap-1"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#9B9790;"></span> 同类平均</span>
+                            <span class="flex items-center gap-1"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#1D6EB6;"></span> 本产品</span>
+                            <span class="flex items-center gap-1"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#909399;"></span> 同类平均</span>
                             <span class="flex items-center gap-1"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#B8650A;"></span> 同类TOP5</span>
                         </div>
                     </div>
@@ -1073,13 +1073,13 @@
                         <table class="data-table">
                             <thead><tr><th>对比维度</th><th class="num">本产品</th><th class="num">同类平均</th><th class="num">同类TOP5</th><th class="num">排名</th></tr></thead>
                             <tbody>
-                                <tr style="background:#FCFCFA;"><td>近1年收益率</td><td class="num text-negative font-semibold">1.83%</td><td class="num text-ink-soft">1.67%</td><td class="num text-ink-soft">2.52%</td><td class="num"><span class="text-warning font-semibold">前38%</span></td></tr>
+                                <tr style="background:#FFFFFF;"><td>近1年收益率</td><td class="num text-negative font-semibold">1.83%</td><td class="num text-ink-soft">1.67%</td><td class="num text-ink-soft">2.52%</td><td class="num"><span class="text-warning font-semibold">前38%</span></td></tr>
                                 <tr><td>近3年收益率</td><td class="num text-negative font-semibold">8.94%</td><td class="num text-ink-soft">8.94%</td><td class="num text-ink-soft">12.85%</td><td class="num"><span class="text-warning font-semibold">前44%</span></td></tr>
-                                <tr style="background:#FCFCFA;"><td>年化波动率</td><td class="num font-semibold">1.05%</td><td class="num text-ink-soft">1.48%</td><td class="num text-ink-soft">0.95%</td><td class="num"><span class="text-positive font-semibold">前30%</span></td></tr>
+                                <tr style="background:#FFFFFF;"><td>年化波动率</td><td class="num font-semibold">1.05%</td><td class="num text-ink-soft">1.48%</td><td class="num text-ink-soft">0.95%</td><td class="num"><span class="text-positive font-semibold">前30%</span></td></tr>
                                 <tr><td>最大回撤</td><td class="num font-semibold">0.85%</td><td class="num text-ink-soft">1.15%</td><td class="num text-ink-soft">0.45%</td><td class="num"><span class="text-positive font-semibold">前32%</span></td></tr>
-                                <tr style="background:#FCFCFA;"><td>夏普比率</td><td class="num font-semibold">1.74</td><td class="num text-ink-soft">1.92</td><td class="num text-ink-soft">3.25</td><td class="num"><span class="text-warning font-semibold">前45%</span></td></tr>
+                                <tr style="background:#FFFFFF;"><td>夏普比率</td><td class="num font-semibold">1.74</td><td class="num text-ink-soft">1.92</td><td class="num text-ink-soft">3.25</td><td class="num"><span class="text-warning font-semibold">前45%</span></td></tr>
                                 <tr><td>管理费率</td><td class="num font-semibold">0.30%</td><td class="num text-ink-soft">0.32%</td><td class="num text-ink-soft">0.15%</td><td class="num"><span class="text-warning font-semibold">中等</span></td></tr>
-                                <tr style="background:#FCFCFA;"><td>规模排名</td><td class="num text-brand font-semibold">59.62亿</td><td class="num text-ink-soft">28.5亿</td><td class="num text-ink-soft">452亿</td><td class="num"><span class="text-brand font-semibold">前25%</span></td></tr>
+                                <tr style="background:#FFFFFF;"><td>规模排名</td><td class="num text-brand font-semibold">59.62亿</td><td class="num text-ink-soft">28.5亿</td><td class="num text-ink-soft">452亿</td><td class="num"><span class="text-brand font-semibold">前25%</span></td></tr>
                                 <tr><td>卡玛比率</td><td class="num font-semibold">2.15</td><td class="num text-ink-soft">2.48</td><td class="num text-ink-soft">5.20</td><td class="num"><span class="text-warning font-semibold">前48%</span></td></tr>
                             </tbody>
                         </table>
@@ -1368,10 +1368,10 @@
                             <div class="callout callout-info">
                                 <h5 class="text-sm font-semibold mb-2">稳定性评估</h5>
                                 <table class="w-full text-xs" style="border-collapse:collapse;">
-                                    <tr style="border-bottom:1px solid #D0DDF0;"><td class="py-1.5 text-ink-soft">评估维度</td><td class="py-1.5 text-center text-ink-soft">黎颖芳</td><td class="py-1.5 text-center text-ink-soft">彭紫云</td></tr>
-                                    <tr style="border-bottom:1px solid #D0DDF0;"><td class="py-1.5">建信基金司龄</td><td class="py-1.5 text-center font-semibold text-positive data-num">20年</td><td class="py-1.5 text-center font-semibold text-positive data-num">13年</td></tr>
-                                    <tr style="border-bottom:1px solid #D0DDF0;"><td class="py-1.5">近3年监管处罚</td><td class="py-1.5 text-center text-positive">无</td><td class="py-1.5 text-center text-positive">无</td></tr>
-                                    <tr style="border-bottom:1px solid #D0DDF0;"><td class="py-1.5">离职风险</td><td class="py-1.5 text-center text-positive">低（超20年老员工）</td><td class="py-1.5 text-center text-positive">低（核心投研骨干）</td></tr>
+                                    <tr style="border-bottom:1px solid #C8DCF0;"><td class="py-1.5 text-ink-soft">评估维度</td><td class="py-1.5 text-center text-ink-soft">黎颖芳</td><td class="py-1.5 text-center text-ink-soft">彭紫云</td></tr>
+                                    <tr style="border-bottom:1px solid #C8DCF0;"><td class="py-1.5">建信基金司龄</td><td class="py-1.5 text-center font-semibold text-positive data-num">20年</td><td class="py-1.5 text-center font-semibold text-positive data-num">13年</td></tr>
+                                    <tr style="border-bottom:1px solid #C8DCF0;"><td class="py-1.5">近3年监管处罚</td><td class="py-1.5 text-center text-positive">无</td><td class="py-1.5 text-center text-positive">无</td></tr>
+                                    <tr style="border-bottom:1px solid #C8DCF0;"><td class="py-1.5">离职风险</td><td class="py-1.5 text-center text-positive">低（超20年老员工）</td><td class="py-1.5 text-center text-positive">低（核心投研骨干）</td></tr>
                                     <tr><td class="py-1.5">接班安排</td><td class="py-1.5 text-center text-ink-soft">彭紫云可承接</td><td class="py-1.5 text-center text-ink-soft">团队储备充足</td></tr>
                                 </table>
                             </div>
@@ -1446,13 +1446,13 @@
     };
 
     // Shared color palette for charts
-    const CHART_BRAND   = '#003D8F';
-    const CHART_BLUE    = '#1E5CB3';
+    const CHART_BRAND   = '#1D6EB6';
+    const CHART_BLUE    = '#409EFF';
     const CHART_POS     = '#2D6A4F';
     const CHART_NEG     = '#C0392B';
     const CHART_WARN    = '#B8650A';
-    const CHART_GRAY    = '#9B9790';
-    const CHART_ACCENT  = '#5B5F8F';
+    const CHART_GRAY    = '#909399';
+    const CHART_ACCENT  = '#D4940B';
     const CHART_TEAL    = '#3D8B8B';
 
     // 1. 净值走势图
@@ -1464,8 +1464,8 @@
             lineStyle: { color: CHART_BRAND, width: 2 },
             itemStyle: { color: CHART_BRAND },
             areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                { offset: 0, color: 'rgba(0,61,143,0.18)' },
-                { offset: 1, color: 'rgba(0,61,143,0.02)' }
+                { offset: 0, color: 'rgba(29,110,182,0.18)' },
+                { offset: 1, color: 'rgba(29,110,182,0.02)' }
             ])}
         }];
         if (range !== 'all') {
@@ -1477,10 +1477,10 @@
         }
         navChart.setOption({
             tooltip: { trigger: 'axis' },
-            legend: range !== 'all' ? { top: 0, textStyle: { fontSize: 11, color: '#6B6560' } } : undefined,
+            legend: range !== 'all' ? { top: 0, textStyle: { fontSize: 11, color: '#606266' } } : undefined,
             grid: { left: '3%', right: '4%', bottom: '3%', top: range !== 'all' ? '14%' : '10%', containLabel: true },
-            xAxis: { type: 'category', boundaryGap: false, data: d.x, axisLabel: { fontSize: 11, color: '#999590' }, axisLine: { lineStyle: { color: '#E4E0D8' } } },
-            yAxis: { type: 'value', scale: true, axisLabel: { fontSize: 11, color: '#999590' }, splitLine: { lineStyle: { color: '#EDEAE4' } } },
+            xAxis: { type: 'category', boundaryGap: false, data: d.x, axisLabel: { fontSize: 11, color: '#909399' }, axisLine: { lineStyle: { color: '#D7E2EB' } } },
+            yAxis: { type: 'value', scale: true, axisLabel: { fontSize: 11, color: '#909399' }, splitLine: { lineStyle: { color: '#EBEEF5' } } },
             series: seriesData
         }, true);
     }
@@ -1493,14 +1493,14 @@
         scaleChart.setOption({
             tooltip: { trigger: 'axis', formatter: '{b}<br/>规模：{c}亿元' },
             grid: { left: '3%', right: '4%', bottom: '3%', top: '10%', containLabel: true },
-            xAxis: { type: 'category', boundaryGap: false, data: d.x, axisLabel: { fontSize: 11, color: '#999590' }, axisLine: { lineStyle: { color: '#E4E0D8' } } },
-            yAxis: { type: 'value', axisLabel: { fontSize: 11, color: '#999590' }, splitLine: { lineStyle: { color: '#EDEAE4' } } },
+            xAxis: { type: 'category', boundaryGap: false, data: d.x, axisLabel: { fontSize: 11, color: '#909399' }, axisLine: { lineStyle: { color: '#D7E2EB' } } },
+            yAxis: { type: 'value', axisLabel: { fontSize: 11, color: '#909399' }, splitLine: { lineStyle: { color: '#EBEEF5' } } },
             series: [{
                 name: '规模', type: 'line', smooth: true, data: d.y,
                 lineStyle: { color: CHART_BLUE, width: 2 },
                 areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                    { offset: 0, color: 'rgba(30,92,179,0.18)' },
-                    { offset: 1, color: 'rgba(30,92,179,0.02)' }
+                    { offset: 0, color: 'rgba(64,158,255,0.18)' },
+                    { offset: 1, color: 'rgba(64,158,255,0.02)' }
                 ])}
             }]
         }, true);
@@ -1543,7 +1543,7 @@
     const channelChart = echarts.init(document.getElementById('channelChart'));
     channelChart.setOption({
         tooltip: { trigger: 'item', formatter: '{b}: {c}亿元 ({d}%)' },
-        legend: { orient: 'vertical', right: 10, top: 'center', itemWidth: 10, itemHeight: 10, textStyle: { fontSize: 12, color: '#6B6560' } },
+        legend: { orient: 'vertical', right: 10, top: 'center', itemWidth: 10, itemHeight: 10, textStyle: { fontSize: 12, color: '#606266' } },
         series: [{
             type: 'pie', radius: ['40%', '65%'], center: ['35%', '50%'],
             label: { show: false }, labelLine: { show: false },
@@ -1561,10 +1561,10 @@
     const redeemChart = echarts.init(document.getElementById('redeemChart'));
     redeemChart.setOption({
         tooltip: { trigger: 'axis' },
-        legend: { data: ['申购额', '赎回额', '净申购'], top: 0, textStyle: { fontSize: 12, color: '#6B6560' } },
+        legend: { data: ['申购额', '赎回额', '净申购'], top: 0, textStyle: { fontSize: 12, color: '#606266' } },
         grid: { left: '3%', right: '4%', bottom: '3%', top: '15%', containLabel: true },
-        xAxis: { type: 'category', data: ['2月','3月','4月','5月','6月','7月'], axisLabel: { fontSize: 11, color: '#999590' }, axisLine: { lineStyle: { color: '#E4E0D8' } } },
-        yAxis: { type: 'value', axisLabel: { fontSize: 11, color: '#999590' }, splitLine: { lineStyle: { color: '#EDEAE4' } } },
+        xAxis: { type: 'category', data: ['2月','3月','4月','5月','6月','7月'], axisLabel: { fontSize: 11, color: '#909399' }, axisLine: { lineStyle: { color: '#D7E2EB' } } },
+        yAxis: { type: 'value', axisLabel: { fontSize: 11, color: '#909399' }, splitLine: { lineStyle: { color: '#EBEEF5' } } },
         series: [
             { name: '申购额', type: 'bar', data: [4.5, 5.8, 5.2, 6.5, 5.6, 6.2], itemStyle: { color: CHART_BLUE } },
             { name: '赎回额', type: 'bar', data: [3.8, 4.2, 4.1, 4.8, 4.6, 5.0], itemStyle: { color: CHART_WARN } },
@@ -1576,22 +1576,22 @@
     const competeRadarChart = echarts.init(document.getElementById('competeRadarChart'));
     competeRadarChart.setOption({
         tooltip: {},
-        legend: { bottom: 0, textStyle: { fontSize: 11, color: '#6B6560' } },
+        legend: { bottom: 0, textStyle: { fontSize: 11, color: '#606266' } },
         radar: {
             indicator: [
                 { name: '收益率', max: 100 }, { name: '夏普比率', max: 100 }, { name: '回撤控制', max: 100 },
                 { name: '规模优势', max: 100 }, { name: '波动控制', max: 100 }, { name: '费率和性', max: 100 }
             ],
-            radius: '60%', axisName: { fontSize: 10, color: '#6B6560' }
+            radius: '60%', axisName: { fontSize: 10, color: '#606266' }
         },
         series: [{
             type: 'radar',
             data: [
                 { value: [73, 70, 80, 75, 78, 65], name: '本产品',
-                  areaStyle: { color: 'rgba(0,61,143,0.18)' }, lineStyle: { color: CHART_BRAND, width: 2 },
+                  areaStyle: { color: 'rgba(29,110,182,0.18)' }, lineStyle: { color: CHART_BRAND, width: 2 },
                   itemStyle: { color: CHART_BRAND }, symbol: 'circle', symbolSize: 6 },
                 { value: [72, 65, 68, 45, 60, 70], name: '同类平均',
-                  areaStyle: { color: 'rgba(155,151,144,0.1)' }, lineStyle: { color: CHART_GRAY, width: 2 },
+                  areaStyle: { color: 'rgba(144,147,153,0.1)' }, lineStyle: { color: CHART_GRAY, width: 2 },
                   itemStyle: { color: CHART_GRAY }, symbol: 'diamond', symbolSize: 5 },
                 { value: [95, 95, 82, 95, 88, 85], name: '同类TOP5',
                   areaStyle: { color: 'rgba(184,101,10,0.08)' }, lineStyle: { color: CHART_WARN, width: 2, type: 'dashed' },
@@ -1604,17 +1604,17 @@
     const managerScaleChart = echarts.init(document.getElementById('managerScaleChart'));
     managerScaleChart.setOption({
         tooltip: { trigger: 'axis' },
-        legend: { data: ['彭紫云在管规模', '黎颖芳在管规模', '纯债债券A规模'], top: 0, textStyle: { fontSize: 10, color: '#6B6560' } },
+        legend: { data: ['彭紫云在管规模', '黎颖芳在管规模', '纯债债券A规模'], top: 0, textStyle: { fontSize: 10, color: '#606266' } },
         grid: { left: '3%', right: '4%', bottom: '3%', top: '16%', containLabel: true },
         xAxis: {
             type: 'category',
             data: ['2023Q3','2023Q4','2024Q1','2024Q2','2024Q3','2024Q4','2025Q1','2025Q2','2025Q3','2025Q4','2026Q1','2026Q2','2026-07'],
-            axisLabel: { fontSize: 10, color: '#999590', rotate: 30 },
-            axisLine: { lineStyle: { color: '#E4E0D8' } }
+            axisLabel: { fontSize: 10, color: '#909399', rotate: 30 },
+            axisLine: { lineStyle: { color: '#D7E2EB' } }
         },
         yAxis: {
-            type: 'value', name: '规模(亿)', nameTextStyle: { fontSize: 10, color: '#999590' },
-            axisLabel: { fontSize: 10, color: '#999590' }, splitLine: { lineStyle: { color: '#EDEAE4' } }
+            type: 'value', name: '规模(亿)', nameTextStyle: { fontSize: 10, color: '#909399' },
+            axisLabel: { fontSize: 10, color: '#909399' }, splitLine: { lineStyle: { color: '#EBEEF5' } }
         },
         series: [
             { name: '彭紫云在管规模', type: 'line', smooth: true,
@@ -1627,7 +1627,7 @@
               data: [38, 42, 46, 48, 50, 52, 51, 53, 52, 55, 59, 58, 60],
               color: CHART_BLUE, lineStyle: { width: 2 }, itemStyle: { color: CHART_BLUE }, symbol: 'triangle', symbolSize: 5,
               areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                  { offset: 0, color: 'rgba(30,92,179,0.15)' }, { offset: 1, color: 'rgba(30,92,179,0.02)' }
+                  { offset: 0, color: 'rgba(64,158,255,0.15)' }, { offset: 1, color: 'rgba(64,158,255,0.02)' }
               ])}}
         ]
     });
