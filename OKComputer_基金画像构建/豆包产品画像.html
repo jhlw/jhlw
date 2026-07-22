@@ -410,7 +410,8 @@
         /* ===== Responsive ===== */
         @media (max-width: 1024px) {
             .metric-ribbon { grid-template-columns: repeat(2, 1fr); }
-            .metric-item:nth-child(3)::before { display: none; }
+            .metric-item:nth-child(3)::before,
+            .metric-item:nth-child(5)::before { display: none; }
             .info-grid { grid-template-columns: repeat(2, 1fr); }
             .tab-item { padding: 12px 14px; font-size: 12px; }
         }
@@ -453,7 +454,10 @@
                 <div class="flex items-center gap-2">
                     <h1 class="text-lg display-name text-ink">建信纯债债券A</h1>
                     <span class="tag tag-pos"><span class="status-dot active"></span>正常运作</span>
-                    <span class="tag tag-brand">固收旗舰产品</span>
+                    <span class="tag tag-brand">固收类</span>
+                    <span class="tag tag-accent">纯债/利率债</span>
+                    <span class="tag tag-pos">旗舰产品</span>
+                    <span class="tag tag-warn">重点关注</span>
                 </div>
                 <p class="text-xs text-ink-soft mt-0.5">产品代码：530021 &nbsp;|&nbsp; 所属谱系：固收类 — 纯债/利率债</p>
             </div>
@@ -468,11 +472,16 @@
 <main class="px-6 py-5 space-y-5">
 
     <!-- 核心指标概览 — 数据横带 -->
-    <section class="dossier-card-static metric-ribbon">
+    <section class="dossier-card-static metric-ribbon" style="grid-template-columns: repeat(5, 1fr);">
         <div class="metric-item">
             <p class="metric-label">最新总规模</p>
-            <p class="metric-value data-num">35.63<span style="font-size:14px;font-weight:400;color:var(--ink-soft);margin-left:4px;">亿元</span></p>
+            <p class="metric-value data-num">59.62<span style="font-size:14px;font-weight:400;color:var(--ink-soft);margin-left:4px;">亿元</span></p>
             <p class="metric-sub text-negative">↑ 1.82% 较上季</p>
+        </div>
+        <div class="metric-item">
+            <p class="metric-label">固收类规模占比</p>
+            <p class="metric-value text-brand data-num">11.9<span style="font-size:14px;font-weight:400;color:var(--ink-soft);margin-left:4px;">%</span></p>
+            <p class="metric-sub">59.62亿 / 固收类总规模 501亿 &nbsp;|&nbsp; 排名第 <span class="font-semibold">8</span>/68</p>
         </div>
         <div class="metric-item">
             <p class="metric-label">今年以来收益率</p>
@@ -491,14 +500,31 @@
         </div>
     </section>
 
+    <!-- KPI 横带第二行：盈利贡献 -->
+    <section class="dossier-card-static metric-ribbon">
+        <div class="metric-item">
+            <p class="metric-label">年度管理费收入（预估）</p>
+            <p class="metric-value data-num" style="font-size:22px;">1,789<span style="font-size:13px;font-weight:400;color:var(--ink-soft);margin-left:4px;">万元</span></p>
+            <p class="metric-sub">占固收条线 <span class="font-semibold text-brand">12.5%</span> &nbsp;|&nbsp; 全公司排名第 <span class="font-semibold">5</span> 位</p>
+        </div>
+        <div class="metric-item">
+            <p class="metric-label">产品利润率</p>
+            <p class="metric-value text-positive data-num">62.5<span style="font-size:14px;font-weight:400;color:var(--ink-soft);margin-left:4px;">%</span></p>
+            <p class="metric-sub">投入产出比 1:2.68 &nbsp;|&nbsp; 同类中上水平</p>
+        </div>
+        <div class="metric-item">
+            <p class="metric-label">单产品盈利贡献度</p>
+            <p class="metric-value data-num" style="font-size:22px;">3.2<span style="font-size:13px;font-weight:400;color:var(--ink-soft);margin-left:4px;">%</span></p>
+            <p class="metric-sub">管理费收入占全公司总营收比重</p>
+        </div>
+    </section>
+
     <!-- Tab导航 -->
     <div class="dossier-card-static">
         <div class="tab-nav px-2">
             <div class="tab-item tab-active" data-tab="overview">基础概览</div>
             <div class="tab-item" data-tab="invest">投资特征</div>
-            <div class="tab-item" data-tab="operate">运营规则</div>
             <div class="tab-item" data-tab="channel">渠道客群</div>
-            <div class="tab-item" data-tab="business">经营分析</div>
             <div class="tab-item" data-tab="compete">竞争画像</div>
             <div class="tab-item" data-tab="manager">基金经理</div>
         </div>
@@ -751,6 +777,104 @@
                                 <p class="text-xs text-ink-muted mt-2">以机构大额申赎为主，零售定投渗透率低</p>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- 前10大持有人明细 -->
+                <div class="mb-6">
+                    <h4 class="text-sm font-semibold text-ink mb-3">前10大持有人明细</h4>
+                    <div class="overflow-x-auto">
+                        <table class="data-table">
+                            <thead>
+                                <tr><th style="width:40px;">#</th><th>持有人名称/类型</th><th style="min-width:100px;">机构类型</th><th class="num">持有规模(亿)</th><th class="num">占比</th><th class="num">较上期变动</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="data-num text-ink-soft">1</td>
+                                    <td><span class="font-semibold">和谐健康保险股份有限公司</span></td>
+                                    <td><span class="tag tag-warn">保险机构</span></td>
+                                    <td class="num font-semibold">9.12</td>
+                                    <td class="num font-semibold">15.3%</td>
+                                    <td class="num text-positive">+0.5pp</td>
+                                </tr>
+                                <tr>
+                                    <td class="data-num text-ink-soft">2</td>
+                                    <td><span class="font-semibold">兴业银行股份有限公司</span></td>
+                                    <td><span class="tag tag-brand">商业银行</span></td>
+                                    <td class="num font-semibold">5.36</td>
+                                    <td class="num font-semibold">9.0%</td>
+                                    <td class="num text-negative">-1.2pp</td>
+                                </tr>
+                                <tr>
+                                    <td class="data-num text-ink-soft">3</td>
+                                    <td><span class="font-semibold">中国石油企业年金计划</span></td>
+                                    <td><span class="tag tag-accent">企业年金</span></td>
+                                    <td class="num font-semibold">3.88</td>
+                                    <td class="num font-semibold">6.5%</td>
+                                    <td class="num text-positive">+0.8pp</td>
+                                </tr>
+                                <tr>
+                                    <td class="data-num text-ink-soft">4</td>
+                                    <td><span class="font-semibold">中信证券股份有限公司</span></td>
+                                    <td><span class="tag tag-muted">证券公司</span></td>
+                                    <td class="num font-semibold">2.68</td>
+                                    <td class="num font-semibold">4.5%</td>
+                                    <td class="num text-positive">+1.5pp</td>
+                                </tr>
+                                <tr>
+                                    <td class="data-num text-ink-soft">5</td>
+                                    <td><span class="font-semibold">建信养老金管理有限责任公司</span></td>
+                                    <td><span class="tag tag-accent">养老金</span></td>
+                                    <td class="num font-semibold">1.97</td>
+                                    <td class="num font-semibold">3.3%</td>
+                                    <td class="num text-positive">+0.3pp</td>
+                                </tr>
+                                <tr>
+                                    <td class="data-num text-ink-soft">6</td>
+                                    <td><span class="font-semibold">招商银行理财有限责任公司</span></td>
+                                    <td><span class="tag tag-brand">银行理财子</span></td>
+                                    <td class="num">2.33</td>
+                                    <td class="num">3.9%</td>
+                                    <td class="num text-negative">-0.4pp</td>
+                                </tr>
+                                <tr>
+                                    <td class="data-num text-ink-soft">7</td>
+                                    <td><span class="font-semibold">中国人寿养老保险股份有限公司</span></td>
+                                    <td><span class="tag tag-warn">保险机构</span></td>
+                                    <td class="num">1.91</td>
+                                    <td class="num">3.2%</td>
+                                    <td class="num text-positive">新进</td>
+                                </tr>
+                                <tr>
+                                    <td class="data-num text-ink-soft">8</td>
+                                    <td><span class="font-semibold">中船财务有限责任公司</span></td>
+                                    <td><span class="tag tag-muted">财务公司</span></td>
+                                    <td class="num">1.67</td>
+                                    <td class="num">2.8%</td>
+                                    <td class="num text-positive">+0.2pp</td>
+                                </tr>
+                                <tr>
+                                    <td class="data-num text-ink-soft">9</td>
+                                    <td><span class="font-semibold">建信信托·固收优选集合资金信托</span></td>
+                                    <td><span class="tag tag-muted">信托计划</span></td>
+                                    <td class="num">1.31</td>
+                                    <td class="num">2.2%</td>
+                                    <td class="num text-negative">-0.6pp</td>
+                                </tr>
+                                <tr>
+                                    <td class="data-num text-ink-soft">10</td>
+                                    <td><span class="font-semibold">全国社保基金一零六组合</span></td>
+                                    <td><span class="tag tag-accent">社保基金</span></td>
+                                    <td class="num">1.25</td>
+                                    <td class="num">2.1%</td>
+                                    <td class="num text-positive">+0.1pp</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="flex justify-between items-center mt-2">
+                        <p class="text-xs text-ink-muted">数据来源：2026年半年报披露 &nbsp;|&nbsp; 截止日期：2026-06-30 &nbsp;|&nbsp; 前10大合计占比 <span class="font-semibold text-ink">52.8%</span></p>
+                        <p class="text-xs text-ink-soft">机构投资者 78.2% · 个人投资者 21.8%</p>
                     </div>
                 </div>
 
