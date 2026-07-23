@@ -64,7 +64,7 @@ html { scroll-behavior: smooth; }
 .refresh-btn:hover { background:#165A96; }
 
 /* KPI Row */
-.kpi-row { display:grid; grid-template-columns:repeat(6, 1fr); gap:14px; margin-bottom:20px; }
+.kpi-row { display:grid; grid-template-columns:repeat(7, 1fr); gap:14px; margin-bottom:20px; }
 .kpi-card {
   background:var(--card-bg); border:1px solid var(--rule); border-radius:6px; padding:18px;
   box-shadow:0 1px 3px rgba(0,0,0,0.04); transition:all 0.2s; position:relative; overflow:hidden;
@@ -172,6 +172,7 @@ html { scroll-behavior: smooth; }
 /* Filter */
 .filter-bar { display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
 .filter-select { padding:6px 12px; border:1px solid var(--rule); border-radius:6px; font-size:12px; color:var(--ink); background:var(--card-bg); cursor:pointer; }
+.hidden { display:none !important; }
 
 /* Layer headers */
 .layer-header {
@@ -297,6 +298,41 @@ html { scroll-behavior: smooth; }
       <div class="kpi-value">10,178<small> 亿</small></div>
       <div class="kpi-delta up">新晋万亿俱乐部 · 货币类排名全行业第2</div>
     </div>
+    <div class="kpi-card c-green">
+      <div class="kpi-label">渠道规模变动</div>
+      <div style="margin-top:2px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+          <span style="font-size:11px;color:#909399;width:52px;flex-shrink:0;">行业代销</span>
+          <span style="font-size:15px;font-weight:700;color:#303133;" class="data-num">19.2<span style="font-size:11px;font-weight:400;color:#606266;">万亿</span></span>
+          <span style="font-size:11px;color:#2D6A4F;font-weight:600;">+1.76万亿</span>
+          <span style="font-size:11px;color:#909399;">增速<span style="color:#2D6A4F;font-weight:600;">10.1%</span></span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-size:11px;color:#909399;width:52px;flex-shrink:0;">公司代销</span>
+          <span style="font-size:15px;font-weight:700;color:#1D6EB6;" class="data-num">9,120<span style="font-size:11px;font-weight:400;color:#606266;">亿</span></span>
+          <span style="font-size:11px;color:#2D6A4F;font-weight:600;">+780亿</span>
+          <span style="font-size:11px;color:#909399;">增速<span style="color:#B8650A;font-weight:600;">9.4%</span></span>
+          <span style="font-size:10px;color:#C0392B;">低于行业0.7pp</span>
+        </div>
+      </div>
+      <div style="margin-top:6px;padding-top:6px;border-top:1px solid #EBEEF5;display:flex;gap:6px;">
+        <div style="flex:1;text-align:center;">
+          <div style="font-size:9px;color:#909399;">2024年</div>
+          <div style="font-size:11px;font-weight:600;color:#909399;">+758亿</div>
+        </div>
+        <div style="width:1px;background:#D7E2EB;"></div>
+        <div style="flex:1;text-align:center;">
+          <div style="font-size:9px;color:#909399;">2025年</div>
+          <div style="font-size:11px;font-weight:600;color:#909399;">+892亿</div>
+        </div>
+        <div style="width:1px;background:#D7E2EB;"></div>
+        <div style="flex:1;text-align:center;">
+          <div style="font-size:9px;color:#909399;">2026YTD</div>
+          <div style="font-size:11px;font-weight:600;color:#2D6A4F;">+1,117亿</div>
+        </div>
+      </div>
+      <div class="kpi-delta up" style="font-size:10px;">连续三年增长 · 固收贡献60.2% · 第三方互联网渠道增速最快</div>
+    </div>
     <div class="kpi-card c-amber">
       <div class="kpi-label">年管理费收入（估算）</div>
       <div class="kpi-value">34.0<small> 亿</small></div>
@@ -372,19 +408,19 @@ html { scroll-behavior: smooth; }
 
   <!-- L1-Row1: Industry Ranking + Sub-category Rank -->
   <div class="grid-2">
-    <div class="panel panel-blue">
+    <div class="panel panel-blue" style="display:flex;flex-direction:column;">
       <div class="panel-title">公募基金行业规模排名（TOP15）</div>
       <div class="tab-bar">
         <button class="tab-btn active" onclick="switchRankView('total')">总规模排名</button>
         <button class="tab-btn" onclick="switchRankView('nonmoney')">非货规模排名</button>
       </div>
-      <div id="chartRank" class="chart-container"></div>
-      <div style="margin-top:8px; font-size:11px; color:#606266;">
+      <div id="chartRank" style="flex:1;min-height:300px;width:100%;"></div>
+      <div style="margin-top:8px; font-size:11px; color:#606266;flex-shrink:0;">
         数据来源：中国证券投资基金业协会（2026Q2）。建信基金总规模10,178亿（2026Q2），行业排名<strong style="color:#1D6EB6;">第11位</strong>，新晋万亿俱乐部。非货规模排名第28位，仍为明显短板。
       </div>
     </div>
 
-    <div class="panel panel-gold">
+    <div class="panel panel-gold" style="display:flex;flex-direction:column;">
       <div class="panel-title">细分品类行业排名 & 趋势</div>
       <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-bottom:12px;">
         <div style="padding:14px; background:#EDF5F0; border-radius:10px; text-align:center;">
@@ -406,9 +442,77 @@ html { scroll-behavior: smooth; }
           <div style="font-size:10px; color:#606266; margin-top:2px;">核心短板待突破</div>
         </div>
       </div>
-      <div style="font-size:13px; font-weight:700; margin-bottom:8px; color:#303133;">近五年总规模排名趋势</div>
-      <div id="chartRankTrend" class="chart-container-sm"></div>
-      <div style="margin-top:8px; padding:10px; background:#F0F5FD; border-radius:8px; font-size:11px; color:#1A4A7B;">
+      <!-- 品类排名明细表 -->
+      <div style="margin-top:4px;">
+        <div class="tab-bar" style="margin-bottom:8px;">
+          <button class="tab-btn active" onclick="switchCategoryRank('money')">货币类 TOP10</button>
+          <button class="tab-btn" onclick="switchCategoryRank('fixed')">固收类 TOP10</button>
+          <button class="tab-btn" onclick="switchCategoryRank('equity')">权益类 TOP15</button>
+        </div>
+        <div id="categoryRankMoney" style="max-height:260px;overflow-y:auto;">
+          <table class="table-compact">
+            <thead><tr><th style="width:32px;">#</th><th>公司名称</th><th style="width:72px;">规模(亿)</th><th style="width:62px;">占行业比</th><th style="width:56px;">较上季</th></tr></thead>
+            <tbody>
+              <tr><td class="data-num" style="color:#D4940B;font-weight:700;">1</td><td>天弘基金</td><td class="data-num" style="font-weight:700;">8,560</td><td>6.72%</td><td style="color:#2D6A4F;">+2.1%</td></tr>
+              <tr><td class="data-num" style="color:#909399;font-weight:700;">2</td><td>易方达基金</td><td class="data-num" style="font-weight:700;">7,280</td><td>5.72%</td><td style="color:#2D6A4F;">+1.8%</td></tr>
+              <tr><td class="data-num" style="color:#909399;font-weight:700;">3</td><td>南方基金</td><td class="data-num" style="font-weight:700;">6,950</td><td>5.46%</td><td style="color:#2D6A4F;">+0.9%</td></tr>
+              <tr style="background:#EDF5F0;"><td class="data-num" style="color:#2D6A4F;font-weight:700;">4</td><td><strong>建信基金</strong></td><td class="data-num" style="font-weight:700;color:#2D6A4F;">6,520</td><td>5.12%</td><td style="color:#2D6A4F;">+2.5%</td></tr>
+              <tr><td class="data-num" style="font-weight:600;">5</td><td>博时基金</td><td class="data-num" style="font-weight:600;">5,880</td><td>4.62%</td><td style="color:#2D6A4F;">+1.2%</td></tr>
+              <tr><td class="data-num" style="font-weight:600;">6</td><td>广发基金</td><td class="data-num">5,420</td><td>4.26%</td><td style="color:#C0392B;">-0.5%</td></tr>
+              <tr><td class="data-num" style="font-weight:600;">7</td><td>华夏基金</td><td class="data-num">4,980</td><td>3.91%</td><td style="color:#2D6A4F;">+3.1%</td></tr>
+              <tr><td class="data-num" style="font-weight:600;">8</td><td>嘉实基金</td><td class="data-num">4,650</td><td>3.65%</td><td style="color:#2D6A4F;">+0.8%</td></tr>
+              <tr><td class="data-num" style="font-weight:600;">9</td><td>招商基金</td><td class="data-num">4,320</td><td>3.39%</td><td style="color:#2D6A4F;">+1.5%</td></tr>
+              <tr><td class="data-num" style="font-weight:600;">10</td><td>工银瑞信</td><td class="data-num">3,980</td><td>3.13%</td><td style="color:#C0392B;">-0.3%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="categoryRankFixed" class="hidden" style="max-height:260px;overflow-y:auto;">
+          <table class="table-compact">
+            <thead><tr><th style="width:32px;">#</th><th>公司名称</th><th style="width:72px;">规模(亿)</th><th style="width:62px;">占行业比</th><th style="width:56px;">较上季</th></tr></thead>
+            <tbody>
+              <tr><td class="data-num" style="color:#D4940B;font-weight:700;">1</td><td>招商基金</td><td class="data-num" style="font-weight:700;">3,820</td><td>8.45%</td><td style="color:#2D6A4F;">+2.8%</td></tr>
+              <tr><td class="data-num" style="color:#909399;font-weight:700;">2</td><td>博时基金</td><td class="data-num" style="font-weight:700;">3,510</td><td>7.76%</td><td style="color:#2D6A4F;">+1.5%</td></tr>
+              <tr><td class="data-num" style="color:#909399;font-weight:700;">3</td><td>易方达基金</td><td class="data-num" style="font-weight:700;">3,250</td><td>7.19%</td><td style="color:#2D6A4F;">+2.1%</td></tr>
+              <tr><td class="data-num" style="font-weight:600;">4</td><td>南方基金</td><td class="data-num" style="font-weight:600;">2,920</td><td>6.46%</td><td style="color:#2D6A4F;">+1.2%</td></tr>
+              <tr style="background:#F0F5FD;"><td class="data-num" style="color:#1D6EB6;font-weight:700;">5</td><td><strong>建信基金</strong></td><td class="data-num" style="font-weight:700;color:#1D6EB6;">2,850</td><td>6.30%</td><td style="color:#2D6A4F;">+3.2%</td></tr>
+              <tr><td class="data-num" style="font-weight:600;">6</td><td>广发基金</td><td class="data-num">2,680</td><td>5.93%</td><td style="color:#2D6A4F;">+0.8%</td></tr>
+              <tr><td class="data-num" style="font-weight:600;">7</td><td>华夏基金</td><td class="data-num">2,410</td><td>5.33%</td><td style="color:#2D6A4F;">+1.9%</td></tr>
+              <tr><td class="data-num" style="font-weight:600;">8</td><td>富国基金</td><td class="data-num">2,150</td><td>4.76%</td><td style="color:#C0392B;">-0.6%</td></tr>
+              <tr><td class="data-num" style="font-weight:600;">9</td><td>嘉实基金</td><td class="data-num">1,980</td><td>4.38%</td><td style="color:#2D6A4F;">+1.1%</td></tr>
+              <tr><td class="data-num" style="font-weight:600;">10</td><td>工银瑞信</td><td class="data-num">1,850</td><td>4.09%</td><td style="color:#2D6A4F;">+0.5%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="categoryRankEquity" class="hidden" style="max-height:260px;overflow-y:auto;">
+          <table class="table-compact">
+            <thead><tr><th style="width:32px;">#</th><th>公司名称</th><th style="width:72px;">规模(亿)</th><th style="width:62px;">占行业比</th><th style="width:56px;">较上季</th></tr></thead>
+            <tbody>
+              <tr><td class="data-num" style="color:#D4940B;font-weight:700;">1</td><td>易方达基金</td><td class="data-num" style="font-weight:700;">5,820</td><td>8.92%</td><td style="color:#2D6A4F;">+3.5%</td></tr>
+              <tr><td class="data-num" style="color:#909399;font-weight:700;">2</td><td>华夏基金</td><td class="data-num" style="font-weight:700;">5,480</td><td>8.40%</td><td style="color:#2D6A4F;">+2.8%</td></tr>
+              <tr><td class="data-num" style="color:#909399;font-weight:700;">3</td><td>广发基金</td><td class="data-num" style="font-weight:700;">4,920</td><td>7.54%</td><td style="color:#2D6A4F;">+1.6%</td></tr>
+              <tr><td class="data-num" style="font-weight:600;">4</td><td>南方基金</td><td class="data-num" style="font-weight:600;">4,350</td><td>6.67%</td><td style="color:#2D6A4F;">+2.1%</td></tr>
+              <tr><td class="data-num" style="font-weight:600;">5</td><td>富国基金</td><td class="data-num" style="font-weight:600;">3,980</td><td>6.10%</td><td style="color:#C0392B;">-0.8%</td></tr>
+              <tr><td class="data-num" style="font-weight:600;">6</td><td>嘉实基金</td><td class="data-num">3,620</td><td>5.55%</td><td style="color:#2D6A4F;">+1.2%</td></tr>
+              <tr><td class="data-num" style="font-weight:600;">7</td><td>招商基金</td><td class="data-num">3,280</td><td>5.03%</td><td style="color:#2D6A4F;">+2.5%</td></tr>
+              <tr><td class="data-num" style="font-weight:600;">8</td><td>博时基金</td><td class="data-num">2,950</td><td>4.52%</td><td style="color:#2D6A4F;">+0.9%</td></tr>
+              <tr><td class="data-num" style="font-weight:600;">9</td><td>鹏华基金</td><td class="data-num">2,680</td><td>4.11%</td><td style="color:#2D6A4F;">+1.8%</td></tr>
+              <tr><td class="data-num" style="font-weight:600;">10</td><td>华安基金</td><td class="data-num">2,450</td><td>3.76%</td><td style="color:#C0392B;">-0.4%</td></tr>
+              <tr><td class="data-num" style="font-weight:600;">11</td><td>中欧基金</td><td class="data-num">2,180</td><td>3.34%</td><td style="color:#2D6A4F;">+0.6%</td></tr>
+              <tr><td class="data-num" style="font-weight:600;">12</td><td>景顺长城</td><td class="data-num">1,950</td><td>2.99%</td><td style="color:#2D6A4F;">+1.1%</td></tr>
+              <tr><td class="data-num" style="font-weight:600;">13</td><td>交银施罗德</td><td class="data-num">1,820</td><td>2.79%</td><td style="color:#C0392B;">-1.2%</td></tr>
+              <tr style="background:#FDF5ED;"><td class="data-num" style="color:#B8650A;font-weight:700;">18</td><td><strong>建信基金</strong></td><td class="data-num" style="font-weight:700;color:#B8650A;">1,180</td><td>1.81%</td><td style="color:#C0392B;">-2.1%</td></tr>
+              <tr><td class="data-num" style="font-weight:600;">14</td><td>天弘基金</td><td class="data-num">1,650</td><td>2.53%</td><td style="color:#2D6A4F;">+0.3%</td></tr>
+              <tr><td class="data-num" style="font-weight:600;">15</td><td>汇添富基金</td><td class="data-num">1,520</td><td>2.33%</td><td style="color:#C0392B;">-0.2%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-top:4px;font-size:10px;color:#909399;text-align:center;">
+          数据来源：Wind，2026Q2 · 不含ETF联接基金重复计算 · 绿色高亮行为建信基金
+        </div>
+      </div>
+      <div style="font-size:13px; font-weight:700; margin:10px 0 8px; color:#303133;flex-shrink:0;">近五年总规模排名趋势</div>
+      <div id="chartRankTrend" style="flex:1;min-height:160px;width:100%;"></div>
+      <div style="margin-top:8px; padding:10px; background:#F0F5FD; border-radius:8px; font-size:11px; color:#1A4A7B;flex-shrink:0;">
         <strong>排名解读：</strong>建信基金2022年以来总规模排名从第12位升至第11位，2026Q1首次突破万亿。但权益类排名连续下滑（第16→第27），主要驱动力为货币类规模增长和固收类渠道扩张。但权益类排名连续两年下滑（第15→第18），需重点关注权益投研能力建设。
       </div>
     </div>
@@ -416,23 +520,86 @@ html { scroll-behavior: smooth; }
 
   <!-- L1-Row2: Scale Structure + Channel Distribution -->
   <div class="grid-2">
-    <div class="panel">
-      <div class="panel-header">
+    <div class="panel" style="display:flex;flex-direction:column;">
+      <div class="panel-header" style="flex-shrink:0;">
         <span class="panel-title">规模结构分布</span>
         <span class="panel-badge">资产大类 & 资金来源</span>
       </div>
-      <div class="double-chart">
+      <div class="double-chart" style="flex:1;min-height:280px;">
         <div class="mini-chart" id="chartScaleAsset"></div>
         <div class="mini-chart" id="chartScaleSource"></div>
       </div>
-      <div style="margin-top:8px; font-size:11px; color:#606266; text-align:center;">
-        货币类占比79.4%为第一大品类 · 机构客户贡献超半数规模 · 银行系渠道优势显著
+      <div style="margin-top:6px;flex-shrink:0;">
+        <div style="font-size:11px;font-weight:600;color:#303133;margin-bottom:6px;">规模增比 & 同业对比（2026H1 vs 2025H2）</div>
+        <table class="table-compact">
+          <thead>
+            <tr><th>资产大类</th><th style="text-align:right;">规模(亿)</th><th style="text-align:right;">规模增比</th><th style="text-align:right;">同业增比</th><th style="text-align:right;">差值</th><th>评价</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge badge-r1">货币类</span></td>
+              <td class="data-num" style="font-weight:600;">8,080</td>
+              <td class="data-num" style="color:#2D6A4F;font-weight:600;">+12.5%</td>
+              <td class="data-num" style="color:#606266;">+9.8%</td>
+              <td class="data-num" style="color:#2D6A4F;font-weight:600;">+2.7pp</td>
+              <td><span class="badge badge-ok">优于同业</span></td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-r2">固收类</span></td>
+              <td class="data-num" style="font-weight:600;">1,425</td>
+              <td class="data-num" style="color:#2D6A4F;font-weight:600;">+18.2%</td>
+              <td class="data-num" style="color:#606266;">+15.5%</td>
+              <td class="data-num" style="color:#2D6A4F;font-weight:600;">+2.7pp</td>
+              <td><span class="badge badge-ok">优于同业</span></td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-r4">权益类</span></td>
+              <td class="data-num" style="font-weight:600;">363</td>
+              <td class="data-num" style="color:#B8650A;font-weight:600;">+5.8%</td>
+              <td class="data-num" style="color:#606266;">+14.2%</td>
+              <td class="data-num" style="color:#C0392B;font-weight:600;">−8.4pp</td>
+              <td><span class="badge badge-warn">落后同业</span></td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-r3">混合类</span></td>
+              <td class="data-num" style="font-weight:600;">152</td>
+              <td class="data-num" style="color:#B8650A;font-weight:600;">+6.5%</td>
+              <td class="data-num" style="color:#606266;">+8.2%</td>
+              <td class="data-num" style="color:#C0392B;font-weight:600;">−1.7pp</td>
+              <td><span class="badge badge-info">待提升</span></td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-gray">另类/QDII</span></td>
+              <td class="data-num" style="font-weight:600;">158</td>
+              <td class="data-num" style="color:#2D6A4F;font-weight:600;">+22.5%</td>
+              <td class="data-num" style="color:#606266;">+18.0%</td>
+              <td class="data-num" style="color:#2D6A4F;font-weight:600;">+4.5pp</td>
+              <td><span class="badge badge-ok">优于同业</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top:4px; font-size:10px; color:#909399; text-align:center;">
+          数据来源：Wind，2026Q2 · 同业增比取银行系基金公司中位数 · 货币类占比79.4%为第一大品类
+        </div>
       </div>
     </div>
 
-    <div class="panel panel-cyan">
-      <div class="panel-title">渠道规模分布（银行系特征）</div>
-      <div id="chartChannel" class="chart-container"></div>
+    <div class="panel panel-cyan" style="display:flex;flex-direction:column;">
+      <div class="panel-header" style="flex-shrink:0;">
+        <span class="panel-title">渠道规模分布（银行系特征）</span>
+        <span class="panel-badge">渠道分布 · 同业比较 · 资产大类</span>
+      </div>
+      <div class="tab-bar" style="margin-bottom:12px;flex-shrink:0;">
+        <button class="tab-btn active" onclick="switchChannelView('channel')">渠道分布</button>
+        <button class="tab-btn" onclick="switchChannelView('peer')">同业比较</button>
+        <button class="tab-btn" onclick="switchChannelView('asset')">资产大类视角</button>
+      </div>
+      <div id="chartChannelWrap" style="flex:1;min-height:240px;width:100%;"></div>
+      <div id="chartChannelPeerWrap" style="flex:1;min-height:240px;width:100%;" class="hidden"></div>
+      <div id="chartChannelAssetWrap" style="flex:1;min-height:240px;width:100%;" class="hidden"></div>
+      <div id="channelInsight" style="margin-top:8px; font-size:11px; color:#606266; text-align:center;flex-shrink:0;">
+        银行渠道（建行+其他银行）合计占比67.3% · 第三方互联网渠道快速崛起 · 保险/年金增量明显
+      </div>
     </div>
   </div>
 
@@ -525,6 +692,9 @@ html { scroll-behavior: smooth; }
     <div class="panel panel-gold">
       <div class="panel-title">各类型产品近一年收益走势</div>
       <div id="chartTrend" class="chart-container"></div>
+      <div style="margin-top:4px; font-size:10px; color:#909399; text-align:center;">
+        实线 = 建信基金 · 虚线 = 同业均值（银行系中位数）· 权益类收益率明显落后同业
+      </div>
     </div>
   </div>
 
@@ -535,11 +705,11 @@ html { scroll-behavior: smooth; }
       <div id="chartStatus" class="chart-container-sm"></div>
       <table class="table-compact" style="margin-top:10px;">
         <tr><th>状态</th><th>产品数</th><th>规模（亿）</th><th>规模占比</th><th>健康度</th></tr>
-        <tr><td><span class="badge badge-ok">正常运作</span></td><td>152</td><td>10,850</td><td>84.1%</td><td><div class="progress-track"><div class="progress-fill" style="width:84%;background:#2D6A4F;"></div></div></td></tr>
-        <tr><td><span class="badge badge-info">建仓期</span></td><td>10</td><td>680</td><td>5.3%</td><td><div class="progress-track"><div class="progress-fill" style="width:5%;background:#409EFF;"></div></div></td></tr>
-        <tr><td><span class="badge badge-info">募集期</span></td><td>14</td><td>890</td><td>6.9%</td><td><div class="progress-track"><div class="progress-fill" style="width:7%;background:#D4940B;"></div></div></td></tr>
-        <tr><td><span class="badge badge-warn">暂停申赎</span></td><td>7</td><td>120</td><td>0.9%</td><td><div class="progress-track"><div class="progress-fill" style="width:1%;background:#B8650A;"></div></div></td></tr>
-        <tr><td><span class="badge badge-warn">清盘预警</span></td><td>3</td><td>360</td><td>2.8%</td><td><div class="progress-track"><div class="progress-fill" style="width:3%;background:#C0392B;"></div></div></td></tr>
+        <tr><td><span class="badge badge-ok">正常运作</span></td><td class="data-num" style="font-weight:600;">280</td><td class="data-num" style="font-weight:600;">8,650</td><td>85.0%</td><td><div class="progress-track"><div class="progress-fill" style="width:79%;background:#2D6A4F;"></div></div></td></tr>
+        <tr><td><span class="badge badge-info">建仓期</span></td><td class="data-num" style="font-weight:600;">16</td><td class="data-num" style="font-weight:600;">480</td><td>4.7%</td><td><div class="progress-track"><div class="progress-fill" style="width:5%;background:#409EFF;"></div></div></td></tr>
+        <tr><td><span class="badge badge-info">募集期</span></td><td class="data-num" style="font-weight:600;">22</td><td class="data-num" style="font-weight:600;">520</td><td>5.1%</td><td><div class="progress-track"><div class="progress-fill" style="width:6%;background:#D4940B;"></div></div></td></tr>
+        <tr><td><span class="badge badge-warn">暂停申赎</span></td><td class="data-num" style="font-weight:600;">18</td><td class="data-num" style="font-weight:600;">350</td><td>3.4%</td><td><div class="progress-track"><div class="progress-fill" style="width:5%;background:#B8650A;"></div></div></td></tr>
+        <tr><td><span class="badge badge-warn">清盘预警/小微</span></td><td class="data-num" style="font-weight:600;">18</td><td class="data-num" style="font-weight:600;">178</td><td>1.7%</td><td><div class="progress-track"><div class="progress-fill" style="width:5%;background:#C0392B;"></div></div></td></tr>
       </table>
     </div>
 
@@ -570,77 +740,77 @@ html { scroll-behavior: smooth; }
       <div style="max-height:320px; overflow-y:auto; margin-bottom:10px;">
         <table class="table-compact">
           <thead>
-            <tr><th style="width:14%;">资产大类</th><th style="width:22%;">策略赛道</th><th style="width:10%;">产品数</th><th style="width:14%;">规模(亿)</th><th style="width:28%;">代表产品</th><th style="width:12%;">覆盖状态</th></tr>
+            <tr><th style="width:12%;">资产大类</th><th style="width:20%;">策略赛道</th><th style="width:8%;">产品数</th><th style="width:10%;">规模(亿)</th><th style="width:22%;">代表产品</th><th style="width:10%;">覆盖状态</th><th style="width:12%;">同业平均规模</th></tr>
           </thead>
           <tbody>
             <tr>
               <td rowspan="3" style="vertical-align:middle;font-weight:700;color:#1D6EB6;background:#F0F5FD;">💰 货币类</td>
-              <td>现金管理/互联网货币</td><td style="font-weight:600;">8</td><td style="font-weight:600;">2,850</td><td style="font-size:10px;">建信现金添利(1,415亿)、嘉薪宝(139亿)</td><td><span class="badge badge-ok">已覆盖</span></td>
+              <td>现金管理/互联网货币</td><td style="font-weight:600;">8</td><td style="font-weight:600;">2,850</td><td style="font-size:10px;">建信现金添利(1,415亿)、嘉薪宝(139亿)</td><td><span class="badge badge-ok">已覆盖</span></td><td class="data-num" style="font-size:11px;color:#606266;">3,520亿</td>
             </tr>
             <tr>
-              <td>机构大额货币</td><td style="font-weight:600;">6</td><td style="font-weight:600;">1,980</td><td style="font-size:10px;">建信货币(389亿)、现金增利(357亿)</td><td><span class="badge badge-ok">已覆盖</span></td>
+              <td>机构大额货币</td><td style="font-weight:600;">6</td><td style="font-weight:600;">1,980</td><td style="font-size:10px;">建信货币(389亿)、现金增利(357亿)</td><td><span class="badge badge-ok">已覆盖</span></td><td class="data-num" style="font-size:11px;color:#606266;">2,180亿</td>
             </tr>
             <tr>
-              <td>场内货币ETF</td><td style="font-weight:600;">4</td><td style="font-weight:600;">330</td><td style="font-size:10px;">建信货币ETF(180亿)、现金添益ETF(150亿)</td><td><span class="badge badge-ok">已覆盖</span></td>
+              <td>场内货币ETF</td><td style="font-weight:600;">4</td><td style="font-weight:600;">330</td><td style="font-size:10px;">建信货币ETF(180亿)、现金添益ETF(150亿)</td><td><span class="badge badge-ok">已覆盖</span></td><td class="data-num" style="font-size:11px;color:#909399;">285亿</td>
             </tr>
 
             <tr>
               <td rowspan="5" style="vertical-align:middle;font-weight:700;color:#2D6A4F;background:#EDF5F0;">📦 固收类</td>
-              <td>纯债/利率债</td><td style="font-weight:600;">22</td><td style="font-weight:600;">1,580</td><td style="font-size:10px;">建信纯债(299亿)、稳定增利(187亿)、信用增强(142亿)</td><td><span class="badge badge-ok">已覆盖</span></td>
+              <td>纯债/利率债</td><td style="font-weight:600;">22</td><td style="font-weight:600;">1,580</td><td style="font-size:10px;">建信纯债(299亿)、稳定增利(187亿)、信用增强(142亿)</td><td><span class="badge badge-ok">已覆盖</span></td><td class="data-num" style="font-size:11px;color:#606266;">1,180亿</td>
             </tr>
             <tr>
-              <td>中短债/短债</td><td style="font-weight:600;">18</td><td style="font-weight:600;">1,420</td><td style="font-size:10px;">建信短债(246亿)、鑫悦90天(198亿)、鑫福60天(156亿)</td><td><span class="badge badge-ok">已覆盖</span></td>
+              <td>中短债/短债</td><td style="font-weight:600;">18</td><td style="font-weight:600;">1,420</td><td style="font-size:10px;">建信短债(246亿)、鑫悦90天(198亿)、鑫福60天(156亿)</td><td><span class="badge badge-ok">已覆盖</span></td><td class="data-num" style="font-size:11px;color:#2D6A4F;">950亿<span style="font-size:9px;color:#2D6A4F;"> ↑高于同业</span></td>
             </tr>
             <tr>
-              <td>固收+/二级债</td><td style="font-weight:600;">14</td><td style="font-weight:600;">720</td><td style="font-size:10px;">建信稳定得利(88亿)、双息红利(65亿)</td><td><span class="badge badge-ok">已覆盖</span></td>
+              <td>固收+/二级债</td><td style="font-weight:600;">14</td><td style="font-weight:600;">720</td><td style="font-size:10px;">建信稳定得利(88亿)、双息红利(65亿)</td><td><span class="badge badge-ok">已覆盖</span></td><td class="data-num" style="font-size:11px;color:#2D6A4F;">580亿<span style="font-size:9px;color:#2D6A4F;"> ↑高于同业</span></td>
             </tr>
             <tr>
-              <td>可转债</td><td style="font-weight:600;">4</td><td style="font-weight:600;">160</td><td style="font-size:10px;">建信可转债增强(45亿)、转债优选(38亿)</td><td><span class="badge badge-ok">已覆盖</span></td>
+              <td>可转债</td><td style="font-weight:600;">4</td><td style="font-weight:600;">160</td><td style="font-size:10px;">建信可转债增强(45亿)、转债优选(38亿)</td><td><span class="badge badge-ok">已覆盖</span></td><td class="data-num" style="font-size:11px;color:#2D6A4F;">120亿<span style="font-size:9px;color:#2D6A4F;"> ↑高于同业</span></td>
             </tr>
             <tr>
-              <td>定开债/持有期</td><td style="font-weight:600;">10</td><td style="font-weight:600;">500</td><td style="font-size:10px;">鑫享一年定开(120亿)、安享纯债(95亿)</td><td><span class="badge badge-ok">已覆盖</span></td>
+              <td>定开债/持有期</td><td style="font-weight:600;">10</td><td style="font-weight:600;">500</td><td style="font-size:10px;">鑫享一年定开(120亿)、安享纯债(95亿)</td><td><span class="badge badge-ok">已覆盖</span></td><td class="data-num" style="font-size:11px;color:#2D6A4F;">420亿<span style="font-size:9px;color:#2D6A4F;"> ↑高于同业</span></td>
             </tr>
 
             <tr>
               <td rowspan="4" style="vertical-align:middle;font-weight:700;color:#B8650A;background:#FDF5ED;">权益类</td>
-              <td>全市场精选</td><td style="font-weight:600;">14</td><td style="font-weight:600;">480</td><td style="font-size:10px;">建信改革红利(85亿)、健康民生(72亿)</td><td><span class="badge badge-ok">已覆盖</span></td>
+              <td>全市场精选</td><td style="font-weight:600;">14</td><td style="font-weight:600;">480</td><td style="font-size:10px;">建信改革红利(85亿)、健康民生(72亿)</td><td><span class="badge badge-ok">已覆盖</span></td><td class="data-num" style="font-size:11px;color:#606266;">350亿</td>
             </tr>
             <tr>
-              <td>行业主题</td><td style="font-weight:600;">12</td><td style="font-weight:600;">350</td><td style="font-size:10px;">新能源行业(48亿)、医疗健康(42亿)</td><td><span class="badge badge-ok">已覆盖</span></td>
+              <td>行业主题</td><td style="font-weight:600;">12</td><td style="font-weight:600;">350</td><td style="font-size:10px;">新能源行业(48亿)、医疗健康(42亿)</td><td><span class="badge badge-ok">已覆盖</span></td><td class="data-num" style="font-size:11px;color:#606266;">280亿</td>
             </tr>
             <tr>
-              <td>量化指增</td><td style="font-weight:600;">8</td><td style="font-weight:600;">250</td><td style="font-size:10px;">中证500指增(80亿)、沪深300指增(70亿)</td><td><span class="badge badge-ok">已覆盖</span></td>
+              <td>量化指增</td><td style="font-weight:600;">8</td><td style="font-weight:600;">250</td><td style="font-size:10px;">中证500指增(80亿)、沪深300指增(70亿)</td><td><span class="badge badge-ok">已覆盖</span></td><td class="data-num" style="font-size:11px;color:#B8650A;">180亿<span style="font-size:9px;color:#B8650A;"> 接近同业</span></td>
             </tr>
             <tr>
-              <td>被动指数/ETF</td><td style="font-weight:600;">18</td><td style="font-weight:600;">720</td><td style="font-size:10px;">中证500ETF(320亿)、沪深300ETF(280亿)、A500ETF联接(49亿)</td><td><span class="badge badge-ok">已覆盖</span></td>
+              <td>被动指数/ETF</td><td style="font-weight:600;">18</td><td style="font-weight:600;">720</td><td style="font-size:10px;">中证500ETF(320亿)、沪深300ETF(280亿)、A500ETF联接(49亿)</td><td><span class="badge badge-ok">已覆盖</span></td><td class="data-num" style="font-size:11px;color:#606266;">520亿</td>
             </tr>
 
             <tr>
               <td rowspan="4" style="vertical-align:middle;font-weight:700;color:#D4940B;background:#FFF8E8;"> 混合类</td>
-              <td>偏股混合</td><td style="font-weight:600;">12</td><td style="font-weight:600;">380</td><td style="font-size:10px;">优化配置(88亿)、核心精选(72亿)</td><td><span class="badge badge-ok">已覆盖</span></td>
+              <td>偏股混合</td><td style="font-weight:600;">12</td><td style="font-weight:600;">380</td><td style="font-size:10px;">优化配置(88亿)、核心精选(72亿)</td><td><span class="badge badge-ok">已覆盖</span></td><td class="data-num" style="font-size:11px;color:#606266;">220亿</td>
             </tr>
             <tr>
-              <td>偏债混合</td><td style="font-weight:600;">10</td><td style="font-weight:600;">320</td><td style="font-size:10px;">建信稳健回报(78亿)、安心保本(62亿)</td><td><span class="badge badge-ok">已覆盖</span></td>
+              <td>偏债混合</td><td style="font-weight:600;">10</td><td style="font-weight:600;">320</td><td style="font-size:10px;">建信稳健回报(78亿)、安心保本(62亿)</td><td><span class="badge badge-ok">已覆盖</span></td><td class="data-num" style="font-size:11px;color:#2D6A4F;">180亿<span style="font-size:9px;color:#2D6A4F;"> ↑高于同业</span></td>
             </tr>
             <tr>
-              <td>灵活配置</td><td style="font-weight:600;">6</td><td style="font-weight:600;">180</td><td style="font-size:10px;">建信灵活配置混合(42亿)、鑫利回报(28亿)</td><td><span class="badge badge-ok">已覆盖</span></td>
+              <td>灵活配置</td><td style="font-weight:600;">6</td><td style="font-weight:600;">180</td><td style="font-size:10px;">建信灵活配置混合(42亿)、鑫利回报(28亿)</td><td><span class="badge badge-ok">已覆盖</span></td><td class="data-num" style="font-size:11px;color:#2D6A4F;">120亿<span style="font-size:9px;color:#2D6A4F;"> ↑高于同业</span></td>
             </tr>
             <tr>
-              <td>养老FOF</td><td style="font-weight:600;">4</td><td style="font-weight:600;">100</td><td style="font-size:10px;">优享稳健养老(45亿)、优享平衡(30亿)</td><td><span class="badge badge-ok">已覆盖</span></td>
+              <td>养老FOF</td><td style="font-weight:600;">4</td><td style="font-weight:600;">100</td><td style="font-size:10px;">优享稳健养老(45亿)、优享平衡(30亿)</td><td><span class="badge badge-ok">已覆盖</span></td><td class="data-num" style="font-size:11px;color:#B8650A;">80亿<span style="font-size:9px;color:#B8650A;"> 持平同业</span></td>
             </tr>
 
             <tr style="background:#EDF5F0;">
               <td rowspan="4" style="vertical-align:middle;font-weight:700;color:#C0392B;background:#FBEEED;">🌍 另类/QDII</td>
-              <td>公募REITs</td><td style="font-weight:600;">4</td><td style="font-weight:600;">180</td><td style="font-size:10px;">中关村REIT(90亿)、普洛斯REIT(55亿)</td><td><span class="badge badge-ok">已覆盖</span></td>
+              <td>公募REITs</td><td style="font-weight:600;">4</td><td style="font-weight:600;">180</td><td style="font-size:10px;">中关村REIT(90亿)、普洛斯REIT(55亿)</td><td><span class="badge badge-ok">已覆盖</span></td><td class="data-num" style="font-size:11px;color:#606266;">120亿</td>
             </tr>
             <tr style="background:#EDF5F0;">
-              <td>QDII</td><td style="font-weight:600;">6</td><td style="font-weight:600;">220</td><td style="font-size:10px;">全球科技QDII(17亿)、新兴市场QDII(12亿)</td><td><span class="badge badge-ok">已覆盖</span></td>
+              <td>QDII</td><td style="font-weight:600;">6</td><td style="font-weight:600;">220</td><td style="font-size:10px;">全球科技QDII(17亿)、新兴市场QDII(12亿)</td><td><span class="badge badge-ok">已覆盖</span></td><td class="data-num" style="font-size:11px;color:#606266;">100亿</td>
             </tr>
             <tr style="background:#EDF5F0;">
-              <td>专户/其他另类</td><td style="font-weight:600;">6</td><td style="font-weight:600;">180</td><td style="font-size:10px;">专户一对多(85亿)、资产支持计划(55亿)</td><td><span class="badge badge-ok">已覆盖</span></td>
+              <td>专户/其他另类</td><td style="font-weight:600;">6</td><td style="font-weight:600;">180</td><td style="font-size:10px;">专户一对多(85亿)、资产支持计划(55亿)</td><td><span class="badge badge-ok">已覆盖</span></td><td class="data-num" style="font-size:11px;color:#606266;">85亿</td>
             </tr>
             <tr style="background:#FBEEED;">
-              <td><strong>商品/黄金ETF</strong></td><td style="font-weight:700;color:#C0392B;">0</td><td style="font-weight:700;color:#C0392B;">0</td><td style="font-size:10px;color:#8B1F1A;">暂无产品布局</td><td><span class="badge badge-warn">空白</span></td>
+              <td><strong>商品/黄金ETF</strong></td><td style="font-weight:700;color:#C0392B;">0</td><td style="font-weight:700;color:#C0392B;">0</td><td style="font-size:10px;color:#8B1F1A;">暂无产品布局</td><td><span class="badge badge-warn">空白</span></td><td class="data-num" style="font-size:11px;color:#C0392B;">150亿<span style="font-size:9px;color:#C0392B;"> 建信空缺</span></td>
             </tr>
           </tbody>
         </table>
@@ -790,7 +960,90 @@ html { scroll-behavior: smooth; }
     </div>
   </div>
 
-  <!-- L4-Row2: Manager Load + New Products -->
+  <!-- L4-Row2: 各资产大类 TOP5 -->
+  <div class="panel panel-gold">
+    <div class="panel-header">
+      <span class="panel-title">各资产大类 TOP5 产品</span>
+      <span class="panel-badge">按规模降序 · 截至2026Q2</span>
+    </div>
+    <div class="tab-bar" style="margin-bottom:10px;">
+      <button class="tab-btn active" onclick="switchAssetTop5('money')">货币类 TOP5</button>
+      <button class="tab-btn" onclick="switchAssetTop5('fixed')">固收类 TOP5</button>
+      <button class="tab-btn" onclick="switchAssetTop5('equity')">权益类 TOP5</button>
+      <button class="tab-btn" onclick="switchAssetTop5('hybrid')">混合类 TOP5</button>
+      <button class="tab-btn" onclick="switchAssetTop5('other')">另类/QDII TOP5</button>
+    </div>
+    <!-- 货币类 TOP5 -->
+    <div id="assetTop5Money" style="max-height:280px;overflow-y:auto;">
+      <table class="table-compact">
+        <thead><tr><th>排名</th><th>产品名称</th><th style="width:80px;">规模(亿)</th><th style="width:80px;">近1年收益</th><th style="width:70px;">年化波动率</th><th>上架货架</th><th>基金经理</th><th style="width:48px;">操作</th></tr></thead>
+        <tbody>
+          <tr><td>🥇</td><td><strong>建信现金添利货币A</strong></td><td class="data-num" style="font-weight:700;">1,414.7</td><td class="data-num" style="color:#2D6A4F;">+1.8%</td><td class="data-num">0.12%</td><td><span class="badge badge-info">建行速盈</span> <span class="badge badge-gray">建行手机银行</span> <span class="badge badge-gray">支付宝</span></td><td>吴沛文/于倩倩</td><td><a href="javascript:void(0)" onclick="showDetail('F0001')" style="color:#1D6EB6;font-size:11px;">详情</a></td></tr>
+          <tr><td>🥈</td><td><strong>建信货币A</strong></td><td class="data-num" style="font-weight:700;">389.2</td><td class="data-num" style="color:#2D6A4F;">+1.7%</td><td class="data-num">0.15%</td><td><span class="badge badge-info">建行手机银行</span> <span class="badge badge-gray">建行网银</span></td><td>吴沛文/先轲宇</td><td><a href="javascript:void(0)" onclick="showDetail('F0002')" style="color:#1D6EB6;font-size:11px;">详情</a></td></tr>
+          <tr><td>🥉</td><td><strong>建信现金增利货币A</strong></td><td class="data-num" style="font-weight:700;">356.8</td><td class="data-num" style="color:#2D6A4F;">+1.8%</td><td class="data-num">0.13%</td><td><span class="badge badge-info">建行速盈</span> <span class="badge badge-gray">微信理财通</span></td><td>陈建良</td><td><a href="javascript:void(0)" onclick="showDetail('F0003')" style="color:#1D6EB6;font-size:11px;">详情</a></td></tr>
+          <tr><td>4</td><td>建信嘉薪宝货币A</td><td class="data-num" style="font-weight:600;">138.9</td><td class="data-num" style="color:#2D6A4F;">+1.9%</td><td class="data-num">0.14%</td><td><span class="badge badge-info">建行速盈</span> <span class="badge badge-gray">支付宝</span></td><td>于倩倩</td><td><a href="javascript:void(0)" onclick="showDetail('F0010')" style="color:#1D6EB6;font-size:11px;">详情</a></td></tr>
+          <tr><td>5</td><td>建信天添益货币A</td><td class="data-num" style="font-weight:600;">95.2</td><td class="data-num" style="color:#2D6A4F;">+1.6%</td><td class="data-num">0.11%</td><td><span class="badge badge-info">建行手机银行</span> <span class="badge badge-gray">天天基金</span></td><td>陈建良/于倩倩</td><td><a href="javascript:void(0)" onclick="showDetail('F0001')" style="color:#1D6EB6;font-size:11px;">详情</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- 固收类 TOP5 -->
+    <div id="assetTop5Fixed" class="hidden" style="max-height:280px;overflow-y:auto;">
+      <table class="table-compact">
+        <thead><tr><th>排名</th><th>产品名称</th><th style="width:80px;">规模(亿)</th><th style="width:80px;">近1年收益</th><th style="width:70px;">年化波动率</th><th>上架货架</th><th>基金经理</th><th style="width:48px;">操作</th></tr></thead>
+        <tbody>
+          <tr><td>🥇</td><td><strong>建信纯债债券A</strong></td><td class="data-num" style="font-weight:700;">298.5</td><td class="data-num" style="color:#2D6A4F;">+4.3%</td><td class="data-num">1.25%</td><td><span class="badge badge-info">建行手机银行</span> <span class="badge badge-gray">天天基金</span> <span class="badge badge-gray">支付宝</span></td><td>彭紫云/黎颖芳</td><td><a href="javascript:void(0)" onclick="showDetail('F0004')" style="color:#1D6EB6;font-size:11px;">详情</a></td></tr>
+          <tr><td>🥈</td><td><strong>建信短债债券A</strong></td><td class="data-num" style="font-weight:700;">245.6</td><td class="data-num" style="color:#2D6A4F;">+2.9%</td><td class="data-num">0.68%</td><td><span class="badge badge-info">建行手机银行</span> <span class="badge badge-gray">天天基金</span> <span class="badge badge-gray">支付宝</span></td><td>李星佑/吴沛文</td><td><a href="javascript:void(0)" onclick="showDetail('F0005')" style="color:#1D6EB6;font-size:11px;">详情</a></td></tr>
+          <tr><td>🥉</td><td><strong>建信鑫悦90天滚动持有中短债</strong></td><td class="data-num" style="font-weight:700;">198.3</td><td class="data-num" style="color:#2D6A4F;">+2.8%</td><td class="data-num">0.72%</td><td><span class="badge badge-info">建行手机银行</span> <span class="badge badge-gray">天天基金</span> <span class="badge badge-gray">微信理财通</span></td><td>彭紫云/陈建良</td><td><a href="javascript:void(0)" onclick="showDetail('F0006')" style="color:#1D6EB6;font-size:11px;">详情</a></td></tr>
+          <tr><td>4</td><td>建信稳定增利债券A</td><td class="data-num" style="font-weight:600;">187.4</td><td class="data-num" style="color:#2D6A4F;">+3.5%</td><td class="data-num">1.52%</td><td><span class="badge badge-info">建行手机银行</span> <span class="badge badge-gray">机构直销</span></td><td>黎颖芳</td><td><a href="javascript:void(0)" onclick="showDetail('F0007')" style="color:#1D6EB6;font-size:11px;">详情</a></td></tr>
+          <tr><td>5</td><td>建信鑫福60天持有期中短债</td><td class="data-num" style="font-weight:600;">156.2</td><td class="data-num" style="color:#2D6A4F;">+2.5%</td><td class="data-num">0.65%</td><td><span class="badge badge-info">建行手机银行</span> <span class="badge badge-gray">天天基金</span></td><td>彭紫云/胡泽元</td><td><a href="javascript:void(0)" onclick="showDetail('F0008')" style="color:#1D6EB6;font-size:11px;">详情</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- 权益类 TOP5 -->
+    <div id="assetTop5Equity" class="hidden" style="max-height:280px;overflow-y:auto;">
+      <table class="table-compact">
+        <thead><tr><th>排名</th><th>产品名称</th><th style="width:80px;">规模(亿)</th><th style="width:80px;">近1年收益</th><th style="width:70px;">年化波动率</th><th>上架货架</th><th>基金经理</th><th style="width:48px;">操作</th></tr></thead>
+        <tbody>
+          <tr><td>🥇</td><td><strong>建信中证500ETF</strong></td><td class="data-num" style="font-weight:700;">320.5</td><td class="data-num" style="color:#2D6A4F;">+28.5%</td><td class="data-num">18.2%</td><td><span class="badge badge-info">建行手机银行</span> <span class="badge badge-gray">券商渠道</span> <span class="badge badge-gray">天天基金</span></td><td>张溢麟</td><td><a href="javascript:void(0)" onclick="showDetail('F0004')" style="color:#1D6EB6;font-size:11px;">详情</a></td></tr>
+          <tr><td>🥈</td><td><strong>建信沪深300ETF</strong></td><td class="data-num" style="font-weight:700;">280.2</td><td class="data-num" style="color:#2D6A4F;">+22.8%</td><td class="data-num">15.6%</td><td><span class="badge badge-info">建行手机银行</span> <span class="badge badge-gray">券商渠道</span> <span class="badge badge-gray">天天基金</span></td><td>王剑</td><td><a href="javascript:void(0)" onclick="showDetail('F0004')" style="color:#1D6EB6;font-size:11px;">详情</a></td></tr>
+          <tr><td>🥉</td><td><strong>建信改革红利股票</strong></td><td class="data-num" style="font-weight:700;">85.2</td><td class="data-num" style="color:#2D6A4F;">+18.2%</td><td class="data-num">21.5%</td><td><span class="badge badge-info">建行手机银行</span> <span class="badge badge-gray">建行网银</span></td><td>胡泽元</td><td><a href="javascript:void(0)" onclick="showDetail('F0007')" style="color:#1D6EB6;font-size:11px;">详情</a></td></tr>
+          <tr><td>4</td><td>建信中证500指数增强A</td><td class="data-num" style="font-weight:600;">80.5</td><td class="data-num" style="color:#2D6A4F;">+26.5%</td><td class="data-num">17.8%</td><td><span class="badge badge-info">建行手机银行</span> <span class="badge badge-gray">券商渠道</span></td><td>王剑</td><td><a href="javascript:void(0)" onclick="showDetail('F0007')" style="color:#1D6EB6;font-size:11px;">详情</a></td></tr>
+          <tr><td>5</td><td>建信健康民生股票</td><td class="data-num" style="font-weight:600;">72.1</td><td class="data-num" style="color:#B8650A;">+12.5%</td><td class="data-num">22.8%</td><td><span class="badge badge-info">建行手机银行</span> <span class="badge badge-gray">支付宝</span></td><td>陈思宇</td><td><a href="javascript:void(0)" onclick="showDetail('F0007')" style="color:#1D6EB6;font-size:11px;">详情</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- 混合类 TOP5 -->
+    <div id="assetTop5Hybrid" class="hidden" style="max-height:280px;overflow-y:auto;">
+      <table class="table-compact">
+        <thead><tr><th>排名</th><th>产品名称</th><th style="width:80px;">规模(亿)</th><th style="width:80px;">近1年收益</th><th style="width:70px;">年化波动率</th><th>上架货架</th><th>基金经理</th><th style="width:48px;">操作</th></tr></thead>
+        <tbody>
+          <tr><td>🥇</td><td><strong>建信优化配置混合A</strong></td><td class="data-num" style="font-weight:700;">88.2</td><td class="data-num" style="color:#2D6A4F;">+16.5%</td><td class="data-num">15.2%</td><td><span class="badge badge-info">建行手机银行</span> <span class="badge badge-gray">建行网银</span> <span class="badge badge-gray">天天基金</span></td><td>胡泽元</td><td><a href="javascript:void(0)" onclick="showDetail('F0007')" style="color:#1D6EB6;font-size:11px;">详情</a></td></tr>
+          <tr><td>🥈</td><td><strong>建信核心精选混合</strong></td><td class="data-num" style="font-weight:700;">72.1</td><td class="data-num" style="color:#2D6A4F;">+14.8%</td><td class="data-num">14.5%</td><td><span class="badge badge-info">建行手机银行</span> <span class="badge badge-gray">机构直销</span></td><td>王剑</td><td><a href="javascript:void(0)" onclick="showDetail('F0007')" style="color:#1D6EB6;font-size:11px;">详情</a></td></tr>
+          <tr><td>🥉</td><td><strong>建信双息红利债券A</strong></td><td class="data-num" style="font-weight:700;">65.5</td><td class="data-num" style="color:#2D6A4F;">+8.5%</td><td class="data-num">8.2%</td><td><span class="badge badge-info">建行手机银行</span> <span class="badge badge-gray">天天基金</span></td><td>黎颖芳</td><td><a href="javascript:void(0)" onclick="showDetail('F0007')" style="color:#1D6EB6;font-size:11px;">详情</a></td></tr>
+          <tr><td>4</td><td>建信稳定得利债券A</td><td class="data-num" style="font-weight:600;">58.2</td><td class="data-num" style="color:#2D6A4F;">+7.8%</td><td class="data-num">7.5%</td><td><span class="badge badge-info">建行手机银行</span> <span class="badge badge-gray">支付宝</span></td><td>黎颖芳</td><td><a href="javascript:void(0)" onclick="showDetail('F0007')" style="color:#1D6EB6;font-size:11px;">详情</a></td></tr>
+          <tr><td>5</td><td>建信优享稳健养老一年</td><td class="data-num" style="font-weight:600;">45.2</td><td class="data-num" style="color:#B8650A;">+5.2%</td><td class="data-num">6.8%</td><td><span class="badge badge-info">建行手机银行</span> <span class="badge badge-gray">保险/年金渠道</span></td><td>梁冰</td><td><a href="javascript:void(0)" onclick="showDetail('F0004')" style="color:#1D6EB6;font-size:11px;">详情</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- 另类/QDII TOP5 -->
+    <div id="assetTop5Other" class="hidden" style="max-height:280px;overflow-y:auto;">
+      <table class="table-compact">
+        <thead><tr><th>排名</th><th>产品名称</th><th style="width:80px;">规模(亿)</th><th style="width:80px;">近1年收益</th><th style="width:70px;">年化波动率</th><th>上架货架</th><th>基金经理</th><th style="width:48px;">操作</th></tr></thead>
+        <tbody>
+          <tr><td>🥇</td><td><strong>建信中关村REIT</strong></td><td class="data-num" style="font-weight:700;">90.2</td><td class="data-num" style="color:#2D6A4F;">+8.5%</td><td class="data-num">12.5%</td><td><span class="badge badge-info">建行手机银行</span> <span class="badge badge-gray">券商渠道</span></td><td>李洋</td><td><a href="javascript:void(0)" onclick="showDetail('F0004')" style="color:#1D6EB6;font-size:11px;">详情</a></td></tr>
+          <tr><td>🥈</td><td><strong>建信普洛斯REIT</strong></td><td class="data-num" style="font-weight:700;">55.2</td><td class="data-num" style="color:#2D6A4F;">+6.8%</td><td class="data-num">11.2%</td><td><span class="badge badge-info">建行手机银行</span> <span class="badge badge-gray">券商渠道</span></td><td>李洋</td><td><a href="javascript:void(0)" onclick="showDetail('F0004')" style="color:#1D6EB6;font-size:11px;">详情</a></td></tr>
+          <tr><td>🥉</td><td><strong>建信全球科技QDII</strong></td><td class="data-num" style="font-weight:700;">17.2</td><td class="data-num" style="color:#2D6A4F;">+32.5%</td><td class="data-num">18.8%</td><td><span class="badge badge-info">建行手机银行</span> <span class="badge badge-gray">天天基金</span> <span class="badge badge-gray">支付宝</span></td><td>李洋</td><td><a href="javascript:void(0)" onclick="showDetail('F0004')" style="color:#1D6EB6;font-size:11px;">详情</a></td></tr>
+          <tr><td>4</td><td>建信新兴市场QDII</td><td class="data-num" style="font-weight:600;">12.5</td><td class="data-num" style="color:#2D6A4F;">+18.2%</td><td class="data-num">16.5%</td><td><span class="badge badge-info">建行手机银行</span> <span class="badge badge-gray">天天基金</span></td><td>李洋</td><td><a href="javascript:void(0)" onclick="showDetail('F0004')" style="color:#1D6EB6;font-size:11px;">详情</a></td></tr>
+          <tr><td>5</td><td>建信专户一对多稳健1号</td><td class="data-num" style="font-weight:600;">10.8</td><td class="data-num" style="color:#2D6A4F;">+5.8%</td><td class="data-num">4.5%</td><td><span class="badge badge-gray">机构直销</span></td><td>—</td><td><a href="javascript:void(0)" onclick="showDetail('F0004')" style="color:#1D6EB6;font-size:11px;">详情</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:6px; font-size:10px; color:#909399;text-align:center;">
+      数据来源：Wind，2026Q2 · 按资产大类以规模降序排列 · 仅列示存续期产品
+    </div>
+  </div>
+
+  <!-- L4-Row3: Manager Load + New Products -->
   <div class="grid-2">
     <div class="panel panel-blue">
       <div class="panel-title">基金经理负荷分布</div>
@@ -828,7 +1081,7 @@ html { scroll-behavior: smooth; }
     </div>
   </div>
 
-  <!-- L4-Row3: Liquidated Products (full width) -->
+  <!-- L4-Row4: Liquidated Products (full width) -->
   <div class="panel panel-slate">
     <div class="panel-title">本年清盘产品清单（2026年1-7月）</div>
     <div style="max-height:260px; overflow-y:auto;">
@@ -986,6 +1239,29 @@ const channelData = [
   { name: '自有/关联方', value: 238 }
 ];
 
+// 同业比较数据：渠道规模占比对比（建信 vs 银行系平均 vs 行业Top10平均）
+const channelPeerData = {
+  channels: ['建行直销/网银', '其他银行代销', '第三方互联网', '券商渠道', '机构直销', '保险/年金', '自有/关联方'],
+  jianxin:    [51.1, 16.2, 14.0, 5.1, 8.1, 3.2, 2.3],   // 建信基金各渠道占比%
+  bankAvg:    [38.5, 22.0, 18.5, 5.5, 8.5, 4.0, 3.0],   // 银行系基金平均
+  industryAvg:[18.0, 20.0, 32.0, 12.0, 10.0, 5.0, 3.0],  // 行业Top10平均
+};
+
+// 资产大类 × 渠道交叉分布数据（亿元）
+const channelAssetData = {
+  channels: ['建行直销/网银', '其他银行代销', '第三方互联网', '券商渠道', '机构直销', '保险/年金'],
+  assetTypes: ['货币类', '固收类', '权益类', '混合类', '另类/QDII'],
+  // 每个渠道下各资产大类的规模
+  data: [
+    [3800, 850, 280, 180, 90],    // 建行直销/网银
+    [1050, 380, 120, 70,  30],    // 其他银行代销
+    [680,  420, 200, 80,  40],    // 第三方互联网
+    [120,  180, 120, 60,  40],    // 券商渠道
+    [320,  280, 120, 60,  40],    // 机构直销
+    [120,  120, 40,  30,  20],    // 保险/年金
+  ]
+};
+
 const trendData = {
   months: ['2025-08', '2025-09', '2025-10', '2025-11', '2025-12', '2026-01', '2026-02', '2026-03', '2026-04', '2026-05', '2026-06', '2026-07'],
   series: {
@@ -994,6 +1270,14 @@ const trendData = {
     '权益类': [5.5, 6.2, 8.8, 10.5, 12.8, 10.2, 11.5, 14.2, 16.8, 18.5, 22.1, 25.8],
     '混合类': [3.8, 4.2, 5.5, 6.8, 8.2, 7.2, 7.8, 8.5, 9.5, 10.2, 11.5, 12.8],
     '另类/QDII': [2.0, 2.5, 3.2, 3.8, 4.5, 4.0, 4.2, 4.8, 5.5, 5.8, 6.2, 6.5]
+  },
+  // 同业平均收益（银行系基金公司中位数）
+  peerSeries: {
+    '货币类':     [1.4, 1.3, 1.3, 1.4, 1.5, 1.4, 1.4, 1.4, 1.5, 1.4, 1.4, 1.4],
+    '固收类':     [2.8, 3.0, 3.1, 3.3, 3.5, 3.4, 3.5, 3.7, 3.8, 4.0, 4.1, 4.2],
+    '权益类':     [7.8, 8.5, 10.5, 12.0, 14.2, 12.5, 13.8, 16.0, 18.5, 20.2, 24.5, 28.2],
+    '混合类':     [4.5, 5.0, 6.2, 7.5, 8.8, 8.0, 8.5, 9.5, 10.5, 11.2, 12.5, 13.8],
+    '另类/QDII':  [1.8, 2.2, 2.8, 3.5, 4.2, 3.8, 4.0, 4.5, 5.2, 5.5, 5.8, 6.2]
   }
 };
 
@@ -1023,7 +1307,7 @@ const managerData = [
 ];
 
 // ========== Chart Instances ==========
-let chartType, chartTier, chartStatus, chartRisk, chartTrend, chartChannel, chartMatrix, chartManager, chartRank, chartRankTrend, chartScaleAsset, chartScaleSource, chartCashflow, chartShelf, chartShelfScale;
+let chartType, chartTier, chartStatus, chartRisk, chartTrend, chartChannel, chartChannelPeer, chartChannelAsset, chartMatrix, chartManager, chartRank, chartRankTrend, chartScaleAsset, chartScaleSource, chartCashflow, chartShelf, chartShelfScale;
 
 function initCharts() {
   chartType = echarts.init(document.getElementById('chartType'));
@@ -1031,7 +1315,9 @@ function initCharts() {
   chartStatus = echarts.init(document.getElementById('chartStatus'));
   chartRisk = echarts.init(document.getElementById('chartRisk'));
   chartTrend = echarts.init(document.getElementById('chartTrend'));
-  chartChannel = echarts.init(document.getElementById('chartChannel'));
+  chartChannel = echarts.init(document.getElementById('chartChannelWrap'));
+  chartChannelPeer = echarts.init(document.getElementById('chartChannelPeerWrap'));
+  chartChannelAsset = echarts.init(document.getElementById('chartChannelAssetWrap'));
   chartMatrix = echarts.init(document.getElementById('chartMatrix'));
   chartManager = echarts.init(document.getElementById('chartManager'));
   chartRank = echarts.init(document.getElementById('chartRank'));
@@ -1048,6 +1334,8 @@ function initCharts() {
   updateRiskChart();
   updateTrendChart();
   updateChannelChart();
+  updateChannelPeerChart();
+  updateChannelAssetChart();
   updateMatrixChart();
   updateManagerChart();
   updateRankChart('total');
@@ -1060,7 +1348,7 @@ function initCharts() {
 
   window.addEventListener('resize', () => {
     chartType.resize(); chartTier.resize(); chartStatus.resize(); chartRisk.resize();
-    chartTrend.resize(); chartChannel.resize(); chartMatrix.resize(); chartManager.resize();
+    chartTrend.resize(); chartChannel.resize(); chartChannelPeer.resize(); chartChannelAsset.resize(); chartMatrix.resize(); chartManager.resize();
     chartRank.resize(); chartRankTrend.resize(); chartScaleAsset.resize(); chartScaleSource.resize(); chartCashflow.resize(); chartShelf.resize(); chartShelfScale.resize();
   });
 }
@@ -1208,6 +1496,37 @@ function updateTypeChart() {
   chartType.setOption(option, true);
 }
 
+// 资产大类TOP5切换
+function switchAssetTop5(view) {
+  document.getElementById('assetTop5Money').classList.toggle('hidden', view !== 'money');
+  document.getElementById('assetTop5Fixed').classList.toggle('hidden', view !== 'fixed');
+  document.getElementById('assetTop5Equity').classList.toggle('hidden', view !== 'equity');
+  document.getElementById('assetTop5Hybrid').classList.toggle('hidden', view !== 'hybrid');
+  document.getElementById('assetTop5Other').classList.toggle('hidden', view !== 'other');
+  // 更新tab按钮状态
+  var panel = document.getElementById('assetTop5Money').closest('.panel');
+  if (panel) {
+    var tabMap = { money: 0, fixed: 1, equity: 2, hybrid: 3, other: 4 };
+    panel.querySelectorAll('.tab-btn').forEach(function(btn, i) {
+      btn.classList.toggle('active', i === tabMap[view]);
+    });
+  }
+}
+
+// 品类排名表切换
+function switchCategoryRank(view) {
+  document.getElementById('categoryRankMoney').classList.toggle('hidden', view !== 'money');
+  document.getElementById('categoryRankFixed').classList.toggle('hidden', view !== 'fixed');
+  document.getElementById('categoryRankEquity').classList.toggle('hidden', view !== 'equity');
+  // 更新tab按钮状态
+  var panel = document.getElementById('categoryRankMoney').closest('.panel');
+  if (panel) {
+    panel.querySelectorAll('.tab-btn').forEach(function(btn, i) {
+      btn.classList.toggle('active', (i === 0 && view === 'money') || (i === 1 && view === 'fixed') || (i === 2 && view === 'equity'));
+    });
+  }
+}
+
 function switchTierView(view) {
   document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
   event.target.classList.add('active');
@@ -1322,9 +1641,36 @@ function updateRiskChart() {
 
 function updateTrendChart() {
   const colors = { '货币类': '#409EFF', '固收类': '#2D6A4F', '权益类': '#B8650A', '混合类': '#D4940B', '另类/专户': '#C0392B' };
+  var series = [];
+  // 公司各类型收益（实线）
+  Object.keys(trendData.series).forEach(function(name) {
+    series.push({
+      name: name,
+      type: 'line',
+      smooth: true,
+      symbol: 'circle',
+      symbolSize: 6,
+      lineStyle: { width: 2.5 },
+      itemStyle: { color: colors[name] },
+      data: trendData.series[name].map(function(v) { return (v * 100).toFixed(1); })
+    });
+  });
+  // 同业平均收益（虚线）
+  Object.keys(trendData.peerSeries).forEach(function(name) {
+    series.push({
+      name: name + '同业均值',
+      type: 'line',
+      smooth: true,
+      symbol: 'diamond',
+      symbolSize: 4,
+      lineStyle: { width: 1.5, type: 'dashed' },
+      itemStyle: { color: colors[name] },
+      data: trendData.peerSeries[name].map(function(v) { return (v * 100).toFixed(1); })
+    });
+  });
   const option = {
     tooltip: { trigger: 'axis' },
-    legend: { top: 0, textStyle: { fontSize: 11 } },
+    legend: { top: 0, textStyle: { fontSize: 10 } },
     grid: { left: '3%', right: '4%', bottom: '3%', top: '15%', containLabel: true },
     xAxis: {
       type: 'category',
@@ -1338,16 +1684,7 @@ function updateTrendChart() {
       axisLabel: { fontSize: 11, color: '#606266', formatter: '{value}%' },
       splitLine: { lineStyle: { color: '#F9F8F5' } }
     },
-    series: Object.keys(trendData.series).map(name => ({
-      name: name,
-      type: 'line',
-      smooth: true,
-      symbol: 'circle',
-      symbolSize: 6,
-      lineStyle: { width: 2 },
-      itemStyle: { color: colors[name] },
-      data: trendData.series[name].map(v => (v * 100).toFixed(1))
-    }))
+    series: series
   };
   chartTrend.setOption(option);
 }
@@ -1376,6 +1713,148 @@ function updateChannelChart() {
     }]
   };
   chartChannel.setOption(option);
+}
+
+// 渠道视图切换
+let currentChannelView = 'channel';
+function switchChannelView(view) {
+  currentChannelView = view;
+  // 更新tab按钮状态
+  document.querySelectorAll('.panel-cyan .tab-btn').forEach(function(btn, i) {
+    btn.classList.toggle('active', (i === 0 && view === 'channel') || (i === 1 && view === 'peer') || (i === 2 && view === 'asset'));
+  });
+  // 切换图表显示
+  document.getElementById('chartChannelWrap').classList.toggle('hidden', view !== 'channel');
+  document.getElementById('chartChannelPeerWrap').classList.toggle('hidden', view !== 'peer');
+  document.getElementById('chartChannelAssetWrap').classList.toggle('hidden', view !== 'asset');
+  // 更新洞察文字
+  var insightEl = document.getElementById('channelInsight');
+  if (view === 'channel') {
+    insightEl.textContent = '银行渠道（建行+其他银行）合计占比67.3% · 第三方互联网渠道快速崛起 · 保险/年金增量明显';
+  } else if (view === 'peer') {
+    insightEl.textContent = '建行直销/网银占比51.1%，远超银行系均值38.5%和行业均值18.0% · 第三方互联网渠道占比低于行业均值32.0%，有较大提升空间';
+  } else {
+    insightEl.textContent = '银行渠道以货币类+固收类为主（合计87.5%）· 券商渠道权益类占比23.1%最高 · 第三方互联网资产结构最均衡';
+  }
+  // resize
+  setTimeout(function() {
+    if (view === 'peer') chartChannelPeer.resize();
+    else if (view === 'asset') chartChannelAsset.resize();
+    else chartChannel.resize();
+  }, 50);
+}
+
+// 同业比较图表
+function updateChannelPeerChart() {
+  var colors = ['#1D6EB6', '#409EFF', '#909399'];
+  var option = {
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: { type: 'shadow' },
+      formatter: function(params) {
+        var html = '<strong>' + params[0].name + '</strong>';
+        params.forEach(function(p) {
+          html += '<br/>' + p.marker + ' ' + p.seriesName + '：' + p.value + '%';
+        });
+        return html;
+      }
+    },
+    legend: {
+      data: ['建信基金', '银行系平均', '行业Top10平均'],
+      top: 0,
+      textStyle: { fontSize: 10, color: '#606266' }
+    },
+    grid: { left: '3%', right: '4%', bottom: '3%', top: '16%', containLabel: true },
+    xAxis: {
+      type: 'value',
+      axisLabel: { fontSize: 10, color: '#909399', formatter: '{value}%' },
+      splitLine: { lineStyle: { color: '#EBEEF5' } },
+      max: 60
+    },
+    yAxis: {
+      type: 'category',
+      data: channelPeerData.channels,
+      axisLabel: { fontSize: 10, color: '#606266' },
+      axisLine: { lineStyle: { color: '#D7E2EB' } }
+    },
+    series: [
+      {
+        name: '建信基金',
+        type: 'bar',
+        data: channelPeerData.jianxin,
+        itemStyle: { color: colors[0], borderRadius: [0, 3, 3, 0] },
+        barMaxWidth: 16,
+        label: { show: true, position: 'right', fontSize: 9, color: '#1D6EB6', formatter: '{c}%' }
+      },
+      {
+        name: '银行系平均',
+        type: 'bar',
+        data: channelPeerData.bankAvg,
+        itemStyle: { color: colors[1], borderRadius: [0, 3, 3, 0] },
+        barMaxWidth: 16,
+        label: { show: true, position: 'right', fontSize: 9, color: '#409EFF', formatter: '{c}%' }
+      },
+      {
+        name: '行业Top10平均',
+        type: 'bar',
+        data: channelPeerData.industryAvg,
+        itemStyle: { color: colors[2], borderRadius: [0, 3, 3, 0] },
+        barMaxWidth: 16,
+        label: { show: true, position: 'right', fontSize: 9, color: '#909399', formatter: '{c}%' }
+      }
+    ]
+  };
+  chartChannelPeer.setOption(option);
+}
+
+// 资产大类 × 渠道分布图表
+function updateChannelAssetChart() {
+  var colors = ['#1D6EB6', '#2D6A4F', '#B8650A', '#D4940B', '#C0392B'];
+  var option = {
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: { type: 'shadow' },
+      formatter: function(params) {
+        var html = '<strong>' + params[0].name + '</strong>';
+        var total = 0;
+        params.forEach(function(p) { total += p.value; });
+        html += '<br/>合计：' + total + '亿';
+        params.forEach(function(p) {
+          html += '<br/>' + p.marker + ' ' + p.seriesName + '：' + p.value + '亿（' + (total > 0 ? (p.value/total*100).toFixed(1) : 0) + '%）';
+        });
+        return html;
+      }
+    },
+    legend: {
+      data: channelAssetData.assetTypes,
+      top: 0,
+      textStyle: { fontSize: 10, color: '#606266' }
+    },
+    grid: { left: '3%', right: '4%', bottom: '3%', top: '16%', containLabel: true },
+    xAxis: {
+      type: 'value',
+      axisLabel: { fontSize: 10, color: '#909399', formatter: '{value}亿' },
+      splitLine: { lineStyle: { color: '#EBEEF5' } }
+    },
+    yAxis: {
+      type: 'category',
+      data: channelAssetData.channels,
+      axisLabel: { fontSize: 10, color: '#606266' },
+      axisLine: { lineStyle: { color: '#D7E2EB' } }
+    },
+    series: channelAssetData.assetTypes.map(function(name, i) {
+      return {
+        name: name,
+        type: 'bar',
+        stack: 'total',
+        data: channelAssetData.data.map(function(row) { return row[i]; }),
+        itemStyle: { color: colors[i] },
+        barMaxWidth: 20,
+        emphasis: { focus: 'series' }
+      };
+    })
+  };
+  chartChannelAsset.setOption(option);
 }
 
 function updateMatrixChart() {
