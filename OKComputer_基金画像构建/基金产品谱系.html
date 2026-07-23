@@ -587,16 +587,35 @@ html { scroll-behavior: smooth; }
     <div class="panel panel-cyan" style="display:flex;flex-direction:column;">
       <div class="panel-header" style="flex-shrink:0;">
         <span class="panel-title">渠道规模分布（银行系特征）</span>
-        <span class="panel-badge">渠道分布 · 同业比较 · 资产大类</span>
+        <span class="panel-badge">渠道分布 · 同业比较 · 资产大类 · 代销对标</span>
       </div>
       <div class="tab-bar" style="margin-bottom:12px;flex-shrink:0;">
         <button class="tab-btn active" onclick="switchChannelView('channel')">渠道分布</button>
         <button class="tab-btn" onclick="switchChannelView('peer')">同业比较</button>
         <button class="tab-btn" onclick="switchChannelView('asset')">资产大类视角</button>
+        <button class="tab-btn" onclick="switchChannelView('benchmark')">代销对标</button>
       </div>
       <div id="chartChannelWrap" style="flex:1;min-height:240px;width:100%;"></div>
       <div id="chartChannelPeerWrap" style="flex:1;min-height:240px;width:100%;" class="hidden"></div>
       <div id="chartChannelAssetWrap" style="flex:1;min-height:240px;width:100%;" class="hidden"></div>
+      <div id="channelBenchmarkWrap" style="flex:1;min-height:240px;overflow-y:auto;" class="hidden">
+        <table class="table-compact">
+          <thead><tr><th>代销渠道</th><th style="text-align:right;">建信规模(亿)</th><th style="text-align:right;">建信占比</th><th style="text-align:right;">银行系均值(亿)</th><th style="text-align:right;">行业TOP10(亿)</th><th style="text-align:right;">银行系排名</th><th>对标评价</th></tr></thead>
+          <tbody>
+            <tr><td><strong>银行渠道</strong></td><td class="data-num" style="font-weight:700;">6,850</td><td class="data-num">67.3%</td><td class="data-num">4,520</td><td class="data-num">3,850</td><td class="data-num" style="color:#2D6A4F;font-weight:600;">#1</td><td><span class="badge badge-ok">绝对领先</span></td></tr>
+            <tr><td class="text-muted pl-2">└ 建行渠道</td><td class="data-num" style="font-weight:700;color:#1D6EB6;">5,200</td><td class="data-num">51.1%</td><td class="data-num">1,850</td><td class="data-num">980</td><td class="data-num" style="color:#2D6A4F;font-weight:600;">#1</td><td style="font-size:10px;">母行协同优势显著</td></tr>
+            <tr><td class="text-muted pl-2">└ 他行代销</td><td class="data-num">1,650</td><td class="data-num">16.2%</td><td class="data-num">2,670</td><td class="data-num">2,870</td><td class="data-num" style="color:#B8650A;">#8</td><td style="font-size:10px;color:#B8650A;">他行渗透不足</td></tr>
+            <tr><td><strong>第三方互联网</strong></td><td class="data-num" style="font-weight:700;">1,420</td><td class="data-num">14.0%</td><td class="data-num">1,850</td><td class="data-num">3,250</td><td class="data-num" style="color:#B8650A;">#6</td><td><span class="badge badge-warn">低于均值</span></td></tr>
+            <tr><td class="text-muted pl-2">└ 天天基金</td><td class="data-num">680</td><td class="data-num">6.7%</td><td class="data-num">820</td><td class="data-num">1,250</td><td class="data-num" style="color:#909399;">#5</td><td style="font-size:10px;">C类份额待推广</td></tr>
+            <tr><td class="text-muted pl-2">└ 支付宝(蚂蚁)</td><td class="data-num">420</td><td class="data-num">4.1%</td><td class="data-num">650</td><td class="data-num">1,150</td><td class="data-num" style="color:#909399;">#7</td><td style="font-size:10px;">零售增量空间大</td></tr>
+            <tr><td class="text-muted pl-2">└ 微信理财通</td><td class="data-num">320</td><td class="data-num">3.1%</td><td class="data-num">380</td><td class="data-num">850</td><td class="data-num" style="color:#909399;">#5</td><td style="font-size:10px;">增速最快渠道</td></tr>
+            <tr><td><strong>券商渠道</strong></td><td class="data-num" style="font-weight:700;">520</td><td class="data-num">5.1%</td><td class="data-num">580</td><td class="data-num">1,220</td><td class="data-num" style="color:#B8650A;">#8</td><td><span class="badge badge-warn">低于均值</span></td></tr>
+            <tr><td><strong>保险/年金渠道</strong></td><td class="data-num" style="font-weight:700;">330</td><td class="data-num">3.2%</td><td class="data-num">280</td><td class="data-num">510</td><td class="data-num" style="color:#2D6A4F;font-weight:600;">#3</td><td><span class="badge badge-ok">优于同业</span></td></tr>
+            <tr><td><strong>机构直销</strong></td><td class="data-num" style="font-weight:700;">820</td><td class="data-num">8.1%</td><td class="data-num">780</td><td class="data-num">1,020</td><td class="data-num" style="color:#606266;">#5</td><td><span class="badge badge-info">持平同业</span></td></tr>
+            <tr><td><strong>自有/关联方</strong></td><td class="data-num" style="font-weight:700;">238</td><td class="data-num">2.3%</td><td class="data-num">210</td><td class="data-num">310</td><td class="data-num" style="color:#606266;">#4</td><td><span class="badge badge-info">持平同业</span></td></tr>
+          </tbody>
+        </table>
+      </div>
       <div id="channelInsight" style="margin-top:8px; font-size:11px; color:#606266; text-align:center;flex-shrink:0;">
         银行渠道（建行+其他银行）合计占比67.3% · 第三方互联网渠道快速崛起 · 保险/年金增量明显
       </div>
@@ -1096,6 +1115,55 @@ html { scroll-behavior: smooth; }
     </div>
     <div style="margin-top:10px; padding:10px; background:#F4F8FC; border-radius:8px; border-left:3px solid var(--ink-soft); font-size:11px; color:#606266;">
       <strong>清盘分析：</strong>本年5只清盘产品合计规模12.8亿，均为小微基金（<5亿），平均存续4.6年。清盘后相关资产已有序转出，未对投资者利益造成实质性影响。
+    </div>
+  </div>
+
+  <!-- L4-Row5: Scale Growth Analysis -->
+  <div class="grid-2">
+    <div class="panel panel-green">
+      <div class="panel-title">规模增长 TOP10 产品（2026H1）</div>
+      <div style="max-height:320px;overflow-y:auto;">
+        <table class="table-compact">
+          <thead><tr><th>#</th><th>产品名称</th><th>类型</th><th>当前规模(亿)</th><th>增长额(亿)</th><th>增速</th><th>增长驱动</th><th>基金经理</th></tr></thead>
+          <tbody>
+            <tr><td class="data-num" style="color:#D4940B;font-weight:700;">1</td><td><strong>建信现金添利货币A</strong></td><td><span class="badge badge-r1">货币</span></td><td class="data-num" style="font-weight:700;">1,414.7</td><td class="data-num" style="color:#2D6A4F;font-weight:700;">+150.7</td><td class="data-num" style="color:#2D6A4F;font-weight:600;">+11.9%</td><td style="font-size:11px;">速盈平台导流+收益率优势</td><td>吴沛文/于倩倩</td></tr>
+            <tr><td class="data-num" style="color:#909399;font-weight:700;">2</td><td><strong>建信中短债增强债券A</strong></td><td><span class="badge badge-r2">固收</span></td><td class="data-num" style="font-weight:700;">58.6</td><td class="data-num" style="color:#2D6A4F;font-weight:700;">+58.6</td><td class="data-num" style="color:#2D6A4F;font-weight:600;">新发</td><td style="font-size:11px;">新发募集 · 2月成立</td><td>彭紫云/胡泽元</td></tr>
+            <tr><td class="data-num" style="color:#909399;font-weight:700;">3</td><td><strong>建信中证A500ETF联接A</strong></td><td><span class="badge badge-ok">权益</span></td><td class="data-num" style="font-weight:700;">48.5</td><td class="data-num" style="color:#2D6A4F;font-weight:700;">+48.5</td><td class="data-num" style="color:#2D6A4F;font-weight:600;">新发</td><td style="font-size:11px;">A500指数热度+渠道力推</td><td>张溢麟</td></tr>
+            <tr><td>4</td><td>建信短债债券A</td><td><span class="badge badge-r2">固收</span></td><td class="data-num" style="font-weight:600;">245.6</td><td class="data-num" style="color:#2D6A4F;font-weight:600;">+30.6</td><td class="data-num" style="color:#2D6A4F;font-weight:600;">+14.2%</td><td style="font-size:11px;">利率下行+理财替代需求</td><td>李星佑/吴沛文</td></tr>
+            <tr><td>5</td><td>建信鑫悦90天滚动持有</td><td><span class="badge badge-r2">固收</span></td><td class="data-num" style="font-weight:600;">198.3</td><td class="data-num" style="color:#2D6A4F;font-weight:600;">+28.3</td><td class="data-num" style="color:#2D6A4F;font-weight:600;">+16.6%</td><td style="font-size:11px;">持有期产品+渠道推荐</td><td>彭紫云/陈建良</td></tr>
+            <tr><td>6</td><td>建信纯债债券A</td><td><span class="badge badge-r2">固收</span></td><td class="data-num" style="font-weight:600;">298.5</td><td class="data-num" style="color:#2D6A4F;font-weight:600;">+30.5</td><td class="data-num" style="color:#2D6A4F;font-weight:600;">+11.4%</td><td style="font-size:11px;">旗舰品牌效应+持续净流入</td><td>彭紫云/黎颖芳</td></tr>
+            <tr><td>7</td><td>建信中证500ETF</td><td><span class="badge badge-ok">权益</span></td><td class="data-num" style="font-weight:600;">320.5</td><td class="data-num" style="color:#2D6A4F;font-weight:600;">+28.5</td><td class="data-num" style="color:#2D6A4F;font-weight:600;">+9.8%</td><td style="font-size:11px;">中证500行情回暖+ETF流入</td><td>张溢麟</td></tr>
+            <tr><td>8</td><td>建信货币A</td><td><span class="badge badge-r1">货币</span></td><td class="data-num" style="font-weight:600;">389.2</td><td class="data-num" style="color:#2D6A4F;font-weight:600;">+37.2</td><td class="data-num" style="color:#2D6A4F;font-weight:600;">+10.6%</td><td style="font-size:11px;">机构大额资金流入</td><td>吴沛文/先轲宇</td></tr>
+            <tr><td>9</td><td>建信稳利纯债一年定开</td><td><span class="badge badge-r2">固收</span></td><td class="data-num" style="font-weight:600;">45.8</td><td class="data-num" style="color:#2D6A4F;font-weight:600;">+45.8</td><td class="data-num" style="color:#2D6A4F;font-weight:600;">新发</td><td style="font-size:11px;">新发募集 · 6月成立</td><td>黎颖芳</td></tr>
+            <tr><td>10</td><td>建信鑫益90天滚动持有</td><td><span class="badge badge-r2">固收</span></td><td class="data-num" style="font-weight:600;">32.4</td><td class="data-num" style="color:#2D6A4F;font-weight:600;">+32.4</td><td class="data-num" style="color:#2D6A4F;font-weight:600;">新发</td><td style="font-size:11px;">新发募集 · 5月成立</td><td>陈建良/李星佑</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:6px;font-size:10px;color:#909399;">
+        数据来源：Wind，2026H1 · 固收类贡献6席 · 货币类2席 · 权益类2席 · 新发产品4只入围
+      </div>
+    </div>
+
+    <div class="panel panel-red">
+      <div class="panel-title">规模下降需关注产品（2026H1）</div>
+      <div style="max-height:320px;overflow-y:auto;">
+        <table class="table-compact">
+          <thead><tr><th>#</th><th>产品名称</th><th>类型</th><th>当前规模(亿)</th><th>减少额(亿)</th><th>降幅</th><th>下降原因</th><th>建议动作</th></tr></thead>
+          <tbody>
+            <tr class="warn"><td class="data-num" style="color:#C0392B;font-weight:700;">1</td><td><strong>建信责任ETF</strong></td><td><span class="badge badge-ok">权益</span></td><td class="data-num" style="font-weight:700;color:#C0392B;">0.7</td><td class="data-num" style="color:#C0392B;font-weight:600;">−1.5</td><td class="data-num" style="color:#C0392B;font-weight:600;">−68.2%</td><td style="font-size:11px;">ESG主题降温+份额持续流失</td><td style="color:#C0392B;font-weight:600;">启动转型或清盘</td></tr>
+            <tr class="warn"><td class="data-num" style="font-weight:700;">2</td><td><strong>建信全球资源主题QDII</strong></td><td><span class="badge badge-r4">QDII</span></td><td class="data-num" style="font-weight:600;">0.8</td><td class="data-num" style="color:#C0392B;font-weight:600;">−0.8</td><td class="data-num" style="color:#C0392B;font-weight:600;">−100%</td><td style="font-size:11px;">已清盘 · 1月20日终止</td><td>已完成</td></tr>
+            <tr class="warn"><td class="data-num" style="font-weight:700;">3</td><td><strong>建信灵活配置混合C</strong></td><td><span class="badge badge-r3">混合</span></td><td class="data-num" style="font-weight:600;">6.6</td><td class="data-num" style="color:#C0392B;font-weight:600;">−3.2</td><td class="data-num" style="color:#C0392B;font-weight:600;">−32.7%</td><td style="font-size:11px;">策略表现不佳+机构赎回</td><td style="color:#B8650A;font-weight:600;">评估转型或合并</td></tr>
+            <tr><td class="data-num" style="font-weight:600;">4</td><td>建信睿怡纯债债券</td><td><span class="badge badge-r2">固收</span></td><td class="data-num" style="font-weight:600;">2.8</td><td class="data-num" style="color:#C0392B;font-weight:600;">−2.2</td><td class="data-num" style="color:#C0392B;font-weight:600;">−44.0%</td><td style="font-size:11px;">规模持续萎缩+缺乏渠道支持</td><td style="color:#B8650A;font-weight:600;">评估合并入旗舰</td></tr>
+            <tr><td class="data-num" style="font-weight:600;">5</td><td>建信MSCI中国A股国际通ETF联接C</td><td><span class="badge badge-ok">权益</span></td><td class="data-num" style="font-weight:600;">4.5</td><td class="data-num" style="color:#C0392B;font-weight:600;">−1.8</td><td class="data-num" style="color:#C0392B;font-weight:600;">−28.6%</td><td style="font-size:11px;">C类份额过小 · 7月已合并</td><td>已完成</td></tr>
+            <tr><td class="data-num" style="font-weight:600;">6</td><td>建信港股通精选混合</td><td><span class="badge badge-r3">混合</span></td><td class="data-num" style="font-weight:600;">5.8</td><td class="data-num" style="color:#B8650A;font-weight:600;">−1.5</td><td class="data-num" style="color:#B8650A;font-weight:600;">−20.5%</td><td style="font-size:11px;">港股波动+暂停申赎</td><td style="color:#B8650A;font-weight:600;">恢复申赎评估</td></tr>
+            <tr><td class="data-num" style="font-weight:600;">7</td><td>建信中小盘先锋股票</td><td><span class="badge badge-ok">权益</span></td><td class="data-num" style="font-weight:600;">3.2</td><td class="data-num" style="color:#B8650A;font-weight:600;">−1.2</td><td class="data-num" style="color:#B8650A;font-weight:600;">−27.3%</td><td style="font-size:11px;">小盘风格轮动不利</td><td style="color:#909399;">持续观察</td></tr>
+            <tr><td class="data-num" style="font-weight:600;">8</td><td>建信创业板ETF联接C</td><td><span class="badge badge-ok">权益</span></td><td class="data-num" style="font-weight:600;">1.2</td><td class="data-num" style="color:#B8650A;font-weight:600;">−1.2</td><td class="data-num" style="color:#C0392B;font-weight:600;">−100%</td><td style="font-size:11px;">已清盘 · 3月14日终止</td><td>已完成</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:6px;font-size:10px;color:#909399;">
+        数据来源：Wind，2026H1 · 已清盘3只 · 待评估处置4只 · 已观察1只
+      </div>
     </div>
   </div>
 
@@ -1721,26 +1789,29 @@ function switchChannelView(view) {
   currentChannelView = view;
   // 更新tab按钮状态
   document.querySelectorAll('.panel-cyan .tab-btn').forEach(function(btn, i) {
-    btn.classList.toggle('active', (i === 0 && view === 'channel') || (i === 1 && view === 'peer') || (i === 2 && view === 'asset'));
+    btn.classList.toggle('active', (i === 0 && view === 'channel') || (i === 1 && view === 'peer') || (i === 2 && view === 'asset') || (i === 3 && view === 'benchmark'));
   });
-  // 切换图表显示
+  // 切换图表/表格显示
   document.getElementById('chartChannelWrap').classList.toggle('hidden', view !== 'channel');
   document.getElementById('chartChannelPeerWrap').classList.toggle('hidden', view !== 'peer');
   document.getElementById('chartChannelAssetWrap').classList.toggle('hidden', view !== 'asset');
+  document.getElementById('channelBenchmarkWrap').classList.toggle('hidden', view !== 'benchmark');
   // 更新洞察文字
   var insightEl = document.getElementById('channelInsight');
   if (view === 'channel') {
     insightEl.textContent = '银行渠道（建行+其他银行）合计占比67.3% · 第三方互联网渠道快速崛起 · 保险/年金增量明显';
   } else if (view === 'peer') {
     insightEl.textContent = '建行直销/网银占比51.1%，远超银行系均值38.5%和行业均值18.0% · 第三方互联网渠道占比低于行业均值32.0%，有较大提升空间';
-  } else {
+  } else if (view === 'asset') {
     insightEl.textContent = '银行渠道以货币类+固收类为主（合计87.5%）· 券商渠道权益类占比23.1%最高 · 第三方互联网资产结构最均衡';
+  } else {
+    insightEl.textContent = '建行渠道绝对领先（银行系#1）· 他行代销和第三方互联网渠道渗透不足 · 保险/年金渠道有差异化优势';
   }
   // resize
   setTimeout(function() {
     if (view === 'peer') chartChannelPeer.resize();
     else if (view === 'asset') chartChannelAsset.resize();
-    else chartChannel.resize();
+    else if (view === 'channel') chartChannel.resize();
   }, 50);
 }
 
