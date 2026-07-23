@@ -315,23 +315,7 @@ html { scroll-behavior: smooth; }
           <span style="font-size:10px;color:#C0392B;">低于行业0.7pp</span>
         </div>
       </div>
-      <div style="margin-top:6px;padding-top:6px;border-top:1px solid #EBEEF5;display:flex;gap:6px;">
-        <div style="flex:1;text-align:center;">
-          <div style="font-size:9px;color:#909399;">2024年</div>
-          <div style="font-size:11px;font-weight:600;color:#909399;">+758亿</div>
-        </div>
-        <div style="width:1px;background:#D7E2EB;"></div>
-        <div style="flex:1;text-align:center;">
-          <div style="font-size:9px;color:#909399;">2025年</div>
-          <div style="font-size:11px;font-weight:600;color:#909399;">+892亿</div>
-        </div>
-        <div style="width:1px;background:#D7E2EB;"></div>
-        <div style="flex:1;text-align:center;">
-          <div style="font-size:9px;color:#909399;">2026YTD</div>
-          <div style="font-size:11px;font-weight:600;color:#2D6A4F;">+1,117亿</div>
-        </div>
-      </div>
-      <div class="kpi-delta up" style="font-size:10px;">连续三年增长 · 固收贡献60.2% · 第三方互联网渠道增速最快</div>
+      <div class="kpi-delta up" style="font-size:10px;margin-top:6px;">银行渠道贡献67% · 第三方互联网增速+24.5%（天天+21% 蚂蚁+25% 理财通+32%）</div>
     </div>
     <div class="kpi-card c-amber">
       <div class="kpi-label">年管理费收入（估算）</div>
@@ -399,12 +383,12 @@ html { scroll-behavior: smooth; }
   </div>
 
   <!-- ==================== 第一层：公司级全业务总览（顶层大盘） ==================== -->
-  <div class="layer-header" onclick="toggleLayer(this)">
+  <div class="layer-header collapsed" onclick="toggleLayer(this)">
     <div class="layer-num">❶</div>
     <div class="layer-text"><h3>公司级全业务总览</h3><span>顶层大盘 — 规模·排名·结构·流向</span></div>
     <div class="layer-toggle">▼</div>
   </div>
-  <div class="layer-body">
+  <div class="layer-body collapsed">
 
   <!-- L1-Row1: Industry Ranking + Sub-category Rank -->
   <div class="grid-2">
@@ -416,7 +400,7 @@ html { scroll-behavior: smooth; }
       </div>
       <div id="chartRank" style="flex:1;min-height:300px;width:100%;"></div>
       <div style="margin-top:8px; font-size:11px; color:#606266;flex-shrink:0;">
-        数据来源：中国证券投资基金业协会（2026Q2）。建信基金总规模10,178亿（2026Q2），行业排名<strong style="color:#1D6EB6;">第11位</strong>，新晋万亿俱乐部。非货规模排名第28位，仍为明显短板。
+        数据来源：中国证券投资基金业协会（2026Q2）。建信基金总规模10,178亿（2026Q2），行业排名<strong style="color:#1D6EB6;">第11位</strong>，新晋万亿俱乐部。<strong style="color:#C0392B;">非货规模2,152亿，排名第28位，未进入行业TOP15。</strong>货币类占比79.4%为全行业银行系最高，"规模虚胖"特征明显。
       </div>
     </div>
 
@@ -659,12 +643,12 @@ html { scroll-behavior: smooth; }
   </div><!-- /layer-body L1 -->
 
   <!-- ==================== 第二层：核心业务大类分布（业务主干） ==================== -->
-  <div class="layer-header" onclick="toggleLayer(this)">
+  <div class="layer-header collapsed" onclick="toggleLayer(this)">
     <div class="layer-num">❷</div>
     <div class="layer-text"><h3>核心业务大类分布</h3><span>业务主干 — 类型·层级·风险·收益</span></div>
     <div class="layer-toggle">▼</div>
   </div>
-  <div class="layer-body">
+  <div class="layer-body collapsed">
 
   <!-- L2-Row1: Type Distribution Heatmap + Tier Pyramid -->
   <div class="grid-2">
@@ -843,12 +827,12 @@ html { scroll-behavior: smooth; }
   </div><!-- /layer-body L2 -->
 
   <!-- ==================== 第三层：策略与赛道细分分布（布局颗粒度） ==================== -->
-  <div class="layer-header" onclick="toggleLayer(this)">
+  <div class="layer-header collapsed" onclick="toggleLayer(this)">
     <div class="layer-num">❸</div>
     <div class="layer-text"><h3>策略与赛道细分分布</h3><span>布局颗粒度 — 矩阵·货架·渠道渗透</span></div>
     <div class="layer-toggle">▼</div>
   </div>
-  <div class="layer-body">
+  <div class="layer-body collapsed">
 
   <!-- L3-Row1: Product × Tier Matrix + Shelf Chart -->
   <div class="grid-2">
@@ -928,12 +912,12 @@ html { scroll-behavior: smooth; }
   </div><!-- /layer-body L3 -->
 
   <!-- ==================== 第四层：单产品梯队矩阵（个体健康度） ==================== -->
-  <div class="layer-header" onclick="toggleLayer(this)">
+  <div class="layer-header collapsed" onclick="toggleLayer(this)">
     <div class="layer-num">❹</div>
     <div class="layer-text"><h3>单产品梯队矩阵</h3><span>个体健康度 — 旗舰·预警·新发·清盘·经理负荷</span></div>
     <div class="layer-toggle">▼</div>
   </div>
-  <div class="layer-body">
+  <div class="layer-body collapsed">
 
   <!-- L4-Row1: Star Products + Warning List -->
   <div class="grid-2">
@@ -2362,9 +2346,9 @@ const rankData = {
     highlight: 10
   },
   nonmoney: {
-    companies: ['易方达基金','华夏基金','广发基金','富国基金','南方基金','嘉实基金','博时基金','汇添富','招商基金','工银瑞信','中欧基金','华安基金','景顺长城','鹏华基金','建信基金'],
-    values: [11500, 10200, 9500, 9100, 8800, 8500, 8200, 7900, 7700, 7500, 7200, 6800, 6500, 6200, 2152],
-    highlight: 14
+    companies: ['易方达基金','华夏基金','广发基金','富国基金','南方基金','嘉实基金','博时基金','汇添富','招商基金','工银瑞信','中欧基金','华安基金','景顺长城','鹏华基金','银华基金','建信基金'],
+    values: [11500, 10200, 9500, 9100, 8800, 8500, 8200, 7900, 7700, 7500, 7200, 6800, 6500, 6200, 5800, 2152],
+    highlight: 15
   }
 };
 
@@ -2401,7 +2385,8 @@ function updateRankChart(view) {
         const idx = params[0].dataIndex;
         const rank = companies.length - idx;
         const label = companies[idx] === '建信基金' ? ' <strong>◀ 本公司</strong>' : '';
-        return '<strong>第' + rank + '位：' + companies[idx] + '</strong>' + label + '<br/>规模：' + params[0].value + '亿';
+        const displayRank = (companies[idx] === '建信基金' && view === 'nonmoney') ? 28 : rank;
+        return '<strong>第' + displayRank + '位：' + companies[idx] + '</strong>' + label + '<br/>规模：' + params[0].value + '亿';
       }
     },
     grid: { left: '3%', right: '8%', bottom: '3%', top: '5%', containLabel: true },
@@ -2441,15 +2426,16 @@ function updateRankChart(view) {
         fontWeight: 'bold',
         formatter: function(p) {
           const rank = companies.length - p.dataIndex;
-          return '第' + rank + '名 ' + p.value + '亿';
+          const realRank = (companies[p.dataIndex] === '建信基金' && view === 'nonmoney') ? 28 : rank;
+          return '第' + realRank + '名 ' + p.value + '亿';
         }
       },
       markLine: {
         silent: true,
         symbol: 'none',
-        lineStyle: { color: '#C0392B', type: 'dashed', width: 1 },
-        label: { fontSize: 10, color: '#C0392B', formatter: '行业均值\n{c}亿' },
-        data: [{ yAxis: companies[highlightIdx], xAxis: Math.round(values.reduce((a, b) => a + b, 0) / values.length) }]
+        lineStyle: { color: '#C0392B', type: 'dashed', width: 1.5 },
+        label: { fontSize: 10, color: '#C0392B', formatter: '行业均值 {c}亿', position: 'start' },
+        data: [{ xAxis: Math.round(values.reduce(function(a, b) { return a + b; }, 0) / values.length) }]
       }
     }]
   };

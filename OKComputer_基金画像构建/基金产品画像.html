@@ -566,7 +566,7 @@
                 <div class="mb-3">
                     <div class="flex items-center justify-between cursor-pointer py-2" onclick="toggleAnalysis('navAnalysis')" style="border-bottom:1px solid #D7E2EB;">
                         <h4 class="text-sm font-semibold text-ink">净值走势分析 <span class="text-xs text-ink-soft font-normal ml-2">点击展开</span></h4>
-                        <svg id="navAnalysisChevron" class="w-4 h-4" style="color:#909399;transition:transform 0.3s;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        <svg id="navAnalysisChevron" class="w-4 h-4" style="color:#909399;transition:transform 0.3s;transform:rotate(180deg);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </div>
                     <div id="navAnalysisBody" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease, opacity 0.35s;opacity:0;">
                         <div style="padding-top:12px;">
@@ -638,7 +638,7 @@
                 <div class="mb-3">
                     <div class="flex items-center justify-between cursor-pointer py-2" onclick="toggleAnalysis('scaleAnalysis')" style="border-bottom:1px solid #D7E2EB;">
                         <h4 class="text-sm font-semibold text-ink">规模变动情况分析 <span class="text-xs text-ink-soft font-normal ml-2">点击展开</span></h4>
-                        <svg id="scaleAnalysisChevron" class="w-4 h-4" style="color:#909399;transition:transform 0.3s;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        <svg id="scaleAnalysisChevron" class="w-4 h-4" style="color:#909399;transition:transform 0.3s;transform:rotate(180deg);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </div>
                     <div id="scaleAnalysisBody" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease, opacity 0.35s;opacity:0;">
                         <div style="padding-top:12px;">
@@ -1544,11 +1544,11 @@
         if (isOpen) {
             body.style.maxHeight = '0';
             body.style.opacity = '0';
-            chevron.style.transform = 'rotate(0deg)';
+            chevron.style.transform = 'rotate(180deg)';
         } else {
             body.style.maxHeight = '1200px';
             body.style.opacity = '1';
-            chevron.style.transform = 'rotate(180deg)';
+            chevron.style.transform = 'rotate(0deg)';
         }
         setTimeout(function() { window.dispatchEvent(new Event('resize')); }, 400);
     }
