@@ -476,9 +476,9 @@
     <!-- 核心指标概览 — 数据横带 -->
     <section class="dossier-card-static metric-ribbon" style="grid-template-columns: repeat(5, 1fr);">
         <div class="metric-item">
-            <p class="metric-label">最新总规模</p>
-            <p class="metric-value data-num">59.62<span style="font-size:14px;font-weight:400;color:var(--ink-soft);margin-left:4px;">亿元</span></p>
-            <p class="metric-sub text-negative">↑ 1.82% 较上季</p>
+            <p class="metric-label">A类规模（含C类合计约299亿）</p>
+            <p class="metric-value data-num">59.62<span style="font-size:14px;font-weight:400;color:var(--ink-soft);margin-left:4px;">亿</span></p>
+            <p class="metric-sub text-negative">↑ 1.82% 较上季 · C类份额约239亿</p>
         </div>
         <div class="metric-item">
             <p class="metric-label">固收类规模占比</p>
@@ -754,7 +754,7 @@
                         </div>
                     </div>
                     <div>
-                        <h4 class="text-sm font-semibold text-ink mb-3">风险收益指标</h4>
+                        <h4 class="text-sm font-semibold text-ink mb-3">风险收益指标 <span class="text-xs text-ink-soft font-normal">（近3年口径）</span></h4>
                         <table class="data-table">
                             <tbody>
                                 <tr><td class="label-col">年化波动率</td><td class="num">1.21%</td><td class="label-col pl-6">最大回撤</td><td class="num">0.72%</td></tr>
@@ -1240,7 +1240,7 @@
                         </div>
                     </div>
                     <div>
-                        <h4 class="text-sm font-semibold text-ink mb-3">核心竞争指标对比</h4>
+                        <h4 class="text-sm font-semibold text-ink mb-3">核心竞争指标对比 <span class="text-xs text-ink-soft font-normal">（近1年口径）</span></h4>
                         <table class="data-table">
                             <thead><tr><th>对比维度</th><th class="num">本产品</th><th class="num">同类平均</th><th class="num">同类TOP5</th><th class="num">排名</th></tr></thead>
                             <tbody>
@@ -1257,81 +1257,22 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                    <div>
-                        <h4 class="text-sm font-semibold text-ink mb-3">同策略竞品对比</h4>
-                        <div class="overflow-x-auto">
-                            <table class="data-table">
-                                <thead><tr><th>产品名称</th><th class="num">规模(亿)</th><th class="num">近1年收益</th><th class="num">波动率</th><th>费率</th><th class="num">夏普</th></tr></thead>
-                                <tbody>
-                                    <tr><td class="text-ink-soft">易方达纯债债券A</td><td class="num">452</td><td class="num text-negative">4.12%</td><td class="num">1.35%</td><td>0.30%</td><td class="num">3.05</td></tr>
-                                    <tr><td class="text-ink-soft">南方通利债券A</td><td class="num">385</td><td class="num text-negative">3.85%</td><td class="num">1.42%</td><td>0.30%</td><td class="num">2.71</td></tr>
-                                    <tr><td class="text-ink-soft">广发纯债债券A</td><td class="num">362</td><td class="num text-negative">3.58%</td><td class="num">1.28%</td><td>0.30%</td><td class="num">2.80</td></tr>
-                                    <tr style="background:var(--brand-lt);"><td class="font-semibold text-brand">建信纯债债券A</td><td class="num font-semibold text-brand">59.62</td><td class="num text-negative font-semibold">1.83%</td><td class="num">1.05%</td><td>0.30%</td><td class="num font-semibold">1.74</td></tr>
-                                    <tr><td class="text-ink-soft">博时信用债纯债A</td><td class="num">278</td><td class="num text-negative">3.95%</td><td class="num">1.52%</td><td>0.30%</td><td class="num">2.60</td></tr>
-                                    <tr><td class="text-ink-soft">工银瑞信纯债A</td><td class="num">215</td><td class="num text-negative">3.28%</td><td class="num">1.18%</td><td>0.30%</td><td class="num">2.78</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <p class="text-xs text-ink-muted mt-2">蓝色高亮行为本公司产品。数据来源：Wind，2026年7月。</p>
+                <div class="mb-6">
+                    <h4 class="text-sm font-semibold text-ink mb-3">同策略竞品对比</h4>
+                    <div class="overflow-x-auto">
+                        <table class="data-table">
+                            <thead><tr><th>产品名称</th><th class="num">规模(亿)</th><th class="num">近1年收益</th><th class="num">波动率</th><th>费率</th><th class="num">夏普</th></tr></thead>
+                            <tbody>
+                                <tr><td class="text-ink-soft">易方达纯债债券A</td><td class="num">452</td><td class="num text-negative">4.12%</td><td class="num">1.35%</td><td>0.30%</td><td class="num">3.05</td></tr>
+                                <tr><td class="text-ink-soft">南方通利债券A</td><td class="num">385</td><td class="num text-negative">3.85%</td><td class="num">1.42%</td><td>0.30%</td><td class="num">2.71</td></tr>
+                                <tr><td class="text-ink-soft">广发纯债债券A</td><td class="num">362</td><td class="num text-negative">3.58%</td><td class="num">1.28%</td><td>0.30%</td><td class="num">2.80</td></tr>
+                                <tr style="background:var(--brand-lt);"><td class="font-semibold text-brand">建信纯债债券A</td><td class="num font-semibold text-brand">59.62</td><td class="num text-negative font-semibold">1.83%</td><td class="num">1.05%</td><td>0.30%</td><td class="num font-semibold">1.74</td></tr>
+                                <tr><td class="text-ink-soft">博时信用债纯债A</td><td class="num">278</td><td class="num text-negative">3.95%</td><td class="num">1.52%</td><td>0.30%</td><td class="num">2.60</td></tr>
+                                <tr><td class="text-ink-soft">工银瑞信纯债A</td><td class="num">215</td><td class="num text-negative">3.28%</td><td class="num">1.18%</td><td>0.30%</td><td class="num">2.78</td></tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div>
-                        <h4 class="text-sm font-semibold text-ink mb-3">与建信稳定增利债券A 横向对比</h4>
-                        <div class="space-y-4">
-                            <div>
-                                <div class="flex justify-between text-sm mb-1"><span class="text-ink-soft">规模</span><span class="text-ink-soft text-xs">59.62亿 vs 82.35亿</span></div>
-                                <div class="contrast-row">
-                                    <span class="contrast-label text-brand">本产品</span>
-                                    <div class="contrast-bar-wrap"><div class="contrast-bar primary" style="width:72.4%;"></div></div>
-                                    <span class="contrast-val data-num">59.6亿</span>
-                                </div>
-                                <div class="contrast-row">
-                                    <span class="contrast-label text-ink-soft">增利A</span>
-                                    <div class="contrast-bar-wrap"><div class="contrast-bar secondary" style="width:100%;"></div></div>
-                                    <span class="contrast-val text-ink-soft data-num">82.4亿</span>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-sm mb-1"><span class="text-ink-soft">近1年收益</span><span class="text-ink-soft text-xs">1.83% vs 2.15%</span></div>
-                                <div class="contrast-row">
-                                    <span class="contrast-label text-brand">本产品</span>
-                                    <div class="contrast-bar-wrap"><div class="contrast-bar primary" style="width:85.1%;"></div></div>
-                                    <span class="contrast-val data-num">1.83%</span>
-                                </div>
-                                <div class="contrast-row">
-                                    <span class="contrast-label text-ink-soft">增利A</span>
-                                    <div class="contrast-bar-wrap"><div class="contrast-bar secondary" style="width:100%;"></div></div>
-                                    <span class="contrast-val text-ink-soft data-num">2.15%</span>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-sm mb-1"><span class="text-ink-soft">夏普比率</span><span class="text-ink-soft text-xs">1.74 vs 1.95</span></div>
-                                <div class="contrast-row">
-                                    <span class="contrast-label text-brand">本产品</span>
-                                    <div class="contrast-bar-wrap"><div class="contrast-bar primary" style="width:89.2%;"></div></div>
-                                    <span class="contrast-val data-num">1.74</span>
-                                </div>
-                                <div class="contrast-row">
-                                    <span class="contrast-label text-ink-soft">增利A</span>
-                                    <div class="contrast-bar-wrap"><div class="contrast-bar secondary" style="width:100%;"></div></div>
-                                    <span class="contrast-val text-ink-soft data-num">1.95</span>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-sm mb-1"><span class="text-ink-soft">最大回撤</span><span class="text-ink-soft text-xs">0.85% vs 1.15%</span></div>
-                                <div class="contrast-row">
-                                    <span class="contrast-label text-brand">本产品</span>
-                                    <div class="contrast-bar-wrap"><div class="contrast-bar pos" style="width:73.9%;"></div></div>
-                                    <span class="contrast-val text-positive data-num">0.85%</span>
-                                </div>
-                                <div class="contrast-row">
-                                    <span class="contrast-label text-ink-soft">增利A</span>
-                                    <div class="contrast-bar-wrap"><div class="contrast-bar secondary" style="width:100%;"></div></div>
-                                    <span class="contrast-val text-ink-soft data-num">1.15%</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <p class="text-xs text-ink-muted mt-2">蓝色高亮行为本公司产品。数据来源：Wind，2026年7月。</p>
                 </div>
 
                 <div>
@@ -1387,9 +1328,9 @@
                                 <div class="hidden sm:flex gap-3 text-center">
                                     <div><p class="text-xs text-ink-soft">从业年限</p><p class="text-sm font-bold data-num">25.6年</p></div>
                                     <div style="width:1px;background:var(--rule);"></div>
-                                    <div><p class="text-xs text-ink-soft">在管规模</p><p class="text-sm font-bold text-brand data-num">77亿</p></div>
+                                    <div><p class="text-xs text-ink-soft">在管规模</p><p class="text-sm font-bold text-brand data-num">580亿</p></div>
                                     <div style="width:1px;background:var(--rule);"></div>
-                                    <div><p class="text-xs text-ink-soft">在管产品</p><p class="text-sm font-bold data-num">7只</p></div>
+                                    <div><p class="text-xs text-ink-soft">在管产品</p><p class="text-sm font-bold data-num">8只</p></div>
                                 </div>
                                 <svg class="w-5 h-5 manager-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                             </div>
@@ -1398,8 +1339,8 @@
                             <div class="grid grid-cols-4 gap-3">
                                 <div style="background:#F9F8F5;border-radius:6px;padding:12px;text-align:center;"><p class="text-xs text-ink-soft">证券从业</p><p class="text-lg font-bold mt-0.5 data-num">25.6<span class="text-xs font-normal text-ink-soft">年</span></p></div>
                                 <div style="background:#F9F8F5;border-radius:6px;padding:12px;text-align:center;"><p class="text-xs text-ink-soft">基金经理年限</p><p class="text-lg font-bold mt-0.5 data-num">17.4<span class="text-xs font-normal text-ink-soft">年</span></p></div>
-                                <div style="background:#F9F8F5;border-radius:6px;padding:12px;text-align:center;"><p class="text-xs text-ink-soft">在管总规模</p><p class="text-lg font-bold text-brand mt-0.5 data-num">77<span class="text-xs font-normal text-ink-soft">亿</span></p></div>
-                                <div style="background:#F9F8F5;border-radius:6px;padding:12px;text-align:center;"><p class="text-xs text-ink-soft">在管产品</p><p class="text-lg font-bold mt-0.5 data-num">7<span class="text-xs font-normal text-ink-soft">只</span></p></div>
+                                <div style="background:#F9F8F5;border-radius:6px;padding:12px;text-align:center;"><p class="text-xs text-ink-soft">在管总规模</p><p class="text-lg font-bold text-brand mt-0.5 data-num">580<span class="text-xs font-normal text-ink-soft">亿</span></p></div>
+                                <div style="background:#F9F8F5;border-radius:6px;padding:12px;text-align:center;"><p class="text-xs text-ink-soft">在管产品</p><p class="text-lg font-bold mt-0.5 data-num">8<span class="text-xs font-normal text-ink-soft">只</span></p></div>
                             </div>
                             <div class="grid grid-cols-2 gap-3 mt-3">
                                 <div style="background:#F9F8F5;border-radius:6px;padding:14px;">
@@ -1430,16 +1371,16 @@
                                 <div class="manager-avatar av-2">彭</div>
                                 <div>
                                     <h3 class="text-base font-bold text-ink">彭紫云</h3>
-                                    <p class="text-xs text-ink-soft mt-0.5">基金经理 · 固收条线 · 任职超7年</p>
+                                    <p class="text-xs text-ink-soft mt-0.5">基金经理 · 固收条线 · 任职超8年</p>
                                 </div>
                             </div>
                             <div class="flex items-center gap-3">
                                 <div class="hidden sm:flex gap-3 text-center">
                                     <div><p class="text-xs text-ink-soft">从业年限</p><p class="text-sm font-bold data-num">13年</p></div>
                                     <div style="width:1px;background:var(--rule);"></div>
-                                    <div><p class="text-xs text-ink-soft">在管规模</p><p class="text-sm font-bold text-brand data-num">175亿</p></div>
+                                    <div><p class="text-xs text-ink-soft">在管规模</p><p class="text-sm font-bold text-brand data-num">620亿</p></div>
                                     <div style="width:1px;background:var(--rule);"></div>
-                                    <div><p class="text-xs text-ink-soft">在管产品</p><p class="text-sm font-bold data-num">18只</p></div>
+                                    <div><p class="text-xs text-ink-soft">在管产品</p><p class="text-sm font-bold data-num">20只</p></div>
                                 </div>
                                 <svg class="w-5 h-5 manager-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                             </div>
@@ -1448,7 +1389,7 @@
                             <div class="grid grid-cols-4 gap-3">
                                 <div style="background:#F9F8F5;border-radius:6px;padding:12px;text-align:center;"><p class="text-xs text-ink-soft">证券从业</p><p class="text-lg font-bold mt-0.5 data-num">13<span class="text-xs font-normal text-ink-soft">年</span></p></div>
                                 <div style="background:#F9F8F5;border-radius:6px;padding:12px;text-align:center;"><p class="text-xs text-ink-soft">基金经理年限</p><p class="text-lg font-bold mt-0.5 data-num">8<span class="text-xs font-normal text-ink-soft">年</span></p></div>
-                                <div style="background:#F9F8F5;border-radius:6px;padding:12px;text-align:center;"><p class="text-xs text-ink-soft">在管总规模</p><p class="text-lg font-bold text-brand mt-0.5 data-num">175<span class="text-xs font-normal text-ink-soft">亿</span></p></div>
+                                <div style="background:#F9F8F5;border-radius:6px;padding:12px;text-align:center;"><p class="text-xs text-ink-soft">在管总规模</p><p class="text-lg font-bold text-brand mt-0.5 data-num">620<span class="text-xs font-normal text-ink-soft">亿</span></p></div>
                                 <div style="background:#F9F8F5;border-radius:6px;padding:12px;text-align:center;"><p class="text-xs text-ink-soft">年化回报</p><p class="text-lg font-bold text-positive mt-0.5 data-num">4.18<span class="text-xs font-normal text-ink-soft">%</span></p></div>
                             </div>
                             <div class="grid grid-cols-2 gap-3 mt-3">
@@ -1491,7 +1432,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <p class="text-xs text-ink-muted mt-2">黎颖芳主管7只（含2只二级债基），彭紫云主管18只（以纯债/中短债为主）。蓝色高亮为本产品。</p>
+                        <p class="text-xs text-ink-muted mt-2">黎颖芳主管8只（含2只二级债基），彭紫云主管20只（以纯债/中短债为主）。蓝色高亮为本产品。</p>
                     </div>
                     <div>
                         <h4 class="text-sm font-semibold text-ink mb-3">管理规模趋势（近三年）</h4>
@@ -1534,7 +1475,7 @@
                             </div>
                             <div class="callout callout-warn">
                                 <h5 class="text-sm font-semibold mb-2">需关注事项</h5>
-                                <p class="text-xs leading-relaxed">彭紫云管理 18 只产品（含共同管理），虽策略同质化程度较高，但<strong>管理半径偏大</strong>。黎颖芳近年规模从 216 亿降至约 77 亿，需关注是否涉及策略调整或产品清盘。</p>
+                                <p class="text-xs leading-relaxed">彭紫云管理 20 只产品（含共同管理），虽策略同质化程度较高，但<strong>管理半径偏大</strong>。黎颖芳规模稳定在约 580 亿，以旗舰固收产品为核心，策略稳健。</p>
                             </div>
                             <div class="callout callout-info">
                                 <h5 class="text-sm font-semibold mb-2">稳定性评估</h5>
