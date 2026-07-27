@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基金产品画像 · 查询首页</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ink:      '#303133',
+                        'ink-soft':'#606266',
+                        'ink-muted':'#909399',
+                        paper:    '#F4F8FC',
+                        'card-bg':'#FFFFFF',
+                        rule:     '#D7E2EB',
+                        'rule-light':'#EBEEF5',
+                        brand:    '#1D6EB6',
+                        'brand-light':'#F0F5FD',
+                        positive: '#2D6A4F',
+                        'pos-light':'#EDF5F0',
+                        negative: '#C0392B',
+                        'neg-light':'#FBEEED',
+                        warning:  '#B8650A',
+                        'warn-light':'#FDF5ED',
+                        link:     '#409EFF',
+                        accent:   '#D4940B',
+                        'accent-light':'#FFF8E8',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* ===== 设计令牌（来自基金产品画像.html） ===== */
+        :root {
+            --paper:      #F4F8FC;
+            --card-bg:    #FFFFFF;
+            --ink:        #303133;
+            --ink-soft:   #606266;
+            --ink-muted:  #909399;
+            --rule:       #D7E2EB;
+            --rule-light: #EBEEF5;
+            --brand:      #1D6EB6;
+            --brand-lt:   #F0F5FD;
+            --positive:   #2D6A4F;
+            --pos-lt:     #EDF5F0;
+            --negative:   #C0392B;
+            --neg-lt:     #FBEEED;
+            --warning:    #B8650A;
+            --warn-lt:    #FDF5ED;
+            --link:       #409EFF;
+            --accent:     #D4940B;
+            --accent-lt:  #FFF8E8;
+        }
+
+        body {
+            font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans GB', sans-serif;
+            background: var(--paper);
+            color: var(--ink);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== 排版 ===== */
+        .display-name {
+            font-family: 'Noto Serif SC', 'Source Han Serif SC', serif;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+        .data-num {
+            font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+            font-weight: 500;
+            font-variant-numeric: tabular-nums;
+        }
+        .section-title {
+            font-family: 'Noto Serif SC', 'Source Han Serif SC', serif;
+            font-weight: 500;
+            color: var(--ink);
+        }
+
+        /* ===== 卡片 ===== */
+        .dossier-card {
+            background: var(--card-bg);
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+        }
+        .dossier-card:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        /* 画像查询卡片 — 悬停效果增强 */
+        .profile-query-card {
+            background: var(--card-bg);
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+        .profile-query-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.10);
+            border-color: var(--brand);
+        }
+
+        /* ===== 导航栏 ===== */
+        .nav-link {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--ink-soft);
+            padding: 8px 14px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .nav-link:hover { color: var(--brand); background: var(--brand-lt); }
+        .nav-link.active { color: var(--brand); background: var(--brand-lt); font-weight: 600; }
+        .nav-divider {
+            width: 1px; height: 18px; background: var(--rule);
+        }
+
+        /* ===== 标签 ===== */
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 10px;
+            font-size: 11px;
+            border-radius: 4px;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+        }
+        .tag-brand   { background: var(--brand-lt);  color: var(--brand); }
+        .tag-pos     { background: var(--pos-lt);    color: var(--positive); }
+        .tag-neg     { background: var(--neg-lt);    color: var(--negative); }
+        .tag-warn    { background: var(--warn-lt);   color: var(--warning); }
+        .tag-accent  { background: var(--accent-lt); color: var(--accent); }
+        .tag-muted   { background: #EBEEF5;         color: var(--ink-soft); }
+        .tag-outline { background: transparent; border: 1px solid var(--rule); color: var(--ink-soft); }
+
+        /* ===== 进度条 ===== */
+        .progress-bar {
+            height: 6px;
+            background: #EBEEF5;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.6s ease;
+        }
+        .progress-fill.brand  { background: var(--brand); }
+        .progress-fill.pos    { background: var(--positive); }
+        .progress-fill.warn   { background: var(--warning); }
+        .progress-fill.accent { background: var(--accent); }
+
+        /* ===== 统计横带 ===== */
+        .stat-ribbon {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+        }
+        .stat-item {
+            padding: 20px 24px;
+            position: relative;
+        }
+        .stat-item + .stat-item::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 20%; height: 60%; width: 1px;
+            background: var(--rule);
+        }
+        .stat-label {
+            font-size: 12px;
+            color: var(--ink-soft);
+            margin-bottom: 6px;
+            letter-spacing: 0.02em;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--ink);
+            letter-spacing: -0.01em;
+        }
+        .stat-sub {
+            font-size: 11px;
+            color: var(--ink-soft);
+            margin-top: 4px;
+        }
+
+        /* ===== 筛选面板 ===== */
+        .filter-section-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--ink-soft);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--rule-light);
+        }
+
+        /* ===== 动画 ===== */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .anim-fade-up {
+            animation: fadeUp 0.5s ease both;
+        }
+        .anim-stagger > * { opacity: 0; }
+        .anim-stagger > *.revealed {
+            animation: fadeUp 0.5s ease forwards;
+        }
+
+        /* ===== 响应式 ===== */
+        @media (max-width: 1024px) {
+            .stat-ribbon { grid-template-columns: repeat(2, 1fr); }
+            .stat-item:nth-child(3)::before { display: none; }
+        }
+        @media (max-width: 768px) {
+            .stat-ribbon { grid-template-columns: 1fr; }
+            .stat-item + .stat-item::before { display: none; }
+            .stat-item { padding: 14px 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ==================== 顶部导航 ==================== -->
+<header class="sticky top-0 z-50" style="background: rgba(244,248,252,0.94); backdrop-filter: blur(12px); border-bottom: 1px solid var(--rule);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-14">
+            <!-- 左侧：Logo + 导航链接 -->
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-7 h-7 rounded-md flex items-center justify-center text-xs font-bold text-white" style="background: var(--brand);">建</div>
+                    <span class="display-name text-base" style="color:var(--ink);">建信基金 · 产品画像</span>
+                </div>
+                <div class="nav-divider"></div>
+                <a href="基金产品画像_查询首页.html" class="nav-link active">查询首页</a>
+                <a href="javascript:void(0)" onclick="openProfileOverlay()" class="nav-link" id="nav-profile">产品画像</a>
+            </div>
+            <!-- 右侧：数据状态 -->
+            <div class="flex items-center gap-3 text-xs" style="color:var(--ink-muted);">
+                <span class="flex items-center gap-1.5">
+                    <span class="status-dot active" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--positive);"></span>
+                    数据更新于 2026-07-27
+                </span>
+                <span style="color:var(--rule);">|</span>
+                <span>来源：Wind / 产品主数据系统</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- ==================== 查询主体区：筛选面板 + 结果列表 ==================== -->
+<section id="query-section">
+    <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="flex flex-col lg:flex-row gap-6">
+
+            <!-- ===== 筛选面板 ===== -->
+            <aside class="lg:w-64 flex-shrink-0">
+                <div class="dossier-card p-5 sticky" style="top:72px;">
+                    <h4 class="text-sm font-semibold mb-5 flex items-center gap-2" style="color:var(--ink);">
+                        <svg class="w-4 h-4" style="color:var(--brand);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+                        </svg>
+                        筛选条件
+                    </h4>
+
+                    <!-- 资产大类 -->
+                    <div class="mb-5">
+                        <p class="filter-section-title">资产大类</p>
+                        <div class="space-y-2">
+                            <label class="flex items-center cursor-pointer text-sm font-semibold pb-1.5 mb-0.5" style="color:var(--brand); border-bottom:1px solid var(--rule-light);">
+                                <input type="checkbox" class="filter-all rounded" style="accent-color:var(--brand);" data-group="filter-asset" checked onchange="toggleSelectAll(this)">
+                                <span class="ml-2">全选</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer text-sm" style="color:var(--ink);">
+                                <input type="checkbox" class="filter-asset rounded" style="accent-color:var(--brand);" value="货币类" checked onchange="syncSelectAll(this)">
+                                <span class="ml-2">货币类</span>
+                                <span class="ml-auto text-xs" style="color:var(--ink-muted);">22只</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer text-sm" style="color:var(--ink);">
+                                <input type="checkbox" class="filter-asset rounded" style="accent-color:var(--brand);" value="固收类" checked onchange="syncSelectAll(this)">
+                                <span class="ml-2">固收类</span>
+                                <span class="ml-auto text-xs" style="color:var(--ink-muted);">68只</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer text-sm" style="color:var(--ink);">
+                                <input type="checkbox" class="filter-asset rounded" style="accent-color:var(--brand);" value="权益类" checked onchange="syncSelectAll(this)">
+                                <span class="ml-2">权益类</span>
+                                <span class="ml-auto text-xs" style="color:var(--ink-muted);">48只</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer text-sm" style="color:var(--ink);">
+                                <input type="checkbox" class="filter-asset rounded" style="accent-color:var(--brand);" value="混合类" checked onchange="syncSelectAll(this)">
+                                <span class="ml-2">混合类</span>
+                                <span class="ml-auto text-xs" style="color:var(--ink-muted);">32只</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 策略细分 -->
+                    <div class="mb-5">
+                        <p class="filter-section-title">策略细分</p>
+                        <div class="space-y-2">
+                            <label class="flex items-center cursor-pointer text-sm font-semibold pb-1.5 mb-0.5" style="color:var(--brand); border-bottom:1px solid var(--rule-light);">
+                                <input type="checkbox" class="filter-all rounded" style="accent-color:var(--brand);" data-group="filter-strategy" checked onchange="toggleSelectAll(this)">
+                                <span class="ml-2">全选</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer text-sm" style="color:var(--ink);">
+                                <input type="checkbox" class="filter-strategy rounded" style="accent-color:var(--brand);" onchange="syncSelectAll(this)" value="现金管理" checked>
+                                <span class="ml-2">现金管理</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer text-sm" style="color:var(--ink);">
+                                <input type="checkbox" class="filter-strategy rounded" style="accent-color:var(--brand);" onchange="syncSelectAll(this)" value="纯债/利率债" checked>
+                                <span class="ml-2">纯债/利率债</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer text-sm" style="color:var(--ink);">
+                                <input type="checkbox" class="filter-strategy rounded" style="accent-color:var(--brand);" onchange="syncSelectAll(this)" value="信用债" checked>
+                                <span class="ml-2">信用债</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer text-sm" style="color:var(--ink);">
+                                <input type="checkbox" class="filter-strategy rounded" style="accent-color:var(--brand);" onchange="syncSelectAll(this)" value="短债" checked>
+                                <span class="ml-2">短债</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer text-sm" style="color:var(--ink);">
+                                <input type="checkbox" class="filter-strategy rounded" style="accent-color:var(--brand);" onchange="syncSelectAll(this)" value="可转债" checked>
+                                <span class="ml-2">可转债</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer text-sm" style="color:var(--ink);">
+                                <input type="checkbox" class="filter-strategy rounded" style="accent-color:var(--brand);" onchange="syncSelectAll(this)" value="主动权益" checked>
+                                <span class="ml-2">主动权益</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer text-sm" style="color:var(--ink);">
+                                <input type="checkbox" class="filter-strategy rounded" style="accent-color:var(--brand);" onchange="syncSelectAll(this)" value="行业主题" checked>
+                                <span class="ml-2">行业主题</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer text-sm" style="color:var(--ink);">
+                                <input type="checkbox" class="filter-strategy rounded" style="accent-color:var(--brand);" onchange="syncSelectAll(this)" value="宽基指数" checked>
+                                <span class="ml-2">宽基指数</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer text-sm" style="color:var(--ink);">
+                                <input type="checkbox" class="filter-strategy rounded" style="accent-color:var(--brand);" onchange="syncSelectAll(this)" value="行业指数" checked>
+                                <span class="ml-2">行业指数</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer text-sm" style="color:var(--ink);">
+                                <input type="checkbox" class="filter-strategy rounded" style="accent-color:var(--brand);" onchange="syncSelectAll(this)" value="偏股混合" checked>
+                                <span class="ml-2">偏股混合</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer text-sm" style="color:var(--ink);">
+                                <input type="checkbox" class="filter-strategy rounded" style="accent-color:var(--brand);" onchange="syncSelectAll(this)" value="偏债混合" checked>
+                                <span class="ml-2">偏债混合</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer text-sm" style="color:var(--ink);">
+                                <input type="checkbox" class="filter-strategy rounded" style="accent-color:var(--brand);" onchange="syncSelectAll(this)" value="灵活配置" checked>
+                                <span class="ml-2">灵活配置</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 风险等级 -->
+                    <div class="mb-5">
+                        <p class="filter-section-title">风险等级</p>
+                        <div class="space-y-2">
+                            <label class="flex items-center cursor-pointer text-sm font-semibold pb-1.5 mb-0.5" style="color:var(--brand); border-bottom:1px solid var(--rule-light);">
+                                <input type="checkbox" class="filter-all rounded" style="accent-color:var(--brand);" data-group="filter-risk" checked onchange="toggleSelectAll(this)">
+                                <span class="ml-2">全选</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer text-sm" style="color:var(--ink);">
+                                <input type="checkbox" class="filter-risk rounded" style="accent-color:var(--brand);" onchange="syncSelectAll(this)" value="低风险" checked>
+                                <span class="ml-2">低风险（R1）</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer text-sm" style="color:var(--ink);">
+                                <input type="checkbox" class="filter-risk rounded" style="accent-color:var(--brand);" onchange="syncSelectAll(this)" value="中低风险" checked>
+                                <span class="ml-2">中低风险（R2）</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer text-sm" style="color:var(--ink);">
+                                <input type="checkbox" class="filter-risk rounded" style="accent-color:var(--brand);" onchange="syncSelectAll(this)" value="中风险" checked>
+                                <span class="ml-2">中风险（R3）</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer text-sm" style="color:var(--ink);">
+                                <input type="checkbox" class="filter-risk rounded" style="accent-color:var(--brand);" onchange="syncSelectAll(this)" value="中高风险" checked>
+                                <span class="ml-2">中高风险（R4）</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer text-sm" style="color:var(--ink);">
+                                <input type="checkbox" class="filter-risk rounded" style="accent-color:var(--brand);" onchange="syncSelectAll(this)" value="高风险" checked>
+                                <span class="ml-2">高风险（R5）</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 基金规模 -->
+                    <div class="mb-6">
+                        <p class="filter-section-title">基金规模</p>
+                        <select id="scale-filter" class="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-offset-0"
+                            style="border-color:var(--rule); color:var(--ink); background:var(--card-bg);">
+                            <option value="all">全部规模</option>
+                            <option value="small">小于10亿</option>
+                            <option value="medium">10亿 ~ 100亿</option>
+                            <option value="large">大于100亿</option>
+                        </select>
+                    </div>
+
+                    <!-- 操作按钮 -->
+                    <div class="space-y-2.5">
+                        <button onclick="applyQueryFilters()" class="w-full py-2.5 text-sm font-semibold text-white rounded-md transition-all duration-200 hover:opacity-90"
+                            style="background:var(--brand);">
+                            应用筛选
+                        </button>
+                        <button onclick="clearQueryFilters()" class="w-full py-2.5 text-sm font-semibold rounded-md border transition-all duration-200 hover:bg-gray-50"
+                            style="color:var(--ink-soft);border-color:var(--rule);">
+                            重置条件
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- ===== 右侧结果区 ===== -->
+            <main class="flex-1 min-w-0">
+                <!-- 搜索 + 排序工具栏 -->
+                <div class="flex flex-col sm:flex-row gap-3 mb-4">
+                    <div class="flex-1 relative">
+                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style="color:var(--ink-muted);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                        <input type="text" id="search-input" placeholder="搜索基金名称、代码或基金经理…"
+                            class="w-full border rounded-md pl-9 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-offset-0"
+                            style="border-color:var(--rule); color:var(--ink); background:var(--card-bg);">
+                    </div>
+                    <div class="flex gap-2">
+                        <select id="sort-select" class="border rounded-md px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-offset-0"
+                            style="border-color:var(--rule); color:var(--ink); background:var(--card-bg); cursor:pointer;">
+                            <option value="return-desc">收益降序</option>
+                            <option value="return-asc">收益升序</option>
+                            <option value="risk-asc">风险升序</option>
+                            <option value="risk-desc">风险降序</option>
+                            <option value="size-desc">规模降序</option>
+                            </select>
+                        <button onclick="toggleResultView()" id="view-toggle" class="border rounded-md px-3 py-2.5 text-sm transition-colors hover:bg-gray-50"
+                            style="border-color:var(--rule); color:var(--ink-soft); background:var(--card-bg);" title="切换视图">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 活跃筛选标签 -->
+                <div id="active-tags" class="flex flex-wrap gap-1.5 mb-4"></div>
+
+                <!-- 结果计数 -->
+                <div class="flex items-center justify-between mb-4">
+                    <p class="text-xs" style="color:var(--ink-muted);">
+                        共 <span id="result-count" class="font-semibold" style="color:var(--ink);">15</span> 条画像记录
+                    </p>
+                    <p class="text-xs" style="color:var(--ink-muted);">
+                        数据基于公募季报/半年报公开数据
+                    </p>
+                </div>
+
+                <!-- 画像卡片网格 -->
+                <div id="result-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                    <!-- 动态生成 -->
+                </div>
+
+                <!-- 空状态 -->
+                <div id="empty-state" class="hidden text-center py-16">
+                    <p class="text-4xl mb-4">📭</p>
+                    <p class="text-base font-semibold" style="color:var(--ink);">未找到匹配的基金产品画像</p>
+                    <p class="text-sm mt-1" style="color:var(--ink-muted);">请尝试调整筛选条件或搜索关键词</p>
+                    <button onclick="clearQueryFilters()" class="mt-4 px-5 py-2 text-sm font-semibold rounded-md border transition-colors hover:bg-gray-50"
+                        style="color:var(--brand);border-color:var(--brand);">
+                        清除所有筛选
+                    </button>
+                </div>
+
+                <!-- 加载更多 -->
+                <div id="load-more-area" class="text-center mt-8">
+                    <button id="load-more-btn" class="px-10 py-2.5 text-sm font-medium rounded-md border transition-colors hover:bg-gray-50"
+                        style="color:var(--ink-soft);border-color:var(--rule);background:var(--card-bg);">
+                        加载更多画像
+                    </button>
+                </div>
+            </main>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== 产品画像全屏叠加层 ==================== -->
+<div id="profile-overlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; z-index:100; background:var(--paper);">
+    <!-- 关闭按钮 -->
+    <button onclick="closeProfileOverlay()" style="position:fixed; top:12px; right:16px; z-index:110; width:36px; height:36px; border-radius:50%; border:1px solid var(--rule); background:var(--card-bg); color:var(--ink-soft); font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 1px 4px rgba(0,0,0,0.08); transition:all 0.2s;" onmouseover="this.style.color='var(--ink)';this.style.boxShadow='0 2px 8px rgba(0,0,0,0.12)';" onmouseout="this.style.color='var(--ink-soft)';this.style.boxShadow='0 1px 4px rgba(0,0,0,0.08)';">&times;</button>
+    <iframe id="profile-iframe" src="" style="width:100%;height:100%;border:none;" title="产品画像"></iframe>
+</div>
+
+<!-- ==================== 页脚 ==================== -->
+<footer style="border-top:1px solid var(--rule); margin-top:32px;">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div class="flex items-center gap-2 text-sm" style="color:var(--ink-muted);">
+                <div class="w-5 h-5 rounded flex items-center justify-center text-[10px] font-bold text-white" style="background:var(--brand);">画</div>
+                <span>基金产品画像系统</span>
+            </div>
+            <p class="text-xs" style="color:var(--ink-muted);">
+                &copy; 2026 基金产品画像系统 · 专业投资分析平台
+            </p>
+        </div>
+    </div>
+</footer>
+
+<script>
+// ==================== 基金画像模拟数据 ====================
+const PROFILE_DATA = [
+    // ── 货币类 ──
+    { id:'000693', name:'建信现金添利货币A',    asset:'货币类', strategy:'现金管理',   risk:'低风险',   nav:1.0000, daily: 0.01, annRet: 1.82, size:1414.7, company:'建信基金', manager:'陈建良/吴沛文', rating:5, ytd: 1.05, maxDD:  0.0, sharpe:4.20, tags:['全公司最大单品','建行速盈'] },
+    { id:'530002', name:'建信现金增利货币A',    asset:'货币类', strategy:'现金管理',   risk:'低风险',   nav:1.0000, daily: 0.01, annRet: 1.78, size: 356.8, company:'建信基金', manager:'陈建良',         rating:4, ytd: 1.02, maxDD:  0.0, sharpe:3.85, tags:['建行速盈','微信理财通'] },
+    // ── 固收类 ──
+    { id:'530021', name:'建信纯债债券A',        asset:'固收类', strategy:'纯债/利率债', risk:'中低风险', nav:1.6974, daily: 0.02, annRet: 1.83, size: 298.5, company:'建信基金', manager:'黎颖芳/彭紫云', rating:5, ytd: 1.70, maxDD: -0.72, sharpe:2.84, tags:['固收旗舰','成立超13年'] },
+    { id:'530008', name:'建信稳定增利债券A',    asset:'固收类', strategy:'纯债/利率债', risk:'中低风险', nav:1.4523, daily: 0.03, annRet: 3.52, size: 187.4, company:'建信基金', manager:'黎颖芳',         rating:4, ytd: 2.85, maxDD: -1.15, sharpe:2.35, tags:['机构配置首选','回撤控制佳'] },
+    { id:'530009', name:'建信信用增强债券',      asset:'固收类', strategy:'信用债',     risk:'中低风险', nav:1.3210, daily: 0.04, annRet: 3.20, size: 142.1, company:'建信基金', manager:'李菁',           rating:4, ytd: 2.56, maxDD: -1.82, sharpe:2.08, tags:['信用挖掘','建行网银主推'] },
+    { id:'016034', name:'建信鑫福60天持有期中短债', asset:'固收类', strategy:'短债',    risk:'中低风险', nav:1.0521, daily: 0.01, annRet: 2.85, size: 156.2, company:'建信基金', manager:'彭紫云/胡泽元', rating:4, ytd: 1.98, maxDD: -0.28, sharpe:3.15, tags:['短久期','理财替代'] },
+    { id:'531017', name:'建信双息红利债券A',    asset:'固收类', strategy:'可转债',     risk:'中风险',   nav:1.4120, daily:-0.12, annRet: 8.50, size:  65.5, company:'建信基金', manager:'黎颖芳',         rating:4, ytd: 5.82, maxDD: -5.62, sharpe:1.52, tags:['股性增强','分红稳定'] },
+    // ── 权益类 ──
+    { id:'000592', name:'建信改革红利股票',      asset:'权益类', strategy:'主动权益',   risk:'高风险',   nav:2.8560, daily: 0.85, annRet:18.20, size:  85.2, company:'建信基金', manager:'胡泽元',         rating:5, ytd:14.56, maxDD:-22.35, sharpe:1.68, tags:['权益旗舰','国企改革主线'] },
+    { id:'000547', name:'建信健康民生股票',      asset:'权益类', strategy:'行业主题',   risk:'高风险',   nav:3.1240, daily: 0.52, annRet:12.50, size:  72.1, company:'建信基金', manager:'陈思宇',         rating:4, ytd:10.25, maxDD:-25.80, sharpe:1.25, tags:['医药消费','人口结构主线'] },
+    { id:'000478', name:'建信中证500指数增强A',  asset:'权益类', strategy:'宽基指数',   risk:'高风险',   nav:2.3450, daily: 1.28, annRet:26.50, size:  80.5, company:'建信基金', manager:'王剑',           rating:5, ytd:17.85, maxDD:-18.92, sharpe:1.95, tags:['量化增强','超额稳定'] },
+    { id:'016124', name:'建信红利低波ETF',       asset:'权益类', strategy:'行业指数',   risk:'中高风险', nav:1.0850, daily: 0.18, annRet:15.80, size:  35.2, company:'建信基金', manager:'张溢麟/刘思远', rating:4, ytd:11.20, maxDD:-14.50, sharpe:1.72, tags:['Smart Beta','2026新发'] },
+    { id:'016267', name:'建信中证A500ETF联接A',  asset:'权益类', strategy:'宽基指数',   risk:'中高风险', nav:1.0320, daily: 0.42, annRet: 8.90, size:  48.5, company:'建信基金', manager:'张溢麟',         rating:4, ytd: 6.78, maxDD:-12.35, sharpe:1.08, tags:['A500','2026新发'] },
+    // ── 混合类 ──
+    { id:'530006', name:'建信核心精选混合',      asset:'混合类', strategy:'偏股混合',   risk:'中高风险', nav:2.6780, daily: 0.56, annRet:14.80, size:  72.1, company:'建信基金', manager:'王剑',           rating:5, ytd:12.34, maxDD:-19.85, sharpe:1.45, tags:['权益总监管理','长期绩优'] },
+    { id:'016064', name:'建信科技成长混合A',     asset:'混合类', strategy:'偏股混合',   risk:'中高风险', nav:1.1250, daily: 1.05, annRet:22.50, size:  22.8, company:'建信基金', manager:'王剑',           rating:4, ytd:18.90, maxDD:-16.50, sharpe:1.88, tags:['科技赛道','2026新发'] },
+    { id:'530005', name:'建信灵活配置混合',      asset:'混合类', strategy:'灵活配置',   risk:'中风险',   nav:1.8920, daily: 0.35, annRet:10.20, size:  42.0, company:'建信基金', manager:'胡泽元',         rating:4, ytd: 8.15, maxDD:-14.20, sharpe:1.32, tags:['股债轮动','绝对收益目标'] },
+    { id:'016085', name:'建信优享稳健养老一年',  asset:'混合类', strategy:'偏债混合',   risk:'中风险',   nav:1.0680, daily: 0.05, annRet: 5.20, size:  45.2, company:'建信基金', manager:'梁冰',           rating:4, ytd: 3.52, maxDD: -3.85, sharpe:1.65, tags:['养老FOF','保险/年金渠道'] },
+];
+
+// ==================== 全局状态 ====================
+let currentSet = [...PROFILE_DATA];
+let filteredSet = [...PROFILE_DATA];
+let pageNum = 1;
+const PAGE_SIZE = 9;
+let listMode = false;
+
+// ==================== 初始化 ====================
+document.addEventListener('DOMContentLoaded', () => {
+    setupListeners();
+    renderResultGrid();
+    animateKPIs();
+});
+
+// ==================== 事件监听 ====================
+function setupListeners() {
+    document.getElementById('search-input').addEventListener('input', debounce(handleSearch, 300));
+    document.getElementById('sort-select').addEventListener('change', handleSort);
+    document.getElementById('load-more-btn').addEventListener('click', () => { pageNum++; renderResultGrid(); });
+}
+
+// ==================== 搜索 ====================
+function handleSearch(e) {
+    const q = e.target.value.toLowerCase().trim();
+    filteredSet = q ? currentSet.filter(f =>
+        f.name.toLowerCase().includes(q) || f.id.includes(q) ||
+        f.company.toLowerCase().includes(q) || f.manager.toLowerCase().includes(q) ||
+        f.asset.toLowerCase().includes(q) || f.strategy.toLowerCase().includes(q)
+    ) : [...currentSet];
+    pageNum = 1;
+    renderResultGrid();
+}
+
+// ==================== 排序 ====================
+function handleSort(e) {
+    const v = e.target.value;
+    const riskOrd = { '低风险':1, '中低风险':2, '中风险':3, '中高风险':4, '高风险':5 };
+    const sorters = {
+        'return-desc':  (a,b) => b.annRet - a.annRet,
+        'return-asc':   (a,b) => a.annRet - b.annRet,
+        'risk-asc':     (a,b) => riskOrd[a.risk] - riskOrd[b.risk],
+        'risk-desc':    (a,b) => riskOrd[b.risk] - riskOrd[a.risk],
+        'size-desc':    (a,b) => b.size - a.size,
+        'rating-desc':  (a,b) => b.rating - a.rating,
+    };
+    filteredSet.sort(sorters[v] || sorters['return-desc']);
+    pageNum = 1;
+    renderResultGrid();
+}
+
+// ==================== 筛选 ====================
+function applyQueryFilters() {
+    const assets = Array.from(document.querySelectorAll('.filter-asset:checked')).map(cb => cb.value);
+    const strategies = Array.from(document.querySelectorAll('.filter-strategy:checked')).map(cb => cb.value);
+    const risks = Array.from(document.querySelectorAll('.filter-risk:checked')).map(cb => cb.value);
+    const scale = document.getElementById('scale-filter').value;
+
+    filteredSet = PROFILE_DATA.filter(f => {
+        if (assets.length && !assets.includes(f.asset)) return false;
+        if (strategies.length && !strategies.includes(f.strategy)) return false;
+        if (risks.length && !risks.includes(f.risk)) return false;
+        if (scale === 'small' && f.size >= 10) return false;
+        if (scale === 'medium' && (f.size < 10 || f.size > 100)) return false;
+        if (scale === 'large' && f.size <= 100) return false;
+        return true;
+    });
+
+    currentSet = [...filteredSet];
+    pageNum = 1;
+    renderResultGrid();
+    updateActiveTags();
+}
+
+function clearQueryFilters() {
+    document.querySelectorAll('.filter-asset').forEach(cb => cb.checked = true);
+    document.querySelectorAll('.filter-strategy').forEach(cb => cb.checked = true);
+    document.querySelectorAll('.filter-risk').forEach(cb => cb.checked = true);
+    document.querySelectorAll('.filter-all').forEach(cb => cb.checked = true);
+    document.getElementById('scale-filter').value = 'all';
+    document.getElementById('search-input').value = '';
+    filteredSet = [...PROFILE_DATA];
+    currentSet = [...PROFILE_DATA];
+    pageNum = 1;
+    renderResultGrid();
+    updateActiveTags();
+}
+
+// ==================== 全选/取消全选 ====================
+function toggleSelectAll(el) {
+    var group = el.getAttribute('data-group');
+    var checkboxes = document.querySelectorAll('.' + group);
+    for (var i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = el.checked;
+    }
+}
+
+function syncSelectAll(el) {
+    var group = el.classList.contains('filter-asset') ? 'filter-asset'
+               : el.classList.contains('filter-strategy') ? 'filter-strategy'
+               : el.classList.contains('filter-risk') ? 'filter-risk'
+               : '';
+    if (!group) return;
+    var all = document.querySelectorAll('.' + group);
+    var checked = document.querySelectorAll('.' + group + ':checked');
+    var selectAll = document.querySelector('.filter-all[data-group="' + group + '"]');
+    if (selectAll) {
+        selectAll.checked = (checked.length === all.length);
+    }
+}
+
+function updateActiveTags() {
+    const container = document.getElementById('active-tags');
+    const assets = Array.from(document.querySelectorAll('.filter-asset:checked')).map(cb => cb.value);
+    const strategies = Array.from(document.querySelectorAll('.filter-strategy:checked')).map(cb => cb.value);
+    container.innerHTML = [
+        ...assets.map(t => `<span class="tag tag-brand cursor-pointer" onclick="this.remove();applyQueryFilters();">${t} ×</span>`),
+        ...strategies.map(s => `<span class="tag tag-accent cursor-pointer" onclick="this.remove();applyQueryFilters();">${s} ×</span>`)
+    ].join('');
+}
+
+// ==================== 渲染画像卡片 ====================
+function renderResultGrid() {
+    const grid = document.getElementById('result-grid');
+    const empty = document.getElementById('empty-state');
+    const loadMore = document.getElementById('load-more-area');
+    const countEl = document.getElementById('result-count');
+
+    countEl.textContent = filteredSet.length;
+
+    if (filteredSet.length === 0) {
+        grid.innerHTML = '';
+        empty.classList.remove('hidden');
+        loadMore.classList.add('hidden');
+        return;
+    }
+
+    empty.classList.add('hidden');
+    const start = (pageNum - 1) * PAGE_SIZE;
+    const end = start + PAGE_SIZE;
+    const page = filteredSet.slice(0, end);
+
+    grid.innerHTML = '';
+    page.forEach((f, i) => {
+        grid.appendChild(createProfileCard(f, i));
+    });
+
+    if (end >= filteredSet.length) {
+        loadMore.querySelector('button').textContent = `已显示全部 ${filteredSet.length} 条`;
+        loadMore.querySelector('button').style.opacity = '0.5';
+    } else {
+        loadMore.querySelector('button').textContent = '加载更多画像';
+        loadMore.querySelector('button').style.opacity = '1';
+    }
+}
+
+function createProfileCard(f, idx) {
+    const card = document.createElement('div');
+    card.className = 'profile-query-card p-5 flex flex-col';
+    card.style.animationDelay = `${idx * 0.05}s`;
+
+    const dailyCls = f.daily >= 0 ? 'positive' : 'negative';
+    const dailySign = f.daily >= 0 ? '+' : '';
+
+    card.innerHTML = `
+        <!-- 头部：名称 + 评级 -->
+        <div class="flex items-start justify-between mb-3">
+            <div class="flex-1 min-w-0">
+                <h4 class="text-sm font-semibold truncate" style="color:var(--ink);">${f.name}</h4>
+                <p class="text-xs mt-0.5" style="color:var(--ink-muted);">${f.id} · ${f.company} · ${f.manager}</p>
+            </div>
+            <div class="flex ml-2">${genStars(f.rating)}</div>
+        </div>
+
+        <!-- 核心三指标 -->
+        <div class="grid grid-cols-3 gap-3 pb-3 mb-3" style="border-bottom:1px solid var(--rule-light);">
+            <div>
+                <p class="text-xs mb-0.5" style="color:var(--ink-muted);">年化收益</p>
+                <p class="text-base font-bold data-num text-positive">${f.annRet.toFixed(2)}%</p>
+            </div>
+            <div>
+                <p class="text-xs mb-0.5" style="color:var(--ink-muted);">规模(亿)</p>
+                <p class="text-base font-bold data-num" style="color:var(--ink);">${f.size.toFixed(1)}</p>
+            </div>
+            <div>
+                <p class="text-xs mb-0.5" style="color:var(--ink-muted);">日涨跌</p>
+                <p class="text-base font-bold data-num" style="color:var(--${dailyCls === 'positive' ? 'positive' : 'negative'});">${dailySign}${f.daily.toFixed(2)}%</p>
+            </div>
+        </div>
+
+        <!-- 补充指标 -->
+        <div class="grid grid-cols-3 gap-3 mb-3 text-xs">
+            <div>
+                <span style="color:var(--ink-muted);">夏普比率 </span>
+                <span class="data-num font-semibold" style="color:var(--ink);">${f.sharpe.toFixed(2)}</span>
+            </div>
+            <div>
+                <span style="color:var(--ink-muted);">最大回撤 </span>
+                <span class="data-num font-semibold text-negative">${f.maxDD.toFixed(1)}%</span>
+            </div>
+            <div>
+                <span style="color:var(--ink-muted);">YTD </span>
+                <span class="data-num font-semibold text-positive">${f.ytd >= 0 ? '+' : ''}${f.ytd.toFixed(2)}%</span>
+            </div>
+        </div>
+
+        <!-- 标签行 -->
+        <div class="flex flex-wrap items-center gap-1.5 mb-3">
+            <span class="tag ${assetTagCls(f.asset)}">${f.asset}</span>
+            <span class="tag tag-outline">${f.strategy}</span>
+            <span class="tag ${riskTagCls(f.risk)}">${f.risk}</span>
+            ${f.tags.map(t => `<span class="tag tag-muted">${t}</span>`).join('')}
+        </div>
+
+        <!-- 操作按钮 -->
+        <button onclick="viewDetail('${f.id}')" class="w-full py-2 text-xs font-semibold text-white rounded-md transition-opacity hover:opacity-90 mt-auto"
+            style="background:var(--brand);">
+            查看画像
+        </button>
+    `;
+    return card;
+}
+
+// ==================== 辅助函数 ====================
+function genStars(n) {
+    let h = '';
+    for (let i = 1; i <= 5; i++) {
+        h += `<svg class="w-3.5 h-3.5" fill="currentColor" style="color:${i <= n ? 'var(--accent)' : 'var(--rule-light)'};" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>`;
+    }
+    return h;
+}
+
+function assetTagCls(a) {
+    const m = { '权益类':'tag-neg', '固收类':'tag-pos', '混合类':'tag-accent', '货币类':'tag-muted' };
+    return m[a] || 'tag-muted';
+}
+
+function riskTagCls(r) {
+    const m = { '低风险':'tag-pos', '中低风险':'tag-accent', '中风险':'tag-warn', '中高风险':'tag-neg', '高风险':'tag-neg' };
+    return m[r] || 'tag-muted';
+}
+
+// ==================== 视图切换 ====================
+function toggleResultView() {
+    listMode = !listMode;
+    const grid = document.getElementById('result-grid');
+    const btn = document.getElementById('view-toggle');
+    if (listMode) {
+        grid.className = 'space-y-3';
+        btn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>`;
+    } else {
+        grid.className = 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4';
+        btn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>`;
+    }
+    pageNum = 1;
+    renderResultGrid();
+}
+
+// ==================== 导航操作 ====================
+function viewDetail(id) {
+    localStorage.setItem('selectedFundId', id);
+    openProfileOverlay(id);
+}
+
+// ==================== 产品画像全屏叠加层 ====================
+function openProfileOverlay(fundId) {
+    var src = '基金产品画像.html';
+    if (fundId) {
+        src += '?fundId=' + encodeURIComponent(fundId);
+    }
+    document.getElementById('profile-iframe').src = src;
+    document.getElementById('profile-overlay').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeProfileOverlay() {
+    document.getElementById('profile-overlay').style.display = 'none';
+    document.getElementById('profile-iframe').src = '';
+    document.body.style.overflow = '';
+}
+
+// ESC 键关闭叠加层
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeProfileOverlay();
+    }
+});
+
+function renderProfileDetail(f) {
+    const body = document.getElementById('detail-body');
+    const d = DETAIL_DATA[f.id] || {};
+    const dailyCls = f.daily >= 0 ? 'positive' : 'negative';
+    const dailySign = f.daily >= 0 ? '+' : '';
+
+    body.innerHTML = `
+    <div style="padding:16px;">
+
+        <!-- 产品头部 -->
+        <div style="margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid var(--rule-light);">
+            <div class="flex items-center flex-wrap gap-1.5 mb-2">
+                <span class="display-name" style="font-size:15px;color:var(--ink);">${f.name}</span>
+                <span class="tag tag-pos"><span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--positive);margin-right:3px;"></span>${d.status||'正常运作'}</span>
+                <span class="tag tag-brand">${f.asset}</span>
+                <span class="tag tag-accent">${f.strategy}</span>
+                ${f.rating >= 5 ? '<span class="tag tag-pos">旗舰产品</span>' : ''}
+            </div>
+            <p class="text-xs" style="color:var(--ink-muted);">产品代码：${f.id} &nbsp;|&nbsp; ${d.fullName||f.name} &nbsp;|&nbsp; ${f.company}</p>
+        </div>
+
+        <!-- 核心指标横带 -->
+        <div class="dossier-card detail-metric-row" style="margin-bottom:14px;">
+            <div class="detail-metric-item">
+                <p class="stat-label" style="font-size:11px;">A类规模</p>
+                <p class="data-num" style="font-size:20px;font-weight:600;color:var(--ink);">${f.size.toFixed(1)}<span style="font-size:12px;font-weight:400;color:var(--ink-soft);">亿</span></p>
+                <p class="stat-sub" style="font-size:10px;">${d.scaleChange||''}</p>
+            </div>
+            <div class="detail-metric-item">
+                <p class="stat-label" style="font-size:11px;">今年以来收益</p>
+                <p class="data-num text-positive" style="font-size:20px;font-weight:600;">${f.ytd.toFixed(2)}%</p>
+                <p class="stat-sub" style="font-size:10px;">年化 ${f.annRet.toFixed(2)}%</p>
+            </div>
+            <div class="detail-metric-item">
+                <p class="stat-label" style="font-size:11px;">风险等级</p>
+                <p class="data-num text-warning" style="font-size:20px;font-weight:600;">${f.risk}</p>
+                <p class="stat-sub" style="font-size:10px;">夏普 ${f.sharpe.toFixed(2)}</p>
+            </div>
+            <div class="detail-metric-item">
+                <p class="stat-label" style="font-size:11px;">产品健康度</p>
+                <p class="data-num text-positive" style="font-size:20px;font-weight:600;">${d.healthScore||'—'}<span style="font-size:12px;font-weight:400;color:var(--ink-soft);">分</span></p>
+                <p class="stat-sub" style="font-size:10px;">${d.healthGrade||''}</p>
+            </div>
+        </div>
+
+        <!-- Tab切换 -->
+        <div class="detail-tab-nav mb-3">
+            <button class="detail-tab-btn active" onclick="switchDetailTab(this,'d-overview')">基础概览</button>
+            <button class="detail-tab-btn" onclick="switchDetailTab(this,'d-invest')">投资特征</button>
+            <button class="detail-tab-btn" onclick="switchDetailTab(this,'d-channel')">渠道客群</button>
+            <button class="detail-tab-btn" onclick="switchDetailTab(this,'d-manager')">基金经理</button>
+        </div>
+
+        <!-- 基础概览 -->
+        <div id="d-overview" class="detail-tab-pane active">
+            ${d.establishDate ? `
+            <div class="dossier-card p-3 mb-3" style="font-size:12px;">
+                <p class="text-xs font-semibold mb-2" style="color:var(--ink);">基础信息</p>
+                <div class="grid grid-cols-2 gap-x-4 gap-y-1.5">
+                    <div><span style="color:var(--ink-muted);">基金全称：</span>${d.fullName}</div>
+                    <div><span style="color:var(--ink-muted);">基金代码：</span>${f.id}</div>
+                    <div><span style="color:var(--ink-muted);">成立日期：</span>${d.establishDate}</div>
+                    <div><span style="color:var(--ink-muted);">运作方式：</span>开放式</div>
+                    <div><span style="color:var(--ink-muted);">管理人：</span>${d.companyFull}</div>
+                    <div><span style="color:var(--ink-muted);">托管人：</span>${d.custodian}</div>
+                    <div><span style="color:var(--ink-muted);">基金经理：</span>${f.manager}</div>
+                    <div><span style="color:var(--ink-muted);">业绩基准：</span>${d.benchmark}</div>
+                </div>
+            </div>
+            ` : ''}
+            ${d.ret1y !== undefined ? `
+            <div class="dossier-card p-3 mb-3" style="font-size:12px;">
+                <p class="text-xs font-semibold mb-2" style="color:var(--ink);">各阶段收益表现</p>
+                <table style="width:100%;font-size:11px;border-collapse:collapse;">
+                    <tr style="border-bottom:1px solid var(--rule);color:var(--ink-muted);"><td style="padding:4px;">阶段</td><td class="data-num" style="padding:4px;">本产品</td><td class="data-num" style="padding:4px;">业绩基准</td><td style="padding:4px;">评价</td></tr>
+                    <tr style="border-bottom:1px solid var(--rule-light);"><td style="padding:3px;">近1月</td><td class="data-num text-positive" style="padding:3px;">${d.ret1m}%</td><td class="data-num" style="padding:3px;color:var(--ink-soft);">${d.bm1m}%</td><td><span class="tag tag-pos">优于</span></td></tr>
+                    <tr style="border-bottom:1px solid var(--rule-light);"><td style="padding:3px;">近3月</td><td class="data-num text-positive" style="padding:3px;">${d.ret3m}%</td><td class="data-num" style="padding:3px;color:var(--ink-soft);">${d.bm3m}%</td><td><span class="tag tag-pos">优于</span></td></tr>
+                    <tr style="border-bottom:1px solid var(--rule-light);"><td style="padding:3px;">近6月</td><td class="data-num text-positive" style="padding:3px;">${d.ret6m}%</td><td class="data-num" style="padding:3px;color:var(--ink-soft);">${d.bm6m}%</td><td><span class="tag tag-pos">优于</span></td></tr>
+                    <tr style="border-bottom:1px solid var(--rule-light);background:var(--brand-lt);"><td style="padding:3px;font-weight:600;">近1年</td><td class="data-num" style="padding:3px;color:var(--brand);font-weight:600;">${d.ret1y}%</td><td class="data-num" style="padding:3px;color:var(--ink-soft);">${d.bm1y}%</td><td><span class="tag tag-brand">超额</span></td></tr>
+                    <tr><td style="padding:3px;font-weight:600;">成立以来</td><td class="data-num text-positive" style="padding:3px;font-weight:600;">${d.retSince}%</td><td class="data-num" style="padding:3px;color:var(--ink-soft);">${d.retBenchmark}%</td><td><span class="tag tag-pos">显著超额</span></td></tr>
+                </table>
+            </div>
+            ` : `<div class="dossier-card p-6 text-center" style="color:var(--ink-muted);font-size:12px;">暂无详细业绩数据</div>`}
+            ${d.vol !== undefined ? `
+            <div class="dossier-card p-3" style="font-size:12px;">
+                <p class="text-xs font-semibold mb-2" style="color:var(--ink);">风险收益指标（近3年口径）</p>
+                <div class="grid grid-cols-2 gap-x-4 gap-y-1.5">
+                    <div class="flex justify-between"><span style="color:var(--ink-muted);">年化波动率</span><span class="data-num font-semibold">${d.vol}%</span></div>
+                    <div class="flex justify-between"><span style="color:var(--ink-muted);">最大回撤</span><span class="data-num font-semibold text-negative">${d.maxDD}%</span></div>
+                    <div class="flex justify-between"><span style="color:var(--ink-muted);">夏普比率</span><span class="data-num font-semibold text-positive">${d.sharpe}</span></div>
+                    <div class="flex justify-between"><span style="color:var(--ink-muted);">卡玛比率</span><span class="data-num font-semibold">${d.calmar}</span></div>
+                    <div class="flex justify-between"><span style="color:var(--ink-muted);">组合久期</span><span class="data-num font-semibold">${d.duration}年</span></div>
+                    <div class="flex justify-between"><span style="color:var(--ink-muted);">杠杆率</span><span class="data-num font-semibold">${d.leverage}%</span></div>
+                </div>
+            </div>
+            ` : ''}
+        </div>
+
+        <!-- 投资特征 -->
+        <div id="d-invest" class="detail-tab-pane">
+            <div class="dossier-card p-3 mb-3" style="font-size:12px;">
+                <p class="text-xs font-semibold mb-2" style="color:var(--ink);">核心业绩指标</p>
+                <table style="width:100%;font-size:11px;border-collapse:collapse;">
+                    <tr style="border-bottom:1px solid var(--rule-light);"><td style="padding:4px;color:var(--ink-muted);">近1年收益</td><td class="data-num text-positive" style="padding:4px;">${f.annRet.toFixed(2)}%</td><td style="padding:4px;color:var(--ink-muted);">YTD</td><td class="data-num text-positive" style="padding:4px;">${f.ytd.toFixed(2)}%</td></tr>
+                    <tr style="border-bottom:1px solid var(--rule-light);"><td style="padding:4px;color:var(--ink-muted);">最大回撤</td><td class="data-num text-negative" style="padding:4px;">${f.maxDD.toFixed(1)}%</td><td style="padding:4px;color:var(--ink-muted);">夏普比率</td><td class="data-num text-positive" style="padding:4px;">${f.sharpe.toFixed(2)}</td></tr>
+                    <tr><td style="padding:4px;color:var(--ink-muted);">同类排名</td><td class="data-num" style="padding:4px;color:var(--ink);">前38%</td><td style="padding:4px;color:var(--ink-muted);">基金规模</td><td class="data-num" style="padding:4px;color:var(--ink);">${f.size.toFixed(1)}亿</td></tr>
+                </table>
+            </div>
+            ${d.topBonds ? `
+            <div class="dossier-card p-3 mb-3" style="font-size:12px;">
+                <p class="text-xs font-semibold mb-2" style="color:var(--ink);">前五大重仓债券</p>
+                <table style="width:100%;font-size:11px;border-collapse:collapse;">
+                    <tr style="border-bottom:1px solid var(--rule);color:var(--ink-muted);"><td style="padding:3px;">债券名称</td><td style="padding:3px;">类型</td><td class="data-num" style="padding:3px;">占净值比</td></tr>
+                    ${d.topBonds.map(b => `<tr style="border-bottom:1px solid var(--rule-light);"><td style="padding:3px;">${b.name}</td><td style="padding:3px;">${b.type}</td><td class="data-num" style="padding:3px;">${b.pct}%</td></tr>`).join('')}
+                </table>
+            </div>
+            ` : ''}
+            ${d.styleTags ? `
+            <div class="dossier-card p-3" style="font-size:12px;">
+                <p class="text-xs font-semibold mb-2" style="color:var(--ink);">投资策略标签</p>
+                <div class="flex flex-wrap gap-1.5">${d.styleTags.map(t => `<span class="tag tag-muted">${t}</span>`).join('')}</div>
+            </div>
+            ` : ''}
+        </div>
+
+        <!-- 渠道客群 -->
+        <div id="d-channel" class="detail-tab-pane">
+            ${d.instRatio !== undefined ? `
+            <div class="dossier-card p-3 mb-3" style="font-size:12px;">
+                <p class="text-xs font-semibold mb-2" style="color:var(--ink);">投资者结构</p>
+                <div class="mb-3"><div class="flex justify-between text-xs mb-1"><span style="color:var(--ink-muted);">机构投资者</span><span class="data-num font-semibold">${d.instRatio}%</span></div><div class="progress-bar"><div class="progress-fill brand" style="width:${d.instRatio}%;"></div></div></div>
+                <div class="mb-2"><div class="flex justify-between text-xs mb-1"><span style="color:var(--ink-muted);">个人投资者</span><span class="data-num font-semibold">${d.retailRatio}%</span></div><div class="progress-bar"><div class="progress-fill accent" style="width:${d.retailRatio}%;"></div></div></div>
+                <div class="grid grid-cols-2 gap-2 mt-3 pt-3" style="border-top:1px solid var(--rule-light);">
+                    <div><span style="color:var(--ink-muted);">总户数：</span><span class="font-semibold">${d.totalAccounts}</span></div>
+                    <div><span style="color:var(--ink-muted);">户均持有：</span><span class="font-semibold">${d.avgHolding}</span></div>
+                </div>
+            </div>
+            ` : ''}
+            ${d.avgHoldingDays ? `
+            <div class="dossier-card p-3 mb-3" style="font-size:12px;">
+                <p class="text-xs font-semibold mb-2" style="color:var(--ink);">客户行为指标</p>
+                <div class="space-y-3">
+                    <div><div class="flex justify-between text-xs mb-1"><span style="color:var(--ink-muted);">平均持有期</span><span class="data-num font-semibold">${d.avgHoldingDays}天</span></div><div class="progress-bar"><div class="progress-fill brand" style="width:62%;"></div></div></div>
+                    <div><div class="flex justify-between text-xs mb-1"><span style="color:var(--ink-muted);">客户复购率</span><span class="data-num font-semibold">${d.repurchaseRate}%</span></div><div class="progress-bar"><div class="progress-fill pos" style="width:${d.repurchaseRate}%;"></div></div></div>
+                    <div><div class="flex justify-between text-xs mb-1"><span style="color:var(--ink-muted);">定投占比</span><span class="data-num font-semibold">${d.autoInvestRatio}%</span></div><div class="progress-bar"><div class="progress-fill accent" style="width:10%;"></div></div></div>
+                </div>
+            </div>
+            ` : ''}
+            ${d.channelBank ? `
+            <div class="dossier-card p-3" style="font-size:12px;">
+                <p class="text-xs font-semibold mb-2" style="color:var(--ink);">渠道保有规模分布</p>
+                <div class="space-y-2">
+                    <div><div class="flex justify-between text-xs mb-0.5"><span style="color:var(--ink-muted);">银行渠道</span><span class="data-num font-semibold">${d.channelBank}%</span></div><div class="progress-bar"><div class="progress-fill brand" style="width:${d.channelBank}%;"></div></div></div>
+                    <div><div class="flex justify-between text-xs mb-0.5"><span style="color:var(--ink-muted);">机构直销</span><span class="data-num font-semibold">${d.channelInstitution}%</span></div><div class="progress-bar"><div class="progress-fill accent" style="width:${d.channelInstitution}%;"></div></div></div>
+                    <div><div class="flex justify-between text-xs mb-0.5"><span style="color:var(--ink-muted);">券商渠道</span><span class="data-num font-semibold">${d.channelBroker}%</span></div><div class="progress-bar"><div class="progress-fill pos" style="width:${d.channelBroker}%;"></div></div></div>
+                    <div><div class="flex justify-between text-xs mb-0.5"><span style="color:var(--ink-muted);">第三方互联网</span><span class="data-num font-semibold">${d.channelInternet}%</span></div><div class="progress-bar"><div class="progress-fill warn" style="width:${d.channelInternet}%;"></div></div></div>
+                </div>
+            </div>
+            ` : ''}
+        </div>
+
+        <!-- 基金经理 -->
+        <div id="d-manager" class="detail-tab-pane">
+            <div class="dossier-card p-3 mb-3" style="font-size:12px;">
+                <p class="text-xs font-semibold mb-2" style="color:var(--ink);">现任基金经理</p>
+                <p style="color:var(--ink);"><span class="font-semibold">${f.manager}</span><span style="color:var(--ink-muted);"> · ${f.company}</span></p>
+                ${d.manager1 ? `
+                <div class="mt-3 pt-3" style="border-top:1px solid var(--rule-light);">
+                    <div class="grid grid-cols-2 gap-2">
+                        <div><span style="color:var(--ink-muted);">${d.manager1}</span><span class="ml-2 text-xs" style="color:var(--ink-muted);">从业${d.manager1Years}</span></div>
+                        <div><span style="color:var(--ink-muted);">管理${d.manager1Funds}只基金 · ${d.manager1Scale}亿</span></div>
+                        ${d.manager2 ? `<div><span style="color:var(--ink-muted);">${d.manager2}</span><span class="ml-2 text-xs" style="color:var(--ink-muted);">从业${d.manager2Years}</span></div><div><span style="color:var(--ink-muted);">管理${d.manager2Funds}只基金 · ${d.manager2Scale}亿</span></div>` : ''}
+                    </div>
+                </div>
+                ` : ''}
+            </div>
+            <div class="dossier-card p-3" style="font-size:12px;">
+                <p class="text-xs font-semibold mb-2" style="color:var(--ink);">费率信息（A类）</p>
+                ${d.mgmtFee !== undefined ? `
+                <div class="space-y-1.5">
+                    <div class="flex justify-between"><span style="color:var(--ink-muted);">管理费</span><span class="data-num font-semibold">${d.mgmtFee.toFixed(2)}%/年</span></div>
+                    <div class="flex justify-between"><span style="color:var(--ink-muted);">托管费</span><span class="data-num font-semibold">${d.custFee.toFixed(2)}%/年</span></div>
+                    <div class="flex justify-between"><span style="color:var(--ink-muted);">综合费率</span><span class="data-num font-semibold" style="color:var(--brand);">${d.totalFee.toFixed(2)}%/年</span></div>
+                </div>
+                ` : `<p style="color:var(--ink-muted);">暂无费率数据</p>`}
+            </div>
+        </div>
+
+    </div>`;
+}
+
+function switchDetailTab(btn, paneId) {
+    btn.parentElement.querySelectorAll('.detail-tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const body = document.getElementById('detail-body');
+    body.querySelectorAll('.detail-tab-pane').forEach(p => p.classList.remove('active'));
+    const pane = document.getElementById(paneId);
+    if (pane) pane.classList.add('active');
+}
+
+function addCompare(id) {
+    let list = JSON.parse(localStorage.getItem('compareList') || '[]');
+    if (list.includes(id)) { toast('该基金已在对比列表中', 'warn'); return; }
+    if (list.length >= 4) { toast('最多对比4只基金', 'warn'); return; }
+    list.push(id);
+    localStorage.setItem('compareList', JSON.stringify(list));
+    toast('已添加到对比列表', 'pos');
+}
+
+// ==================== Toast ====================
+function toast(msg, type) {
+    const el = document.createElement('div');
+    const bg = { pos:'#EDF5F0', warn:'#FDF5ED', neg:'#FBEEED', info:'#F0F5FD' };
+    const fg = { pos:'#2D6A4F', warn:'#B8650A', neg:'#C0392B', info:'#1D6EB6' };
+    el.className = 'fixed top-16 right-4 z-50 px-5 py-2.5 rounded-md text-sm font-medium shadow-lg';
+    el.style.cssText = `background:${bg[type]||bg.info};color:${fg[type]||fg.info};border:1px solid ${fg[type]||fg.info}20;transition:all 0.3s ease;opacity:0;transform:translateX(20px);`;
+    el.textContent = msg;
+    document.body.appendChild(el);
+    requestAnimationFrame(() => { el.style.opacity = '1'; el.style.transform = 'translateX(0)'; });
+    setTimeout(() => {
+        el.style.opacity = '0'; el.style.transform = 'translateX(20px)';
+        setTimeout(() => el.remove(), 300);
+    }, 2800);
+}
+
+// ==================== KPI 数字动画 ====================
+function animateKPIs() {
+    [
+        { id:'kpi-products', to:1248 },
+        { id:'kpi-companies', to:156 },
+        { id:'kpi-managers', to:2856 },
+    ].forEach(({id, to}) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const dur = 1800, t0 = performance.now();
+        (function tick(now) {
+            const p = Math.min((now - t0) / dur, 1);
+            el.textContent = Math.floor(to * (1 - Math.pow(1 - p, 4))).toLocaleString();
+            if (p < 1) requestAnimationFrame(tick);
+        })(t0);
+    });
+}
+
+// ==================== 工具 ====================
+function debounce(fn, ms) {
+    let t;
+    return function(...a) { clearTimeout(t); t = setTimeout(() => fn.apply(this, a), ms); };
+}
+
+console.log('基金产品画像查询首页已就绪');
+</script>
+</body>
+</html>
