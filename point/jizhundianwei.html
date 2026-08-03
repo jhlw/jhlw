@@ -530,6 +530,7 @@
                                 <tr class="border-b border-gray-200 bg-gray-50">
                                     <th class="text-center py-3 px-3 text-gray-500">交易日期</th>
                                     <th class="text-center py-3 px-3 text-gray-500">指数名称</th>
+                                    <th class="text-center py-3 px-3 text-gray-500">指数收盘点位</th>
                                     <th class="text-center py-3 px-3 text-gray-500">维护人</th>
                                     <th class="text-center py-3 px-3 text-gray-500">维护时间</th>
                                     <th class="text-center py-3 px-3 text-gray-500">流程状态</th>
@@ -593,6 +594,7 @@
                                 <tr class="border-b border-gray-200 bg-gray-50">
                                     <th class="text-center py-3 px-3 text-gray-500">交易日期</th>
                                     <th class="text-center py-3 px-3 text-gray-500">货币对</th>
+                                    <th class="text-center py-3 px-3 text-gray-500">汇率</th>
                                      <th class="text-center py-3 px-3 text-gray-500">中间价</th>
                                     <th class="text-center py-3 px-3 text-gray-500">维护人</th>
                                     <th class="text-center py-3 px-3 text-gray-500">维护时间</th>
@@ -1515,11 +1517,17 @@
 
                     if (searchFlowStatus && flowStatus !== searchFlowStatus) return;
 
+                    const showIndexPoints = indexCodes.slice(0, 2).map(code => {
+                        const val = dateData[code].confirmedValue;
+                        return val ? val.toFixed(4) : '-';
+                    }).join('、');
+
                     const tr = document.createElement('tr');
                     tr.className = 'border-b border-gray-100 text-center';
                     tr.innerHTML = `
                         <td class="py-3 px-3">${date}</td>
                         <td class="py-3 px-3">${showIndexNames}</td>
+                        <td class="py-3 px-3">${showIndexPoints}</td>
                         <td class="py-3 px-3">${maintainText}</td>
                         <td class="py-3 px-3">${maintainTimeText}</td>
                         <td class="py-3 px-3">${flowStatusText}</td>
@@ -1583,11 +1591,17 @@
 
                     if (searchFlowStatus && flowStatus !== searchFlowStatus) return;
 
+                    const showRates = currencyCodes.slice(0, 2).map(code => {
+                        const val = dateData[code].confirmedValue;
+                        return val ? val.toFixed(4) : '-';
+                    }).join('、');
+
                     const tr = document.createElement('tr');
                     tr.className = 'border-b border-gray-100 text-center';
                     tr.innerHTML = `
                         <td class="py-3 px-3">${date}</td>
                         <td class="py-3 px-3">${showNames}</td>
+                        <td class="py-3 px-3">${showRates}</td>
                         <td class="py-3 px-3">${maintainText}</td>
                         <td class="py-3 px-3">${maintainTimeText}</td>
                         <td class="py-3 px-3">${flowStatusText}</td>
