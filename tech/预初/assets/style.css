@@ -1,0 +1,181 @@
+/* === 预初分层考备考课程 — 共享样式表 === */
+
+:root {
+  --text: #1a1a1a;
+  --text-secondary: #555;
+  --bg: #fefefe;
+  --accent: #2563eb;
+  --accent-light: #eff6ff;
+  --border: #e5e7eb;
+  --success: #16a34a;
+  --warning: #d97706;
+  --error: #dc2626;
+  --radius: 6px;
+  --font-body: "LXGW WenKai", "Noto Serif SC", "Source Han Serif SC", "STSong", Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", "Fira Code", "Cascadia Code", Consolas, monospace;
+  --measure: 72ch;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--text);
+  background: var(--bg);
+}
+
+body {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+  font-family: var(--font-body);
+}
+
+/* === Typography === */
+
+h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; margin-top: 2rem; margin-bottom: 0.75rem; }
+h1 { font-size: 2rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; }
+h2 { font-size: 1.5rem; color: var(--accent); }
+h3 { font-size: 1.2rem; }
+p { margin-bottom: 1rem; }
+
+a, a:visited { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
+a:hover { border-bottom-color: var(--accent); }
+
+/* === Code & Math === */
+
+code, pre, .math {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  background: #f8fafc;
+  border-radius: var(--radius);
+}
+
+code { padding: 0.1em 0.3em; }
+pre { padding: 0.75rem 1rem; overflow-x: auto; margin-bottom: 1rem; border: 1px solid var(--border); }
+
+.math {
+  display: inline-block;
+  padding: 0.1em 0.3em;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+}
+
+/* === Definition Box === */
+
+.definition {
+  background: var(--accent-light);
+  border-left: 4px solid var(--accent);
+  padding: 1rem 1.25rem;
+  margin: 1.25rem 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.definition strong { color: var(--accent); display: block; margin-bottom: 0.25rem; }
+
+/* === Example Box === */
+
+.example {
+  background: #fffbeb;
+  border-left: 4px solid var(--warning);
+  padding: 1rem 1.25rem;
+  margin: 1.25rem 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.example strong { color: var(--warning); display: block; margin-bottom: 0.25rem; }
+
+/* === Tip / Warning === */
+
+.tip {
+  background: #f0fdf4;
+  border-left: 4px solid var(--success);
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 0.95rem;
+}
+.tip::before { content: "💡 "; }
+
+.warning-note {
+  background: #fef2f2;
+  border-left: 4px solid var(--error);
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 0.95rem;
+}
+.warning-note::before { content: "⚠️ "; }
+
+/* === Quiz === */
+
+.quiz { margin: 1.5rem 0; padding: 1.25rem; border: 1px solid var(--border); border-radius: var(--radius); }
+.quiz h3 { margin-top: 0; }
+.quiz label { display: block; padding: 0.4rem 0; cursor: pointer; }
+.quiz input[type="radio"] { margin-right: 0.5rem; }
+.quiz button {
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--radius);
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 0.75rem;
+  font-family: inherit;
+}
+.quiz button:hover { opacity: 0.9; }
+.quiz .feedback {
+  margin-top: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--radius);
+  display: none;
+}
+.quiz .feedback.correct { background: #f0fdf4; border: 1px solid #bbf7d0; color: var(--success); }
+.quiz .feedback.wrong { background: #fef2f2; border: 1px solid #fecaca; color: var(--error); }
+
+/* === Practice Section === */
+
+.practice { margin: 1.5rem 0; }
+.practice .question { margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px dashed var(--border); }
+.practice .question:last-child { border-bottom: none; }
+.practice summary {
+  cursor: pointer;
+  color: var(--accent);
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+.practice summary:hover { text-decoration: underline; }
+.practice .answer {
+  margin-top: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  background: #f8fafc;
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+}
+
+/* === Summary Table === */
+
+.summary-table { width: 100%; border-collapse: collapse; margin: 1.25rem 0; font-size: 0.95rem; }
+.summary-table th { background: var(--accent); color: white; padding: 0.6rem 0.75rem; text-align: left; }
+.summary-table td { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); }
+.summary-table tr:nth-child(even) td { background: #f8fafc; }
+
+/* === Footer === */
+
+.footer {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+.footer a { color: var(--text-secondary); }
+
+/* === Print === */
+
+@media print {
+  html { font-size: 12px; }
+  body { max-width: none; padding: 1rem; }
+  .quiz button { display: none; }
+  .footer { display: none; }
+}

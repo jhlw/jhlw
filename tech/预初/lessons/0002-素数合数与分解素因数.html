@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第2课：素数、合数与分解素因数 — 张集难度·预初数学</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<h1>第2课：素数、合数与分解素因数</h1>
+
+<p style="color: var(--text-secondary); font-size: 0.95rem;">
+  对应：市北教材 §1.3 · 张集月考分值 ≈ 25-30分（判断+填空+选择+简答）<br>
+  目标：100以内素数脱口而出，短除法分解素因数零失误<br>
+  预计用时：50-70 分钟（含练习）
+</p>
+
+<!-- ============================================================ -->
+<!-- 知识核心 -->
+<!-- ============================================================ -->
+
+<h2>一、知识核心</h2>
+
+<h3>1.1 素数 vs 合数——一张表搞清楚</h3>
+
+<table class="summary-table">
+  <tr><th>类别</th><th>定义</th><th>举例</th><th>⭐ 月考必考陷阱</th></tr>
+  <tr>
+    <td><strong>素数（质数）</strong></td>
+    <td>大于1的自然数，<b>只有</b>1和它本身两个因数</td>
+    <td>2, 3, 5, 7, 11, 13, …</td>
+    <td>2是唯一的偶素数；最小的素数是2</td>
+  </tr>
+  <tr>
+    <td><strong>合数</strong></td>
+    <td>大于1的自然数，除了1和它本身<b>还有别的因数</b></td>
+    <td>4, 6, 8, 9, 10, 12, …</td>
+    <td>最小的合数是4；最小的奇数合数是9</td>
+  </tr>
+  <tr>
+    <td><strong>1</strong></td>
+    <td><b>既不是素数也不是合数</b></td>
+    <td>——</td>
+    <td>⚡判断题最高频考点，没有之一！</td>
+  </tr>
+</table>
+
+<div class="warning-note">
+  <strong>张集月考判断题必考套路：</strong><br>
+  "在1~100的这100个正整数中，合数有75个" → <strong>错！</strong><br>
+  1~100中：1（1个）既不是素数也不是合数 + 素数（25个）+ 合数（74个）= 100。<br>
+  只要忘记排除"1"，就会算成75。
+</div>
+
+<h3>1.2 100以内素数表——必须背熟</h3>
+
+<div class="definition">
+  <strong>📖 100以内的素数共25个，按行记忆：</strong>
+  <p style="font-family: var(--font-mono); font-size: 1.1rem; line-height: 2; margin-top: 0.5rem;">
+  2, 3, 5, 7, 11,<br>
+  13, 17, 19, 23, 29,<br>
+  31, 37, 41, 43, 47,<br>
+  53, 59, 61, 67, 71,<br>
+  73, 79, 83, 89, 97
+  </p>
+</div>
+
+<div class="tip">
+  <strong>记忆技巧：</strong><br>
+  • 除了2，所有素数都是奇数（但奇数不一定是素数！9, 15, 21都是奇数合数）<br>
+  • 个位是5的两位数（除了5本身）都是合数（能被5整除）<br>
+  • 100以内最大的素数是97，最小的两位素数是11
+</div>
+
+<h3>1.3 分解素因数——短除法</h3>
+
+<p>把一个合数写成几个素数相乘的形式，叫做<b>分解素因数</b>。结果是<b>唯一的</b>（算术基本定理）。</p>
+
+<div class="example">
+  <strong>📝 短除法分解 120（张集月考第29题原题）：</strong>
+  <pre style="line-height: 1.8;">
+  2 | 120
+  2 |  60
+  2 |  30
+  3 |  15
+  5 |   5
+        1
+
+  ∴ 120 = 2 × 2 × 2 × 3 × 5 = 2³ × 3 × 5</pre>
+  <p style="margin-top:0.5rem;"><strong>步骤：</strong>从最小的素数2开始试除 → 不能除了换下一个素数3 → 再到5 → 直到商为1。</p>
+</div>
+
+<div class="warning-note">
+  <strong>常见错误（月考扣分重灾区）：</strong><br>
+  ① 分解不彻底：写成 120 = 12 × 10 就停下来了 ✗ 必须分解到全部是素数<br>
+  ② 漏掉重复的素因数：写60 = 2×3×5漏了第二个2 ✗ 正确应是 2²×3×5<br>
+  ③ 结果顺序乱：应按<b>从小到大</b>的顺序写（2→3→5→7→…）
+</div>
+
+<h3>1.4 素因数 vs 因数（易混淆概念）</h3>
+
+<div class="example">
+  <strong>📝 辨析：28的因数 vs 28的素因数</strong><br>
+  • 28的<b>因数</b>：1, 2, 4, 7, 14, 28（共6个）<br>
+  • 28的<b>素因数</b>：只有 2 和 7（因数中那些是素数的）<br>
+  <p style="margin-top:0.5rem;">张集月考第15题："28的素因数有____"→ 答 <strong>2, 7</strong>。写成 2, 4, 7, 14, 28 就全错了！</p>
+</div>
+
+<h3>1.5 因数个数公式（拓展）</h3>
+
+<div class="definition">
+  <strong>📖 因数个数定理：</strong>
+  若正整数 n 分解素因数为 n = p₁<sup>a</sup> × p₂<sup>b</sup> × p₃<sup>c</sup> × …<br>
+  则 n 的因数个数 = <strong>(a+1) × (b+1) × (c+1) × …</strong>
+</div>
+
+<div class="example">
+  <strong>📝 100的因数有几个？（张集月考第9题考点）</strong><br>
+  100 = 2² × 5²<br>
+  因数个数 = (2+1) × (2+1) = 3 × 3 = <strong>9个</strong><br>
+  验证：1, 2, 4, 5, 10, 20, 25, 50, 100 ✓
+</div>
+
+<!-- ============================================================ -->
+<!-- 真题难度练习 -->
+<!-- ============================================================ -->
+
+<h2>二、真题难度练习</h2>
+
+<!-- 判断题 -->
+<section class="practice">
+  <h3>📋 Part A · 判断题</h3>
+
+  <div class="question">
+    <p><strong>1.</strong> 所有的偶数都是合数。</p>
+    <details><summary>答案与解析</summary>
+    <div class="answer">❌ <strong>错误。</strong> 2是偶数但是素数，不是合数。这是张集月考第28题①选项的原考点。</div></details>
+  </div>
+
+  <div class="question">
+    <p><strong>2.</strong> 在 1~100 的这 100 个正整数中，合数有 75 个。</p>
+    <details><summary>答案与解析</summary>
+    <div class="answer">❌ <strong>错误。</strong> 1~100中：1（1个）+ 素数（25个）+ 合数（74个）= 100。合数只有74个。<br>忘记了"1既不是素数也不是合数"就会多算1个。</div></details>
+  </div>
+
+  <div class="question">
+    <p><strong>3.</strong> 两个不相等素数的和可能是奇数。</p>
+    <details><summary>答案与解析</summary>
+    <div class="answer">✅ <strong>正确。</strong> "可能"二字是关键。2（偶素数）+ 任何奇素数 = 奇数。例如 2+3=5，是奇数。<br>但如果不包含2：奇素数+奇素数=偶数。所以"可能"是有条件的。</div></details>
+  </div>
+
+  <div class="question">
+    <p><strong>4.</strong> 一个合数至少有三个因数。</p>
+    <details><summary>答案与解析</summary>
+    <div class="answer">✅ <strong>正确。</strong> 合数定义：除了1和本身还有别的因数，所以至少有3个因数。最小的合数4有1,2,4三个因数。</div></details>
+  </div>
+</section>
+
+<!-- 填空题 -->
+<section class="practice">
+  <h3>📋 Part B · 填空题</h3>
+
+  <div class="question">
+    <p><strong>5.</strong> 在正整数中，最小的奇数合数是______。</p>
+    <details><summary>答案与解析</summary>
+    <div class="answer"><strong>9</strong>。<br>奇数：1,3,5,7,<b>9</b>,… | 1不是素数也不是合数；3,5,7是素数；9=3×3是合数。<br>张集月考第11题原题。</div></details>
+  </div>
+
+  <div class="question">
+    <p><strong>6.</strong> 分解素因数：60 = ______。</p>
+    <details><summary>答案与解析</summary>
+    <div class="answer"><strong>60 = 2² × 3 × 5</strong>。<br>短除：60 ÷ 2 = 30, 30 ÷ 2 = 15, 15 ÷ 3 = 5, 5 ÷ 5 = 1。<br>张集月考第12题原题。</div></details>
+  </div>
+
+  <div class="question">
+    <p><strong>7.</strong> 分解素因数：1001 = ______。</p>
+    <details><summary>答案与解析</summary>
+    <div class="answer"><strong>1001 = 7 × 11 × 13</strong>。<br>这是一个经典分解：1001 = 7 × 11 × 13，建议直接记住。<br>张集月考第13题原题。</div></details>
+  </div>
+
+  <div class="question">
+    <p><strong>8.</strong> 210 的所有素因数中最大的是______。</p>
+    <details><summary>答案与解析</summary>
+    <div class="answer"><strong>7</strong>。<br>210 = 2 × 3 × 5 × 7，最大的素因数是7。<br>张集月考第14题原题。</div></details>
+  </div>
+
+  <div class="question">
+    <p><strong>9.</strong> 一个两位素数，将它的十位与个位交换后仍是一个两位素数，我们称之为"无暇素数"。最大的"无暇素数"是______。</p>
+    <details><summary>答案与解析</summary>
+    <div class="answer"><strong>97</strong>。<br>从大到小检查两位素数：97 → 79（素数✓）；89 → 98（合数✗）；83 → 38（合数✗）…<br>张集月考第23题原题，<strong>新定义题型</strong>。</div></details>
+  </div>
+
+  <div class="question">
+    <p><strong>10.</strong> 正整数 100 一共有______个因数。</p>
+    <details><summary>答案与解析</summary>
+    <div class="answer"><strong>9</strong>。<br>100 = 2² × 5²，因数个数 = (2+1)×(2+1)=9。<br>张集月考第9题原题。</div></details>
+  </div>
+</section>
+
+<!-- 选择题 -->
+<section class="practice">
+  <h3>📋 Part C · 选择题</h3>
+
+  <div class="question">
+    <p><strong>11.</strong> 12 和 18 的公因数个数为（　）</p>
+    <p>A. 2　B. 3　C. 4　D. 5</p>
+    <details><summary>答案与解析</summary>
+    <div class="answer"><strong>C. 4</strong>。<br>12的因数：1,2,3,<b>4</b>,<b>6</b>,12<br>18的因数：1,2,3,<b>6</b>,9,18<br>公因数：1,2,3,6 → 4个。<br>张集月考第27题原题。</div></details>
+  </div>
+
+  <div class="question">
+    <p><strong>12.</strong> 有三张卡片分别写着数字 1、2、3，从中抽出1张、2张或3张，按任意顺序排列得到不同的一位数、两位数、三位数。其中素数共有（　）个。</p>
+    <p>A. 3　B. 4　C. 5　D. 6</p>
+    <details><summary>答案与解析</summary>
+    <div class="answer"><strong>C. 5</strong>。<br>
+    一位数：1（不是素数）, <b>2</b>, <b>3</b> → 2个<br>
+    两位数（12,13,21,23,31,32）：<b>13</b>, <b>23</b>, <b>31</b> → 3个（12=3×4✗, 21=3×7✗, 32=偶数✗）<br>
+    三位数（123,132,213,231,312,321）：各位和=1+2+3=6，都能被3整除，全不是素数 → 0个<br>
+    共 2+3+0 = 5个。<br>
+    张集月考第33题原题。</div></details>
+  </div>
+</section>
+
+<!-- 简答题 -->
+<section class="practice">
+  <h3>📋 Part D · 简答题（需动手算）</h3>
+
+  <div class="question">
+    <p><strong>13.</strong> 用短除法分解素因数：50, 78, 120</p>
+    <details><summary>答案与解析</summary>
+    <div class="answer">
+    50 = 2 × 5²<br>
+    78 = 2 × 3 × 13<br>
+    120 = 2³ × 3 × 5<br>
+    张集月考第29题原题。注意写完整短除过程，中考阅卷会看步骤。
+    </div></details>
+  </div>
+
+  <div class="question">
+    <p><strong>14.</strong> 用分解素因数法求 36、48 和 73 的最大公因数。</p>
+    <details><summary>答案与解析</summary>
+    <div class="answer"><strong>1</strong>。<br>
+    36 = 2² × 3²<br>
+    48 = 2⁴ × 3<br>
+    73 是<b>素数</b>！所以三个数的公因数只有1。<br>
+    ⚠️ 陷阱：前两个数有公因数12，但73是素数，一举拉低最大公因数为1。不要不假思索写12。<br>
+    张集月考第31题原题。
+    </div></details>
+  </div>
+</section>
+
+<!-- 思维拓展 -->
+<section class="practice">
+  <h3>📋 Part E · 新定义题型（张集特色，选做）</h3>
+
+  <div class="question">
+    <p><strong>15. ⭐</strong> 规定一种新运算：对于一个合数 n，φ(n) 表示<b>不是 n 的素因数的最小素数</b>。例如：φ(4) = 3（4=2²，素因数只有2，不是2的最小素数是3），φ(12) = 5（12=2²×3，素因数为2和3，最小不在其中的素数是5）。</p>
+    <p>求 φ(60) + φ(84) 的值。</p>
+    <details><summary>答案与解析</summary>
+    <div class="answer"><strong>12</strong>。<br>
+    <strong>步骤1</strong>：60 = 2² × 3 × 5，素因数集 = {2, 3, 5}。不是这些素因数的最小素数 → 顺次检查：2×, 3×, 5×, <b>7✓</b> → φ(60) = 7。<br>
+    <strong>步骤2</strong>：84 = 2² × 3 × 7，素因数集 = {2, 3, 7}。顺次检查：2×, 3×, 5(不在集合中!) → φ(84) = <b>5</b>。<br>
+    <strong>步骤3</strong>：φ(60) + φ(84) = 7 + 5 = <strong>12</strong>。<br><br>
+    张集月考第36题原题。<strong>这类题的关键</strong>：先分解素因数 → 列出素因数集合 → 从最小的素数(2,3,5,7,…)顺次找第一个不在集合里的。</div></details>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 总结 -->
+<!-- ============================================================ -->
+
+<h2>三、本课要点</h2>
+
+<table class="summary-table">
+  <tr><th>板块</th><th>核心内容</th><th>月考分值</th></tr>
+  <tr><td>素数/合数</td><td>1既不是也不是 | 2是唯一偶素数 | 最小合数=4 | 最小奇数合数=9</td><td>判断+填空</td></tr>
+  <tr><td>100以内素数</td><td>25个，从2到97，建议分5行背诵</td><td>基础工具</td></tr>
+  <tr><td>分解素因数</td><td>短除法从最小素数试除 → 结果按从小到大写 → 写成幂形式</td><td>简答6分</td></tr>
+  <tr><td>素因数 vs 因数</td><td>素因数只取因数是素数的那些（28的素因数: 2,7 ≠ 因数: 1,2,4,7,14,28）</td><td>填空2分</td></tr>
+  <tr><td>因数个数公式</td><td>(a+1)(b+1)(c+1)… 需要先分解素因数</td><td>填空+选择</td></tr>
+  <tr><td>新定义题型</td><td>读懂定义 → 分解素因数 → 按规则计算——不要怕，就是纸老虎</td><td>解答6分</td></tr>
+</table>
+
+<h2>四、课后任务</h2>
+
+<ol>
+  <li><strong>必做</strong>：背熟100以内素数表（25个），家长可以随机抽问</li>
+  <li><strong>必做</strong>：用短除法分解以下各数：36, 54, 84, 105, 180, 231</li>
+  <li><strong>推荐</strong>：市北教材 §1.3 + 配套练习册对应章节（基础巩固部分全部做完）</li>
+</ol>
+
+<h2>五、延伸资源</h2>
+
+<ul>
+  <li>📖 市北教材 §1.3 素数、合数与分解素因数</li>
+  <li>📝 市北配套练习册 第一章第3节</li>
+  <li>⬅️ <a href="0001-整除的定义与条件.html">第1课：整除与整除特征</a></li>
+  <li>➡️ <a href="0003-最大公因数.html">第3课：公因数与最大公因数</a></li>
+  <li>📚 <a href="../reference/math-glossary.html">数学术语速查表</a></li>
+</ul>
+
+<div class="tip" style="margin-top:2rem;">
+  100以内素数表是数论模块的基本功，<strong>必须背到脱口而出</strong>。建议每天早晚各默写一遍，一周内形成肌肉记忆。后面的最大公因数、最小公倍数、约分通分全都要用到。
+</div>
+
+<div class="footer">
+  <p>第2课 · 素数、合数与分解素因数 · 张集难度 · 预初分层考备考课程</p>
+  <p>下一课：<a href="0003-最大公因数.html">公因数与最大公因数 →</a></p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第1课：整除与整除特征 — 张集难度·预初数学</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<h1>第1课：整除与整除特征</h1>
+
+<p style="color: var(--text-secondary); font-size: 0.95rem;">
+  对应：市北教材 §1.1~§1.2 · 张集月考分值 ≈ 15-20分（判断+填空+选择）<br>
+  目标：整除概念零失误，整除特征（尤其被3整除）练到肌肉记忆<br>
+  预计用时：45-60 分钟（含练习）
+</p>
+
+<!-- ============================================================ -->
+<!-- 知识核心 -->
+<!-- ============================================================ -->
+
+<h2>一、知识核心</h2>
+
+<h3>1.1 整数家族（一次性记住，不再混淆）</h3>
+
+<table class="summary-table">
+  <tr><th>名称</th><th>范围</th><th>月考常见陷阱</th></tr>
+  <tr>
+    <td>自然数</td>
+    <td>0, 1, 2, 3, …</td>
+    <td><strong>0是自然数！</strong>（现行教材规定，判断题常考）</td>
+  </tr>
+  <tr>
+    <td>正整数</td>
+    <td>1, 2, 3, …</td>
+    <td>最小的正整数是1，<em>没有</em>最大的正整数</td>
+  </tr>
+  <tr>
+    <td>整数</td>
+    <td>…, -2, -1, 0, 1, 2, …</td>
+    <td>整数包含负整数，判断题中说"整数就是自然数"是错的</td>
+  </tr>
+</table>
+
+<h3>1.2 整除的三要素（⚡ 判断题必考）</h3>
+
+<div class="definition">
+  <strong>📖 定义：</strong>
+  整数 <span class="math">a</span> 除以非零整数 <span class="math">b</span>，商是整数且余数为 0，称 <span class="math">a 能被 b 整除</span>，或 <span class="math">b 整除 a</span>。记作 <span class="math">b ∣ a</span>。
+</div>
+
+<div class="warning-note">
+  <strong>三个条件缺一不可：</strong><br>
+  ① 被除数是<strong>整数</strong> ② 除数是<strong>非零整数</strong> ③ 商是<strong>整数</strong>且<strong>余数为0</strong><br>
+  任何一个条件不满足 → 不是整除！
+</div>
+
+<div class="example">
+  <strong>📝 整除 vs 除尽（张集月考第1题原题考点）：</strong>
+  <table class="summary-table">
+    <tr><th>算式</th><th>是整除？</th><th>是除尽？</th><th>理由</th></tr>
+    <tr><td>15 ÷ 3 = 5</td><td>✅</td><td>✅</td><td>全部是整数，余数为0</td></tr>
+    <tr><td>6 ÷ 4 = 1.5</td><td>❌</td><td>❌</td><td>商不是整数</td></tr>
+    <tr><td>1.2 ÷ 0.3 = 4</td><td>❌</td><td>✅</td><td>被除数、除数不是整数（虽商是整数）</td></tr>
+    <tr><td>0 ÷ 5 = 0</td><td>✅</td><td>✅</td><td>0是整数，0能被任何非零整数整除</td></tr>
+  </table>
+  <p style="margin-top:0.5rem"><strong>核心关系：整除 ⊂ 除尽</strong>（整除一定是除尽，除尽不一定是整除）</p>
+</div>
+
+<h3>1.3 整除特征（⚡ 填空+选择必考）</h3>
+
+<table class="summary-table">
+  <tr><th>被谁整除</th><th>判定方法</th><th>典型考题</th></tr>
+  <tr>
+    <td><strong>2</strong></td>
+    <td>末位是 0, 2, 4, 6, 8（偶数）</td>
+    <td>"0是偶数"——对！判断题常考</td>
+  </tr>
+  <tr>
+    <td><strong>5</strong></td>
+    <td>末位是 0 或 5</td>
+    <td>结合被2整除 → 末位必须是0</td>
+  </tr>
+  <tr>
+    <td><strong>3</strong></td>
+    <td><strong>各位数字之和</strong>能被3整除</td>
+    <td>张集月考<b>最高频考点</b>，必须熟练！</td>
+  </tr>
+  <tr>
+    <td><strong>2和5</strong></td>
+    <td>末位是 0</td>
+    <td>即能被10整除</td>
+  </tr>
+  <tr>
+    <td><strong>2和3</strong></td>
+    <td>偶数 + 各位数字之和是3的倍数</td>
+    <td>即能被6整除</td>
+  </tr>
+  <tr>
+    <td><strong>3和5</strong></td>
+    <td>末位0或5 + 各位数之和是3的倍数</td>
+    <td>即能被15整除</td>
+  </tr>
+</table>
+
+<div class="tip">
+  <strong>被3整除的判定是张集月考的"送分也是送命题"：</strong><br>
+  送分——方法简单，只要会加法就能判断<br>
+  送命——考场上容易忘记用！看到一个大数（如 2841），第一反应就应该是 2+8+4+1=15→能被3整除<br>
+  建议：每遇到一个数，先心算各位之和看能否被3整除，养成条件反射。
+</div>
+
+<!-- ============================================================ -->
+<!-- 真题模拟 -->
+<!-- ============================================================ -->
+
+<h2>二、真题难度练习</h2>
+
+<p style="color: var(--text-secondary); font-size:0.9rem;">
+  以下题目难度对标张集9月诊断练习。建议先独立完成，再看答案。
+</p>
+
+<!-- 判断题 -->
+<section class="practice">
+  <h3>📋 Part A · 判断题（每题1分，概念辨析——最容易丢分的题型）</h3>
+
+  <div class="question">
+    <p><strong>1.</strong> 整除一定是除尽，但除尽不一定是整除。</p>
+    <details><summary>答案与解析</summary>
+    <div class="answer">✅ <strong>正确。</strong> 整除要求全部是整数，除尽只要求余数为0。所以整除 ⊆ 除尽。</div></details>
+  </div>
+
+  <div class="question">
+    <p><strong>2.</strong> 因为 10 ÷ 2 = 5，所以 10 是倍数，2 是因数。</p>
+    <details><summary>答案与解析</summary>
+    <div class="answer">❌ <strong>错误。</strong> 倍数和因数是<b>相互依存</b>的关系。应该说"10是2的倍数，2是10的因数"。单独说"10是倍数"没有意义——它是谁的倍数？<br>这是张集月考第4题原题考点。</div></details>
+  </div>
+
+  <div class="question">
+    <p><strong>3.</strong> 0 是自然数，也是偶数。</p>
+    <details><summary>答案与解析</summary>
+    <div class="answer">✅ <strong>正确。</strong> 现行教材规定0是自然数；0 ÷ 2 = 0（整数），所以0能被2整除，是偶数。</div></details>
+  </div>
+
+  <div class="question">
+    <p><strong>4.</strong> 一个数如果能被 2 和 3 同时整除，那么这个数一定能被 6 整除。</p>
+    <details><summary>答案与解析</summary>
+    <div class="answer">✅ <strong>正确。</strong> 2和3互素，所以能被2和3同时整除的数一定能被 2×3=6 整除。但如果两个除数不互素就不成立（比如能被2和4整除不保证能被8整除）。</div></details>
+  </div>
+
+  <div class="question">
+    <p><strong>5.</strong> 能同时被 3、5 整除的最大两位奇数是 75。</p>
+    <details><summary>答案与解析</summary>
+    <div class="answer">✅ <strong>正确。</strong> 被3和5同时整除 → 被15整除。15的倍数：15, 30, 45, 60, 75, 90, … 两位数中最大的是90和75。90是偶数，75是奇数。所以最大两位奇数是75。<br>⚠️ 这道题张集原卷有争议，部分答案标"错"——实际答案应判"对"。</div></details>
+  </div>
+</section>
+
+<!-- 填空题 -->
+<section class="practice">
+  <h3>📋 Part B · 填空题（每题2分）</h3>
+
+  <div class="question">
+    <p><strong>6.</strong> 在 4 和 24、10 和 5、3 和 20 这三组数中，第一个数<b>能整除</b>第二个数的数组是______。</p>
+    <details><summary>答案与解析</summary>
+    <div class="answer"><strong>10 和 5</strong>。注意"整除"的方向！"第一个数整除第二个数"意思是第二个数 ÷ 第一个数是整数。<br>4÷24≠整数 ✗ | 5÷10≠整数，但10÷5=2 → 即 5 整除 10（第一个数10不能整除5）——等等，再读题：<strong>第一个数整除第二个数</strong> = 第二个数 ÷ 第一个数是整数。<br>4和24 → 24÷4=6 ✓（4整除24）<br>10和5 → 5÷10=0.5 ✗<br>3和20 → 20÷3≠整数 ✗<br>答：<strong>4和24</strong></div></details>
+  </div>
+
+  <div class="question">
+    <p><strong>7.</strong> （张集月考第18题原题）能同时被 2、3、4 整除的最小三位数是______。</p>
+    <details><summary>答案与解析</summary>
+    <div class="answer"><strong>108</strong>。<br>2、3、4的最小公倍数：4=2²，3=3 → LCM=2²×3=12<br>12的倍数：12, 24, …, 96（都是两位数），108（三位数）✓<br>故答案为108。</div></details>
+  </div>
+
+  <div class="question">
+    <p><strong>8.</strong> 写出所有既是 5 的倍数又是 40 的因数的正整数：______。</p>
+    <details><summary>答案与解析</summary>
+    <div class="answer"><strong>5, 10, 20, 40</strong>。<br>40的因数：1, 2, 4, <b>5</b>, 8, <b>10</b>, <b>20</b>, <b>40</b><br>其中是5的倍数的：5, 10, 20, 40。<br>注意：题目要求"正整数"，所以不包含0。</div></details>
+  </div>
+
+  <div class="question">
+    <p><strong>9.</strong> 三个连续自然数的乘积等于 504，则这三个数的和等于______。</p>
+    <details><summary>答案与解析</summary>
+    <div class="answer"><strong>24</strong>。<br>504 ÷ 3 = 168，中间数约在 ∛504 ≈ 8 附近。<br>试 7×8×9 = 504 ✓，和 = 7+8+9 = 24。<br>（张集月考第19题原题，考查数感+试算）</div></details>
+  </div>
+
+  <div class="question">
+    <p><strong>10.</strong> 满足被 4、5、6 除都余 1 的最小两位数是______。</p>
+    <details><summary>答案与解析</summary>
+    <div class="answer"><strong>61</strong>。<br>4、5、6的最小公倍数：4=2², 5=5, 6=2×3 → LCM=2²×3×5=60<br>被4、5、6除都余1 → 这个数 = 60k+1<br>最小两位数：k=1 → 61。k=0 → 1（不是两位数）。</div></details>
+  </div>
+</section>
+
+<!-- 选择题 -->
+<section class="practice">
+  <h3>📋 Part C · 选择题（每题3分）</h3>
+
+  <div class="question">
+    <p><strong>11.</strong> 能被 2 整除的数一定是（　）</p>
+    <p>A. 素数　B. 合数　C. 偶数　D. 奇数</p>
+    <details><summary>答案与解析</summary>
+    <div class="answer"><strong>C. 偶数</strong>。<br>这是定义：能被2整除的整数称为偶数。<br>A错：2能被2整除，但2是素数不是合数<br>B错：同上<br>D错：奇数定义是不能被2整除</div></details>
+  </div>
+
+  <div class="question">
+    <p><strong>12.</strong> 下列说法中，正确的个数是（　）<br>
+    ① 所有的偶数都是合数<br>
+    ② 两个合数必定不互素<br>
+    ③ 两个连续奇数一定互素<br>
+    ④ 两个不相等素数的和可能是奇数</p>
+    <p>A. 1个　B. 2个　C. 3个　D. 4个</p>
+    <details><summary>答案与解析</summary>
+    <div class="answer"><strong>B. 2个</strong>（③和④正确）。<br>
+    ① ❌：2是偶数但是素数，不是合数。<br>
+    ② ❌：反例——8和9都是合数，但gcd(8,9)=1，互素。<br>
+    ③ ✅：两个连续奇数如3和5，差为2，若有公因数d，则d整除2，d只能是1或2；因为两数都是奇数，d不能是2，所以d=1，互素。<br>
+    ④ ✅：不相等素数只有一个是2（偶数），其余都是奇数。若含2：2+奇=奇 ✓；若不包含2：奇+奇=偶 ✗。所以"可能"是奇数是对的（取2和任意奇素数即可）。<br>
+    ——张集月考第28题原题，概念辨析难度较高。</div></details>
+  </div>
+</section>
+
+<!-- 思维拓展 -->
+<section class="practice">
+  <h3>📋 Part D · 思维拓展（挑战题，选做）</h3>
+
+  <div class="question">
+    <p><strong>13. ⭐</strong> 有一个大于 1 的整数，它除 45、59、101 的余数都相同。这个数最大是多少？</p>
+    <details><summary>答案与解析</summary>
+    <div class="answer"><strong>14</strong>。<br>
+    设这个数为d，余数为r，则：<br>
+    45 = k₁d + r<br>
+    59 = k₂d + r<br>
+    101 = k₃d + r<br>
+    两两相减消去r：59-45=14, 101-59=42, 101-45=56<br>
+    d能整除14、42、56<br>
+    d最大 = gcd(14, 42, 56) = 14<br>
+    ——张集月考第24题原题。核心思路：<strong>同余 → 差值是除数的倍数</strong>。</div></details>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 本课要点 -->
+<!-- ============================================================ -->
+
+<h2>三、本课要点</h2>
+
+<table class="summary-table">
+  <tr><th>类型</th><th>要点</th><th>月考分值</th></tr>
+  <tr><td>概念辨析</td><td>整除三条件（整数÷非零整数=整数无余）；整除⊂除尽；0是自然数且是偶数；倍数和因数相互依存</td><td>判断10分</td></tr>
+  <tr><td>被3整除</td><td>各位数字之和是3的倍数——最重要技巧，必须条件反射</td><td>填空+选择</td></tr>
+  <tr><td>被2/5整除</td><td>看末位；同时被2和5整除→末位0；同时被2和3整除→即被6整除</td><td>填空+选择</td></tr>
+  <tr><td>思维方法</td><td>连续自然数试算；同余问题→差值法；LCM求"被多除数同余"问题</td><td>填空+解答</td></tr>
+</table>
+
+<h2>四、延伸资源</h2>
+
+<ul>
+  <li>📖 市北教材 §1.1 整数和整除 + §1.2 奇数与偶数</li>
+  <li>📝 市北配套练习册 第一章第1-2节（选做基础+能力提升）</li>
+  <li>🎯 下节课：<a href="0002-素数合数与分解素因数.html">第2课：素数、合数与分解素因数 →</a></li>
+  <li>📚 <a href="../reference/math-glossary.html">数学术语速查表</a></li>
+</ul>
+
+<div class="tip" style="margin-top:2rem;">
+  有不清楚的地方随时问。<strong>建议家长先自己过一遍，理解整除vs除尽的区别和被3整除的判定，再带孩子做判断题——判断题是张集月考最容易丢分的题型，但也是最容易通过概念辨析拿满分的题型。</strong>
+</div>
+
+<div class="footer">
+  <p>第1课 · 整除与整除特征 · 张集难度 · 预初分层考备考课程</p>
+  <p>下一课：<a href="0002-素数合数与分解素因数.html">素数、合数与分解素因数 →</a></p>
+</div>
+
+</body>
+</html>
