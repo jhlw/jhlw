@@ -1,0 +1,68 @@
+{
+  "workflow": {
+    "init_requires_confirmation": true,
+    "research_before_plan": true,
+    "best_practice_research": true,
+    "diagram_before_implementation": true,
+    "test_first": true,
+    "task_tracking": true,
+    "docs_sync_required": true,
+    "lessons_read_required": true,
+    "code_review": true,
+    "cleanup_pass": true,
+    "mechanical_checks": true,
+    "audit_supported": true,
+    "escalation_required": true
+  },
+  "tracking": {
+    "todo": "[ ]",
+    "in_progress": "[~]",
+    "done": "[x]",
+    "blocked": "[!]"
+  },
+  "required_reads_before_work": [
+    ".planning/SUMMARY.md",
+    ".planning/STATE.md",
+    ".planning/PITFALLS.md",
+    ".planning/LESSONS_LEARNED.md",
+    ".planning/CONVENTIONS.md",
+    ".planning/ARCHITECTURE.md",
+    ".planning/STACK.md"
+  ],
+  "docs_sync_targets": [
+    ".planning/REQUIREMENTS.md",
+    ".planning/API_DOCS.md",
+    ".planning/ARCHITECTURE.md",
+    ".planning/DESIGN.md",
+    ".planning/INTEGRATIONS.md",
+    ".planning/CONVENTIONS.md",
+    ".planning/ROADMAP.md",
+    ".planning/STATE.md",
+    ".planning/SPEC_CHANGELOG.md",
+    ".planning/QUALITY_SCORE.md",
+    ".planning/OBSERVABILITY.md",
+    ".planning/JOURNEYS.md",
+    ".planning/SMOKE_TESTS.md"
+  ],
+  "mermaid_required_for": [
+    "architecture",
+    "database",
+    "api_flow",
+    "integration",
+    "deployment",
+    "feature_flow",
+    "auth_flow",
+    "background_job_flow"
+  ],
+  "escalate_when": [
+    "ambiguous_product_intent",
+    "conflicting_requirements",
+    "breaking_api_change",
+    "destructive_migration",
+    "possible_user_data_loss",
+    "missing_credentials",
+    "paid_external_service_required",
+    "unclear_security_tradeoff",
+    "legal_or_compliance_risk"
+  ]
+}

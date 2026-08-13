@@ -1,0 +1,14 @@
+{
+  "session_id": "2026-08-13-auto-init-bootstrap",
+  "recorded_at": "2026-08-13T09:31:37Z",
+  "idea": "",
+  "primary_user": "jhlw",
+  "product_approach": "整仓平台化（个人多项目工作区平台）",
+  "v1_outcome": "可复用的工作区入口：任务跟踪 + 文档记忆 + 每子项目验证命令",
+  "qa_owner": "jhlw",
+  "backend": "Node.js >= 18 / Python 3（按子项目）",
+  "frontend": "无统一前端；子项目自带（React 19 + Remotion 4、静态 HTML/JS）",
+  "database": "无集中数据库（Git + .planning + .codebase/beads.json）",
+  "deployment": "本地工作区（v1）",
+  "test_strategy": "根级 harness gates + 子项目独立 verify-cmd"
+}

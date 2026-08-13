@@ -1,0 +1,37 @@
+{
+  "version": "1.0.0",
+  "updated_at": "2026-08-13T09:43:54.614Z",
+  "project_status": "implementation",
+  "project_verification": {
+    "status": "pending",
+    "verify_cmd": "",
+    "evidence": "",
+    "verified_at": ""
+  },
+  "features": [
+    {
+      "attempts": 0,
+      "last_error": "",
+      "id": "F001",
+      "status": "planned",
+      "title": "ai-news 子项目登记",
+      "path": ".planning/features/001-ai-news-registration",
+      "verify_cmd": "cd ai-news && node_modules\\.bin\\tsc.cmd --noEmit",
+      "evidence": "",
+      "started_at": "",
+      "verified_at": ""
+    },
+    {
+      "id": "F002",
+      "status": "planned",
+      "title": "产品画像 子项目登记",
+      "path": ".planning/features/002-chanpin-huaxiang-registration",
+      "verify_cmd": "node .planning/scripts/verify-chanpin-huaxiang.js",
+      "evidence": "",
+      "started_at": "",
+      "verified_at": "",
+      "attempts": 0,
+      "last_error": ""
+    }
+  ]
+}
