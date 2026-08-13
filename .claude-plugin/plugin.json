@@ -1,0 +1,8 @@
+{
+  "name": "jhlw",
+  "version": "0.1.0",
+  "description": "个人多项目工作区：Python 学习、AI 新闻、产品画像、Remotion 视频、汇率小工具等",
+  "skills": [
+    "./skills/"
+  ]
+}
