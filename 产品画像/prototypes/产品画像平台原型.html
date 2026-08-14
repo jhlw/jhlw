@@ -2,8 +2,12 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Fira+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <title>产品画像平台原型（建信基金实例）</title>
 <style>
+  body { font-family: 'Fira Sans', 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+  .code, .sp-code, .pcode, .pc, .track-code, .cat-code, .sp-cat-code, .fc, .rk { font-family: 'Fira Code', 'PingFang SC', monospace; }
   :root { --ccb:#003399; --blue:#0F75D3; --ink:#333333; --gray:#606266; --lgray:#99A5AE; --warn:#F59E0B; --risk:#CC0000; }
   .app { display:flex; gap:14px; }
   .side { width:150px; background:var(--ccb); color:#fff; border-radius:10px; padding:14px 10px; flex-shrink:0; }
@@ -18,6 +22,13 @@
   .tab.active { background:var(--ccb); color:#fff; font-weight:600; }
   .src { font-size:10px; color:var(--lgray); margin-top:10px; }
   .ex { font-size:9px; color:var(--lgray); }
+  .tab, .gbtn, .chip, .dd-opt, .recent .chip, .b, .rank, .track, .fam-box, .hl { cursor:pointer; transition: background .2s ease, color .2s ease, border-color .2s ease; }
+  .tab:hover { background:#dbe8f8; }
+  .gbtn:hover, .dd-opt:hover { border-color:var(--ccb); background:#eef4fd; }
+  .recent .chip:hover { background:#dbe8f8; }
+  .b:hover { border-color:var(--ccb); }
+  .rank:hover:not(.me) { background:#f8fbff; }
+  .hl:hover { border-color:#c9dcf5; }
 
   :root { --ccb:#003399; --blue:#0F75D3; --ink:#333333; --gray:#606266; --lgray:#99A5AE; --warn:#F59E0B; --risk:#CC0000; }
   .app { display:flex; gap:14px; }
@@ -70,6 +81,13 @@
   .pcard .pperf { font-size:11px; color:#15803d; margin-top:2px; }
   .src { font-size:10px; color:var(--lgray); margin-top:10px; }
   .ex { font-size:9px; color:var(--lgray); }
+  .tab, .gbtn, .chip, .dd-opt, .recent .chip, .b, .rank, .track, .fam-box, .hl { cursor:pointer; transition: background .2s ease, color .2s ease, border-color .2s ease; }
+  .tab:hover { background:#dbe8f8; }
+  .gbtn:hover, .dd-opt:hover { border-color:var(--ccb); background:#eef4fd; }
+  .recent .chip:hover { background:#dbe8f8; }
+  .b:hover { border-color:var(--ccb); }
+  .rank:hover:not(.me) { background:#f8fbff; }
+  .hl:hover { border-color:#c9dcf5; }
   .seg { display:flex; align-items:center; gap:6px; margin:4px 0; font-size:10px; }
   .seg .slbl { width:64px; color:var(--gray); text-align:right; }
   .seg .strack { flex:1; height:11px; background:#eef2f7; border-radius:3px; overflow:hidden; }
@@ -305,17 +323,17 @@
           <div class="card">
             <h4>① 产品线布局 · 三分类与同业排名</h4>
             <div class="cat">
-              <div class="cat-head"><span class="cat-name">💰 货币</span><span class="cat-size">7,695.04 亿 · 78.5%</span></div>
+              <div class="cat-head"><span class="cat-name">货币</span><span class="cat-size">7,695.04 亿 · 78.5%</span></div>
               <div class="bar-track" style="width:100%"><div class="bar-fill" style="width:100%"></div></div>
               <div class="cat-rank">货币基金规模**剔除持牌机构行业第 1**（2025 年末，同花顺口径）</div>
             </div>
             <div class="cat">
-              <div class="cat-head"><span class="cat-name">📊 固收</span><span class="cat-size">1,385.06 亿 · 14.1%</span></div>
+              <div class="cat-head"><span class="cat-name">固收</span><span class="cat-size">1,385.06 亿 · 14.1%</span></div>
               <div class="bar-track" style="width:100%"><div class="bar-fill lt" style="width:18%"></div></div>
               <div class="cat-rank">债基规模榜约 **15-20 名**（推断）· 榜首易方达 5,653.78 亿 · 前十门槛 ≈ 4,300 亿</div>
             </div>
             <div class="cat">
-              <div class="cat-head"><span class="cat-name">📈 权益</span><span class="cat-size">410.54 亿 · 4.2%</span></div>
+              <div class="cat-head"><span class="cat-name">权益</span><span class="cat-size">410.54 亿 · 4.2%</span></div>
               <div class="bar-track" style="width:100%"><div class="bar-fill lt" style="width:5.3%"></div></div>
               <div class="cat-rank">权益榜未入前 21（21 家超千亿）· 主动权益榜约 **30-40 名**（推断）</div>
             </div>
@@ -352,8 +370,8 @@
                   <td class="down">▼23.2%</td><td class="down">▼(720亿)</td><td class="dim">同向</td>
                 </tr>
                 <tr>
-                  <td><span class="dot" style="background:#9CBFDF"></span>FOF</td><td>47.91</td><td>0.5%</td>
-                  <td class="down">▼8.9%</td><td class="dim">—</td><td class="dim">—</td>
+                  <td><span class="dot" style="background:#9CBFDF"></span>其他（另类+FOF）</td><td>156.62</td><td>1.6%</td>
+                  <td class="down">▼14.3%</td><td class="dim">—</td><td class="dim">—</td>
                 </tr>
               </table>
               <div class="ex" style="margin-top:4px">* 股票/混合同业环比按全市场规模变动推算（-1,533 / +8,962 亿）；建信环比为 Wind 真实数据</div>
@@ -389,7 +407,7 @@
             </div>
 
             <div class="risk-sect">
-              <div class="risk-head">⚠ 风险揭示 · 小微产品
+              <div class="risk-head">风险揭示 · 小微产品
                 <span class="rr">清盘线 5,000 万</span>
                 <span class="rr">大考线 2 亿（发起式满 3 年）</span>
               </div>
@@ -582,12 +600,12 @@
           <h4>谱系树（资产大类 → 策略赛道）</h4>
 
           <div class="sp-cat-line">
-            <div class="sp-cat-head"><span class="sp-cat-code">10</span><span class="sp-cat-name">💰 货币</span><span class="sp-cat-sub">8 只产品 · 1 个赛道</span><span class="sp-cat-pct">7,695.04 亿 · 78.5%</span><span class="gbtns"><span class="gbtn add">＋ 新增赛道</span></span></div>
+            <div class="sp-cat-head"><span class="sp-cat-code">10</span><span class="sp-cat-name">货币</span><span class="sp-cat-sub">8 只产品 · 1 个赛道</span><span class="sp-cat-pct">7,695.04 亿 · 78.5%</span><span class="gbtns"><span class="gbtn add">＋ 新增赛道</span></span></div>
             <div class="sp-cat-bar"><div class="fill" style="width:100%"></div></div>
             <div class="track">
               <span class="track-code">1001</span>
               <div class="track-body">
-                <div class="track-name">现金管理赛道 <span class="star">⭐旗舰：现金添利货币 A</span></div>
+                <div class="track-name">现金管理赛道 <span class="star">★旗舰：现金添利货币 A</span></div>
                 <div class="track-desc">现金添利族（718.85 亿 · 3 份额）· 现金增利族 · 嘉薪宝族 — 剔除持牌机构规模行业第 1</div>
               </div>
               <div class="track-size">8 只</div>
@@ -596,12 +614,12 @@
           </div>
 
           <div class="sp-cat-line">
-            <div class="sp-cat-head"><span class="sp-cat-code c20">20</span><span class="sp-cat-name">📊 固收</span><span class="sp-cat-sub">58 只产品 · 4 个赛道 · 债基榜约 15-20 名</span><span class="sp-cat-pct">1,385.06 亿 · 14.1%</span><span class="gbtns"><span class="gbtn add">＋ 新增赛道</span></span></div>
+            <div class="sp-cat-head"><span class="sp-cat-code c20">20</span><span class="sp-cat-name">固收</span><span class="sp-cat-sub">58 只产品 · 4 个赛道 · 债基榜约 15-20 名</span><span class="sp-cat-pct">1,385.06 亿 · 14.1%</span><span class="gbtns"><span class="gbtn add">＋ 新增赛道</span></span></div>
             <div class="sp-cat-bar"><div class="fill c20" style="width:18%"></div></div>
             <div class="track">
               <span class="track-code">2001</span>
               <div class="track-body">
-                <div class="track-name">纯债赛道 <span class="star">⭐旗舰：纯债债券 A</span></div>
+                <div class="track-name">纯债赛道 <span class="star">★旗舰：纯债债券 A</span></div>
                 <div class="track-desc">纯债族 30.55 亿份 · 彭紫云/黎颖芳 · 中债综合全价基准</div>
               </div>
               <div class="track-size">3 份额</div>
@@ -637,7 +655,7 @@
           </div>
 
           <div class="sp-cat-line">
-            <div class="sp-cat-head"><span class="sp-cat-code c30">30</span><span class="sp-cat-name">📈 权益</span><span class="sp-cat-sub">103 只产品（股票+混合）· 7 个赛道 · 未入权益榜前 21</span><span class="sp-cat-pct">410.54 亿 · 4.2%</span><span class="gbtns"><span class="gbtn add">＋ 新增赛道</span></span></div>
+            <div class="sp-cat-head"><span class="sp-cat-code c30">30</span><span class="sp-cat-name">权益</span><span class="sp-cat-sub">103 只产品（股票+混合）· 7 个赛道 · 未入权益榜前 21</span><span class="sp-cat-pct">410.54 亿 · 4.2%</span><span class="gbtns"><span class="gbtn add">＋ 新增赛道</span></span></div>
             <div class="sp-cat-bar"><div class="fill c30" style="width:5.3%"></div></div>
             <div class="track">
               <span class="track-code">3001</span>
@@ -705,7 +723,7 @@
           </div>
 
           <div class="sp-cat-line">
-            <div class="sp-cat-head"><span class="sp-cat-code c40">40</span><span class="sp-cat-name">🌐 多资产 / 其他</span><span class="sp-cat-sub">QDII 4 只 · 另类 · QDII 环比 ▲33.5%（跑赢行业）</span><span class="sp-cat-pct">296.16 亿 · 3.3%</span><span class="gbtns"><span class="gbtn add">＋ 新增赛道</span></span></div>
+            <div class="sp-cat-head"><span class="sp-cat-code c40">40</span><span class="sp-cat-name">多资产 / 其他</span><span class="sp-cat-sub">QDII 4 只 · 另类 · QDII 环比 ▲33.5%（跑赢行业）</span><span class="sp-cat-pct">296.16 亿 · 3.3%</span><span class="gbtns"><span class="gbtn add">＋ 新增赛道</span></span></div>
             <div class="sp-cat-bar"><div class="fill c40" style="width:3.8%"></div></div>
             <div class="track">
               <span class="track-code">4001</span>
@@ -727,7 +745,7 @@
             </div>
           </div>
 
-          <div class="lgd">图例：<span style="color:#b45309">⭐ 旗舰</span> · <span style="color:var(--risk)">● 含小微（清盘风险）</span> · <span style="color:var(--lgray)">灰色 = 空白赛道（年度规划候选）</span> · 编码：大类 2 位（10/20/30/40）+ 赛道 2 位，不回收 · 治理：大类行「＋新增赛道」· 赛道行「⇄换赛道」（评审留痕）</div>
+          <div class="lgd">图例：<span style="color:#b45309">★ 旗舰</span> · <span style="color:var(--risk)">● 含小微（清盘风险）</span> · <span style="color:var(--lgray)">灰色 = 空白赛道（年度规划候选）</span> · 编码：大类 2 位（10/20/30/40）+ 赛道 2 位，不回收 · 治理：大类行「＋新增赛道」· 赛道行「⇄换赛道」（评审留痕）</div>
         </div>
 
         <div class="src">原型示例数据来源：新浪财经/天天基金/基金季报/媒体报道（2026Q2）；策略赛道划分为演示示例；仅供界面原型演示</div>
@@ -741,7 +759,7 @@
             <span style="display:inline-flex;gap:4px;vertical-align:middle;margin-left:6px">
               <span style="background:#eef4fd;color:var(--ccb);border:1px solid #c9dcf5;border-radius:4px;padding:1px 7px;font-size:10px;font-weight:600">价值</span>
               <span style="background:#f0f4fa;color:var(--gray);border:1px solid #dbe4f0;border-radius:4px;padding:1px 7px;font-size:10px;font-weight:600">偏股混合</span>
-              <span style="background:#fffbf0;color:#b45309;border:1px solid #f0b429;border-radius:4px;padding:1px 7px;font-size:10px;font-weight:700">⭐ 旗舰</span>
+              <span style="background:#fffbf0;color:#b45309;border:1px solid #f0b429;border-radius:4px;padding:1px 7px;font-size:10px;font-weight:700">★ 旗舰</span>
             </span>
           </h2>
           <div style="display:flex;gap:8px;align-items:center">
@@ -758,7 +776,7 @@
 
         <div class="picker">
           <div class="search">
-            <span class="icon">🔍</span>
+            <span class="icon">搜</span>
             <input placeholder="搜索代码 / 名称 / 拼音首字母" value="恒久价值">
             <span class="hint">352 只产品</span>
           </div>
@@ -940,21 +958,21 @@
             <div class="g-t">④ 销售 + 运营 · 各渠道保有占比与同比</div>
             <div style="display:flex;flex-direction:column;gap:5px">
               <div style="display:flex;align-items:center;gap:8px;font-size:10px">
-                <span style="width:64px;color:var(--gray);text-align:right">🏦 建设银行</span>
+                <span style="width:64px;color:var(--gray);text-align:right">建设银行</span>
                 <div style="flex:1;height:10px;background:#eef2f7;border-radius:3px;overflow:hidden"><div style="height:10px;width:100%;background:var(--ccb);border-radius:3px"></div></div>
                 <span style="width:40px;text-align:right;font-weight:700;color:var(--ink)">48%</span>
                 <span style="width:52px;text-align:right;font-weight:700;color:#15803d">▲ +2.0pct</span>
               </div>
               <div style="font-size:8.5px;color:var(--lgray);margin-left:72px">客群：个人零售 · 存款转化稳健型客户</div>
               <div style="display:flex;align-items:center;gap:8px;font-size:10px">
-                <span style="width:64px;color:var(--gray);text-align:right">🏦 中信银行</span>
+                <span style="width:64px;color:var(--gray);text-align:right">中信银行</span>
                 <div style="flex:1;height:10px;background:#eef2f7;border-radius:3px;overflow:hidden"><div style="height:10px;width:43.8%;background:#2E6FD1;border-radius:3px"></div></div>
                 <span style="width:40px;text-align:right;font-weight:700;color:var(--ink)">21%</span>
                 <span style="width:52px;text-align:right;font-weight:700;color:var(--risk)">▼ -1.0pct</span>
               </div>
               <div style="font-size:8.5px;color:var(--lgray);margin-left:72px">客群：零售 + 高净值理财客户</div>
               <div style="display:flex;align-items:center;gap:8px;font-size:10px">
-                <span style="width:64px;color:var(--gray);text-align:right">📱 互联网</span>
+                <span style="width:64px;color:var(--gray);text-align:right">互联网</span>
                 <div style="flex:1;height:10px;background:#eef2f7;border-radius:3px;overflow:hidden"><div style="height:10px;width:31.3%;background:var(--blue);border-radius:3px"></div></div>
                 <span style="width:40px;text-align:right;font-weight:700;color:var(--ink)">15%</span>
                 <span style="width:52px;text-align:right;font-weight:700;color:#15803d">▲ +3.0pct</span>
@@ -1128,7 +1146,7 @@
 
         <div class="internal-zone">
           <div class="iz-head">
-            <span class="iz-title">🔒 内部管理信息（黑名单字段 · 仅内部视图）</span>
+            <span class="iz-title">内部管理信息（黑名单字段 · 仅内部视图）</span>
             <span class="iz-note">切换至「销售视图」时本区整体隐藏</span>
           </div>
           <div class="iz-grid">
