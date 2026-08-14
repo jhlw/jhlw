@@ -1,7 +1,7 @@
 # harness 运行时状态（锁文件、会话事件、计划状态等，不进版本管理）
-.claude/sessions/
-.claude/state/
-.claude/memory/session-log.md
+**/.claude/sessions/
+**/.claude/state/
+**/.claude/memory/session-log.md
 
 # 可视化伴侣运行时目录
 .superpowers/
