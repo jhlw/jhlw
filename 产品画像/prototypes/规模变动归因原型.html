@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>规模变动归因 · 界面原型（模块四）· 建信恒久价值混合 A</title>
+<style>
+  /* 变量体系延续三屏原型：品牌蓝 + 新增归因语义色（经 CVD 校验） */
+  :root {
+    --ccb:#003399; --blue:#0F75D3; --ink:#333333; --gray:#606266; --lgray:#99A5AE;
+    --warn:#F59E0B; --risk:#CC0000;
+    /* 三线：规模=品牌蓝带内版 · 净值=原型既有橙 · 份额=中蓝（虚线二级编码） */
+    --c-scale:#1A56A8; --c-nav:#E08A3C; --c-share:#2E6FD1;
+    /* 归因：正贡献绿 / 负贡献红（CVD 带内，方向+文字双重编码） */
+    --c-pos:#1B873B; --c-neg:#D92D20;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; background:#f4f6fa; color:var(--ink); font-size:13px; }
+  .wrap { max-width:980px; margin:0 auto; padding:18px 20px 40px; }
+
+  /* 页头 */
+  .head { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:8px; }
+  .head h1 { margin:0; font-size:18px; color:var(--ink); }
+  .head .sub { font-size:10.5px; color:var(--gray); margin-top:4px; }
+  .tabs { display:flex; gap:6px; flex-shrink:0; }
+  .tab { padding:6px 14px; border-radius:6px; font-size:12px; background:#eef2f7; color:var(--gray); cursor:pointer; border:1px solid transparent; user-select:none; }
+  .tab.active { background:var(--ccb); color:#fff; font-weight:600; }
+
+  /* 产品标识条 */
+  .prod-bar { display:flex; align-items:center; gap:8px; flex-wrap:wrap; background:#fff; border:1px solid #e5e7eb; border-radius:8px; padding:8px 12px; margin-bottom:12px; font-size:11px; }
+  .prod-bar .nm { font-weight:800; font-size:13px; }
+  .prod-bar .cd { color:var(--gray); }
+  .prod-bar .tag { background:#f0f4fa; border-radius:4px; padding:2px 8px; color:var(--gray); font-size:10px; }
+  .prod-bar .tag b { color:var(--ccb); }
+  .prod-bar .r3 { background:#fef3c7; color:#b45309; font-weight:700; }
+
+  /* 指标卡 */
+  .hl-row { display:flex; gap:8px; margin-bottom:12px; }
+  .hl { flex:1; background:#fff; border:1px solid #e5e7eb; border-radius:6px; padding:8px 10px; }
+  .hl .hn { font-size:16px; font-weight:800; color:var(--ccb); }
+  .hl .hl-lbl { font-size:9.5px; color:var(--gray); margin-top:2px; }
+  .hl .dot { display:inline-block; width:7px; height:7px; border-radius:2px; margin-right:4px; vertical-align:-1px; }
+
+  /* 卡片通用 */
+  .g-b { border:1px solid #e5e7eb; border-radius:8px; padding:12px 14px; background:#fff; margin-bottom:12px; }
+  .g-t { font-size:12px; font-weight:800; color:var(--ink); border-left:3px solid var(--ccb); padding-left:8px; margin:0 0 10px; display:flex; justify-content:space-between; align-items:center; }
+  .g-t .hint { font-size:9px; color:var(--lgray); font-weight:400; }
+  .chart-note { font-size:9px; color:var(--gray); margin-top:6px; }
+
+  /* 图例 */
+  .legend { display:flex; gap:14px; font-size:10px; color:var(--gray); margin:8px 0 4px; flex-wrap:wrap; }
+  .legend i { display:inline-block; width:14px; height:3px; border-radius:2px; margin-right:5px; vertical-align:2px; }
+  .legend .dotl { width:9px; height:9px; border-radius:2px; margin-right:4px; vertical-align:-1px; display:inline-block; }
+  .legend .dash { background:repeating-linear-gradient(90deg,transparent 0 2px,transparent 2px 4px); }
+
+  /* 区间选择器 */
+  .range-row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:8px; padding-top:8px; border-top:1px dashed #e5e7eb; }
+  .presets { display:flex; gap:6px; }
+  .ps { padding:3px 10px; border-radius:4px; font-size:10px; background:#f0f4fa; color:var(--gray); cursor:pointer; user-select:none; }
+  .ps.active { background:var(--ccb); color:#fff; font-weight:600; }
+  .sliders { display:flex; align-items:center; gap:8px; flex:1; min-width:260px; }
+  .sliders input[type=range] { flex:1; accent-color:var(--ccb); }
+  .sl-lbl { font-size:9.5px; color:var(--gray); white-space:nowrap; }
+  .range-now { font-size:10px; color:var(--ccb); font-weight:700; white-space:nowrap; }
+
+  /* 结论卡 */
+  .concl { background:#f8fbff; border:1px solid #d5e2f5; border-radius:8px; padding:10px 14px; margin-bottom:10px; font-size:12px; line-height:1.7; }
+  .concl b { color:var(--ccb); }
+  .concl .c-pos { color:var(--c-pos); font-weight:700; }
+  .concl .c-neg { color:var(--c-neg); font-weight:700; }
+  body.sales .concl { font-size:15px; background:#f6fbf7; border-color:#cfe8d6; }
+
+  /* 图表容器 */
+  .chart-box { position:relative; }
+  .chart-box svg { display:block; width:100%; height:auto; }
+  .tip { position:absolute; pointer-events:none; background:rgba(30,40,60,.92); color:#fff; border-radius:6px; padding:7px 10px; font-size:10.5px; line-height:1.7; display:none; z-index:10; white-space:nowrap; box-shadow:0 3px 10px rgba(0,0,0,.25); }
+  .tip .t-t { font-weight:700; margin-bottom:2px; }
+  .tip b { font-weight:700; }
+
+  /* 数据表 */
+  details.data { margin-top:10px; }
+  details.data summary { cursor:pointer; font-size:10px; color:var(--gray); }
+  table.data { width:100%; border-collapse:collapse; font-size:10px; margin-top:8px; }
+  table.data th, table.data td { border:1px solid #e5e7eb; padding:3px 8px; text-align:right; }
+  table.data th { background:#f8fbff; color:var(--gray); font-weight:600; }
+  table.data td:first-child, table.data th:first-child { text-align:left; }
+
+  /* 脚注 */
+  .foot { font-size:9px; color:var(--lgray); line-height:1.9; margin-top:4px; }
+  .foot .fml { font-family:Georgia,serif; color:var(--gray); background:#f0f4fa; border-radius:4px; padding:1px 6px; margin:0 2px; }
+
+  /* 双视图显隐 */
+  .int-only { display:block; } .sales-only { display:none; }
+  body.sales .int-only { display:none !important; }
+  body.sales .sales-only { display:block !important; }
+  .kpi-int, .kpi-sales { display:flex; gap:8px; }
+  .kpi-sales { display:none; }
+  body.sales .kpi-int { display:none; }
+  body.sales .kpi-sales { display:flex; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- 页头 -->
+  <div class="head">
+    <div>
+      <h1>规模变动归因 <span style="font-size:11px;color:var(--lgray);font-weight:400">界面原型 · 模块四</span></h1>
+      <div class="sub">规模 / 净值 / 份额变动一览，并归因分解净值与份额对规模变动的影响程度</div>
+    </div>
+    <div class="tabs" id="viewTabs">
+      <div class="tab active" data-view="internal">内部视图</div>
+      <div class="tab" data-view="sales">销售视图</div>
+    </div>
+  </div>
+
+  <!-- 产品标识条 -->
+  <div class="prod-bar">
+    <span class="nm">建信恒久价值混合 A</span>
+    <span class="cd">530001</span>
+    <span class="tag int-only">谱系编码 <b>30 → 3001</b></span>
+    <span class="tag int-only">银河分类 <b>偏股混合</b></span>
+    <span class="tag int-only">成立 <b>2005-03</b></span>
+    <span class="tag r3">R3 中风险</span>
+    <span class="tag" style="margin-left:auto">数据截至 2026Q2 季报（示例）</span>
+  </div>
+
+  <!-- 指标卡行 -->
+  <div class="hl-row kpi-int" id="kpiInt">
+    <div class="hl"><div class="hn" id="k-latest-s">8.57 亿</div><div class="hl-lbl">最新规模（净资产）</div></div>
+    <div class="hl"><div class="hn" id="k-latest-n">1.0328</div><div class="hl-lbl">最新单位净值（元）</div></div>
+    <div class="hl"><div class="hn" id="k-latest-q">8.30 亿</div><div class="hl-lbl">最新份额（亿份）</div></div>
+    <div class="hl"><div class="hn" id="k-ds">-6.97 亿</div><div class="hl-lbl" id="k-ds-lbl">区间规模变动</div></div>
+    <div class="hl"><div class="hn" id="k-nc" style="color:var(--c-pos)">+1.67 亿</div><div class="hl-lbl"><span class="dot" style="background:var(--c-pos)"></span>区间净值贡献</div></div>
+    <div class="hl"><div class="hn" id="k-sc" style="color:var(--c-neg)">-8.64 亿</div><div class="hl-lbl"><span class="dot" style="background:var(--c-neg)"></span>区间份额贡献</div></div>
+  </div>
+  <div class="hl-row kpi-sales" id="kpiSales">
+    <div class="hl"><div class="hn" id="k2-latest-s">8.57 亿</div><div class="hl-lbl">最新规模</div></div>
+    <div class="hl"><div class="hn" id="k2-latest-n">1.0328</div><div class="hl-lbl">最新净值（元）</div></div>
+    <div class="hl"><div class="hn" style="color:var(--c-pos)" id="k2-nc">+1.67 亿</div><div class="hl-lbl"><span class="dot" style="background:var(--c-pos)"></span>区间业绩贡献</div></div>
+    <div class="hl"><div class="hn" style="color:var(--c-neg)" id="k2-sc">-8.64 亿</div><div class="hl-lbl"><span class="dot" style="background:var(--c-neg)"></span>区间申赎贡献</div></div>
+  </div>
+
+  <!-- ① 三线趋势图 -->
+  <div class="g-b">
+    <div class="g-t">① 规模 · 净值 · 份额走势（区间内指数化，起点 = 100）<span class="hint">hover 查看实值 · 拖选区间联动归因</span></div>
+    <div class="chart-box" id="trendBox">
+      <svg id="trendSvg" viewBox="0 0 780 258" aria-label="规模、净值、份额指数化走势图"></svg>
+      <div class="tip" id="trendTip"></div>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--c-scale)"></i>规模（净资产）</span>
+      <span><i style="background:var(--c-nav)"></i>净值（单位净值）</span>
+      <span><i class="dash" style="background:var(--c-share);height:2px;width:16px"></i>份额</span>
+    </div>
+    <div class="range-row">
+      <div class="presets" id="presets">
+        <span class="ps" data-i="10" data-j="13">近 1 年</span>
+        <span class="ps" data-i="6" data-j="13">近 2 年</span>
+        <span class="ps active" data-i="2" data-j="13">近 3 年</span>
+        <span class="ps" data-i="0" data-j="13">全部</span>
+      </div>
+      <div class="sliders">
+        <span class="sl-lbl">起点</span>
+        <input type="range" id="slStart" min="0" max="13" step="1" value="2">
+        <input type="range" id="slEnd" min="0" max="13" step="1" value="13">
+        <span class="sl-lbl">终点</span>
+      </div>
+      <span class="range-now" id="rangeNow">2023Q3 – 2026Q2 · 12 个季度</span>
+    </div>
+  </div>
+
+  <!-- ② 归因条 -->
+  <div class="g-b">
+    <div class="g-t">② 规模变动归因（所选区间）<span class="hint">对数分解：ln(S₁/S₀) = ln(N₁/N₀) + ln(Q₁/Q₀)</span></div>
+    <div class="concl" id="concl"></div>
+    <div class="chart-box" id="barBox">
+      <svg id="barSvg" viewBox="0 0 780 150" aria-label="区间规模变动归因分解条形图"></svg>
+      <div class="tip" id="barTip"></div>
+    </div>
+    <div class="legend">
+      <span><span class="dotl" style="background:var(--c-pos)"></span>净值贡献</span>
+      <span><span class="dotl" style="background:var(--c-neg)"></span>份额贡献</span>
+      <span style="color:var(--lgray)">向右 = 正向贡献（推动规模增长）· 向左 = 负向贡献（拖累规模）· 条长∝贡献额</span>
+    </div>
+  </div>
+
+  <!-- ③ 各季贡献堆叠柱 -->
+  <div class="g-b">
+    <div class="g-t">③ 各季度贡献（规模变动 = 净值贡献 + 份额贡献）<span class="hint">上正下负 · hover 查看明细</span></div>
+    <div class="chart-box" id="colBox">
+      <svg id="colSvg" viewBox="0 0 780 240" aria-label="各季度净值与份额贡献堆叠柱状图"></svg>
+      <div class="tip" id="colTip"></div>
+    </div>
+    <div class="legend">
+      <span><span class="dotl" style="background:var(--c-pos)"></span>净值贡献（零轴上方）</span>
+      <span><span class="dotl" style="background:var(--c-neg)"></span>份额贡献（零轴下方）</span>
+      <span style="color:var(--lgray)">2023Q1 为数据起点，无上期可比，无归因柱</span>
+    </div>
+  </div>
+
+  <!-- 数据表（无障碍表视图） -->
+  <details class="data">
+    <summary>展开数据表（季度净值 / 份额 / 规模）</summary>
+    <table class="data" id="dataTable"></table>
+  </details>
+
+  <!-- 脚注 -->
+  <div class="foot int-only" id="footInt">
+    口径：区间归因采用对数分解，<span class="fml">ln(S₁/S₀) = ln(N₁/N₀) + ln(Q₁/Q₀)</span>，精确可加、无交互残差；贡献额 = 贡献占比 × 区间规模变动额，占比之和恒为 100%，因四舍五入存在 ±0.1 亿级误差。<br>
+    数据来源：基金季报（规模/份额/净值均为季末值，季度更新）。<br>
+    本页为界面原型示例：锚点为真实公开数据（2026Q1 末单位净值 1.0235、2025 年末净资产 8.68 亿、成立 62.02 亿份），季度序列为演示构造的示意数据，S = N × Q 每季自洽。
+  </div>
+  <div class="foot sales-only" id="footSales">
+    业绩贡献：产品净值上涨为规模带来的增量；申赎贡献：投资者申购/赎回为规模带来的变化。<br>
+    本页为界面原型示例：锚点为真实公开数据，季度序列为演示构造的示意数据。
+  </div>
+
+</div>
+
+<script>
+"use strict";
+/* ================= 数据（示例 · 锚点真实） ================= */
+const DATA = [
+  {q:"2023Q1", n:0.8512, sq:18.96, s:16.14},
+  {q:"2023Q2", n:0.8746, sq:18.12, s:15.85},
+  {q:"2023Q3", n:0.8958, sq:17.35, s:15.54},
+  {q:"2023Q4", n:0.9170, sq:16.52, s:15.15},
+  {q:"2024Q1", n:0.9351, sq:15.78, s:14.76},
+  {q:"2024Q2", n:0.9523, sq:14.95, s:14.24},
+  {q:"2024Q3", n:0.9685, sq:14.18, s:13.73},
+  {q:"2024Q4", n:0.9836, sq:13.42, s:13.20},
+  {q:"2025Q1", n:0.9927, sq:12.66, s:12.57},
+  {q:"2025Q2", n:1.0021, sq:11.92, s:11.95},
+  {q:"2025Q3", n:1.0118, sq:11.24, s:11.37},
+  {q:"2025Q4", n:1.0140, sq:8.56,  s:8.68},   /* 锚点：2025 年末净资产 8.68 亿 */
+  {q:"2026Q1", n:1.0235, sq:8.51,  s:8.71},   /* 锚点：2026Q1 末单位净值 1.0235 */
+  {q:"2026Q2", n:1.0328, sq:8.30,  s:8.57}
+];
+/* 季度归因（2023Q2 起，共 13 期）：对数分解，精确可加 */
+const QATTR = [];
+for (let k = 1; k < DATA.length; k++) {
+  const a = attr(k - 1, k);
+  QATTR.push({ q: DATA[k].q, navC: a.navC, shareC: a.shareC, dS: a.dS });
+}
+
+/* 区间归因：ln(S₁/S₀) = ln(N₁/N₀) + ln(Q₁/Q₀)，贡献额 = 占比 × ΔS */
+function attr(i, j) {
+  const A = DATA[i], B = DATA[j];
+  const lnS = Math.log(B.s / A.s), lnN = Math.log(B.n / A.n), lnQ = Math.log(B.sq / A.sq);
+  const dS = B.s - A.s;
+  const navPct = Math.abs(lnS) < 1e-12 ? 0 : lnN / lnS;
+  const sharePct = Math.abs(lnS) < 1e-12 ? 0 : lnQ / lnS;
+  return { dS, navC: navPct * dS, shareC: sharePct * dS, navPct, sharePct };
+}
+
+/* ================= 状态 ================= */
+let sel = { i: 2, j: 13 };   /* 默认近 3 年（12 个季度） */
+let view = "internal";
+
+const fmt2 = x => (x >= 0 ? "+" : "") + x.toFixed(2);
+const fmtPct = x => (x >= 0 ? "+" : "") + (x * 100).toFixed(1) + "%";
+
+/* ================= ① 趋势图 ================= */
+const T = { x0: 44, x1: 744, y0: 16, y1: 222, W: 780 };
+const tX = k => T.x0 + (T.x1 - T.x0) * k / 13;
+
+function renderTrend() {
+  const { i, j } = sel;
+  const idxS = DATA.map(d => d.s / DATA[i].s * 100);
+  const idxN = DATA.map(d => d.n / DATA[i].n * 100);
+  const idxQ = DATA.map(d => d.sq / DATA[i].sq * 100);
+  let lo = 100, hi = 100;
+  for (let k = i; k <= j; k++) { lo = Math.min(lo, idxS[k], idxN[k], idxQ[k]); hi = Math.max(hi, idxS[k], idxN[k], idxQ[k]); }
+  const pad = (hi - lo) * 0.12 || 3;
+  lo -= pad; hi += pad;
+  const yOf = v => T.y1 - (v - lo) / (hi - lo) * (T.y1 - T.y0);
+
+  let svg = "";
+  /* 网格与 Y 轴标签（5 档） */
+  for (let g = 0; g <= 4; g++) {
+    const v = lo + (hi - lo) * g / 4, y = yOf(v);
+    svg += `<line x1="${T.x0}" y1="${y}" x2="${T.x1}" y2="${y}" stroke="${g === 0 ? "#d8dee8" : "#eef2f7"}" stroke-width="1" ${g === 0 ? "" : 'stroke-dasharray="3 3"'}/>`;
+    svg += `<text x="${T.x0 - 6}" y="${y + 3}" font-size="8.5" fill="#99A5AE" text-anchor="end">${v.toFixed(0)}</text>`;
+  }
+  /* X 轴标签（隔季显示短格式） */
+  for (let k = 0; k < 14; k += 2) {
+    svg += `<text x="${tX(k)}" y="242" font-size="8.5" fill="#99A5AE" text-anchor="middle">${DATA[k].q.slice(2, 4) + "Q" + DATA[k].q.slice(5)}</text>`;
+  }
+  /* 三线：规模实线 / 净值实线 / 份额虚线 */
+  const line = (arr, color, dash) => {
+    const pts = [];
+    for (let k = i; k <= j; k++) pts.push(`${tX(k).toFixed(1)},${yOf(arr[k]).toFixed(1)}`);
+    return `<polyline points="${pts.join(" ")}" fill="none" stroke="${color}" stroke-width="2" ${dash ? 'stroke-dasharray="5 4"' : ""}/>` +
+      `<circle cx="${tX(i)}" cy="${yOf(arr[i])}" r="4" fill="${color}"/>` +
+      `<circle cx="${tX(j)}" cy="${yOf(arr[j])}" r="4" fill="${color}"/>` +
+      `<text x="${tX(j) + 8}" y="${yOf(arr[j]) + 3}" font-size="9" fill="#606266">${arr[j].toFixed(0)}</text>`;
+  };
+  svg += line(idxS, "#1A56A8", false);
+  svg += line(idxN, "#E08A3C", false);
+  svg += line(idxQ, "#2E6FD1", true);
+  /* 已选区间淡出遮罩 */
+  if (i > 0) svg += `<rect x="${T.x0}" y="${T.y0}" width="${tX(i) - T.x0}" height="${T.y1 - T.y0}" fill="#f4f6fa" opacity=".55"/>`;
+  if (j < 13) svg += `<rect x="${tX(j)}" y="${T.y0}" width="${T.x1 - tX(j)}" height="${T.y1 - T.y0}" fill="#f4f6fa" opacity=".55"/>`;
+  svg += `<line id="t-cross" x1="-10" y1="${T.y0}" x2="-10" y2="${T.y1}" stroke="#99A5AE" stroke-width="1" stroke-dasharray="3 3"/>`;
+  for (const c of ["t-d1", "t-d2", "t-d3"]) svg += `<circle id="${c}" cx="-10" cy="-10" r="4.5" fill="#fff" stroke-width="2" stroke="#ccc"/>`;
+  svg += `<rect x="${T.x0}" y="${T.y0}" width="${T.x1 - T.x0}" height="${T.y1 - T.y0}" fill="transparent" id="t-hover"/>`;
+  document.getElementById("trendSvg").innerHTML = svg;
+
+  /* hover：十字线 + tooltip */
+  const svgEl = document.getElementById("trendSvg"), tip = document.getElementById("trendTip");
+  const box = document.getElementById("trendBox");
+  svgEl.querySelector("#t-hover").addEventListener("mousemove", ev => {
+    const rect = svgEl.getBoundingClientRect();
+    const px = (ev.clientX - rect.left) / rect.width * T.W;
+    const k = Math.max(sel.i, Math.min(sel.j, Math.round((px - T.x0) / (T.x1 - T.x0) * 13)));
+    const x = tX(k), d = DATA[k];
+    svgEl.querySelector("#t-cross").setAttribute("x1", x); svgEl.querySelector("#t-cross").setAttribute("x2", x);
+    const ys = [yOf(d.s / DATA[sel.i].s * 100), yOf(d.n / DATA[sel.i].n * 100), yOf(d.sq / DATA[sel.i].sq * 100)];
+    const cols = ["#1A56A8", "#E08A3C", "#2E6FD1"];
+    ys.forEach((y, m) => { const c = svgEl.querySelector(`#t-d${m + 1}`); c.setAttribute("cx", x); c.setAttribute("cy", y); c.setAttribute("stroke", cols[m]); });
+    tip.innerHTML = `<span class="t-t">${d.q}</span><br>` +
+      `规模 <b>${d.s.toFixed(2)} 亿</b>（指数 ${(d.s / DATA[sel.i].s * 100).toFixed(0)}）<br>` +
+      `净值 <b>${d.n.toFixed(4)}</b>（指数 ${(d.n / DATA[sel.i].n * 100).toFixed(0)}）<br>` +
+      `份额 <b>${d.sq.toFixed(2)} 亿份</b>（指数 ${(d.sq / DATA[sel.i].sq * 100).toFixed(0)}）`;
+    tip.style.display = "block";
+    const tipX = (ev.clientX - box.getBoundingClientRect().left) + 14, tipW = tip.offsetWidth;
+    tip.style.left = Math.min(tipX, box.clientWidth - tipW - 8) + "px";
+    tip.style.top = (ev.clientY - box.getBoundingClientRect().top) + 12 + "px";
+  });
+  svgEl.querySelector("#t-hover").addEventListener("mouseleave", () => {
+    tip.style.display = "none";
+    svgEl.querySelector("#t-cross").setAttribute("x1", -10);
+    ["t-d1", "t-d2", "t-d3"].forEach(c => svgEl.querySelector("#" + c).setAttribute("cx", -10));
+  });
+}
+
+/* ================= ② 归因条 ================= */
+function renderBar() {
+  const a = attr(sel.i, sel.j);
+  const svgEl = document.getElementById("barSvg"), tip = document.getElementById("barTip");
+  const box = document.getElementById("barBox");
+  const cx = 390, half = 305, y = 44, h = 24;
+  const scale = Math.max(Math.abs(a.navC), Math.abs(a.shareC), 0.5) / half;
+  const bar = (v, color, id) => {
+    if (Math.abs(v) < 1e-9) return "";
+    const w = Math.abs(v) / scale;
+    return `<rect id="${id}" x="${v > 0 ? cx : cx - w}" y="${y}" width="${w}" height="${h}" rx="4" fill="${color}" opacity=".92" style="transition:opacity .15s"/>`;
+  };
+  const lbl = (v, x, anchor) => {
+    const p = v / a.dS;
+    return `<text x="${x}" y="${y - 10}" font-size="10.5" font-weight="700" text-anchor="${anchor}" fill="#333333">${fmt2(v)} 亿</text>` +
+      `<text x="${x}" y="${y + h + 15}" font-size="9" text-anchor="${anchor}" fill="#606266">占比 ${fmtPct(p)}</text>`;
+  };
+  let svg = `<text x="390" y="24" font-size="13" font-weight="800" text-anchor="middle" fill="#333333">区间规模变动 ${fmt2(a.dS)} 亿</text>`;
+  svg += `<line x1="${cx}" y1="${y - 4}" x2="${cx}" y2="${y + h + 26}" stroke="#c9d2dd" stroke-width="1"/>`;
+  svg += `<text x="${cx}" y="${y + h + 40}" font-size="8.5" fill="#99A5AE" text-anchor="middle">0</text>`;
+  svg += bar(a.navC, "#1B873B", "b-nav");
+  svg += bar(a.shareC, "#D92D20", "b-share");
+  svg += lbl(a.navC, a.navC > 0 ? cx + Math.abs(a.navC) / scale + 8 : cx - Math.abs(a.navC) / scale - 8, a.navC > 0 ? "start" : "end");
+  svg += lbl(a.shareC, a.shareC > 0 ? cx + Math.abs(a.shareC) / scale + 8 : cx - Math.abs(a.shareC) / scale - 8, a.shareC > 0 ? "start" : "end");
+  svg += `<text x="${cx}" y="${y + h + 58}" font-size="9" text-anchor="middle" fill="#99A5AE">${view === "internal" ? "净值贡献" : "业绩贡献"}</text>`;
+  svg += `<text x="${cx}" y="${y + h + 72}" font-size="9" text-anchor="middle" fill="#99A5AE">${view === "internal" ? "份额贡献" : "申赎贡献"}</text>`;
+  svgEl.innerHTML = svg;
+
+  ["b-nav", "b-share"].forEach(id => {
+    const el = svgEl.querySelector("#" + id);
+    if (!el) return;
+    const nm = id === "b-nav" ? (view === "internal" ? "净值贡献" : "业绩贡献") : (view === "internal" ? "份额贡献" : "申赎贡献");
+    const v = id === "b-nav" ? a.navC : a.shareC;
+    el.addEventListener("mousemove", ev => {
+      el.setAttribute("opacity", "1");
+      const r = box.getBoundingClientRect();
+      tip.innerHTML = `<span class="t-t">${nm}</span>贡献额 <b>${fmt2(v)} 亿</b><br>贡献占比 <b>${fmtPct(v / a.dS)}</b>`;
+      tip.style.display = "block";
+      tip.style.left = Math.min(ev.clientX - r.left + 14, box.clientWidth - tip.offsetWidth - 8) + "px";
+      tip.style.top = (ev.clientY - r.top) + 12 + "px";
+    });
+    el.addEventListener("mouseleave", () => { el.setAttribute("opacity", ".92"); tip.style.display = "none"; });
+  });
+}
+
+/* ================= 结论卡 ================= */
+function renderConcl() {
+  const a = attr(sel.i, sel.j);
+  const d = Math.abs(a.dS).toFixed(2), n = a.navC, q = a.shareC;
+  const el = document.getElementById("concl");
+  const span = (v, col) => `<span class="${col}">${fmt2(v)} 亿</span>`;
+  let html = "";
+  if (Math.abs(a.dS) < 0.01) {
+    html = view === "internal" ? "所选区间规模基本持平，净值与份额贡献相互抵消。" : "这段时间产品规模基本没变，业绩和申赎的影响相互抵消了。";
+  } else if (n > 0 && q > 0) {
+    html = view === "internal"
+      ? `区间规模<b>增长 ${d} 亿</b>，由净值上涨 ${span(n, "c-pos")} 与份额申购 ${span(q, "c-pos")} 共同驱动。`
+      : `这段时间规模<span class="c-pos">增长 ${d} 亿</span>——业绩上涨和投资者申购一起推动。`;
+  } else if (n < 0 && q < 0) {
+    html = view === "internal"
+      ? `区间规模<b>缩水 ${d} 亿</b>，由净值下跌 ${span(n, "c-neg")} 与份额赎回 ${span(q, "c-neg")} 共同拖累。`
+      : `这段时间规模<span class="c-neg">缩水 ${d} 亿</span>——业绩下跌叠加投资者赎回。`;
+  } else if (Math.abs(q) >= Math.abs(n)) {
+    const dir = a.dS < 0 ? "缩水" : "增长";
+    html = view === "internal"
+      ? `区间规模<b>${dir} ${d} 亿</b>：${q < 0 ? "份额赎回" : "份额申购"}主导 ${span(q, "c-neg")}（占比 ${(q / a.dS * 100).toFixed(0)}%），净值${n > 0 ? "上涨" : "下跌"}对冲 ${span(n, "c-pos")}。`
+      : `这段时间规模<span class="${a.dS < 0 ? "c-neg" : "c-pos"}">${dir} ${d} 亿</span>——主要因为投资者${q < 0 ? "赎回" : "申购"}（${q < 0 ? "" : "+"}${q.toFixed(2)} 亿）；产品业绩其实在${n > 0 ? "上涨" : "下跌"}，为规模${n > 0 ? "挽回" : "拖累"}了 ${Math.abs(n).toFixed(2)} 亿。`;
+  } else {
+    const dir = a.dS < 0 ? "缩水" : "增长";
+    html = view === "internal"
+      ? `区间规模<b>${dir} ${d} 亿</b>：净值${n < 0 ? "下跌" : "上涨"}主导 ${span(n, "c-neg")}（占比 ${(n / a.dS * 100).toFixed(0)}%），份额${q > 0 ? "申购" : "赎回"}对冲 ${span(q, "c-pos")}。`
+      : `这段时间规模<span class="${a.dS < 0 ? "c-neg" : "c-pos"}">${dir} ${d} 亿</span>——主要受业绩${n < 0 ? "下跌" : "上涨"}影响（${n < 0 ? "" : "+"}${n.toFixed(2)} 亿）；投资者${q > 0 ? "申购" : "赎回"}部分对冲（${q > 0 ? "+" : ""}${q.toFixed(2)} 亿）。`;
+  }
+  el.innerHTML = html;
+}
+
+/* ================= ③ 各季贡献堆叠柱 ================= */
+function renderCols() {
+  const C = { x0: 44, x1: 744, y0: 30, y1: 214, zero: 122 };
+  const bw = (C.x1 - C.x0) / 14;
+  const maxC = Math.max(...QATTR.map(a => Math.max(Math.abs(a.navC), Math.abs(a.shareC))), 0.5) * 1.1;
+  const yOf = v => C.zero - v / maxC * (C.zero - C.y0);
+  const svgEl = document.getElementById("colSvg"), tip = document.getElementById("colTip");
+  const box = document.getElementById("colBox");
+
+  let svg = "";
+  for (let g = 0; g <= 4; g++) {
+    const v = maxC * (2 - g) / 2, y = yOf(v);
+    svg += `<line x1="${C.x0}" y1="${y}" x2="${C.x1}" y2="${y}" stroke="${g === 2 ? "#c9d2dd" : "#eef2f7"}" stroke-width="1" ${g === 2 ? "" : 'stroke-dasharray="3 3"'}/>`;
+    svg += `<text x="${C.x0 - 6}" y="${y + 3}" font-size="8.5" fill="#99A5AE" text-anchor="end">${v.toFixed(1)}</text>`;
+  }
+  for (let k = 0; k < 14; k += 2) {
+    svg += `<text x="${C.x0 + bw * k + bw / 2}" y="${C.y1 + 14}" font-size="8.5" fill="#99A5AE" text-anchor="middle">${DATA[k].q.slice(2, 4) + "Q" + DATA[k].q.slice(5)}</text>`;
+  }
+  QATTR.forEach((a, k) => {
+    const cx = C.x0 + bw * (k + 1) + bw / 2, w = 22;
+    const navY = a.navC > 0 ? yOf(a.navC) : yOf(0), navH = Math.max(Math.abs(yOf(a.navC) - yOf(0)), 1);
+    const shY = a.shareC > 0 ? yOf(a.shareC) : yOf(0), shH = Math.max(Math.abs(yOf(a.shareC) - yOf(0)), 1);
+    svg += `<rect x="${cx - w / 2}" y="${navY}" width="${w}" height="${navH}" rx="4" fill="#1B873B" opacity=".92"/>`;
+    svg += `<rect x="${cx - w / 2}" y="${shY}" width="${w}" height="${shH}" rx="4" fill="#D92D20" opacity=".92"/>`;
+    svg += `<rect x="${cx - bw / 2}" y="${C.y0}" width="${bw}" height="${C.y1 - C.y0}" fill="transparent" data-k="${k}"/>`;
+  });
+  svg += `<text x="${C.x0 + bw / 2}" y="${C.y1 + 14}" font-size="8.5" fill="#99A5AE" text-anchor="middle">${DATA[0].q.slice(2, 4) + "Q" + DATA[0].q.slice(5)}</text>`;
+  svgEl.innerHTML = svg;
+
+  svgEl.querySelectorAll("[data-k]").forEach(rect => {
+    rect.addEventListener("mousemove", ev => {
+      const a = QATTR[+rect.getAttribute("data-k")];
+      const r = box.getBoundingClientRect();
+      tip.innerHTML = `<span class="t-t">${a.q} · 规模变动 ${fmt2(a.dS)} 亿</span>` +
+        `${view === "internal" ? "净值贡献" : "业绩贡献"} <b>${fmt2(a.navC)} 亿</b><br>` +
+        `${view === "internal" ? "份额贡献" : "申赎贡献"} <b>${fmt2(a.shareC)} 亿</b><br>` +
+        `校验：${fmt2(a.navC)} + ${fmt2(a.shareC)} = ${fmt2(a.navC + a.shareC)}`;
+      tip.style.display = "block";
+      tip.style.left = Math.min(ev.clientX - r.left + 14, box.clientWidth - tip.offsetWidth - 8) + "px";
+      tip.style.top = (ev.clientY - r.top) + 12 + "px";
+    });
+    rect.addEventListener("mouseleave", () => { tip.style.display = "none"; });
+  });
+}
+
+/* ================= 指标卡与区间文字 ================= */
+function renderKpi() {
+  const a = attr(sel.i, sel.j);
+  const set = (id, txt, col) => { const el = document.getElementById(id); el.textContent = txt; if (col !== undefined) el.style.color = col; };
+  const rng = `${DATA[sel.i].q} – ${DATA[sel.j].q} · ${sel.j - sel.i + 1} 个季度`;
+  document.getElementById("rangeNow").textContent = rng;
+  set("k-ds", fmt2(a.dS) + " 亿");
+  document.getElementById("k-ds-lbl").textContent = `区间规模变动（${rng}）`;
+  set("k-nc", fmt2(a.navC) + " 亿"); set("k-sc", fmt2(a.shareC) + " 亿");
+  set("k2-nc", fmt2(a.navC) + " 亿"); set("k2-sc", fmt2(a.shareC) + " 亿");
+}
+
+/* ================= 汇总渲染 ================= */
+function renderAll() {
+  renderKpi(); renderTrend(); renderBar(); renderConcl(); renderCols();
+}
+
+/* ================= 区间选择交互 ================= */
+const slStart = document.getElementById("slStart"), slEnd = document.getElementById("slEnd");
+function syncSliders() {
+  slStart.value = sel.i; slEnd.value = sel.j;
+  document.querySelectorAll("#presets .ps").forEach(p => p.classList.toggle("active", +p.dataset.i === sel.i && +p.dataset.j === sel.j));
+}
+function setRange(i, j) { sel = { i, j }; syncSliders(); renderAll(); }
+slStart.addEventListener("input", () => { const v = Math.min(+slStart.value, sel.j - 1); slStart.value = v; sel.i = v; syncSliders(); renderAll(); });
+slEnd.addEventListener("input", () => { const v = Math.max(+slEnd.value, sel.i + 1); slEnd.value = v; sel.j = v; syncSliders(); renderAll(); });
+document.querySelectorAll("#presets .ps").forEach(p => p.addEventListener("click", () => setRange(+p.dataset.i, +p.dataset.j)));
+
+/* ================= 视图切换 ================= */
+document.querySelectorAll("#viewTabs .tab").forEach(t => t.addEventListener("click", () => {
+  document.querySelectorAll("#viewTabs .tab").forEach(x => x.classList.toggle("active", x === t));
+  view = t.dataset.view;
+  document.body.classList.toggle("sales", view === "sales");
+  renderAll();
+}));
+
+/* ================= 数据表 ================= */
+(function renderTable() {
+  const rows = DATA.map(d => `<tr><td>${d.q}</td><td>${d.n.toFixed(4)}</td><td>${d.sq.toFixed(2)}</td><td>${d.s.toFixed(2)}</td></tr>`).join("");
+  document.getElementById("dataTable").innerHTML =
+    `<tr><th>季度</th><th>单位净值（元）</th><th>份额（亿份）</th><th>规模 / 净资产（亿元）</th></tr>` + rows;
+})();
+
+renderAll();
+</script>
+</body>
+</html>
