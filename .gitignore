@@ -2,3 +2,13 @@
 .claude/sessions/
 .claude/state/
 .claude/memory/session-log.md
+
+# 可视化伴侣运行时目录
+.superpowers/
+
+# Playwright MCP 运行时目录与截图
+.playwright-mcp/
+ccbfund-home.png
+
+# Office 临时锁文件
+~$*
