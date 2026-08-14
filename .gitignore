@@ -1,3 +1,4 @@
 # harness 运行时状态（锁文件、会话事件、计划状态等，不进版本管理）
 .claude/sessions/
 .claude/state/
+.claude/memory/session-log.md
