@@ -1,0 +1,236 @@
+<style>
+  :root { --ccb:#003399; --blue:#0F75D3; --ink:#333333; --gray:#606266; --lgray:#99A5AE; --warn:#F59E0B; --risk:#CC0000; }
+  .app { display:flex; gap:14px; }
+  .side { width:150px; background:var(--ccb); color:#fff; border-radius:10px; padding:14px 10px; flex-shrink:0; }
+  .side .logo { font-weight:700; font-size:14px; margin-bottom:16px; padding:0 6px; padding-bottom:10px; border-bottom:2px solid #fff3; }
+  .side .nav-item { padding:8px 10px; border-radius:6px; margin-bottom:4px; font-size:12px; color:#bcd0f0; }
+  .side .nav-item.active { background:#fff; color:var(--ccb); font-weight:600; }
+  .main { flex:1; min-width:0; }
+  .head { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+  .head h2 { margin:0; color:var(--ink); }
+  .cov-row { display:flex; gap:8px; margin-bottom:12px; }
+  .cov { flex:1; background:#fff; border:1px solid #e5e7eb; border-radius:8px; padding:9px 12px; border-left:3px solid var(--ccb); }
+  .cov .num { font-size:17px; font-weight:700; color:var(--ccb); }
+  .cov .lbl { font-size:10.5px; color:var(--gray); margin-top:2px; }
+  .cov.warn-c { border-left-color:var(--warn); }
+  .panel { background:#fff; border:1px solid #e5e7eb; border-radius:8px; padding:12px 14px; }
+  .panel h4 { margin:0 0 10px; font-size:13px; color:var(--ink); border-left:3px solid var(--ccb); padding-left:8px; }
+  .cat-line { border:1px solid #e5e7eb; border-radius:8px; padding:9px 12px; margin-bottom:10px; }
+  .cat-head { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+  .cat-code { font-family:monospace; font-size:10px; font-weight:700; color:#fff; background:var(--ccb); border-radius:4px; padding:1px 6px; }
+  .cat-code.c20 { background:#2E6FD1; }
+  .cat-code.c30 { background:#E08A3C; }
+  .cat-code.c40 { background:#8a6fa8; }
+  .cat-name { font-weight:700; font-size:12px; color:var(--ink); }
+  .cat-sub { font-size:10.5px; color:var(--gray); }
+  .cat-pct { margin-left:auto; font-size:10.5px; font-weight:700; color:var(--ccb); }
+  .cat-bar { height:6px; background:#eef2f7; border-radius:3px; overflow:hidden; margin-bottom:8px; }
+  .cat-bar .fill { height:6px; background:var(--ccb); border-radius:3px; }
+  .cat-bar .fill.c20 { background:#2E6FD1; }
+  .cat-bar .fill.c30 { background:#E08A3C; }
+  .cat-bar .fill.c40 { background:#8a6fa8; }
+  .track { display:flex; align-items:flex-start; gap:8px; padding:5px 0 5px 4px; border-left:2px solid #e2edfa; margin-left:6px; margin-bottom:2px; }
+  .track-code { font-family:monospace; font-size:9px; font-weight:700; color:var(--blue); background:#eef4fd; border-radius:3px; padding:1px 5px; margin-top:1px; flex-shrink:0; }
+  .track-body { flex:1; min-width:0; }
+  .track-name { font-weight:700; font-size:11px; color:var(--ink); }
+  .track-desc { font-size:9.5px; color:var(--gray); margin-top:1px; }
+  .track-name .flag-r { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--risk); margin-left:3px; vertical-align:0; }
+  .track-name .star { color:#b45309; }
+  .track-size { font-size:9.5px; color:var(--gray); white-space:nowrap; text-align:right; }
+  .track.empty { border-left-style:dashed; border-left-color:var(--lgray); }
+  .track.empty .track-name { color:var(--lgray); }
+  .track.empty .track-desc { color:var(--lgray); }
+  /* 行内治理图标 */
+  .gbtns { display:flex; gap:5px; margin-left:6px; align-items:center; flex-shrink:0; }
+  .gbtn { border:1px solid #d5e2f5; color:var(--ccb); background:#fff; border-radius:5px; font-size:10px; padding:2px 7px; cursor:default; white-space:nowrap; }
+  .gbtn:hover { background:#eef4fd; }
+  .gbtn.add { background:var(--ccb); color:#fff; border-color:var(--ccb); }
+  .gbtn.icon { padding:2px 6px; }
+  .lgd { font-size:9px; color:var(--lgray); margin-top:8px; }
+  .src { font-size:10px; color:var(--lgray); margin-top:10px; }
+</style>
+
+<h2>界面原型 · 产品谱系页 v5（行内治理）</h2>
+<p class="subtitle">资产大类 → 策略赛道 · 治理操作内嵌行内 · 实例数据：建信基金（2026Q2 口径）</p>
+
+<div class="mockup">
+  <div class="mockup-header">产品主数据平台 · 产品谱系</div>
+  <div class="mockup-body">
+    <div class="app">
+      <div class="side">
+        <div class="logo">产品画像平台</div>
+        <div class="nav-item">公司画像</div>
+        <div class="nav-item active">产品谱系</div>
+        <div class="nav-item">产品画像</div>
+        <div class="nav-item">视图管理</div>
+        <div class="nav-item">谱系治理</div>
+      </div>
+      <div class="main">
+        <div class="head">
+          <h2>产品谱系 · 公司产品版图</h2>
+        </div>
+
+        <div class="cov-row">
+          <div class="cov"><div class="num">4 / 4</div><div class="lbl">资产大类覆盖度（货币/固收/权益/多资产）</div></div>
+          <div class="cov"><div class="num">14 / 16</div><div class="lbl">策略赛道覆盖度 · 空白 2 赛道</div></div>
+          <div class="cov"><div class="num">352</div><div class="lbl">挂靠产品 · 挂靠率 100%</div></div>
+          <div class="cov warn-c"><div class="num">92.6%</div><div class="lbl">固收（货币+债券）占比 · 结构失衡</div></div>
+        </div>
+
+        <div class="panel">
+          <h4>谱系树（资产大类 → 策略赛道）</h4>
+
+          <div class="cat-line">
+            <div class="cat-head"><span class="cat-code">10</span><span class="cat-name">💰 货币</span><span class="cat-sub">8 只产品 · 1 个赛道</span><span class="cat-pct">7,695.04 亿 · 78.5%</span><span class="gbtns"><span class="gbtn add">＋ 新增赛道</span></span></div>
+            <div class="cat-bar"><div class="fill" style="width:100%"></div></div>
+            <div class="track">
+              <span class="track-code">1001</span>
+              <div class="track-body">
+                <div class="track-name">现金管理赛道 <span class="star">⭐旗舰：现金添利货币 A</span></div>
+                <div class="track-desc">现金添利族（718.85 亿 · 3 份额）· 现金增利族 · 嘉薪宝族 — 剔除持牌机构规模行业第 1</div>
+              </div>
+              <div class="track-size">8 只</div>
+              <div class="gbtns"><span class="gbtn icon" title="产品换赛道">⇄ 产品换挂</span></div>
+            </div>
+          </div>
+
+          <div class="cat-line">
+            <div class="cat-head"><span class="cat-code c20">20</span><span class="cat-name">📊 固收</span><span class="cat-sub">58 只产品 · 4 个赛道 · 债基榜约 15-20 名</span><span class="cat-pct">1,385.06 亿 · 14.1%</span><span class="gbtns"><span class="gbtn add">＋ 新增赛道</span></span></div>
+            <div class="cat-bar"><div class="fill c20" style="width:18%"></div></div>
+            <div class="track">
+              <span class="track-code">2001</span>
+              <div class="track-body">
+                <div class="track-name">纯债赛道 <span class="star">⭐旗舰：纯债债券 A</span></div>
+                <div class="track-desc">纯债族 30.55 亿份 · 彭紫云/黎颖芳 · 中债综合全价基准</div>
+              </div>
+              <div class="track-size">3 份额</div>
+              <div class="gbtns"><span class="gbtn icon">⇄ 产品换挂</span></div>
+            </div>
+            <div class="track">
+              <span class="track-code">2002</span>
+              <div class="track-body">
+                <div class="track-name">中短债赛道</div>
+                <div class="track-desc">中短债 A 近 5 年 17.18% · 银河同类第 7/72</div>
+              </div>
+              <div class="track-size">—</div>
+              <div class="gbtns"><span class="gbtn icon">⇄ 产品换挂</span></div>
+            </div>
+            <div class="track">
+              <span class="track-code">2003</span>
+              <div class="track-body">
+                <div class="track-name">利率债赛道</div>
+                <div class="track-desc">中债 1-3 年国开行 A/C · 天相投顾 3/5 年期双 5A</div>
+              </div>
+              <div class="track-size">—</div>
+              <div class="gbtns"><span class="gbtn icon">⇄ 产品换挂</span></div>
+            </div>
+            <div class="track">
+              <span class="track-code">2004</span>
+              <div class="track-body">
+                <div class="track-name">固收+赛道</div>
+                <div class="track-desc">双息红利债券 · 五年期金基金·债券基金奖</div>
+              </div>
+              <div class="track-size">—</div>
+              <div class="gbtns"><span class="gbtn icon">⇄ 产品换挂</span></div>
+            </div>
+          </div>
+
+          <div class="cat-line">
+            <div class="cat-head"><span class="cat-code c30">30</span><span class="cat-name">📈 权益</span><span class="cat-sub">103 只产品（股票+混合）· 7 个赛道 · 未入权益榜前 21</span><span class="cat-pct">410.54 亿 · 4.2%</span><span class="gbtns"><span class="gbtn add">＋ 新增赛道</span></span></div>
+            <div class="cat-bar"><div class="fill c30" style="width:5.3%"></div></div>
+            <div class="track">
+              <span class="track-code">3001</span>
+              <div class="track-body">
+                <div class="track-name">价值赛道<span class="flag-r"></span></div>
+                <div class="track-desc">恒久价值 530001（近 1 年 +21.17%）· 恒稳价值<span style="color:var(--risk)">（小微）</span></div>
+              </div>
+              <div class="track-size">2 只</div>
+              <div class="gbtns"><span class="gbtn icon">⇄ 产品换挂</span></div>
+            </div>
+            <div class="track">
+              <span class="track-code">3002</span>
+              <div class="track-body">
+                <div class="track-name">成长赛道<span class="flag-r"></span></div>
+                <div class="track-desc">创新中国（近 10 年同类前 6%）· 消费升级<span style="color:var(--risk)">（小微）</span> · 智远先锋 · 潜力新蓝筹</div>
+              </div>
+              <div class="track-size">4 只</div>
+              <div class="gbtns"><span class="gbtn icon">⇄ 产品换挂</span></div>
+            </div>
+            <div class="track">
+              <span class="track-code">3003</span>
+              <div class="track-body">
+                <div class="track-name">灵活配置赛道<span class="flag-r"></span></div>
+                <div class="track-desc">裕利（近 3 年同类前 10%）· 兴利<span style="color:var(--risk)">（小微）</span> · 鑫稳回报<span style="color:var(--risk)">（小微）</span></div>
+              </div>
+              <div class="track-size">3 只</div>
+              <div class="gbtns"><span class="gbtn icon">⇄ 产品换挂</span></div>
+            </div>
+            <div class="track">
+              <span class="track-code">3004</span>
+              <div class="track-body">
+                <div class="track-name">量化指增赛道<span class="flag-r"></span></div>
+                <div class="track-desc">中证1000指增（近 7 年第 3/58）· 多因子量化<span style="color:var(--risk)">（小微）</span> · A500指增<span style="color:#b45309">（已清盘）</span></div>
+              </div>
+              <div class="track-size">3 只</div>
+              <div class="gbtns"><span class="gbtn icon">⇄ 产品换挂</span></div>
+            </div>
+            <div class="track">
+              <span class="track-code">3005</span>
+              <div class="track-body">
+                <div class="track-name">行业主题赛道</div>
+                <div class="track-desc">新材料精选 · 医疗创新<span style="color:#b45309">（缩水-37%）</span> · 中国制造2025</div>
+              </div>
+              <div class="track-size">3 只</div>
+              <div class="gbtns"><span class="gbtn icon">⇄ 产品换挂</span></div>
+            </div>
+            <div class="track">
+              <span class="track-code">3006</span>
+              <div class="track-body">
+                <div class="track-name">指数ETF赛道</div>
+                <div class="track-desc">创业板ETF及联接（近 7 年第 2/54）· 国证新能源车电池ETF · 社会责任ETF · 科创板200联接</div>
+              </div>
+              <div class="track-size">4 只</div>
+              <div class="gbtns"><span class="gbtn icon">⇄ 产品换挂</span></div>
+            </div>
+            <div class="track">
+              <span class="track-code">3007</span>
+              <div class="track-body">
+                <div class="track-name">FOF养老赛道</div>
+                <div class="track-desc">养老目标风险 FOF 系列（10 只 · 47.91 亿）· 目标日期系列<span style="color:var(--lgray)">（空白 · 候选）</span></div>
+              </div>
+              <div class="track-size">10 只</div>
+              <div class="gbtns"><span class="gbtn icon">⇄ 产品换挂</span></div>
+            </div>
+          </div>
+
+          <div class="cat-line">
+            <div class="cat-head"><span class="cat-code c40">40</span><span class="cat-name">🌐 多资产 / 其他</span><span class="cat-sub">QDII 4 只 · 另类 · QDII 环比 ▲33.5%（跑赢行业）</span><span class="cat-pct">296.16 亿 · 3.3%</span><span class="gbtns"><span class="gbtn add">＋ 新增赛道</span></span></div>
+            <div class="cat-bar"><div class="fill c40" style="width:3.8%"></div></div>
+            <div class="track">
+              <span class="track-code">4001</span>
+              <div class="track-body">
+                <div class="track-name">QDII赛道</div>
+                <div class="track-desc">海外资产配置产品 · Q2 规模 ▲35.01 亿（+33.5%）</div>
+              </div>
+              <div class="track-size">4 只</div>
+              <div class="gbtns"><span class="gbtn icon">⇄ 产品换挂</span></div>
+            </div>
+            <div class="track">
+              <span class="track-code">4002</span>
+              <div class="track-body">
+                <div class="track-name">另类赛道</div>
+                <div class="track-desc">商品/REITs 等 · Q2 ▼23.2%（与行业同向）</div>
+              </div>
+              <div class="track-size">—</div>
+              <div class="gbtns"><span class="gbtn icon">⇄ 产品换挂</span></div>
+            </div>
+          </div>
+
+          <div class="lgd">图例：<span style="color:#b45309">⭐ 旗舰</span> · <span style="color:var(--risk)">● 含小微（清盘风险）</span> · <span style="color:var(--lgray)">灰色 = 空白赛道（年度规划候选）</span> · 编码：大类 2 位（10/20/30/40）+ 赛道 2 位，不回收 · 治理：大类行「＋新增赛道」· 赛道行「⇄换赛道」（评审留痕）</div>
+        </div>
+
+        <div class="src">原型示例数据来源：新浪财经/天天基金/基金季报/媒体报道（2026Q2）；策略赛道划分为演示示例；仅供界面原型演示</div>
+      </div>
+    </div>
+  </div>
+</div>

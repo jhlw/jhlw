@@ -1,0 +1,417 @@
+<style>
+  :root { --ccb:#003399; --blue:#0F75D3; --ink:#333333; --gray:#606266; --lgray:#99A5AE; --warn:#F59E0B; --risk:#CC0000; }
+  .app { display:flex; gap:14px; }
+  .side { width:150px; background:var(--ccb); color:#fff; border-radius:10px; padding:14px 10px; flex-shrink:0; }
+  .side .logo { font-weight:700; font-size:14px; margin-bottom:16px; padding:0 6px; padding-bottom:10px; border-bottom:2px solid #fff3; }
+  .side .nav-item { padding:8px 10px; border-radius:6px; margin-bottom:4px; font-size:12px; color:#bcd0f0; }
+  .side .nav-item.active { background:#fff; color:var(--ccb); font-weight:600; }
+  .main { flex:1; min-width:0; }
+  .head { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+  .head h2 { margin:0; color:var(--ink); }
+  .tabs { display:flex; gap:6px; }
+  .tab { padding:5px 12px; border-radius:6px; font-size:12px; background:#eef2f7; color:var(--gray); }
+  .tab.active { background:var(--ccb); color:#fff; font-weight:600; }
+  .kpi-row { display:flex; gap:8px; margin-bottom:12px; }
+  .kpi { flex:1; background:#fff; border:1px solid #e5e7eb; border-radius:8px; padding:10px 12px; border-top:3px solid var(--ccb); }
+  .kpi .num { font-size:19px; font-weight:700; color:var(--ccb); }
+  .kpi .num .u { font-size:12px; color:var(--gray); font-weight:400; }
+  .kpi .lbl { font-size:11px; color:var(--gray); margin-top:2px; }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .card { background:#fff; border:1px solid #e5e7eb; border-radius:8px; padding:12px 14px; }
+  .card h4 { margin:0 0 10px; font-size:13px; color:var(--ink); border-left:3px solid var(--ccb); padding-left:8px; }
+  .bar-wrap { display:flex; align-items:center; gap:8px; margin:6px 0; font-size:11px; }
+  .bar-lbl { width:62px; color:var(--gray); text-align:right; }
+  .bar-track { flex:1; height:13px; background:#eef2f7; border-radius:3px; overflow:hidden; }
+  .bar-fill { height:13px; background:var(--ccb); border-radius:3px; }
+  .bar-fill.lt { background:var(--blue); }
+  .bar-val { width:78px; color:var(--ink); font-size:10px; }
+  .badge { display:inline-block; background:#eef4fd; color:var(--ccb); border-radius:4px; padding:2px 8px; font-size:11px; margin:2px 4px 2px 0; }
+  .badge.warn { background:#fef3c7; color:#b45309; }
+  .badge.risk { background:#fdeeee; color:var(--risk); }
+  .qrow { display:flex; align-items:center; gap:8px; margin:7px 0; font-size:11px; }
+  .qrow .qlbl { width:34px; color:var(--gray); }
+  .qrow .qtrack { flex:1; height:16px; position:relative; background:#eef2f7; border-radius:3px; }
+  .qrow .qseg { position:absolute; height:16px; border-radius:3px; }
+  .qrow .qval { width:64px; font-size:10px; color:var(--ink); text-align:right; }
+  .legend { font-size:10px; color:var(--gray); margin-top:6px; }
+  .legend i { display:inline-block; width:10px; height:10px; border-radius:2px; margin:0 3px 0 10px; vertical-align:-1px; }
+  .rank { display:flex; align-items:center; gap:6px; font-size:10px; padding:2.5px 6px; border-radius:4px; margin-bottom:2px; }
+  .rank .rk { width:22px; color:var(--lgray); text-align:center; font-weight:700; }
+  .rank .rn { flex:1; color:var(--ink); }
+  .rank .rs { color:var(--gray); width:64px; text-align:right; }
+  .rank.me { background:var(--ccb); }
+  .rank.me .rk, .rank.me .rn, .rank.me .rs { color:#fff; }
+  .rank.me .rs { color:#ffd966; font-weight:700; }
+  .avg-line { border-top:2px dashed var(--warn); margin:6px 4px; position:relative; }
+  .avg-line .albl { position:absolute; right:0; top:-7px; background:#fff; font-size:9px; color:#b45309; padding:0 4px; }
+  .pcard { border:1px solid #e5e7eb; border-radius:6px; padding:8px 10px; margin-bottom:8px; }
+  .pcard .pname { font-weight:600; font-size:12px; color:var(--ink); }
+  .pcard .pmeta { font-size:10px; color:var(--gray); margin-top:3px; }
+  .pcard .pperf { font-size:11px; color:#15803d; margin-top:2px; }
+  .src { font-size:10px; color:var(--lgray); margin-top:10px; }
+  .ex { font-size:9px; color:var(--lgray); }
+  .seg { display:flex; align-items:center; gap:6px; margin:4px 0; font-size:10px; }
+  .seg .slbl { width:64px; color:var(--gray); text-align:right; }
+  .seg .strack { flex:1; height:11px; background:#eef2f7; border-radius:3px; overflow:hidden; }
+  .seg .sfill { height:11px; border-radius:3px; }
+  .seg .sval { width:36px; color:var(--ink); }
+  .cat { border:1px solid #e5e7eb; border-radius:6px; padding:7px 10px; margin-bottom:7px; }
+  .cat .cat-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; }
+  .cat .cat-name { font-weight:700; font-size:12px; color:var(--ink); }
+  .cat .cat-size { font-size:11px; color:var(--ccb); font-weight:700; }
+  .cat .cat-rank { font-size:10px; color:var(--gray); margin-top:3px; }
+  .aa-wrap { margin-top:10px; padding-top:10px; border-top:1px dashed #e5e7eb; }
+  .aa-title { font-size:11px; font-weight:700; color:var(--ink); margin-bottom:6px; }
+  .aa-table { width:100%; border-collapse:collapse; font-size:10px; }
+  .aa-table th { color:var(--gray); font-weight:600; text-align:left; padding:3px 4px; border-bottom:1px solid #eef2f7; }
+  .aa-table td { padding:3px 4px; border-bottom:1px solid #f5f7fa; color:var(--ink); }
+  .aa-table .dot { display:inline-block; width:8px; height:8px; border-radius:2px; margin-right:4px; vertical-align:-1px; }
+  .up { color:#15803d; font-weight:700; }
+  .down { color:var(--risk); font-weight:700; }
+  .dim { color:var(--lgray); }
+  .issue-wrap { display:flex; gap:12px; align-items:stretch; }
+  .issue-col { flex:1; border-radius:8px; padding:12px 12px 10px; position:relative; }
+  .issue-col.cur { background:linear-gradient(180deg,#003399,#0F4FB8); color:#fff; }
+  .issue-col.prev { background:#f0f4fa; border:1px solid #e5e7eb; }
+  .issue-year { font-size:10px; opacity:.85; }
+  .issue-num { font-size:30px; font-weight:800; margin:2px 0 0; line-height:1.1; }
+  .issue-col.cur .issue-num { color:#fff; }
+  .issue-col.prev .issue-num { color:var(--ccb); }
+  .issue-num .u { font-size:12px; font-weight:400; opacity:.8; }
+  .issue-sub { font-size:10px; margin-top:4px; opacity:.85; }
+  .issue-col.cur .issue-sub { color:#cfe0ff; }
+  .issue-col.prev .issue-sub { color:var(--gray); }
+  .stack { display:flex; height:10px; border-radius:5px; overflow:hidden; margin-top:8px; }
+  .issue-col.cur .stack { background:rgba(255,255,255,.25); }
+  .issue-col.prev .stack { background:#dde5f2; }
+  .stack .s1 { background:#ffd966; }
+  .stack .s2 { background:#7fb3f0; }
+  .stack .s3 { background:#c9dcf5; }
+  .stack-lbl { display:flex; justify-content:space-between; font-size:8.5px; margin-top:3px; opacity:.9; }
+  .issue-col.cur .stack-lbl { color:#cfe0ff; }
+  .issue-col.prev .stack-lbl { color:var(--gray); }
+  .delta-line { display:flex; align-items:center; justify-content:center; gap:6px; margin-top:10px; font-size:10px; }
+  .delta-chip { background:#fef3c7; color:#b45309; border-radius:4px; padding:2px 8px; font-size:10px; font-weight:700; }
+  .ch-table { width:100%; border-collapse:collapse; font-size:10.5px; }
+  .ch-table th { color:var(--gray); font-weight:600; text-align:left; padding:3px 4px; border-bottom:1px solid #eef2f7; }
+  .ch-table td { padding:4px 4px; border-bottom:1px solid #f5f7fa; color:var(--ink); }
+  .ch-table .ch-bar { display:inline-block; height:7px; border-radius:4px; background:var(--ccb); vertical-align:middle; margin-right:5px; }
+  .ch-table .ch-bar.lt { background:var(--blue); }
+  .ch-table .mv { font-weight:700; }
+  .mv-up { color:#15803d; }
+  .mv-down { color:var(--risk); }
+  .mv-flat { color:var(--lgray); }
+  /* 风险水位图 */
+  .risk-sect { margin-top:12px; padding-top:10px; border-top:1px dashed #f3caca; }
+  .risk-head { font-size:11px; font-weight:700; color:var(--risk); margin-bottom:6px; }
+  .risk-head .rr { display:inline-block; background:#fdeeee; color:var(--risk); border-radius:4px; padding:1px 7px; font-size:9px; margin-left:6px; font-weight:400; }
+  .wl-row { display:flex; align-items:center; gap:6px; margin:3px 0; font-size:9.5px; }
+  .wl-name { width:74px; color:var(--ink); text-align:right; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .wl-track { flex:1; height:9px; background:#fdf0f0; border-radius:5px; position:relative; }
+  .wl-fill { position:absolute; left:0; top:0; height:9px; border-radius:5px; background:var(--risk); }
+  .wl-fill.ok { background:#f0b429; }
+  .wl-fill.del { background:#e3e8ef; text-align:center; line-height:9px; font-size:8px; color:var(--risk); }
+  .wl-val { width:52px; color:var(--gray); font-size:9px; }
+  .wl-st { width:52px; font-size:9px; font-weight:700; color:var(--risk); text-align:right; }
+  .wl-st.warn2 { color:#b45309; }
+  .warn-line { position:relative; border-top:2px dashed var(--risk); margin:6px 0 2px; }
+  .warn-line .wl-lbl { position:absolute; right:0; top:-7px; background:#fff; font-size:8.5px; color:var(--risk); padding:0 4px; font-weight:700; }
+</style>
+
+<h2>界面原型 v14 · 公司画像速览页（内部管理视图）</h2>
+<p class="subtitle">建行蓝 · 风险揭示图形化（规模水位图） · 实例数据：建信基金（2026Q2 口径）</p>
+
+<div class="mockup">
+  <div class="mockup-header">产品主数据平台 · 公司画像（速览）</div>
+  <div class="mockup-body">
+    <div class="app">
+      <div class="side">
+        <div class="logo">产品画像平台</div>
+        <div class="nav-item active">公司画像</div>
+        <div class="nav-item">产品谱系</div>
+        <div class="nav-item">产品画像</div>
+        <div class="nav-item">视图管理</div>
+        <div class="nav-item">谱系治理</div>
+      </div>
+      <div class="main">
+        <div class="head">
+          <h2>建信基金管理有限责任公司</h2>
+          <div class="tabs">
+            <div class="tab active">内部管理视图</div>
+            <div class="tab">销售视图</div>
+          </div>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi"><div class="num">9,805.56 <span class="u">亿</span></div><div class="lbl">公募管理规模（2026Q2）</div></div>
+          <div class="kpi"><div class="num">14 <span class="u">/ 187</span></div><div class="lbl">总规模排名 ↓3</div></div>
+          <div class="kpi"><div class="num">352 <span class="u">只</span></div><div class="lbl">存续产品 · 65 位经理</div></div>
+          <div class="kpi"><div class="num">6000万+</div><div class="lbl">客户数 · 分红 1,116 亿</div></div>
+          <div class="kpi"><div class="num">1.36 <span class="u">万亿</span></div><div class="lbl">管理资产总规模</div></div>
+        </div>
+
+        <div class="grid2">
+          <div class="card">
+            <h4>① 产品线布局 · 三分类与同业排名</h4>
+            <div class="cat">
+              <div class="cat-head"><span class="cat-name">💰 货币</span><span class="cat-size">7,695.04 亿 · 78.5%</span></div>
+              <div class="bar-track" style="width:100%"><div class="bar-fill" style="width:100%"></div></div>
+              <div class="cat-rank">货币基金规模**剔除持牌机构行业第 1**（2025 年末，同花顺口径）</div>
+            </div>
+            <div class="cat">
+              <div class="cat-head"><span class="cat-name">📊 固收</span><span class="cat-size">1,385.06 亿 · 14.1%</span></div>
+              <div class="bar-track" style="width:100%"><div class="bar-fill lt" style="width:18%"></div></div>
+              <div class="cat-rank">债基规模榜约 **15-20 名**（推断）· 榜首易方达 5,653.78 亿 · 前十门槛 ≈ 4,300 亿</div>
+            </div>
+            <div class="cat">
+              <div class="cat-head"><span class="cat-name">📈 权益</span><span class="cat-size">410.54 亿 · 4.2%</span></div>
+              <div class="bar-track" style="width:100%"><div class="bar-fill lt" style="width:5.3%"></div></div>
+              <div class="cat-rank">权益榜未入前 21（21 家超千亿）· 主动权益榜约 **30-40 名**（推断）</div>
+            </div>
+
+            <div class="aa-wrap">
+              <div class="aa-title">资产大类分布 · 规模增比 vs 同业增比（2026Q2 环比）</div>
+              <table class="aa-table">
+                <tr>
+                  <th>大类</th><th>规模</th><th>占比</th>
+                  <th>建信环比</th><th>同业环比</th><th>对比</th>
+                </tr>
+                <tr>
+                  <td><span class="dot" style="background:#003399"></span>货币</td><td>7,695.04</td><td>78.5%</td>
+                  <td class="down">▼5.7%</td><td class="up">▲0.3%</td><td class="down">跑输</td>
+                </tr>
+                <tr>
+                  <td><span class="dot" style="background:#2E6FD1"></span>债券</td><td>1,385.06</td><td>14.1%</td>
+                  <td class="down">▼2.7%</td><td class="up">▲12.3%</td><td class="down">跑输</td>
+                </tr>
+                <tr>
+                  <td><span class="dot" style="background:#E08A3C"></span>股票</td><td>246.08</td><td>2.5%</td>
+                  <td class="up">▲16.4%</td><td class="down">▼3.3%*</td><td class="up">跑赢</td>
+                </tr>
+                <tr>
+                  <td><span class="dot" style="background:#C9702E"></span>混合</td><td>164.46</td><td>1.7%</td>
+                  <td class="up">▲7.9%</td><td class="up">▲19.0%*</td><td class="down">跑输</td>
+                </tr>
+                <tr>
+                  <td><span class="dot" style="background:#7A4FA3"></span>QDII</td><td>139.54</td><td>1.4%</td>
+                  <td class="up">▲33.5%</td><td class="up">▲10.4%</td><td class="up">跑赢</td>
+                </tr>
+                <tr>
+                  <td><span class="dot" style="background:#5A7FA0"></span>另类</td><td>108.71</td><td>1.1%</td>
+                  <td class="down">▼23.2%</td><td class="down">▼(720亿)</td><td class="dim">同向</td>
+                </tr>
+                <tr>
+                  <td><span class="dot" style="background:#9CBFDF"></span>FOF</td><td>47.91</td><td>0.5%</td>
+                  <td class="down">▼8.9%</td><td class="dim">—</td><td class="dim">—</td>
+                </tr>
+              </table>
+              <div class="ex" style="margin-top:4px">* 股票/混合同业环比按全市场规模变动推算（-1,533 / +8,962 亿）；建信环比为 Wind 真实数据</div>
+            </div>
+
+            <div style="margin-top:8px">
+              <span class="badge">非货规模榜第 29 名（真实）</span>
+              <span class="badge warn">固收占 92.6% · 结构失衡</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4>② 本年度发行 vs 上年</h4>
+            <div class="issue-wrap">
+              <div class="issue-col cur">
+                <div class="issue-year">2026 年 · 截至 7/24</div>
+                <div class="issue-num">8 <span class="u">只</span></div>
+                <div class="issue-sub">首募合计 54.55 亿</div>
+                <div class="stack"><div class="s1" style="width:62.5%"></div><div class="s2" style="width:25%"></div><div class="s3" style="width:12.5%"></div></div>
+                <div class="stack-lbl"><span>股票 5</span><span>债券 2</span><span>其他 1</span></div>
+              </div>
+              <div class="issue-col prev">
+                <div class="issue-year">2025 年 · 全年</div>
+                <div class="issue-num">20 <span class="u">只</span></div>
+                <div class="issue-sub">首募合计 283.64 亿</div>
+                <div class="stack"><div class="s1" style="width:75%"></div><div class="s3" style="width:25%"></div></div>
+                <div class="stack-lbl"><span>股票+混合 15</span><span>其他 5</span></div>
+              </div>
+            </div>
+            <div class="delta-line">
+              <span class="delta-chip">产品数 ↓60%</span>
+              <span class="delta-chip">首募 ↓80.8%</span>
+            </div>
+
+            <div class="risk-sect">
+              <div class="risk-head">⚠ 风险揭示 · 小微产品
+                <span class="rr">清盘线 5,000 万</span>
+                <span class="rr">大考线 2 亿（发起式满 3 年）</span>
+              </div>
+
+              <div class="wl-row">
+                <div class="wl-name">消费升级</div>
+                <div class="wl-track"><div class="wl-fill" style="width:48%"></div></div>
+                <div class="wl-val">&lt;5,000 万</div><div class="wl-st">清盘风险</div>
+              </div>
+              <div class="wl-row">
+                <div class="wl-name">鑫稳回报</div>
+                <div class="wl-track"><div class="wl-fill" style="width:46%"></div></div>
+                <div class="wl-val">&lt;5,000 万</div><div class="wl-st">清盘风险</div>
+              </div>
+              <div class="wl-row">
+                <div class="wl-name">多因子量化</div>
+                <div class="wl-track"><div class="wl-fill" style="width:42%"></div></div>
+                <div class="wl-val">&lt;5,000 万</div><div class="wl-st">清盘风险</div>
+              </div>
+              <div class="wl-row">
+                <div class="wl-name">恒稳价值</div>
+                <div class="wl-track"><div class="wl-fill" style="width:41%"></div></div>
+                <div class="wl-val">&lt;5,000 万</div><div class="wl-st">清盘风险</div>
+              </div>
+              <div class="wl-row">
+                <div class="wl-name">兴利灵活配置</div>
+                <div class="wl-track"><div class="wl-fill" style="width:38%"></div></div>
+                <div class="wl-val">&lt;5,000 万</div><div class="wl-st">清盘风险</div>
+              </div>
+
+              <div class="warn-line"><span class="wl-lbl">── 清盘预警线 5,000 万 ──</span></div>
+
+              <div class="wl-row">
+                <div class="wl-name">红利精选(发起)</div>
+                <div class="wl-track"><div class="wl-fill" style="width:20%"></div></div>
+                <div class="wl-val">1,984 万</div><div class="wl-st">大考 2026-07</div>
+              </div>
+              <div class="wl-row">
+                <div class="wl-name">医疗创新</div>
+                <div class="wl-track"><div class="wl-fill ok" style="width:60%"></div></div>
+                <div class="wl-val">6.94 亿</div><div class="wl-st warn2">缩水 -37%</div>
+              </div>
+              <div class="wl-row">
+                <div class="wl-name">中证A500指增</div>
+                <div class="wl-track"><div class="wl-fill del" style="width:24%">✗</div></div>
+                <div class="wl-val">已清盘</div><div class="wl-st">已发生</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4>③ 收益变动（2026 上半年，亿元）</h4>
+            <div class="qrow"><div class="qlbl">固收</div><div class="qtrack"><div class="qseg" style="left:0;width:31%;background:var(--ccb)"></div></div><div class="qval">Q1 35.07</div></div>
+            <div class="qrow"><div class="qlbl">固收</div><div class="qtrack"><div class="qseg" style="left:0;width:30.9%;background:var(--blue)"></div></div><div class="qval">Q2 34.97</div></div>
+            <div class="qrow"><div class="qlbl">权益</div><div class="qtrack"><div class="qseg" style="left:0;width:2%;background:#f3d0d0"></div></div><div class="qval">Q1 -1.93</div></div>
+            <div class="qrow"><div class="qlbl">权益</div><div class="qtrack"><div class="qseg" style="left:0;width:70%;background:#e8a0a0"></div></div><div class="qval">Q2 +79.74</div></div>
+            <div class="legend"><i style="background:var(--ccb)"></i>固收 Q1 <i style="background:var(--blue)"></i>固收 Q2 <i style="background:#e8a0a0"></i>权益 Q2</div>
+            <div style="margin-top:8px">
+              <span class="badge">上半年合计 147.85 亿</span>
+              <span class="badge">12 只同类前 10%</span>
+              <span class="badge">6 只同类前 10</span>
+              <span class="badge warn">近 3 年 31% 跑输基准</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4>④ 规模趋势（近 7 季度，亿元）</h4>
+            <div class="bar-wrap"><div class="bar-lbl">24Q4</div><div class="bar-track"><div class="bar-fill lt" style="width:87%"></div></div><div class="bar-val">8,853</div></div>
+            <div class="bar-wrap"><div class="bar-lbl">25Q1</div><div class="bar-track"><div class="bar-fill lt" style="width:86%"></div></div><div class="bar-val">8,774</div></div>
+            <div class="bar-wrap"><div class="bar-lbl">25Q2</div><div class="bar-track"><div class="bar-fill lt" style="width:90%"></div></div><div class="bar-val">9,205</div></div>
+            <div class="bar-wrap"><div class="bar-lbl">25Q3</div><div class="bar-track"><div class="bar-fill lt" style="width:94%"></div></div><div class="bar-val">9,607</div></div>
+            <div class="bar-wrap"><div class="bar-lbl">25Q4</div><div class="bar-track"><div class="bar-fill lt" style="width:96%"></div></div><div class="bar-val">9,736</div></div>
+            <div class="bar-wrap"><div class="bar-lbl">26Q1</div><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><div class="bar-val">10,172</div></div>
+            <div class="bar-wrap"><div class="bar-lbl">26Q2</div><div class="bar-track"><div class="bar-fill" style="width:96.4%"></div></div><div class="bar-val">9,806</div></div>
+          </div>
+
+          <div class="card">
+            <h4>⑤ 同业档位 · 总规模榜（2026Q2）</h4>
+            <div class="rank"><div class="rk">1</div><div class="rn">易方达基金</div><div class="rs">2.65 万亿</div></div>
+            <div class="rank"><div class="rk">2</div><div class="rn">华夏基金</div><div class="rs">2.12 万亿</div></div>
+            <div class="rank"><div class="rk">3</div><div class="rn">广发基金</div><div class="rs">1.82 万亿</div></div>
+            <div class="rank"><div class="rk">4</div><div class="rn">南方基金</div><div class="rs">1.54 万亿</div></div>
+            <div class="rank"><div class="rk">5</div><div class="rn">富国基金</div><div class="rs">1.48 万亿</div></div>
+            <div class="rank" style="opacity:.75"><div class="rk">6-13</div><div class="rn">嘉实 · 博时 · 招商 · 汇添富 · 鹏华 · 工银瑞信 · 天弘 · 银华（推断）</div><div class="rs">万亿上下</div></div>
+            <div class="rank me"><div class="rk">14</div><div class="rn">建信基金 ← 当前位置</div><div class="rs">9,805.56 亿</div></div>
+            <div class="avg-line"><span class="albl">全市场平均 ≈ 2,121 亿（39.66 万亿 ÷ 187 家）</span></div>
+            <div style="margin-top:8px">
+              <span class="badge">超平均 4.6 倍</span>
+              <span class="badge warn">Q1 第 11 → Q2 第 14</span>
+              <span class="badge">非货榜第 29（真实）</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4>⑥ 销售渠道 · 渠道业绩明细与变动 <span class="ex">（内部视图）</span></h4>
+            <table class="ch-table">
+              <tr>
+                <th>渠道</th><th>保有占比</th><th>环比变动</th><th>趋势</th>
+              </tr>
+              <tr>
+                <td><span class="ch-bar" style="width:62px"></span>建设银行（母行）</td><td>62%</td>
+                <td class="mv mv-down">▼ 1.2pct</td><td>母行份额缓降</td>
+              </tr>
+              <tr>
+                <td><span class="ch-bar lt" style="width:12px"></span>机构直销</td><td>12%</td>
+                <td class="mv mv-up">▲ 0.8pct</td><td>同业合作发力</td>
+              </tr>
+              <tr>
+                <td><span class="ch-bar lt" style="width:8px"></span>交通银行</td><td>8%</td>
+                <td class="mv mv-up">▲ 0.3pct</td><td>稳中有升</td>
+              </tr>
+              <tr>
+                <td><span class="ch-bar lt" style="width:6px"></span>其他代销</td><td>6%</td>
+                <td class="mv mv-down">▼ 0.2pct</td><td>—</td>
+              </tr>
+              <tr>
+                <td><span class="ch-bar lt" style="width:5px"></span>中信银行</td><td>5%</td>
+                <td class="mv mv-up">▲ 0.1pct</td><td>—</td>
+              </tr>
+              <tr>
+                <td><span class="ch-bar lt" style="width:4px"></span>互联网</td><td>4%</td>
+                <td class="mv mv-up">▲ 0.5pct</td><td>第三方渠道扩张</td>
+              </tr>
+              <tr>
+                <td><span class="ch-bar lt" style="width:3px"></span>光大银行</td><td>3%</td>
+                <td class="mv mv-down">▼ 0.3pct</td><td>—</td>
+              </tr>
+            </table>
+            <div style="margin-top:8px">
+              <span class="badge warn">渠道占比与变动为示例 · 以渠道台账为准</span>
+            </div>
+            <div style="margin-top:6px">
+              <span class="badge">行业趋势（真实）：银行渠道权益保有 40.2% ▼1.59pct · 券商指数保有 54.45% 超银行</span>
+              <span class="badge">建行权益保有份额 4.6% ▼0.6pct · 行业第 5（真实）</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4>⑦ 旗舰产品（年度评选）</h4>
+            <div class="pcard">
+              <div class="pname">建信现金添利货币 A（000693）</div>
+              <div class="pmeta">现金管理线 · 吴沛文/陈建良/于倩倩</div>
+              <div class="pperf">规模 718.85 亿 · 7 日年化 1.043%</div>
+            </div>
+            <div class="pcard">
+              <div class="pname">建信纯债债券 A（530021）</div>
+              <div class="pmeta">固定收益线 · 彭紫云/黎颖芳</div>
+              <div class="pperf">规模 30.55 亿份 · 中债综合全价基准</div>
+            </div>
+            <div class="pcard">
+              <div class="pname">建信恒久价值混合（530001）</div>
+              <div class="pmeta">混合配置线 · 蒋严泽</div>
+              <div class="pperf">近 1 年 +21.17% · 近 3 年 +1.31%</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4>⑧ 客户结构 · 客户明细 <span class="ex">（内部视图）</span></h4>
+            <div class="seg"><div class="slbl">个人 · 零售</div><div class="strack"><div class="sfill" style="width:100%;background:var(--ccb)"></div></div><div class="sval">55%</div></div>
+            <div class="seg"><div class="slbl">个人 · 高净值</div><div class="strack"><div class="sfill" style="width:27.3%;background:var(--blue)"></div></div><div class="sval">15%</div></div>
+            <div class="seg"><div class="slbl">机构 · 银行理财</div><div class="strack"><div class="sfill" style="width:21.8%;background:#7fa8e0"></div></div><div class="sval">12%</div></div>
+            <div class="seg"><div class="slbl">机构 · 企业客户</div><div class="strack"><div class="sfill" style="width:14.5%;background:#a8c4ec"></div></div><div class="sval">8%</div></div>
+            <div class="seg"><div class="slbl">机构 · 保险资金</div><div class="strack"><div class="sfill" style="width:10.9%;background:#c9dcf5"></div></div><div class="sval">6%</div></div>
+            <div class="seg"><div class="slbl">机构 · 其他同业</div><div class="strack"><div class="sfill" style="width:7.3%;background:#e2edfa"></div></div><div class="sval">4%</div></div>
+            <div style="margin-top:8px">
+              <span class="badge">客户总量 6,000 万+（真实）</span>
+              <span class="badge warn">细分占比为示例 · 以客户台账为准</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="src">原型示例数据来源：新浪财经/天天基金/基金季报/证券时报/华尔街见闻/21经济网/基金业协会/腾讯新闻/媒体报道（2026Q2）；建信各大类环比为 Wind 真实数据，同业股票/混合环比按全市场变动推算；①债基/权益名次、⑤6-13 名、⑥⑧部分数值为演示示例；仅供界面原型演示</div>
+      </div>
+    </div>
+  </div>
+</div>
