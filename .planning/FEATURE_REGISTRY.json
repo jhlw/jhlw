@@ -16,7 +16,7 @@
       "status": "planned",
       "title": "ai-news 子项目登记",
       "path": ".planning/features/001-ai-news-registration",
-      "verify_cmd": "cd ai-news && node_modules\\.bin\\tsc.cmd --noEmit",
+      "verify_cmd": "cd \"项目/ai-news\" && node_modules\\.bin\\tsc.cmd --noEmit",
       "evidence": "",
       "started_at": "",
       "verified_at": ""

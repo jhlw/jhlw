@@ -2,7 +2,7 @@
 // 路径使用 Unicode 转义，避免 Windows cmd 中文参数编码问题。
 const fs = require("fs");
 
-const base = "\u4EA7\u54C1\u753B\u50CF/OKComputer_\u57FA\u91D1\u753B\u50CF\u6784\u5EFA";
+const base = "\u9879\u76EE/\u4EA7\u54C1\u753B\u50CF/OKComputer_\u57FA\u91D1\u753B\u50CF\u6784\u5EFA";
 const htmlFiles = ["index.html", "analysis.html", "compare.html", "risk.html"];
 const jsFiles = ["main.js", "analysis.js", "compare.js", "risk.js"];
 
