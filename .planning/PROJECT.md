@@ -2,7 +2,7 @@
 
 ## What This Project Is
 
-jhlw 个人多项目工作区（整仓平台化）。本仓库是多个独立子项目（ai-news、产品画像、remotion、recruitment、tech/预初、Study 等）的集合，genesis-harness 在根级提供统一的规划、记忆、验证与文档中枢，让每个子项目以"模块/功能"的方式接入同一套工作流。
+jhlw 个人多项目工作区（整仓平台化）。本仓库是多个独立子项目（ai-news、产品画像、remotion、recruitment、tech/预初、Study 等）的集合，genesis-harness 在根级提供统一的规划、记忆、验证与文档中枢，让每个子项目以"模块/功能"的方式接入同一套工作流。子项目集中于 `项目/` 目录（remotion、tech、docs 保留在根级）。
 
 ## Target Users
 
@@ -33,7 +33,7 @@ jhlw 个人多项目工作区（整仓平台化）。本仓库是多个独立子
 ## Constraints
 
 - 仓库根级 harness 文件（harness.toml、hooks/、.claude-plugin/、.codex/）由 harness 管理，勿手改
-- 子项目自带独立配置（如 remotion/、ai-news/ 的 package.json）时，进入其目录操作
+- 子项目自带独立配置（如 remotion/、项目/ai-news/ 的 package.json）时，进入其目录操作
 - 对话与注释默认简体中文
 - 提交遵循 Conventional Commits
 

@@ -25,11 +25,11 @@ Version constraints: Node ≥ 18；TypeScript ≥ 5；Python ≥ 3.10
 
 ```sh
 # start (ai-news)
-cd ai-news && npm run start
+cd "项目/ai-news" && npm run start
 # test (root gates)
 genesis-harness verify-gate
 # lint/typecheck (ai-news)
-cd ai-news && npx tsc --noEmit
+cd "项目/ai-news" && npx tsc --noEmit
 # build (remotion)
 cd remotion && npm run build
 ```

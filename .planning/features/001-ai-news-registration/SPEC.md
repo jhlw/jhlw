@@ -10,7 +10,7 @@
 
 ## Expected Behavior
 
-- [x] FEATURE_REGISTRY.json 登记 F001，verify_cmd 为 `cd ai-news && node_modules\.bin\tsc.cmd --noEmit`
+- [x] FEATURE_REGISTRY.json 登记 F001，verify_cmd 为 `cd "项目/ai-news" && node_modules\.bin\tsc.cmd --noEmit`（2026-08-15 子项目统一迁入 项目/ 后更新路径）
 - [x] 验证命令实测通过（exit 0）
 
 ## Edge Cases
