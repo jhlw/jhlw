@@ -12,6 +12,7 @@
 |------|------|
 | `项目/` | 子项目集合：`Study` 学习资料、`ai-news` AI 新闻聚合、`point` 汇率小工具、`recruitment` 招聘相关、`专户开放期` 专户开放期相关内容、`产品画像` 产品画像、`私募业绩披露` 私募业绩披露 |
 | `docs/` | 文档 |
+| `ppt-master/` | AI 生成原生可编辑 PPTX 的开源技能（Python，依赖 `pip install -r requirements.txt`） |
 | `remotion/` | Remotion 视频项目（Node.js/TypeScript） |
 | `tech/` | 技术内容 |
 
