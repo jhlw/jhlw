@@ -9,6 +9,7 @@
 
 ## Recent Changes
 
+- [x] BUG-001 修复用户级 Codex models.json：GLM 模型移回顶层 models 数组，JSON 与配置加载验证通过。
 - [x] Initial planning skeleton and discovery phase created.
 - [x] Product direction confirmed: 整仓平台化（个人多项目工作区平台）
 - [x] QA 验收标准与签署负责人、技术栈选择已记录
