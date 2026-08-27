@@ -19,3 +19,8 @@ For bug fixes, create a folder under `.planning/bugs/`.
 For major decisions, create an ADR under `.planning/decisions/`.
 
 Do not claim completion unless verification passed, docs were synchronized, task tracking was updated, and changed files were reviewed.
+
+## Skill Installation Preference
+
+When installing skills, prefer installing them at the user level ($CODEX_HOME/skills, e.g. C:\Users\jhlw\.codex\skills). Avoid installing skills into this project's .codex/skills unless there is an explicit reason to keep them project-scoped.
+
