@@ -9,6 +9,8 @@
 
 ## Recent Changes
 
+- [x] BUG-002 修复 pencil MCP 启动失败：扩展升级导致配置里的 0.6.68 路径失效，已更新为 0.6.70 并验证。
+
 - [x] BUG-001 修复用户级 Codex models.json：GLM 模型移回顶层 models 数组，JSON 与配置加载验证通过。
 - [x] MAINT-001 移除项目级重复 Codex skills：25 个 Genesis/spec 技能与用户级副本逐字节一致，项目侧不再重复加载。
 - [x] MAINT-002 归档用户级 Firecrawl 技能：33 个 .codex 副本与 32 个 .agents 副本移入 skills.archive，可随时恢复。

@@ -7,4 +7,5 @@
 | 00 Foundation | Setup | [x] | None | Project docs completed, requirements confirmed, harness verified |
 | 01 Discovery & QA | Validation | [~] | 00 Foundation | Product approach confirmed, QA checklist answered, tech stack signed off |
 | 02 子项目注册 | Feature | [x] | 01 Discovery & QA | ai-news 与 产品画像 登记注册表，verify-cmd 可执行（F001/F002 实测通过） |
+| BUG-002 pencil MCP startup | Bug fix | [x] | None | Stale VS Code extension path corrected to 0.6.70 and MCP startup verified |
 | TBD | Feature | [ ] | 01 Discovery & QA | To be planned after requirements finalized |
