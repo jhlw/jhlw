@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>专户KPI净收入拆分系统原型（20260909定稿版）</title>
+<style>
+  :root {
+    --ccb:#003399; --blue:#0F75D3; --ink:#333333; --gray:#606266;
+    --lgray:#99A5AE; --warn:#F59E0B; --risk:#CC0000; --ok:#15803D;
+    --line:#e5e7eb; --bg:#f5f7fa; --soft:#eef4fd;
+  }
+  * { box-sizing:border-box; }
+  body { font-family:'PingFang SC','Microsoft YaHei','Segoe UI',sans-serif; margin:0; background:var(--bg); color:var(--ink); font-size:13px; }
+  .num, .mono { font-family:ui-monospace,Consolas,'Courier New',monospace; }
+  .app { display:flex; gap:14px; min-height:100vh; }
+  .side { width:158px; background:var(--ccb); color:#fff; border-radius:10px; padding:14px 10px; flex-shrink:0; align-self:flex-start; position:sticky; top:10px; }
+  .side .logo { font-weight:700; font-size:14px; margin-bottom:4px; padding:0 6px; }
+  .side .logo-sub { font-size:10px; color:#bcd0f0; margin-bottom:14px; padding:0 6px 10px; border-bottom:2px solid #fff3; }
+  .nav-item { padding:8px 10px; border-radius:6px; margin-bottom:4px; font-size:12.5px; color:#bcd0f0; cursor:pointer; }
+  .nav-item:hover { background:#ffffff22; }
+  .nav-item.active { background:#fff; color:var(--ccb); font-weight:600; }
+  .side .role-box { margin-top:14px; padding:10px 6px 4px; border-top:1px dashed #ffffff44; }
+  .side .role-lbl { font-size:10px; color:#bcd0f0; margin-bottom:6px; }
+  .side select { width:100%; border:none; border-radius:5px; padding:5px 4px; font-size:11.5px; color:var(--ink); }
+  .side .role-note { font-size:9.5px; color:#cfe0ff; margin:6px 2px 0; line-height:1.5; }
+  .main { flex:1; min-width:0; padding:12px 14px 30px; }
+  .head { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:12px; flex-wrap:wrap; }
+  .head h2 { margin:0; font-size:17px; }
+  .head .sub { font-size:11px; color:var(--lgray); margin-top:3px; }
+  .head-right { display:flex; gap:8px; align-items:center; }
+  .kpi-row { display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
+  .kpi { flex:1; min-width:150px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:10px 12px; border-top:3px solid var(--ccb); }
+  .kpi .num { font-size:19px; font-weight:700; color:var(--ccb); }
+  .kpi .num .u { font-size:11px; color:var(--gray); font-weight:400; }
+  .kpi .lbl { font-size:11px; color:var(--gray); margin-top:2px; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:8px; padding:12px 14px; margin-bottom:12px; }
+  .card h4 { margin:0 0 10px; font-size:13px; border-left:3px solid var(--ccb); padding-left:8px; }
+  .card h4 .hint { font-weight:400; font-size:10.5px; color:var(--lgray); margin-left:8px; }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:900px){ .grid2{grid-template-columns:1fr;} .app{flex-direction:column;} .side{width:auto; position:static;} }
+  table.dt { width:100%; border-collapse:collapse; font-size:11.5px; }
+  table.dt th { color:var(--gray); font-weight:600; text-align:left; padding:5px 6px; border-bottom:1px solid var(--soft); white-space:nowrap; }
+  table.dt td { padding:5px 6px; border-bottom:1px solid #f5f7fa; }
+  table.dt tr.tot td { font-weight:700; border-top:2px solid var(--soft); }
+  .badge { display:inline-block; border-radius:4px; padding:2px 8px; font-size:10.5px; margin:1px 2px 1px 0; }
+  .b-ok { background:#e8f5ec; color:var(--ok); }
+  .b-warn { background:#fef3c7; color:#b45309; }
+  .b-risk { background:#fdeeee; color:var(--risk); }
+  .b-info { background:var(--soft); color:var(--ccb); }
+  .b-lock { background:#eceff3; color:var(--gray); }
+  .btn { border:1px solid var(--ccb); background:#fff; color:var(--ccb); border-radius:6px; padding:5px 14px; font-size:12px; cursor:pointer; }
+  .btn:hover { background:var(--soft); }
+  .btn.pri { background:var(--ccb); color:#fff; }
+  .btn.pri:hover { background:#0F4FB8; }
+  .btn.sm { padding:2px 10px; font-size:11px; }
+  .btn:disabled { opacity:.45; cursor:not-allowed; }
+  .btn:focus-visible, .nav-item:focus-visible, select:focus-visible, input:focus-visible { outline:2px solid var(--blue); outline-offset:1px; }
+  /* 签名元素：100% 堆叠拆分条 */
+  .split-bar { display:flex; height:22px; border-radius:4px; overflow:hidden; background:#eef2f7; min-width:220px; }
+  .split-bar .seg { position:relative; height:100%; min-width:2px; }
+  .split-bar .seg span { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:9.5px; color:#fff; font-weight:600; overflow:hidden; white-space:nowrap; }
+  .legend { font-size:10px; color:var(--gray); margin-top:5px; }
+  .legend i { display:inline-block; width:9px; height:9px; border-radius:2px; margin:0 4px 0 10px; vertical-align:-1px; }
+  .legend i:first-child { margin-left:0; }
+  /* 输入就绪清单 */
+  .feed { display:flex; align-items:center; gap:8px; padding:6px 4px; border-bottom:1px dashed #f0f2f5; font-size:11.5px; }
+  .feed .fico { width:22px; text-align:center; }
+  .feed .fstat { margin-left:auto; }
+  /* 规则链流水 */
+  .flow { display:flex; flex-direction:column; gap:0; }
+  .fstep { display:flex; gap:10px; opacity:.45; transition:opacity .3s; }
+  .fstep.on { opacity:1; }
+  .fstep .fno { width:34px; height:34px; border-radius:50%; background:#fff; border:2px solid var(--line); color:var(--lgray); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px; flex-shrink:0; }
+  .fstep.on .fno { border-color:var(--ccb); color:var(--ccb); background:var(--soft); }
+  .fstep .fbody { flex:1; padding-bottom:14px; border-left:2px dashed var(--line); margin-left:-17px; padding-left:24px; }
+  .fstep:last-child .fbody { border-left-color:transparent; }
+  .fstep h5 { margin:0 0 4px; font-size:12px; color:var(--ink); }
+  .fstep h5 .tag { font-weight:400; color:var(--lgray); font-size:10px; margin-left:6px; }
+  .fstep .fdesc { font-size:11px; color:var(--gray); line-height:1.7; }
+  .fstep .fdesc b { color:var(--ink); }
+  /* 配置屏 */
+  .pcard { border:1px solid var(--line); border-radius:8px; padding:10px 12px; margin-bottom:10px; background:#fff; }
+  .pcard.locked { background:#fafbfc; }
+  .pcard .prow1 { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .pcard .pname { font-weight:600; font-size:13px; }
+  .pcard .pcode { font-size:11px; color:var(--lgray); }
+  .pcard .pright { margin-left:auto; text-align:right; font-size:10.5px; color:var(--gray); }
+  .pcard .pcfg { margin-top:8px; display:flex; gap:14px; align-items:center; flex-wrap:wrap; }
+  .hq-input { display:flex; align-items:center; gap:6px; font-size:11px; color:var(--gray); }
+  .hq-input input { width:58px; border:1px solid var(--line); border-radius:5px; padding:3px 6px; font-size:12px; text-align:right; }
+  .ref-chip { background:#fef3c7; color:#b45309; border-radius:4px; padding:2px 8px; font-size:10.5px; }
+  /* 审批 */
+  .ap-item { border:1px solid var(--line); border-radius:8px; padding:10px 12px; margin-bottom:8px; background:#fff; }
+  .ap-item .ap-h { display:flex; align-items:center; gap:8px; font-size:12px; }
+  .ap-item .ap-d { font-size:11px; color:var(--gray); margin-top:5px; line-height:1.7; }
+  .steps-h { font-size:10px; color:var(--lgray); margin-top:6px; }
+  .steps-h b { color:var(--ccb); }
+  .src { font-size:10px; color:var(--lgray); margin-top:14px; line-height:1.6; }
+  .perm-note { background:var(--soft); border:1px dashed #c9dcf5; border-radius:8px; padding:10px 12px; font-size:11.5px; color:var(--ccb); line-height:1.8; margin-bottom:12px; }
+  .screen { display:none; }
+  .screen.active { display:block; }
+  @media (prefers-reduced-motion: reduce) { * { transition:none !important; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="logo">专户净收入拆分</div>
+    <div class="logo-sub">KPI 口径 · 20260909 需求定稿版原型</div>
+    <div class="nav-item active" data-s="overview" tabindex="0">① 月度总览</div>
+    <div class="nav-item" data-s="config" tabindex="0">② 归属比例配置</div>
+    <div class="nav-item" data-s="calc" tabindex="0">③ 计算与结果</div>
+    <div class="nav-item" data-s="approval" tabindex="0">④ 调整与审批</div>
+    <div class="nav-item" data-s="master" tabindex="0">⑤ 主数据</div>
+    <div class="nav-item" data-s="perm" tabindex="0">⑥ 权限视角</div>
+    <div class="role-box">
+      <div class="role-lbl">当前登录角色</div>
+      <select id="roleSel">
+        <option value="plan">计划财务部（全量）</option>
+        <option value="innov">创新发展部（全量）</option>
+        <option value="bank">银行业务部（本部门）</option>
+        <option value="org">机构业务部（本部门）</option>
+        <option value="broker">证券公司业务部（本部门）</option>
+      </select>
+      <div class="role-note" id="roleNote"></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <!-- ① 月度总览 -->
+    <section class="screen active" id="s-overview">
+      <div class="head">
+        <div><h2>月度总览 · 2026年8月</h2><div class="sub">输入等齐后一次性计算；结果计算即锁定（Q21）</div></div>
+        <div class="head-right"><span class="badge b-lock" id="ovLock">8月未计算</span><button class="btn pri" id="btnGoCalc">前往计算</button></div>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi"><div class="num">8<span class="u"> 只</span></div><div class="lbl">本月专户产品</div></div>
+        <div class="kpi"><div class="num" id="kpiNi">—<span class="u"> 万元</span></div><div class="lbl">产品总净收入（输入③）</div></div>
+        <div class="kpi"><div class="num">6<span class="u"> / 6</span></div><div class="lbl">输入数据就绪（①–⑥）</div></div>
+        <div class="kpi"><div class="num" id="ovTodo">3</div><div class="lbl">待办审批 / 确认</div></div>
+      </div>
+      <div class="grid2">
+        <div class="card">
+          <h4>输入数据就绪状态<span class="hint">等齐触发计算 · 缺数不阻塞（Q13/Q21）</span></h4>
+          <div id="feedList"></div>
+        </div>
+        <div class="card">
+          <h4>缺数清单<span class="hint">本月演示：无缺数</span></h4>
+          <table class="dt">
+            <tr><th>产品</th><th>缺失项</th><th>责任方</th><th>状态</th></tr>
+            <tr><td colspan="4" style="color:var(--lgray)">本月输入完整，无缺数产品。缺净收入由计财补、缺比例由市场部门补（Q13）。</td></tr>
+          </table>
+          <div style="font-size:10.5px;color:var(--gray);margin-top:8px;line-height:1.7">
+            输入来源：①销量表（周晓彤，月初邮件）②管理费表（able，上月整月区间）③净收入表（陈佳禾，月初第2工作日）④⑤主数据 ⑥产品信息表（产品系统同步，C5）。
+          </div>
+        </div>
+      </div>
+      <div class="src">原型演示数据，非真实业绩。流程依据《专户产品KPI净收入数据拆分及确认流程需求20260303_修订20260908》与 ADR 0001。</div>
+    </section>
+
+    <!-- ② 归属比例配置 -->
+    <section class="screen" id="s-config">
+      <div class="head">
+        <div><h2>归属及比例配置</h2><div class="sub">产品级配置（Q4）· 银行部=设总部份额，机构/券商=手工比例（ADR 0001 / Q25）</div></div>
+        <div class="head-right">
+          <select id="deptFilter"><option value="">全部部门</option><option value="bank">银行业务部</option><option value="org">机构业务部</option><option value="broker">证券公司业务部</option></select>
+        </div>
+      </div>
+      <div class="perm-note" id="cfgPermNote"></div>
+      <div id="prodList"></div>
+      <div class="src">银行部产品：总部份额为唯一手工参数（界面展示柜台占比参考值，不自动采用 · Q28）；分公司份额由剩余份额按地区数据自动分配，不可手工改。机构/券商产品：比例纯手工维护，走系统内审批流留痕（Q25）。与专户补充协议冲突时以协议为准，系统标记不阻断（Q5）。</div>
+    </section>
+
+    <!-- ③ 计算与结果 -->
+    <section class="screen" id="s-calc">
+      <div class="head">
+        <div><h2>月度计算与拆分结果 · 2026年8月</h2><div class="sub">R1–R6 规则链 · 结果矩阵含合计校验（Q20）· 计算即锁定（Q21）</div></div>
+        <div class="head-right"><span class="badge b-lock" id="calcLock">未计算</span><button class="btn pri" id="btnRun">▶ 模拟计算</button><button class="btn" id="btnExport">导出拆分表</button></div>
+      </div>
+      <div class="card">
+        <h4>规则链流水<span class="hint">以混合产品 536392 为例逐步演示</span></h4>
+        <div class="flow" id="flowSteps"></div>
+      </div>
+      <div class="card" id="resultCard" style="display:none">
+        <h4>最终拆分结果<span class="hint">行=产品，列=归属主体；比例4位小数，尾差计入最大方（Q14）</span></h4>
+        <div style="overflow-x:auto"><table class="dt" id="resultTable"></table></div>
+      </div>
+    </section>
+
+    <!-- ④ 调整与审批 -->
+    <section class="screen" id="s-approval">
+      <div class="head">
+        <div><h2>调整与审批</h2><div class="sub">部门间调整随时发起（Q7）· 年度考核确认=快照追溯（Q19）</div></div>
+      </div>
+      <div class="grid2">
+        <div class="card">
+          <h4>待办 · 部门间调整</h4>
+          <div class="ap-item">
+            <div class="ap-h"><span class="badge b-warn">待确认</span><b>536752</b> 归属调整：银行部 → 划转 15% 至机构业务部</div>
+            <div class="ap-d">发起：银行业务部（当前归属比例最高部门）· 2026-09-05<br>涉事部门确认：机构业务部（待确认）、创新发展部（已归口）</div>
+            <div class="steps-h">流程：<b>发起</b> → 涉事部门确认 → 创新归口 → 生效</div>
+            <div style="margin-top:8px"><button class="btn sm pri">确认</button> <button class="btn sm">退回</button></div>
+          </div>
+          <div class="ap-item">
+            <div class="ap-h"><span class="badge b-ok">已生效</span><b>536815</b> 比例调整：总部份额 85% → 88%</div>
+            <div class="ap-d">发起：银行业务部（部门内调整=设总部份额）· 2026-09-02 · 留痕编号 ADJ-202609-014</div>
+          </div>
+        </div>
+        <div class="card">
+          <h4>年度考核数据确认<span class="hint">2026 年度</span></h4>
+          <div class="ap-item">
+            <div class="ap-h"><span class="badge b-warn">进行中</span>2026 年 1–8 月拆分快照确认</div>
+            <div class="ap-d">发起：计划财务部、创新发展部 · 确认方：三个市场总部部门<br>银行部、券商部已确认；<b>机构业务部待确认</b>（8 个月快照）。</div>
+            <div class="steps-h">异议处理：备注 → 申请历史月重算（须<b>计财＋创新双批准</b>）→ 重算结果重新确认</div>
+            <div style="margin-top:8px"><button class="btn sm pri">查看快照</button> <button class="btn sm">申请重算</button></div>
+          </div>
+          <div style="font-size:11px;color:var(--gray);line-height:1.8;margin-top:4px">历史迁移：仅当年已过月份快照入系统（Q26）；部门间调整对象=总部部门之间归属，部门内调整=本部门与分公司之间（Q3）。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑤ 主数据 -->
+    <section class="screen" id="s-master">
+      <div class="head"><div><h2>主数据</h2><div class="sub">银行业务部维护（Q23b）· 产品信息表由产品系统接口同步（C5）</div></div></div>
+      <div class="grid2">
+        <div class="card">
+          <h4>地区 → 分公司映射<span class="hint">输入⑤</span></h4>
+          <table class="dt">
+            <tr><th>地区</th><th>分公司名称</th><th>分公司代码</th><th>状态</th></tr>
+            <tr><td>北京</td><td>北京分公司</td><td class="mono">0100</td><td><span class="badge b-ok">生效</span></td></tr>
+            <tr><td>上海</td><td>上海分公司</td><td class="mono">0210</td><td><span class="badge b-ok">生效</span></td></tr>
+            <tr><td>深圳</td><td>深圳分公司</td><td class="mono">0755</td><td><span class="badge b-ok">生效</span></td></tr>
+            <tr><td>浙江</td><td>浙江分公司</td><td class="mono">0571</td><td><span class="badge b-ok">生效</span></td></tr>
+            <tr><td>四川</td><td>—</td><td class="mono">—</td><td><span class="badge b-warn">待映射</span></td></tr>
+          </table>
+          <div style="font-size:10.5px;color:var(--gray);margin-top:8px">销量表「分行」与管理费表「名称（地名）」统一归一为地区后经本表映射（Q31）。</div>
+        </div>
+        <div class="card">
+          <h4>代销渠道清单<span class="hint">规则按清单配置，新增渠道不改代码（Q9/C2）</span></h4>
+          <table class="dt">
+            <tr><th>渠道（销售商名称）</th><th>类型</th><th>状态</th></tr>
+            <tr><td>建设银行</td><td>代销</td><td><span class="badge b-ok">生效</span></td></tr>
+            <tr><td>建信直销</td><td>直销（渠道=柜台）</td><td><span class="badge b-ok">生效</span></td></tr>
+          </table>
+          <h4 style="margin-top:14px">产品信息表<span class="hint">输入⑥ · 同步</span></h4>
+          <table class="dt">
+            <tr><th>同步批次</th><th>产品数</th><th>时间</th><th>状态</th></tr>
+            <tr><td class="mono">PS-20260902</td><td>812</td><td>09-02 06:00</td><td><span class="badge b-ok">成功</span></td></tr>
+          </table>
+          <div style="font-size:10.5px;color:var(--gray);margin-top:8px">字段：专户类型、基金募集类型、产品类型、建行/行外、条线、业务/管理部门等（Q34）。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑥ 权限视角 -->
+    <section class="screen" id="s-perm">
+      <div class="head"><div><h2>权限视角演示</h2><div class="sub">计财/创新发展部=全量；市场部门=本部门比例＞0 的产品全集，行不遮蔽（Q18）</div></div></div>
+      <div class="perm-note" id="permNote"></div>
+      <div class="card">
+        <h4>可见产品范围</h4>
+        <div style="overflow-x:auto"><table class="dt" id="permTable"></table></div>
+      </div>
+      <div class="src">演示：切换左侧「当前登录角色」观察产品集合变化。市场部门可见本部门参与产品的全部归属主体数据行（含其他部门份额），用于核对 100% 口径。</div>
+    </section>
+  </main>
+</div>
+
+<script>
+/* ---------- 演示数据（内存态，无持久化） ---------- */
+const DEPTS = { bank:'银行业务部', org:'机构业务部', broker:'证券公司业务部' };
+const C_CB='#003399', C_BR='#0F75D3', C_SH='#7fb3f0', C_SZ='#5B9BD5', C_ZJ='#9dc3e6', C_ORG='#8e44ad', C_HQ='#ffd966';
+
+// products: hq=总部份额(银行部手工)；manual=机构/券商手工比例；ref=柜台占比参考值
+const products = [
+  { code:'536392', name:'建信专户臻选1号', dept:'bank', type:'混合', ni:1280.5, hq:0.62, ref:0.652, conflict:false,
+    direct:{ '北京':4.2,'上海':2.8,'浙江':1.0 }, agency:{ '北京':20,'上海':10,'浙江':5 }, counter:65 },
+  { code:'536744', name:'建信专户稳利9号', dept:'bank', type:'混合', ni:860.0, hq:0.58, ref:0.581, conflict:false,
+    direct:{ '北京':1.6,'深圳':1.2 }, agency:{ '上海':14,'深圳':6 }, counter:32 },
+  { code:'536801', name:'建信专户乾元3期', dept:'bank', type:'纯直销', ni:320.0, hq:0.80, ref:0.801, conflict:false,
+    direct:{ '北京':2.0,'深圳':0.5 }, agency:null, counter:81 },
+  { code:'536815', name:'建信专户鑫享2号', dept:'bank', type:'纯直销', ni:150.0, hq:0.88, ref:0.912, conflict:false,
+    direct:{ '上海':0.9 }, agency:null, counter:103 },
+  { code:'536752', name:'建行代销专户成长1号', dept:'bank', type:'纯代销', ni:540.0, hq:0.05, ref:0, conflict:true,
+    direct:null, agency:{ '北京':18,'上海':9,'深圳':6 } },
+  { code:'536760', name:'建行代销专户价值5号', dept:'bank', type:'纯代销', ni:390.0, hq:0, ref:0, conflict:false,
+    direct:null, agency:{ '上海':12,'浙江':4 } },
+  { code:'880102', name:'机构定制专户旗舰', dept:'org', type:'机构', ni:2200.0, manual:[ {s:'机构业务部',r:0.60},{s:'上海分公司',r:0.40} ], conflict:false },
+  { code:'880205', name:'券商合作专户增益', dept:'broker', type:'券商', ni:1350.0, manual:[ {s:'证券公司业务部',r:0.70},{s:'北京分公司',r:0.20},{s:'深圳分公司',r:0.10} ], conflict:false },
+];
+const REGION2BR = { '北京':'北京分公司','上海':'上海分公司','深圳':'深圳分公司','浙江':'浙江分公司' };
+const REGION_COLOR = { '北京分公司':C_BR,'上海分公司':C_SH,'深圳分公司':C_SZ,'浙江分公司':C_ZJ };
+const HQ_COLOR = C_CB;
+
+/* ---------- 计算：R1–R6 规则链（ADR 0001） ---------- */
+function pct(obj){ const t=Object.values(obj).reduce((a,b)=>a+b,0); const o={}; for(const k in obj) o[k]=obj[k]/t; return o; }
+function calcProduct(p){
+  if(p.manual){ // 机构/券商：手工比例即终值
+    return p.manual.map(m=>({ subject:m.s, ratio:m.r, auto:false }));
+  }
+  // 地区占比 = 直销总占比×直销内地区占比 + 代销总占比×代销内地区占比（R1-R3）
+  const regionRatio = {};
+  const dShare = p.direct ? pct(p.direct) : null;   // R1: 销量占比
+  const aShare = p.agency ? pct(p.agency) : null;   // R2: 管理费占比
+  const total = p.counter + (p.agency?Object.values(p.agency).reduce((a,b)=>a+b,0):0);
+  const directTot = total ? p.counter/total : 0;    // R3: 直销总占比（柜台/总）
+  const agencyTot = 1 - directTot;
+  const regions = new Set([...Object.keys(p.direct||{}), ...Object.keys(p.agency||{})]);
+  regions.forEach(rg=>{
+    regionRatio[rg] = (directTot*(dShare?.[rg]||0)) + (agencyTot*(aShare?.[rg]||0));
+  });
+  // R6: 剩余份额(1−总部份额)×地区占比 → 分公司；总部=手工份额
+  const rest = 1 - p.hq;
+  const byBr = {};
+  for(const rg in regionRatio){ const b=REGION2BR[rg]; byBr[b]=(byBr[b]||0)+regionRatio[rg]*rest; }
+  const rows = [{ subject:DEPTS.bank, ratio:p.hq, auto:false }];
+  for(const b in byBr) rows.push({ subject:b, ratio:byBr[b], auto:true });
+  // Q14：4位小数 + 尾差归最大方
+  rows.forEach(r=>r.ratio=+r.ratio.toFixed(4));
+  const sum = rows.reduce((a,r)=>a+r.ratio,0), diff=+(1-sum).toFixed(4);
+  if(Math.abs(diff)>=0.00005){ let mx=rows[0]; rows.forEach(r=>{ if(r.ratio>mx.ratio) mx=r; }); mx.ratio=+(mx.ratio+diff).toFixed(4); }
+  return rows;
+}
+function calc536392Detail(){
+  const p = products[0];
+  const d = pct(p.direct), a = pct(p.agency);
+  const total = p.counter + Object.values(p.agency).reduce((x,y)=>x+y,0);
+  const dTot = p.counter/total, aTot = 1-dTot;
+  const region = {};
+  new Set([...Object.keys(p.direct),...Object.keys(p.agency)]).forEach(rg=>{
+    region[rg] = dTot*(d[rg]||0) + aTot*(a[rg]||0);
+  });
+  return { d, a, dTot, aTot, region, hq:p.hq, rest:1-p.hq, final:calcProduct(p) };
+}
+const money = v => v.toLocaleString('zh-CN',{minimumFractionDigits:1,maximumFractionDigits:1});
+
+/* ---------- ① 输入就绪清单 ---------- */
+const feeds = [
+  ['📥','①直销产品销量情况','银行业务部 · 周晓彤 · 09-01 邮件','ok'],
+  ['📥','②建行一对多专户区间管理费','able · 08-01 至 08-31 区间 · 09-01 导出','ok'],
+  ['📥','③专户净收入表','计划财务部 · 陈佳禾 · 09-02（第2工作日）','ok'],
+  ['🗂','④分公司代码','主数据','ok'],
+  ['🗂','⑤分公司地区对应规则','主数据 · 银行业务部维护','warn'],
+  ['🔄','⑥产品信息表','产品系统 · PS-20260902 同步','ok'],
+];
+function renderFeeds(){
+  document.getElementById('feedList').innerHTML = feeds.map(f=>`
+    <div class="feed"><span class="fico">${f[0]}</span><span style="min-width:200px">${f[1]}</span>
+    <span style="color:var(--gray);font-size:10.5px">${f[2]}</span>
+    <span class="fstat">${f[3]==='ok'?'<span class="badge b-ok">就绪</span>':'<span class="badge b-warn">待映射 1 项</span>'}</span></div>`).join('');
+}
+
+/* ---------- ② 产品配置卡片 ---------- */
+function renderProducts(){
+  const dept = document.getElementById('deptFilter').value;
+  const role = document.getElementById('roleSel').value;
+  let list = products.filter(p=>!dept||p.dept===dept);
+  if(['bank','org','broker'].includes(role)) list = list.filter(p=>p.dept===role);
+  const editable = !['bank','org','broker'].includes(role) || role==='bank'; // 演示：银行部/全量角色可编辑
+  document.getElementById('prodList').innerHTML = list.map(p=>{
+    const rows = calcProduct(p);
+    const bar = splitBar(rows);
+    const cfg = p.manual
+      ? `<span style="font-size:11px;color:var(--gray)">手工比例（机构/券商 · Q25）</span>
+         <button class="btn sm">调整比例（走审批流）</button>`
+      : `<div class="hq-input">总部份额 <input type="number" step="0.01" min="0" max="1" value="${p.hq}" data-code="${p.code}" ${editable?'':'disabled'}>
+         <span class="ref-chip">参考值 ${p.type==='纯代销'?'—（纯代销）':(p.ref*100).toFixed(1)+'%（柜台占比 · Q28）'}</span></div>
+         <span class="badge b-info">剩余 ${( (1-p.hq)*100 ).toFixed(1)}% 自动分配</span>
+         <span style="font-size:10.5px;color:var(--lgray)">每月可调 · 留痕</span>`;
+    return `<div class="pcard">
+      <div class="prow1">
+        <span class="pcode mono">${p.code}</span><span class="pname">${p.name}</span>
+        <span class="badge b-info">${DEPTS[p.dept]}</span><span class="badge ${p.type==='混合'?'b-warn':'b-ok'}">${p.type}</span>
+        ${p.conflict?'<span class="badge b-risk" title="Q5：与补充协议冲突，以协议为准，标记不阻断">⚠ 补充协议冲突标记</span>':''}
+        <span class="pright">净收入（总）<b class="num">${money(p.ni)}</b> 万元</span>
+      </div>
+      <div class="pcfg">${cfg}</div>
+      <div style="margin-top:9px">${bar}</div>
+    </div>`;
+  }).join('') || '<div style="color:var(--lgray);padding:20px">当前筛选/角色下无产品。</div>';
+  document.querySelectorAll('.hq-input input').forEach(inp=>{
+    inp.addEventListener('change',()=>{
+      const p = products.find(x=>x.code===inp.dataset.code);
+      p.hq = Math.min(1,Math.max(0,parseFloat(inp.value)||0));
+      renderProducts();
+    });
+  });
+}
+function splitBar(rows){
+  const segs = rows.map(r=>{
+    const isHq = r.subject===DEPTS.bank||r.subject===DEPTS.org||r.subject===DEPTS.broker;
+    const color = isHq ? (r.subject===DEPTS.bank?C_CB:(r.subject===DEPTS.org?C_ORG:'#0e7490')) : (REGION_COLOR[r.subject]||'#b8c9dd');
+    return `<div class="seg" style="width:${r.ratio*100}%;background:${color}" title="${r.subject} ${(r.ratio*100).toFixed(2)}%"><span>${r.ratio>=0.08?(r.ratio*100).toFixed(0)+'%':''}</span></div>`;
+  }).join('');
+  const lg = rows.map(r=>{
+    const isHq = r.subject===DEPTS.bank||r.subject===DEPTS.org||r.subject===DEPTS.broker;
+    const color = isHq ? (r.subject===DEPTS.bank?C_CB:(r.subject===DEPTS.org?C_ORG:'#0e7490')) : (REGION_COLOR[r.subject]||'#b8c9dd');
+    return `<i style="background:${color}"></i>${r.subject} ${(r.ratio*100).toFixed(2)}%`;
+  }).join('');
+  return `<div class="split-bar">${segs}</div><div class="legend">${lg} · 合计 100%</div>`;
+}
+
+/* ---------- ③ 规则链流水 + 结果表 ---------- */
+const FLOW = [
+  ['R1','直销链 · 销量占比','按产品分组，计算组内各地区销量占比（输入①）'],
+  ['R2','代销链 · 管理费占比','筛选销售商=建设银行，名称拆分保留地名，按产品分组计算各地区管理费占比（输入②）'],
+  ['R3','混合链 · 总占比加权','直销总占比=柜台管理费/总管理费；代销总占比=其余/总；地区占比=两者分别加权（动态识别，当前 536392/536744 · Q35）'],
+  ['R6','剩余份额分配','地区占比 ×（1−总部份额62%）→ 经地区→分公司映射得分公司份额；总部=手工份额（ADR 0001）'],
+  ['✓','合计校验与锁定','比例4位小数，尾差归最大方（Q14）；净收入拆分=占比×净收入（总）（E3）；计算完成即锁定（Q21）'],
+];
+function renderFlow(){
+  document.getElementById('flowSteps').innerHTML = FLOW.map((f,i)=>`
+    <div class="fstep" id="fs-${i}"><div class="fno">${f[0]}</div>
+    <div class="fbody"><h5>${f[1]}<span class="tag">${f[2]}</span></h5><div class="fdesc" id="fd-${i}"></div></div></div>`).join('');
+}
+function fillFlowDetail(){
+  const d = calc536392Detail();
+  const f0 = '536392 销量表：北京 4.2 / 上海 2.8 / 浙江 1.0 → <b>北京 '+(d.d['北京']*100).toFixed(1)+'% · 上海 '+(d.d['上海']*100).toFixed(1)+'% · 浙江 '+(d.d['浙江']*100).toFixed(1)+'%</b>';
+  const f1 = '管理费表（建设银行）：北京 20 / 上海 10 / 浙江 5 → <b>北京 '+(d.a['北京']*100).toFixed(1)+'% · 上海 '+(d.a['上海']*100).toFixed(1)+'% · 浙江 '+(d.a['浙江']*100).toFixed(1)+'%</b>';
+  const f2 = '柜台 65 / 总 100 → 直销总占比 <b>'+(d.dTot*100).toFixed(1)+'%</b>，代销总占比 <b>'+(d.aTot*100).toFixed(1)+'%</b>；地区占比 = <b>北京 '+(d.region['北京']*100).toFixed(1)+'% · 上海 '+(d.region['上海']*100).toFixed(1)+'% · 浙江 '+(d.region['浙江']*100).toFixed(1)+'%</b>';
+  const f3 = '剩余份额 = 1 − 62% = <b>'+(d.rest*100).toFixed(0)+'%</b> → ' + d.final.filter(r=>r.auto).map(r=>`${r.subject} <b>${(r.ratio*100).toFixed(2)}%</b>`).join(' · ');
+  const f4 = '总部 62.00% + 分公司合计 38.00% = <b>100.0000%</b>（尾差已按 Q14 处理）';
+  [f0,f1,f2,f3,f4].forEach((t,i)=>document.getElementById('fd-'+i).innerHTML=t);
+}
+let calcDone=false;
+function runCalc(){
+  calcDone=true;
+  document.getElementById('calcLock').textContent='8月已锁定';
+  document.getElementById('calcLock').className='badge b-lock';
+  document.getElementById('ovLock').textContent='8月已计算并锁定';
+  document.getElementById('ovLock').className='badge b-ok';
+  document.querySelectorAll('.fstep').forEach((s,i)=>setTimeout(()=>s.classList.add('on'), i*450));
+  setTimeout(()=>{ fillFlowDetail(); renderResult(); document.getElementById('resultCard').style.display='block'; }, FLOW.length*450+200);
+}
+function renderResult(){
+  const subjects = [DEPTS.bank,DEPTS.org,DEPTS.broker,'北京分公司','上海分公司','深圳分公司','浙江分公司'];
+  let h = '<tr><th>产品</th><th>类型</th><th>部门</th><th>净收入(总)·万元</th>' + subjects.map(s=>'<th>'+s+'</th>').join('') + '<th>合计校验</th></tr>';
+  products.forEach(p=>{
+    const rows = calcProduct(p);
+    h += `<tr><td class="mono">${p.code}</td><td>${p.type}</td><td>${DEPTS[p.dept]}</td><td class="num">${money(p.ni)}</td>`;
+    subjects.forEach(s=>{
+      const r = rows.find(x=>x.subject===s);
+      h += r ? `<td class="num">${(r.ratio*100).toFixed(2)}%<br><span style="color:var(--lgray);font-size:10px">${money(p.ni*r.ratio)}</span></td>` : '<td style="color:#e5e7eb">—</td>';
+    });
+    h += `<td><span class="badge b-ok">100%</span></td></tr>`;
+  });
+  const tot = products.reduce((a,p)=>a+p.ni,0);
+  h += `<tr class="tot"><td colspan="3">合计（8 只）</td><td class="num">${money(tot)}</td>` + subjects.map(s=>{
+    const ssum = products.reduce((a,p)=>{ const r=calcProduct(p).find(x=>x.subject===s); return a+(r?r.ratio*p.ni:0); },0);
+    return `<td class="num">${money(ssum)}</td>`;
+  }).join('') + '<td></td></tr>';
+  document.getElementById('resultTable').innerHTML = h;
+}
+
+/* ---------- ⑥ 权限视角 ---------- */
+function renderPerm(){
+  const role = document.getElementById('roleSel').value;
+  const isFull = ['plan','innov'].includes(role);
+  const note = isFull
+    ? `当前角色：<b>${role==='plan'?'计划财务部':'创新发展部'}</b> · 查看全部 8 只产品的全量数据（Q18）。`
+    : `当前角色：<b>${DEPTS[role]}</b> · 可见产品 = 本部门比例＞0 的产品（产品集合过滤），产品内各主体数据行<b>不遮蔽</b>，用于核对 100% 口径（Q18）。`;
+  document.getElementById('permNote').innerHTML = note;
+  document.getElementById('roleNote').innerHTML = isFull ? '全量视角：全部产品。' : '本部门视角：仅本部门产品。';
+  let list = products; if(!isFull) list = products.filter(p=>p.dept===role);
+  document.getElementById('permTable').innerHTML = '<tr><th>产品代码</th><th>名称</th><th>归属部门</th><th>本部门份额</th><th>可见主体行</th></tr>' +
+    list.map(p=>{
+      const rows = calcProduct(p);
+      return `<tr><td class="mono">${p.code}</td><td>${p.name}</td><td>${DEPTS[p.dept]}</td>
+      <td>${rows.find(r=>r.subject===DEPTS[p.dept])?(rows.find(r=>r.subject===DEPTS[p.dept]).ratio*100).toFixed(2)+'%':'—'}</td>
+      <td>${rows.length} 行（全部主体）</td></tr>`;
+    }).join('') + `<tr class="tot"><td colspan="5">可见 ${list.length} / 8 只</td></tr>`;
+  document.getElementById('cfgPermNote').innerHTML = note;
+}
+
+/* ---------- 导航与联动 ---------- */
+document.querySelectorAll('.nav-item').forEach(n=>{
+  const go = ()=>{ document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active')); n.classList.add('active');
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById('s-'+n.dataset.s).classList.add('active'); };
+  n.addEventListener('click',go); n.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();go();} });
+});
+document.getElementById('btnGoCalc').addEventListener('click',()=>document.querySelector('.nav-item[data-s=calc]').click());
+document.getElementById('btnRun').addEventListener('click',runCalc);
+document.getElementById('btnExport').addEventListener('click',()=>{
+  if(!calcDone){ renderResult(); document.getElementById('resultCard').style.display='block'; }
+  alert('演示：导出《2026年8月专户数据更新-最终拆分结果》\n产品×归属主体矩阵（金额+比例+合计校验）+ 部门/分公司汇总 sheet（Q20）');
+});
+document.getElementById('roleSel').addEventListener('change',()=>{ renderPerm(); renderProducts(); });
+document.getElementById('deptFilter').addEventListener('change',renderProducts);
+
+renderFeeds(); renderProducts(); renderFlow(); renderPerm();
+document.getElementById('kpiNi').innerHTML = money(products.reduce((a,p)=>a+p.ni,0)) + '<span class="u"> 万元</span>';
+</script>
+</body>
+</html>

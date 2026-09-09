@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>归属比例配置流程原型（20260909定稿版）</title>
+<style>
+  :root {
+    --ccb:#003399; --blue:#0F75D3; --ink:#333333; --gray:#606266;
+    --lgray:#99A5AE; --warn:#F59E0B; --risk:#CC0000; --ok:#15803D;
+    --line:#e5e7eb; --bg:#f5f7fa; --soft:#eef4fd;
+  }
+  * { box-sizing:border-box; }
+  body { font-family:'PingFang SC','Microsoft YaHei','Segoe UI',sans-serif; margin:0; background:var(--bg); color:var(--ink); font-size:13px; }
+  .num { font-family:ui-monospace,Consolas,monospace; }
+  .wrap { max-width:1080px; margin:0 auto; padding:18px 16px 40px; }
+  .top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; flex-wrap:wrap; gap:10px; }
+  h1 { font-size:18px; margin:0 0 4px; }
+  .sub { font-size:11px; color:var(--lgray); }
+  /* 场景选择 */
+  .scn-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:12px; margin-bottom:14px; }
+  .scn { background:#fff; border:1px solid var(--line); border-radius:10px; padding:14px 16px; cursor:pointer; border-top:3px solid var(--ccb); transition:border-color .2s; }
+  .scn:hover { border-color:var(--blue); }
+  .scn h3 { margin:0 0 6px; font-size:14px; }
+  .scn .d { font-size:11px; color:var(--gray); line-height:1.7; min-height:54px; }
+  .scn .meta { font-size:10.5px; color:var(--lgray); margin-top:8px; border-top:1px dashed var(--line); padding-top:7px; }
+  .badge { display:inline-block; border-radius:4px; padding:2px 8px; font-size:10.5px; margin:1px 4px 1px 0; }
+  .b-ok { background:#e8f5ec; color:var(--ok); } .b-warn { background:#fef3c7; color:#b45309; }
+  .b-risk { background:#fdeeee; color:var(--risk); } .b-info { background:var(--soft); color:var(--ccb); }
+  .b-lock { background:#eceff3; color:var(--gray); }
+  /* 步骤轨道：签名元素 */
+  .track { display:flex; align-items:flex-start; margin:6px 0 18px; }
+  .tnode { flex:1; text-align:center; position:relative; }
+  .tnode .dot { width:30px; height:30px; border-radius:50%; background:#fff; border:2px solid var(--line); color:var(--lgray); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px; margin:0 auto 6px; position:relative; z-index:1; }
+  .tnode.done .dot { background:var(--ccb); border-color:var(--ccb); color:#fff; }
+  .tnode.cur .dot { border-color:var(--ccb); color:var(--ccb); background:var(--soft); box-shadow:0 0 0 4px #00339918; }
+  .tnode.rej .dot { border-color:var(--risk); color:var(--risk); background:#fdeeee; }
+  .tnode::before { content:''; position:absolute; top:15px; left:-50%; width:100%; height:2px; background:var(--line); }
+  .tnode:first-child::before { display:none; }
+  .tnode.done::before, .tnode.cur::before { background:var(--ccb); }
+  .tnode.rej::before { background:var(--risk); }
+  .tnode .tlbl { font-size:11px; color:var(--gray); }
+  .tnode.cur .tlbl { color:var(--ccb); font-weight:600; }
+  .tnode .twho { font-size:9.5px; color:var(--lgray); margin-top:2px; }
+  /* 向导主体 */
+  .wiz { display:flex; gap:14px; align-items:flex-start; }
+  .step-card { flex:1; background:#fff; border:1px solid var(--line); border-radius:10px; padding:16px 18px; min-width:0; }
+  .step-card h4 { margin:0 0 4px; font-size:14px; }
+  .who { font-size:11px; color:var(--ccb); background:var(--soft); display:inline-block; border-radius:4px; padding:2px 10px; margin-bottom:12px; }
+  .fld { margin-bottom:12px; }
+  .fld label { display:block; font-size:11.5px; color:var(--gray); margin-bottom:5px; }
+  .fld input, .fld select { border:1px solid var(--line); border-radius:6px; padding:6px 10px; font-size:12.5px; width:100%; max-width:340px; background:#fff; }
+  .fld input:focus-visible, .fld select:focus-visible, .btn:focus-visible { outline:2px solid var(--blue); outline-offset:1px; }
+  .hint { font-size:10.5px; color:var(--lgray); line-height:1.7; }
+  .rule-note { background:#fffbe8; border-left:3px solid var(--warn); border-radius:0 6px 6px 0; padding:8px 12px; font-size:11px; color:#8a6d1a; line-height:1.8; margin:10px 0; }
+  /* 主体比例编辑器 */
+  .rows { border:1px solid var(--line); border-radius:8px; overflow:hidden; max-width:520px; margin-bottom:8px; }
+  .rrow { display:flex; align-items:center; gap:8px; padding:7px 10px; border-bottom:1px solid #f5f7fa; background:#fff; }
+  .rrow:last-child { border-bottom:none; }
+  .rrow .rs { flex:1; font-size:12px; }
+  .rrow input[type=number] { width:76px; text-align:right; border:1px solid var(--line); border-radius:5px; padding:4px 6px; font-size:12px; }
+  .rrow .ro { font-size:10.5px; color:var(--lgray); width:110px; }
+  .rrow .del { border:none; background:none; color:var(--risk); cursor:pointer; font-size:11px; padding:2px 6px; }
+  .addrow { border:1px dashed var(--line); border-radius:8px; padding:7px 10px; max-width:520px; font-size:11.5px; color:var(--gray); display:flex; gap:8px; align-items:center; }
+  .addrow select { border:1px solid var(--line); border-radius:5px; padding:3px 6px; font-size:11.5px; }
+  .sumbar { max-width:520px; margin-top:10px; }
+  .sumbar .t { display:flex; justify-content:space-between; font-size:11.5px; margin-bottom:4px; }
+  .sumbar .trackbar { height:14px; border-radius:7px; background:#eef2f7; overflow:hidden; display:flex; }
+  .sumbar .fill { height:100%; background:var(--ccb); }
+  .sumbar .fill.bad { background:var(--risk); }
+  /* 堆叠条（与平台原型同族） */
+  .split-bar { display:flex; height:22px; border-radius:4px; overflow:hidden; background:#eef2f7; min-width:200px; max-width:520px; }
+  .split-bar .seg { position:relative; height:100%; min-width:2px; }
+  .split-bar .seg span { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:9.5px; color:#fff; font-weight:600; overflow:hidden; white-space:nowrap; }
+  .legend { font-size:10px; color:var(--gray); margin-top:5px; max-width:520px; }
+  .legend i { display:inline-block; width:9px; height:9px; border-radius:2px; margin:0 4px 0 10px; vertical-align:-1px; }
+  .legend i:first-child { margin-left:0; }
+  /* 操作按钮 */
+  .acts { display:flex; gap:10px; margin-top:16px; align-items:center; flex-wrap:wrap; }
+  .btn { border:1px solid var(--ccb); background:#fff; color:var(--ccb); border-radius:6px; padding:6px 18px; font-size:12.5px; cursor:pointer; }
+  .btn:hover { background:var(--soft); }
+  .btn.pri { background:var(--ccb); color:#fff; }
+  .btn.pri:hover { background:#0F4FB8; }
+  .btn.ghost { border-color:var(--line); color:var(--gray); }
+  .btn.ghost:hover { background:#f5f7fa; }
+  .btn:disabled { opacity:.4; cursor:not-allowed; }
+  .btn.danger { border-color:var(--risk); color:var(--risk); }
+  /* 留痕时间线 */
+  .trail { width:300px; flex-shrink:0; background:#fff; border:1px solid var(--line); border-radius:10px; padding:12px 14px; }
+  .trail h4 { margin:0 0 10px; font-size:12.5px; border-left:3px solid var(--ccb); padding-left:8px; }
+  .tl-item { border-left:2px solid var(--soft); padding:0 0 12px 12px; position:relative; }
+  .tl-item::before { content:''; position:absolute; left:-5px; top:3px; width:8px; height:8px; border-radius:50%; background:var(--ccb); }
+  .tl-item.rej::before { background:var(--risk); }
+  .tl-item .tt { font-size:10px; color:var(--lgray); }
+  .tl-item .tx { font-size:11px; color:var(--ink); line-height:1.6; }
+  .tl-empty { font-size:11px; color:var(--lgray); }
+  @media (max-width:900px){ .wiz{flex-direction:column;} .trail{width:100%;} }
+  .done-box { text-align:center; padding:18px 0 8px; }
+  .done-box .big { font-size:34px; }
+  .done-box h3 { margin:6px 0 10px; }
+  .src { font-size:10px; color:var(--lgray); margin-top:16px; line-height:1.7; }
+  @media (prefers-reduced-motion: reduce) { * { transition:none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div>
+      <h1>归属比例配置流程原型</h1>
+      <div class="sub">四条定稿流程的状态机演示 · 全程系统内审批留痕 · 依据《…需求20260303_修订20260908》与 ADR 0001</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <span class="badge b-info" id="scnTag">未选择场景</span>
+      <button class="btn ghost" onclick="resetAll()">重置演示</button>
+    </div>
+  </div>
+
+  <!-- 场景选择 -->
+  <div id="scnView">
+    <div class="scn-grid">
+      <div class="scn" onclick="start('intra_bank')">
+        <h3>① 部门内调整 · 银行部</h3>
+        <div class="d">每月设置<b>总部份额</b>（唯一手工参数），界面展示柜台占比参考值；分公司份额由剩余份额自动分配。</div>
+        <div class="meta">发起：银行业务部 · 每月<br>Q22 / Q28 / ADR 0001</div>
+      </div>
+      <div class="scn" onclick="start('intra_org')">
+        <h3>② 部门内调整 · 机构/券商</h3>
+        <div class="d">手工调整本部门与分公司、或分公司之间的<b>归属主体及比例</b>（增删主体=归属调整，改数字=比例调整）。</div>
+        <div class="meta">发起：机构/证券业务部 · 每月<br>Q3 / Q25</div>
+      </div>
+      <div class="scn" onclick="start('inter')">
+        <h3>③ 部门间调整</h3>
+        <div class="d">调整多个市场总部部门之间的归属及比例。<b>当前归属比例最高部门发起</b>，涉事部门线上确认，创新发展部归口。</div>
+        <div class="meta">发起：最高归属部门 · 全年随时<br>Q7</div>
+      </div>
+      <div class="scn" onclick="start('newp')">
+        <h3>④ 新增产品首次确认</h3>
+        <div class="d">牵头部门发起：部门间归属及比例＋归属主体集合，经<b>客户经理确认</b>。首次确认完成后产品即转存量。</div>
+        <div class="meta">发起：牵头市场部门 · 不定期<br>Q6 / Q24</div>
+      </div>
+    </div>
+    <div class="rule-note">通用规则：全部调整走<b>系统内审批流</b>（Q20）；与专户补充协议冲突时以协议为准，系统标记不阻断（Q5）；银行部产品的分公司间份额<b>不可手工调整</b>（ADR 0001）。点击卡片开始走流程。</div>
+  </div>
+
+  <!-- 向导 -->
+  <div id="wizView" style="display:none">
+    <div class="track" id="track"></div>
+    <div class="wiz">
+      <div class="step-card" id="stepBody"></div>
+      <div class="trail">
+        <h4>操作留痕（跨场景累积）</h4>
+        <div id="trailList"><div class="tl-empty">暂无操作。每一步动作都会记录在这里。</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="src">原型演示数据，非真实配置。校验规则：比例合计须为 100.00%（提交按钮联动禁用）；机构/券商编辑器支持增删主体；银行部部门内仅总部份额可编辑。</div>
+</div>
+
+<script>
+/* ---------- 基础数据 ---------- */
+const DEPTS = { bank:'银行业务部', org:'机构业务部', broker:'证券公司业务部' };
+const BRANCHES = ['北京分公司','上海分公司','深圳分公司','浙江分公司'];
+const C = { hq:'#003399', org:'#8e44ad', broker:'#0e7490', br:{ '北京分公司':'#0F75D3','上海分公司':'#7fb3f0','深圳分公司':'#5B9BD5','浙江分公司':'#9dc3e6' } };
+const products = {
+  '536392': { name:'建信专户臻选1号', dept:'bank', cur:[['银行业务部',0.62],['北京分公司',0.2057],['上海分公司',0.1244],['浙江分公司',0.0499]], ref:0.652 },
+  '880102': { name:'机构定制专户旗舰', dept:'org', cur:[['机构业务部',0.60],['上海分公司',0.40]] },
+  '880205': { name:'券商合作专户增益', dept:'broker', cur:[['证券公司业务部',0.70],['北京分公司',0.20],['深圳分公司',0.10]] },
+  '536752': { name:'建行代销专户成长1号', dept:'bank', cur:[['银行业务部',0.95],['北京分公司',0.05]] },
+};
+let seq = 112; // 留痕编号
+
+/* ---------- 状态机 ---------- */
+const SCN = {
+  intra_bank: { name:'部门内调整 · 银行部', steps:[
+    { lbl:'选择产品', who:'银行业务部' }, { lbl:'设置总部份额', who:'银行业务部' },
+    { lbl:'提交审批', who:'银行业务部' }, { lbl:'创新发展部审批', who:'创新发展部' }, { lbl:'生效', who:'系统' } ] },
+  intra_org: { name:'部门内调整 · 机构/券商', steps:[
+    { lbl:'选择产品', who:'机构/证券业务部' }, { lbl:'编辑归属及比例', who:'机构/证券业务部' },
+    { lbl:'提交审批', who:'机构/证券业务部' }, { lbl:'创新发展部审批', who:'创新发展部' }, { lbl:'生效', who:'系统' } ] },
+  inter: { name:'部门间调整', steps:[
+    { lbl:'发起（最高归属部门）', who:'银行业务部' }, { lbl:'涉事部门确认', who:'机构业务部' },
+    { lbl:'创新发展部归口', who:'创新发展部' }, { lbl:'生效', who:'系统' } ] },
+  newp: { name:'新增产品首次确认', steps:[
+    { lbl:'牵头部门发起', who:'证券公司业务部' }, { lbl:'客户经理确认', who:'客户经理' },
+    { lbl:'部门确认', who:'证券公司业务部' }, { lbl:'生效转存量', who:'系统' } ] },
+};
+let S = null; // { key, step, rejected, draft }
+
+function start(key){
+  S = { key, step:0, rejected:false, draft:{} };
+  document.getElementById('scnView').style.display='none';
+  document.getElementById('wizView').style.display='block';
+  document.getElementById('scnTag').textContent = '场景：' + SCN[key].name;
+  render();
+}
+function resetAll(){
+  S = null;
+  document.getElementById('wizView').style.display='none';
+  document.getElementById('scnView').style.display='block';
+  document.getElementById('scnTag').textContent = '未选择场景';
+}
+function log(txt, rej){
+  const box = document.getElementById('trailList');
+  if(box.querySelector('.tl-empty')) box.innerHTML='';
+  const d = new Date();
+  const t = `09-09 ${String(9+Math.floor(seq/40)).padStart(2,'0')}:${String(seq%60).padStart(2,'0')}`;
+  seq++;
+  const div = document.createElement('div'); div.className = 'tl-item'+(rej?' rej':'');
+  div.innerHTML = `<div class="tt">${t} · ADJ-202609-${seq}</div><div class="tx">${txt}</div>`;
+  box.prepend(div);
+}
+function renderTrack(){
+  const steps = SCN[S.key].steps;
+  document.getElementById('track').innerHTML = steps.map((s,i)=>{
+    let cls = i < S.step ? 'done' : (i === S.step ? 'cur' : '');
+    if(S.rejected && i === 2) cls = 'rej';
+    return `<div class="tnode ${cls}"><div class="dot">${i < S.step || (S.rejected&&i<S.step) ? '✓' : i+1}</div><div class="tlbl">${s.lbl}</div><div class="twho">${s.who}</div></div>`;
+  }).join('');
+}
+function next(){ S.step++; S.rejected=false; render(); }
+function rejectStep(){ S.rejected = true; render(); }
+function rejectBack(){
+  log('退回发起人修改', true);
+  S.step = 0; S.rejected = false; S.wasRejected = true; render();
+}
+
+/* ---------- 渲染 ---------- */
+function render(){
+  renderTrack();
+  const b = document.getElementById('stepBody');
+  const who = SCN[S.key].steps[S.step].who;
+  let h = `<h4>${SCN[S.key].name} · 第 ${S.step+1}/${SCN[S.key].steps.length} 步</h4><span class="who">当前操作人：${who}</span>`;
+  if(S.wasRejected) h += `<div class="rule-note" style="border-left-color:var(--risk);background:#fdf2f2;color:var(--risk)">⚠ 本单曾被退回，请修改后重新提交（退回记录见右侧留痕）。</div>`;
+  b.innerHTML = h + RENDER[S.key][S.step]();
+  WIRE[S.key][S.step] && WIRE[S.key][S.step]();
+}
+function splitBar(rows){
+  const segs = rows.map(r=>{
+    const isDept = Object.values(DEPTS).includes(r[0]);
+    const color = isDept ? (r[0]===DEPTS.bank?C.hq:(r[0]===DEPTS.org?C.org:C.broker)) : (C.br[r[0]]||'#b8c9dd');
+    return `<div class="seg" style="width:${r[1]*100}%;background:${color}" title="${r[0]} ${(r[1]*100).toFixed(2)}%"><span>${r[1]>=0.08?(r[1]*100).toFixed(0)+'%':''}</span></div>`;
+  }).join('');
+  const lg = rows.map(r=>{
+    const isDept = Object.values(DEPTS).includes(r[0]);
+    const color = isDept ? (r[0]===DEPTS.bank?C.hq:(r[0]===DEPTS.org?C.org:C.broker)) : (C.br[r[0]]||'#b8c9dd');
+    return `<i style="background:${color}"></i>${r[0]} ${(r[1]*100).toFixed(2)}%`;
+  }).join('');
+  return `<div class="split-bar">${segs}</div><div class="legend">${lg} · 合计 ${(rows.reduce((a,r)=>a+r[1],0)*100).toFixed(2)}%</div>`;
+}
+
+/* ---------- 场景① 部门内·银行 ---------- */
+const RB = {};
+RB.prodSel = `<div class="fld"><label>选择产品（银行业务部产品）</label>
+  <select id="f_prod">${Object.entries(products).filter(([k,p])=>p.dept==='bank').map(([k,p])=>`<option value="${k}">${k} · ${p.name}</option>`).join('')}</select></div>
+  <div id="f_cur"></div>
+  <div class="rule-note">银行部部门内调整的唯一手工参数是<b>总部份额</b>；分公司份额由剩余份额按地区数据自动分配，<b>不可手工修改</b>（ADR 0001）。</div>
+  <div class="acts"><button class="btn pri" onclick="pickBank()">下一步：设置总部份额</button></div>`;
+function pickBank(){
+  const code = document.getElementById('f_prod').value;
+  S.draft.code = code;
+  log(`${who()} 选择产品 ${code} ${products[code].name}`);
+  next();
+}
+function who(){ return SCN[S.key].steps[Math.min(S.step,SCN[S.key].steps.length-1)].who; }
+
+const RENDER = {}, WIRE = {};
+RENDER.intra_bank = [
+  ()=> RB.prodSel,
+  ()=>{ const p = products[S.draft.code]; return `
+    <div class="fld"><label>产品</label><input value="${S.draft.code} · ${p.name}" disabled></div>
+    <div class="fld"><label>总部份额（每月可调 · 唯一手工参数）</label>
+      <input type="number" id="f_hq" step="0.01" min="0" max="1" value="${p.cur[0][1]}">
+      <div class="hint" style="margin-top:5px">参考值：<b>${(p.ref*100).toFixed(1)}%</b>（柜台管理费/总管理费 · Q28，不自动采用）</div></div>
+    <div id="f_preview">${splitBar(p.cur)}</div>
+    <div class="acts"><button class="btn ghost" onclick="S.step=0;render()">上一步</button>
+    <button class="btn pri" id="f_submit" onclick="S.step=2;render()">提交审批</button></div>`; },
+  ()=>{ const p = products[S.draft.code]; return `
+    <div class="hint" style="margin-bottom:10px">提交内容：产品 <b>${S.draft.code}</b> 总部份额 <b id="c_hq">${(S.draft.hq*100).toFixed(2)}%</b>（原 ${(p.cur[0][1]*100).toFixed(2)}%），分公司份额自动重算。</div>
+    ${splitBar(S.draft.preview)}
+    <div class="acts"><button class="btn ghost" onclick="S.step=1;render()">返回修改</button>
+    <button class="btn pri" onclick="log('提交审批：'+S.draft.code+' 总部份额 '+(S.draft.hq*100).toFixed(2)+'%');next()">确认提交</button></div>`; },
+  ()=> `<div class="hint" style="margin-bottom:10px">创新发展部审批（部门内调整归口）。</div>
+    <div class="fld">${splitBar(S.draft.preview)}</div>
+    <div class="acts"><button class="btn danger" onclick="log('创新发展部退回：需补充调整依据',true);rejectBack()">退回发起人</button>
+    <button class="btn pri" onclick="log('创新发展部审批通过');next()">审批通过</button></div>`,
+  ()=>{ const code=S.draft.code, p=products[code]; p.cur = S.draft.preview; return doneBox(code, p); },
+];
+WIRE.intra_bank = [
+  ()=>{ const sel=document.getElementById('f_prod');
+    const show=()=>{ const p=products[sel.value]; document.getElementById('f_cur').innerHTML = `<div class="hint" style="margin-bottom:6px">当前配置：</div>${splitBar(p.cur)}`; };
+    sel.addEventListener('change',show); show(); },
+  ()=>{ const inp=document.getElementById('f_hq'); const p=products[S.draft.code];
+    const upd=()=>{ const v=Math.min(1,Math.max(0,parseFloat(inp.value)||0)); S.draft.hq=v;
+      const rest=1-v, others=p.cur.slice(1), oldRest=others.reduce((a,r)=>a+r[1],0)||1;
+      S.draft.preview=[[DEPTS.bank,v],...others.map(r=>[r[0],+(r[1]/oldRest*rest).toFixed(4)])];
+      const sum=S.draft.preview.reduce((a,r)=>a+r[1],0), diff=+(1-sum).toFixed(4);
+      if(Math.abs(diff)>=0.00005){ let mx=S.draft.preview[0]; S.draft.preview.forEach(r=>{if(r[1]>mx[1])mx=r;}); mx[1]=+(mx[1]+diff).toFixed(4); }
+      document.getElementById('f_preview').innerHTML=splitBar(S.draft.preview); };
+    inp.addEventListener('input',upd); upd(); },
+  ()=>{}, ()=>{}, ()=>{},
+];
+
+/* ---------- 场景② 部门内·机构/券商 ---------- */
+let orgRows = [];
+RENDER.intra_org = [
+  ()=> `<div class="fld"><label>选择产品（机构/券商产品）</label>
+    <select id="f_prod2">${Object.entries(products).filter(([k,p])=>p.dept!=='bank').map(([k,p])=>`<option value="${k}">${k} · ${p.name}（${DEPTS[p.dept]}）</option>`).join('')}</select></div>
+    <div id="f_cur2"></div>
+    <div class="rule-note">机构/券商为<b>纯手工调整</b>（Q25）：可增删归属主体（归属调整）或修改比例（比例调整），须走系统内审批流留痕。</div>
+    <div class="acts"><button class="btn pri" onclick="pickOrg()">下一步：编辑归属及比例</button></div>`,
+  ()=> `<div class="fld"><label>归属主体及比例（合计须为 100.00%）</label><div class="rows" id="f_rows"></div></div>
+    <div class="addrow">＋ 添加分公司主体 <select id="f_addsel">${BRANCHES.map(s=>`<option>${s}</option>`).join('')}</select>
+    <button class="btn sm" style="padding:2px 10px;font-size:11px" onclick="addOrgRow()">添加</button></div>
+    <div class="sumbar" id="f_sum"></div>
+    <div class="rule-note">部门内调整的归属主体仅限<b>本部门与分公司</b>（Q3）；若需引入其他市场总部部门，请走「部门间调整」流程（Q7）。本部门行为锚点，不可删除。</div>
+    <div class="acts"><button class="btn ghost" onclick="S.step=0;render()">上一步</button>
+    <button class="btn pri" id="f_go3" onclick="orgSubmit()">提交审批</button></div>`,
+  ()=> `<div class="hint" style="margin-bottom:10px">提交内容：产品 <b>${S.draft.code}</b> 归属及比例调整，见下。</div>
+    <div id="f_prev2"></div>
+    <div class="acts"><button class="btn ghost" onclick="S.step=1;render()">返回修改</button>
+    <button class="btn pri" onclick="log('提交审批：'+S.draft.code+' 归属及比例调整');next()">确认提交</button></div>`,
+  ()=> `<div class="hint" style="margin-bottom:10px">创新发展部审批（部门内调整归口）。</div>
+    <div id="f_prev3"></div>
+    <div class="acts"><button class="btn danger" onclick="log('创新发展部退回：比例依据不足',true);rejectBack()">退回发起人</button>
+    <button class="btn pri" onclick="log('创新发展部审批通过');next()">审批通过</button></div>`,
+  ()=>{ products[S.draft.code].cur = S.draft.orgRows.map(r=>[...r]); return doneBox(S.draft.code, products[S.draft.code]); },
+];
+WIRE.intra_org = [
+  ()=>{ const sel=document.getElementById('f_prod2');
+    const show=()=>{ const p=products[sel.value]; document.getElementById('f_cur2').innerHTML=`<div class="hint" style="margin-bottom:6px">当前配置：</div>${splitBar(p.cur)}`; };
+    sel.addEventListener('change',show); show(); },
+  ()=>{ renderOrgEditor(); },
+  ()=>{ document.getElementById('f_prev2').innerHTML = splitBar(S.draft.orgRows); },
+  ()=>{ document.getElementById('f_prev3').innerHTML = splitBar(S.draft.orgRows); },
+  ()=>{},
+];
+function pickOrg(){
+  const code = document.getElementById('f_prod2').value; S.draft.code = code;
+  S.draft.orgRows = products[code].cur.map(r=>[...r]);
+  log(`${who()} 选择产品 ${code} ${products[code].name}`); next();
+}
+function renderOrgEditor(){
+  const box = document.getElementById('f_rows');
+  const ownDept = DEPTS[products[S.draft.code].dept];
+  box.innerHTML = S.draft.orgRows.map((r,i)=>`
+    <div class="rrow"><span class="rs">${r[0]}</span>
+    <input type="number" step="0.01" min="0" max="100" value="${(r[1]*100).toFixed(2)}" data-i="${i}">
+    <span style="font-size:11px">%</span>${r[0]===ownDept
+      ? '<span class="ro" style="font-size:10.5px;color:var(--lgray);width:110px">本部门（固定）</span>'
+      : `<button class="del" data-i="${i}">删除</button>`}</div>`).join('');
+  box.querySelectorAll('input').forEach(inp=>inp.addEventListener('input',()=>{
+    S.draft.orgRows[+inp.dataset.i][1] = Math.min(100,Math.max(0,parseFloat(inp.value)||0))/100; orgSum(); }));
+  box.querySelectorAll('.del').forEach(d=>d.addEventListener('click',()=>{
+    S.draft.orgRows.splice(+d.dataset.i,1); renderOrgEditor(); }));
+  orgSum();
+}
+function addOrgRow(){
+  const s = document.getElementById('f_addsel').value;
+  if(S.draft.orgRows.some(r=>r[0]===s)) return;
+  S.draft.orgRows.push([s,0]); renderOrgEditor();
+  document.querySelectorAll('#f_rows input')[S.draft.orgRows.length-1]?.focus();
+}
+function orgSum(){
+  const sum = S.draft.orgRows.reduce((a,r)=>a+r[1],0), ok = Math.abs(sum-1)<0.00005;
+  document.getElementById('f_sum').innerHTML = `
+    <div class="t"><span>合计校验</span><span style="color:${ok?'var(--ok)':'var(--risk)'};font-weight:700">${(sum*100).toFixed(2)}% ${ok?'✓':`✗ 差 ${((1-sum)*100).toFixed(2)}%`}</span></div>
+    <div class="trackbar"><div class="fill ${ok?'':'bad'}" style="width:${Math.min(sum,1.2)*100}%"></div></div>`;
+  document.getElementById('f_go3').disabled = !ok;
+}
+function orgSubmit(){
+  const sum=S.draft.orgRows.reduce((a,r)=>a+r[1],0);
+  const mx=S.draft.orgRows[0]; S.draft.orgRows.forEach(r=>{if(r[1]>mx[1])mx=r;});
+  mx[1]=+(mx[1]+(1-sum)).toFixed(4);
+  S.draft.orgRows.forEach(r=>r[1]=+r[1].toFixed(4));
+  next();
+}
+
+/* ---------- 场景③ 部门间调整 ---------- */
+RENDER.inter = [
+  ()=>{ const p=products['536752']; return `
+    <div class="hint" style="margin-bottom:10px">产品 <b>536752</b>（银行代销）当前部门间归属：银行业务部 95% / 建设银行渠道分公司 5%。发起方＝当前归属比例最高部门＝<b>银行业务部</b>（Q7）。</div>
+    <div class="fld"><label>划转比例（银行部 → 机构业务部）</label>
+      <input type="number" id="f_tr" step="1" min="1" max="90" value="15"><span style="font-size:11px;margin-left:6px">%</span></div>
+    <div id="f_tprev"></div>
+    <div class="rule-note">部门间调整<b>不涉及分公司</b>，仅调整总部部门之间的归属及比例；全年随时可发起，涉事部门线上确认。</div>
+    <div class="acts"><button class="btn pri" onclick="log('银行业务部发起部门间调整：536752 划转 '+S.draft.tr+'% 至机构业务部');next()">提交至涉事部门确认</button></div>`; },
+  ()=> `<div class="hint" style="margin-bottom:10px">机构业务部确认（涉事部门）：银行业务部拟将 <b>536752</b> 的 15% 划转至本部门。</div>
+    <div id="f_iprev"></div>
+    <div class="acts"><button class="btn danger" onclick="log('机构业务部退回部门间调整',true);rejectBack()">退回发起方</button>
+    <button class="btn pri" onclick="log('机构业务部确认同意划转');next()">确认同意</button></div>`,
+  ()=> `<div class="hint" style="margin-bottom:10px">创新发展部归口（部门间调整见证）。</div>
+    <div id="f_gprev"></div>
+    <div class="acts"><button class="btn danger" onclick="log('创新发展部归口退回',true);rejectBack()">退回</button>
+    <button class="btn pri" onclick="log('创新发展部归口完成');next()">归口通过</button></div>`,
+  ()=>{ const p=products['536752']; p.cur=[[DEPTS.bank,+(1-S.draft.tr/100-0.05).toFixed(4)],[DEPTS.org,S.draft.tr/100],['北京分公司',+(0.05-0).toFixed(4)]];
+    return doneBox('536752', p, '部门间调整生效：银行部 '+(p.cur[0][1]*100).toFixed(0)+'% / 机构部 '+(S.draft.tr)+'% / 北京分公司 5%'); },
+];
+WIRE.inter = [
+  ()=>{ const inp=document.getElementById('f_tr');
+    const upd=()=>{ const v=Math.min(90,Math.max(1,parseInt(inp.value)||1)); S.draft.tr=v;
+      document.getElementById('f_tprev').innerHTML=`<div class="hint" style="margin:8px 0 4px">调整后预览：</div>${splitBar([[DEPTS.bank,+(0.95-v/100).toFixed(4)],[DEPTS.org,v/100],['北京分公司',0.05]])}`; };
+    inp.addEventListener('input',upd); upd(); },
+  ()=>{ document.getElementById('f_iprev').innerHTML = splitBar([[DEPTS.bank,+(0.95-S.draft.tr/100).toFixed(4)],[DEPTS.org,S.draft.tr/100],['北京分公司',0.05]]); },
+  ()=>{ document.getElementById('f_gprev').innerHTML = splitBar([[DEPTS.bank,+(0.95-S.draft.tr/100).toFixed(4)],[DEPTS.org,S.draft.tr/100],['北京分公司',0.05]]); },
+  ()=>{},
+];
+
+/* ---------- 场景④ 新增产品首次确认 ---------- */
+RENDER.newp = [
+  ()=> `<div class="fld"><label>产品代码 / 名称</label>
+      <div style="display:flex;gap:8px;max-width:340px"><input value="536901" disabled><input value="券商定制专户启航1号" disabled></div></div>
+    <div class="fld"><label>牵头市场部门</label><input value="证券公司业务部" disabled></div>
+    <div class="fld"><label>部门间归属及比例（Q24）</label><div class="rows" id="n_rows"></div>
+      <div class="addrow">＋ 添加市场部门 <select id="n_addsel">${Object.values(DEPTS).filter(d=>d!==DEPTS.broker).map(s=>`<option>${s}</option>`).join('')}</select>
+      <button class="btn sm" style="padding:2px 10px;font-size:11px" onclick="addNewRow()">添加</button></div></div>
+    <div class="fld"><label>归属主体集合（勾选参与的分公司）</label>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:12px">${BRANCHES.map((b,i)=>`<label style="display:flex;gap:4px;align-items:center"><input type="checkbox" class="n_br" value="${b}" ${i<2?'checked':''}>${b}</label>`).join('')}</div></div>
+    <div class="sumbar" id="n_sum"></div>
+    <div class="rule-note">银行部新增产品：部门内比例<b>不手工设置</b>，自首个有数据月份起自动生成（Q24）；此处仅确认部门间归属及主体集合。</div>
+    <div class="acts"><button class="btn pri" id="n_go" onclick="newSubmit()">提交至客户经理确认</button></div>`,
+  ()=> `<div class="hint" style="margin-bottom:10px">客户经理确认新增产品归属信息（Q24）：与客户归属核对。</div>
+    <div id="n_prev1"></div>
+    <div class="acts"><button class="btn danger" onclick="log('客户经理退回：归属信息与客户实际不符',true);rejectBack()">退回</button>
+    <button class="btn pri" onclick="log('客户经理确认归属信息');next()">确认无误</button></div>`,
+  ()=> `<div class="hint" style="margin-bottom:10px">牵头部门（证券公司业务部）负责人最终确认。</div>
+    <div id="n_prev2"></div>
+    <div class="acts"><button class="btn danger" onclick="log('牵头部门退回',true);rejectBack()">退回</button>
+    <button class="btn pri" onclick="log('牵头部门确认完成首次归属确认');next()">确认</button></div>`,
+  ()=> doneBox('536901', {name:'券商定制专户启航1号'}, '首次确认完成，产品 <b>已转为存量产品</b>（Q6）'),
+];
+WIRE.newp = [
+  ()=>{ S.draft.newRows=[[DEPTS.broker,1]]; renderNewRows(); },
+  ()=>{ document.getElementById('n_prev1').innerHTML = splitBar(newPreview()); },
+  ()=>{ document.getElementById('n_prev2').innerHTML = splitBar(newPreview()); },
+  ()=>{},
+];
+function newPreview(){
+  const brs=[...document.querySelectorAll('.n_br:checked')].map(c=>c.value);
+  const rows=[...S.draft.newRows.map(r=>[...r])];
+  const sum=rows.reduce((a,r)=>a+r[1],0); rows.forEach(r=>r[1]=+(r[1]/sum).toFixed(4));
+  const mx=rows[0]; rows.forEach(r=>{if(r[1]>mx[1])mx=r;}); mx[1]=+(mx[1]+(1-rows.reduce((a,r)=>a+r[1],0))).toFixed(4);
+  S.draft.final=rows;
+  return rows;
+}
+function renderNewRows(){
+  const box=document.getElementById('n_rows');
+  box.innerHTML=S.draft.newRows.map((r,i)=>`
+    <div class="rrow"><span class="rs">${r[0]}</span>
+    <input type="number" step="1" min="0" max="100" value="${(r[1]*100).toFixed(0)}" data-i="${i}"><span style="font-size:11px">%</span>
+    ${i>0?`<button class="del" data-i="${i}">删除</button>`:'<span class="ro">牵头部门（固定）</span>'}</div>`).join('');
+  box.querySelectorAll('input').forEach(inp=>inp.addEventListener('input',()=>{
+    S.draft.newRows[+inp.dataset.i][1]=Math.min(100,Math.max(0,parseFloat(inp.value)||0))/100; newSum(); }));
+  box.querySelectorAll('.del').forEach(d=>d.addEventListener('click',()=>{ S.draft.newRows.splice(+d.dataset.i,1); renderNewRows(); }));
+  newSum();
+}
+function addNewRow(){
+  const s=document.getElementById('n_addsel').value;
+  if(S.draft.newRows.some(r=>r[0]===s)) return;
+  S.draft.newRows.push([s,0]); renderNewRows();
+}
+function newSum(){
+  const sum=S.draft.newRows.reduce((a,r)=>a+r[1],0), ok=sum>0;
+  const brs=[...document.querySelectorAll('.n_br:checked')].length;
+  document.getElementById('n_sum').innerHTML=`
+    <div class="t"><span>部门间比例合计</span><span style="color:${ok?'var(--ok)':'var(--risk)'};font-weight:700">${(sum*100).toFixed(0)}%（将按占比归一）· 已选主体 ${brs} 个</span></div>
+    <div class="trackbar"><div class="fill" style="width:${Math.min(sum,1.2)*100}%"></div></div>`;
+  document.getElementById('n_go').disabled = !(ok && brs>0);
+}
+function newSubmit(){ log('证券公司业务部发起 536901 首次归属确认（部门间'+S.draft.newRows.length+'方 · 主体'+document.querySelectorAll('.n_br:checked').length+'个）'); next(); }
+
+/* ---------- 完成页 ---------- */
+function doneBox(code, p, extra){
+  return `<div class="done-box"><div class="big">✅</div><h3>调整已生效</h3>
+    <div class="hint">${code} · ${p.name}${extra?'<br>'+extra:''}</div>
+    <div style="margin-top:12px">${p.cur?splitBar(p.cur):''}</div>
+    <div class="acts" style="justify-content:center"><button class="btn pri" onclick="resetAll()">返回场景选择</button></div></div>`;
+}
+</script>
+</body>
+</html>
