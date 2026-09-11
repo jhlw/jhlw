@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  界面原型(一次性演示代码,非生产)
+  问题:基金经理注销登记页(上报/批准/生效日期 + 上传附件)如何布局?
+  来源:用户提供的系统截图转换;数据为演示数据。
+  按需求调整:原表格行内的三个日期列(离任上报协会日期、离任协会批准日期、
+  任职结束日期)已移至表格下方,作为整单统一填写的独立字段(分别填写)。
+  可交互:日期控件(弹日历)、提交必填校验、上传按钮/取消(提示)。
+  ============================================================
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>基金经理注销登记 - 界面原型</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font:14px/1.5 "Microsoft YaHei","PingFang SC",sans-serif; color:#333; background:#eef1f6; }
+  a { text-decoration:none; }
+
+  .page { max-width:1480px; margin:0 auto; padding:18px 20px 26px; }
+
+  /* ===== 区块标题(深蓝标签 + 浅蓝横条) ===== */
+  .sec-head { display:flex; align-items:center; margin-bottom:12px; }
+  .sec-tag { background:#1d4e9e; color:#fff; padding:6px 24px 6px 16px; font-size:14px; font-weight:600;
+             display:flex; align-items:center; gap:8px; border-radius:3px 0 0 3px;
+             clip-path:polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%); }
+  .sec-tag::before { content:''; width:7px; height:7px; border-radius:50%; background:#9cc4f5; flex-shrink:0; }
+  .sec-bar { flex:1; height:10px; margin-left:-4px; border-radius:5px;
+             background:linear-gradient(90deg,#b9d3f0, #e8f0fa 65%, rgba(232,240,250,0)); }
+
+  .card { background:#fff; border-radius:4px; box-shadow:0 1px 3px rgba(0,0,0,.07); padding:16px; margin-bottom:16px; }
+
+  /* ===== 表格 ===== */
+  .tbl-wrap { overflow-x:auto; border:1px solid #e3e8ef; border-radius:3px; }
+  table { width:100%; border-collapse:collapse; font-size:13px; min-width:980px; }
+  th { background:#f2f6fb; color:#4a5a76; font-weight:600; padding:10px 8px; border-bottom:1px solid #e3e8ef; white-space:nowrap; text-align:center; }
+  td { padding:10px 8px; border-bottom:1px solid #edf1f6; text-align:center; vertical-align:middle; }
+  tbody tr:last-child td { border-bottom:none; }
+  td.l { text-align:left; }
+  .empty { color:#909399; padding:30px 0; }
+  .ro-date { display:inline-flex; align-items:center; gap:6px; background:#f5f7fa; border:1px solid #e8ecf2; border-radius:3px; padding:3px 10px; color:#606266; }
+  .ro-date .ico { color:#b0b6bf; font-size:12px; }
+  .tag-orange { display:inline-block; padding:1px 8px; border-radius:3px; font-size:12px; background:#fdf3e6; color:#d98a2b; }
+
+  /* ===== 表单行(表格下方统一填写) ===== */
+  .form-row { display:flex; flex-wrap:wrap; gap:16px 44px; padding:16px 4px 4px; align-items:flex-start; }
+  .f-item { display:flex; align-items:center; }
+  .f-item label { font-size:13px; color:#4a5a76; margin-right:8px; white-space:nowrap; }
+  .req::before { content:'*'; color:#e64c4c; margin-right:2px; }
+  .err-msg { color:#e64c4c; font-size:12px; margin-left:6px; display:none; }
+  .f-item.err .err-msg { display:inline; }
+
+  .date-ipt { position:relative; }
+  .date-ipt input { height:32px; width:200px; border:1px solid #c9d3e0; border-radius:3px; padding:0 32px 0 10px;
+                    font-size:13px; color:#333; outline:none; cursor:pointer; background:#fff; }
+  .date-ipt input::placeholder { color:#b0b6bf; }
+  .date-ipt .cal-ico { position:absolute; right:9px; top:50%; transform:translateY(-50%); color:#8a99b5; pointer-events:none; font-size:13px; }
+  .date-ipt input:focus, .date-ipt.open input { border-color:#1d4e9e; }
+  .f-item.err .date-ipt input { border-color:#e64c4c; }
+
+  /* ===== 日历面板 ===== */
+  .cal { position:absolute; top:38px; left:0; width:248px; background:#fff; border:1px solid #dbe4ef; border-radius:6px;
+         box-shadow:0 4px 16px rgba(20,45,90,.16); z-index:60; display:none; user-select:none; padding:6px 10px 10px; }
+  .cal.show { display:block; }
+  .cal-head { display:flex; align-items:center; justify-content:space-between; padding:6px 2px 8px; }
+  .cal-title { font-size:13px; font-weight:600; color:#333; }
+  .cal-nav { width:24px; height:24px; border:1px solid #dbe4ef; background:#fff; border-radius:3px; cursor:pointer; color:#4a5a76; font-size:12px; }
+  .cal-nav:hover { color:#1d4e9e; border-color:#1d4e9e; }
+  .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:2px; }
+  .cal-w { text-align:center; font-size:12px; color:#8a99b5; padding:3px 0; }
+  .cal-d { height:28px; display:flex; align-items:center; justify-content:center; font-size:12px; color:#333; cursor:pointer; border-radius:3px; }
+  .cal-d:hover { background:#eaf1fb; }
+  .cal-d.dim { color:#c3cbd8; cursor:default; }
+  .cal-d.today { color:#1d4e9e; font-weight:600; }
+  .cal-d.on { background:#1d4e9e; color:#fff; }
+
+  /* ===== 按钮 ===== */
+  .btn { height:32px; padding:0 18px; border-radius:3px; font-size:13px; cursor:pointer; border:1px solid #c9d3e0; background:#fff; color:#4a5a76; display:inline-flex; align-items:center; gap:5px; }
+  .btn.primary { background:#1d4e9e; border-color:#1d4e9e; color:#fff; }
+  .btn.primary:hover { background:#173f81; }
+  .btn.plain:hover { color:#1d4e9e; border-color:#1d4e9e; }
+  .att-bar { margin-bottom:12px; }
+  .foot-btns { display:flex; justify-content:center; gap:12px; padding:6px 0 14px; }
+
+  .toast { position:fixed; top:60px; left:50%; transform:translateX(-50%); background:#edf2fc; border:1px solid #b9cdf2; color:#1d4e9e;
+           padding:9px 18px; border-radius:4px; font-size:13px; display:none; z-index:110; box-shadow:0 2px 8px rgba(0,0,0,.08); }
+
+  .note { background:#f4f9ff; border:1px dashed #a9c6ee; border-radius:4px; padding:10px 14px; font-size:12px; color:#5b7aa6; line-height:1.9; }
+  .note b { font-weight:600; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ===== 区块1:上报、批准、生效日期 ===== -->
+  <div class="card">
+    <div class="sec-head"><div class="sec-tag">上报、批准、生效日期</div><div class="sec-bar"></div></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:56px">序号</th>
+            <th style="width:100px">基金代码</th>
+            <th>基金全称</th>
+            <th style="width:90px">变更业务</th>
+            <th style="width:110px">解聘基金经理</th>
+            <th style="width:170px">离任会议决议日期</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td><td>007806</td>
+            <td class="l">建信MSCI中国A股指数增强型证券投资基金</td>
+            <td><span class="tag-orange">注销</span></td>
+            <td>赵云煜</td>
+            <td><span class="ro-date"><span class="ico">▦</span>2026-09-11</span></td>
+          </tr>
+          <tr>
+            <td>2</td><td>007806</td>
+            <td class="l">建信MSCI中国A股指数增强型证券投资基金</td>
+            <td><span class="tag-orange">注销</span></td>
+            <td>叶乐天</td>
+            <td><span class="ro-date"><span class="ico">▦</span>2026-09-11</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 三个日期移至表格下方,整单统一填写 -->
+    <div class="form-row">
+      <div class="f-item" id="fi-1">
+        <label class="req">离任上报协会日期</label>
+        <div class="date-ipt">
+          <input id="date-1" placeholder="请选择" readonly onclick="toggleCal(1)">
+          <span class="cal-ico">▦</span>
+          <div class="cal" id="cal-1"></div>
+        </div>
+        <span class="err-msg">请选择日期</span>
+      </div>
+      <div class="f-item" id="fi-2">
+        <label class="req">离任协会批准日期</label>
+        <div class="date-ipt">
+          <input id="date-2" placeholder="请选择" readonly onclick="toggleCal(2)">
+          <span class="cal-ico">▦</span>
+          <div class="cal" id="cal-2"></div>
+        </div>
+        <span class="err-msg">请选择日期</span>
+      </div>
+      <div class="f-item" id="fi-3">
+        <label class="req">任职结束日期</label>
+        <div class="date-ipt">
+          <input id="date-3" placeholder="请选择" readonly onclick="toggleCal(3)">
+          <span class="cal-ico">▦</span>
+          <div class="cal" id="cal-3"></div>
+        </div>
+        <span class="err-msg">请选择日期</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 区块2:上传附件 ===== -->
+  <div class="card">
+    <div class="sec-head"><div class="sec-tag">上传附件</div><div class="sec-bar"></div></div>
+    <div class="att-bar"><button class="btn primary" onclick="toast('原型演示:点击后弹出文件选择器(示意)')">上传其他文件</button></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:56px">序号</th>
+            <th>示例附件名称</th>
+            <th>上传附件名称</th>
+            <th>文件目录</th>
+            <th style="width:110px">附件类型</th>
+            <th style="width:90px">是否必填</th>
+            <th style="width:90px">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="7" class="empty">暂无数据</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="foot-btns">
+    <button class="btn primary" onclick="submitForm()">提 交</button>
+    <button class="btn plain" onclick="toast('原型演示:取消后返回列表页(示意)')">取 消</button>
+  </div>
+
+  <div class="note">
+    <b>原型说明:</b>本页为截图界面的 HTML 转换原型,数据为演示数据。
+    ① 按需求调整:原表格行内的三个日期列(离任上报协会日期、离任协会批准日期、任职结束日期)已移至表格下方,作为整单统一填写的独立字段 —— 一次填写对本页全部产品/解聘基金经理生效;
+    ② 三个日期均为必填,点击弹出日历选择;提交时校验;
+    ③ 「离任会议决议日期」为带入的只读数据;页面底部「提交/取消」按钮为原型补充示意(原截图未展示到底部)。
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= 日历控件 ================= */
+var MONTHS = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
+var TODAY = new Date(2026, 8, 11);            // 2026-09-11
+var calState = null;                          // { slot, y, m }  slot: 1/2/3
+
+function toggleCal(slot){
+  var cal = document.getElementById('cal-' + slot);
+  var ipt = document.getElementById('date-' + slot);
+  var wasOpen = cal.classList.contains('show');
+  closeAllCal();
+  if (!wasOpen) {
+    // 有值则定位到所选月份,否则默认当月
+    var v = ipt.value;
+    var y = TODAY.getFullYear(), m = TODAY.getMonth();
+    if (/^\d{4}-\d{2}-\d{2}$/.test(v)) { y = +v.slice(0,4); m = +v.slice(5,7) - 1; }
+    calState = { slot:slot, y:y, m:m };
+    renderCal();
+    cal.classList.add('show');
+    ipt.parentNode.classList.add('open');
+  }
+}
+function closeAllCal(){
+  for (var s = 1; s <= 3; s++) {
+    document.getElementById('cal-' + s).classList.remove('show');
+    document.getElementById('date-' + s).parentNode.classList.remove('open');
+  }
+  calState = null;
+}
+function calShift(d){
+  if (!calState) return;
+  var d0 = new Date(calState.y, calState.m + d, 1);
+  calState.y = d0.getFullYear(); calState.m = d0.getMonth();
+  renderCal();
+}
+function renderCal(){
+  var st = calState; if (!st) return;
+  var first = new Date(st.y, st.m, 1);
+  var offset = (first.getDay() + 6) % 7;                  // 周一为首列
+  var days = new Date(st.y, st.m + 1, 0).getDate();
+  var ipt = document.getElementById('date-' + st.slot);
+  var sel = /^\d{4}-\d{2}-\d{2}$/.test(ipt.value) ? +ipt.value.slice(8,10) : 0;
+
+  var h = '<div class="cal-head">'
+    + '<button class="cal-nav" onclick="calShift(-1)">‹</button>'
+    + '<span class="cal-title">' + st.y + '年 ' + MONTHS[st.m] + '</span>'
+    + '<button class="cal-nav" onclick="calShift(1)">›</button></div>'
+    + '<div class="cal-grid">';
+  ['一','二','三','四','五','六','日'].forEach(function(w){ h += '<span class="cal-w">' + w + '</span>'; });
+  for (var i = 0; i < offset; i++) h += '<span class="cal-d dim"></span>';
+  for (var d = 1; d <= days; d++) {
+    var cls = 'cal-d';
+    if (d === sel) cls += ' on';
+    else if (st.y === TODAY.getFullYear() && st.m === TODAY.getMonth() && d === TODAY.getDate()) cls += ' today';
+    h += '<span class="' + cls + '" onclick="pickDay(' + d + ')">' + d + '</span>';
+  }
+  h += '</div>';
+  document.getElementById('cal-' + st.slot).innerHTML = h;
+}
+function pickDay(d){
+  var st = calState; if (!st) return;
+  var mm = ('0' + (st.m + 1)).slice(-2), dd = ('0' + d).slice(-2);
+  document.getElementById('date-' + st.slot).value = st.y + '-' + mm + '-' + dd;
+  document.getElementById('fi-' + st.slot).classList.remove('err');
+  closeAllCal();
+}
+document.addEventListener('click', function(e){
+  if (!e.target.closest('.date-ipt')) closeAllCal();
+});
+
+/* ================= 提交校验 / 提示 ================= */
+function submitForm(){
+  var ok = true, names = ['离任上报协会日期','离任协会批准日期','任职结束日期'];
+  var vals = [];
+  for (var s = 1; s <= 3; s++) {
+    var v = document.getElementById('date-' + s).value;
+    vals.push(v);
+    if (!v) { document.getElementById('fi-' + s).classList.add('err'); ok = false; }
+  }
+  if (!ok) { toast('请填写:离任上报协会日期、离任协会批准日期、任职结束日期(均为必填)'); return; }
+  toast('提交成功(原型演示):上报 ' + vals[0] + ' / 批准 ' + vals[1] + ' / 任职结束 ' + vals[2]);
+}
+
+var toastTimer = null;
+function toast(msg){
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ t.style.display = 'none'; }, 2800);
+}
+</script>
+</body>
+</html>
