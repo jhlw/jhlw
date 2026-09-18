@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>0002 · 三栏例子表实战：R1 直销链</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="page">
+
+<header class="lesson-header">
+  <p class="lesson-kicker">需求分析 · 实例化需求 · 课 0002</p>
+  <h1>三栏例子表实战：给 R1 直销链配第一张表</h1>
+  <p class="lesson-meta">约 10–15 分钟 ｜ 上接 <a href="0001-关键例子-用真实数据逼出边界.html">课 0001 · 关键例子</a> ｜ 实战素材：净收入拆分 R1（直销链）</p>
+</header>
+
+<p class="lead">上一课你学会了挑「让规则开口」的那行数据。这一课把能力落到产出物上：<strong>给你的第一条计算规则 R1 配一张三栏例子表</strong>——它直接挂进净收入项目，下次与银行业务部确认时对着例子走，而不是对着规则条文走。</p>
+
+<h2><span class="sec-no">§1</span>先热身：期望输出怎么写</h2>
+
+<div class="quiz" data-answer="b">
+  <p class="quiz-q" data-no="Q1">R1 例子里「南京/成都/武汉三地区销量相等」这一行，期望输出最规范的写法是？</p>
+  <ul class="quiz-opts">
+    <li data-key="a"><span class="key">a</span>直销内占比＝销量÷组内销量合计</li>
+    <li data-key="b"><span class="key">b</span>各地区 0.3333，尾差归属待定</li>
+    <li data-key="c"><span class="key">c</span>按规则 R1 计算得出</li>
+  </ul>
+  <div class="quiz-explain" hidden>三连：a 是<strong>公式</strong>不是输出（公式规则里已有，例子要的是算出来的数）；c 是空话，等于没写；b 才是关键例子的写法——手算到具体数字（0.3333），算不下去的地方（尾差该给谁）<strong>诚实标注「待定」</strong>。这正是 0001 的要点：写不出唯一输出的地方，就是下一个待确认问题。</div>
+</div>
+
+<h2><span class="sec-no">§2</span>R1 是什么（30 秒）</h2>
+
+<p>规则原文（<a href="../../../项目/净收入比例录入/专户产品KPI净收入数据拆分及确认流程需求20260303_修订20260908.xlsx">需求 xlsx · 处理规则 sheet</a>）：</p>
+
+<blockquote>
+  R1 直销：取销量表<strong>产品代码、分行、销量</strong>，按产品分组计算<strong>组内各地区销量占比</strong>。（剩余份额分配算法 · 直销链）
+  <span class="src">配套口径：Q14 比例保留 4 位小数，尾差计入占比最大方；Q30 下 R1 的结果还要 ×（1−总部份额）——本课只做组内占比，总部份额留给后面的课</span>
+</blockquote>
+
+<p>输入只有三个字段加一张主数据表：销量表（产品代码 / 分行（地区）/ 销量），以及「地区 → 分公司」映射（主数据⑤，银行业务部维护）。字段越少，边界越好找——每个字段和每张表各贡献一类边界。</p>
+
+<h2><span class="sec-no">§3</span>找边界（动手前先判断）</h2>
+
+<div class="quiz" data-answer="b">
+  <p class="quiz-q" data-no="Q2">给 R1 挑边界例，下面哪一对最值得优先写进例子表？</p>
+  <ul class="quiz-opts">
+    <li data-key="a"><span class="key">a</span>销量特别大的产品 ／ 销量特别小的产品</li>
+    <li data-key="b"><span class="key">b</span>三地区占比并列 ／ 销量表出现了映射表没有的地区</li>
+    <li data-key="c"><span class="key">c</span>产品代码位数不同 ／ 销量表当月行数很多</li>
+  </ul>
+  <div class="quiz-explain" hidden>a 是<strong>量级</strong>差异——占比是归一化除法，对量级天然免疫，10 万份和 1 亿份算出来结构一样；c 是抠字眼，规则对它无感。b 每一个都打到规则或主数据的<strong>结构</strong>上：并列占比让 Q14「尾差计入占比最大方」失去定义（谁是最大方？）；映射表缺行使 R1 算得出占比、却落不到分公司。好边界打结构，不打量级。</div>
+</div>
+
+<h2><span class="sec-no">§4</span>动手：写出你的前三行</h2>
+
+<div class="quiz selfcheck">
+  <p class="quiz-q" data-no="Q3">用真实字段名，给 R1 写三个例子：1 个正常例 ＋ 2 个边界例。格式建议「产品 5362XX：地区A __ 万份、地区B __ 万份 → 期望输出 ____」。数字先用示意的，回头换真实报表数。</p>
+  <textarea placeholder="正常例：产品______：______万份、______万份 → ______&#10;边界例1：……&#10;边界例2：……"></textarea>
+  <button class="quiz-reveal" type="button">对答案</button>
+  <div class="quiz-explain" hidden>
+    <p><strong>参考三栏例子表（R1 直销链）</strong>——每行标注它暴露的边界类型：</p>
+    <table>
+      <thead><tr><th>#</th><th>输入（当月销量表）</th><th>规则</th><th>期望输出（手算）</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>产品 536201：北京 60 万份、上海 40 万份</td><td>R1</td><td>北京 0.6000 / 上海 0.4000（合计恰 1.0000，无尾差）</td></tr>
+        <tr><td>2</td><td>产品 536204：仅在杭州一行，35 万份</td><td>R1</td><td>杭州 1.0000（单地区退化，无歧义）</td></tr>
+        <tr><td>3</td><td>产品 536318：南京 / 成都 / 武汉各 20 万份</td><td>R1 × Q14</td><td>各 0.3333，合计 0.9999；尾差 0.0001「计入占比最大方」——<strong>三方并列，无定义 → 待确认</strong></td></tr>
+        <tr><td>4</td><td>产品 536750：苏州 100 万份，主数据⑤无「苏州」行</td><td>R1 × 主数据⑤</td><td>组内占比 1.0000，但落不到分公司 → <strong>待确认</strong></td></tr>
+      </tbody>
+    </table>
+    <p>产品代码与数字为课堂示意；动手落库时换成真实产品（如 536392）当月报表数——<strong>结构照抄，数字换真</strong>，这就是「真实」标准的落地方式。对一下你写的三行：正常例的输出你算成具体四位数了吗？两个边界例有没有至少一个打到「结构」上？</p>
+  </div>
+</div>
+
+<h2><span class="sec-no">§5</span>把表挂进项目（真实步骤）</h2>
+
+<div class="card">
+  <p class="card-title">三步闭环</p>
+  <ol>
+    <li><strong>抄表</strong>：把上面参考表（或你自己改好的版本）复制成 markdown，存到 <span class="mono">项目/净收入比例录入/docs/</span> 下（与 ADR 同级），命名如 <span class="mono">R1-直销链-例子表.md</span>。</li>
+    <li><strong>换真</strong>：从当月《直销产品销量情况》邮件里取一个真实产品（两地区、三地区各一个），把示意数字换成真实销量。</li>
+    <li><strong>上桌</strong>：下次与银行业务部/创新发展部对口径时，把第 3、4 行的「待确认」直接抛出去——尾差并列怎么定、映射缺地区谁补——这两个问题的答案回填后，这张表就是 R1 的<strong>活文档</strong>起点。</li>
+  </ol>
+</div>
+
+<div class="alert">
+  <p>注意第 3、4 行的期望输出栏现在是「待确认」——这不是表格的缺陷，是表格的<strong>产出</strong>。两张表五行数据，换来了两个此前 Q1–Q35 拷问都没浮出来的问题。这就是例子的拷问力。</p>
+</div>
+
+<footer class="lesson-footer">
+  <div class="ask-teacher">
+    <strong>做完回会话说一声</strong>——把你写的三个例子（或挂好后的文件路径）贴回来，我看过再定下一课。Q3、Q4 的边界答案我也可以陪你逐行核。
+  </div>
+
+  <p><strong>主推资源</strong>：<a href="01-实例化需求-精读指南.md">精读指南 01 · 三栏例子表</a>——R2/R3/R5/R6 的同款练习它都列了清单（ mission 的 success criteria 就是六条规则全部配表）。</p>
+
+  <p class="cite">引用：规则与口径 <a href="../../../项目/净收入比例录入/专户产品KPI净收入数据拆分及确认流程需求20260303_修订20260908.xlsx">净收入需求 xlsx</a>（R1 / Q14 / Q30）｜总部份额模型 <a href="../../../项目/净收入比例录入/docs/adr/0001-银行部拆分-总部份额可设置剩余纯计算.md">ADR-0001</a>｜上一课 <a href="0001-关键例子-用真实数据逼出边界.html">0001 · 关键例子</a></p>
+
+  <p class="cite">下一课（待你 R1 表落地后开）：0003 · 同法炮制 R2 代销链与 R3 混合链——开始体验「例子表写得多了，规则会自己长出共性」｜ <a href="../MISSION.md">返回学习使命</a></p>
+</footer>
+
+</div>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>
