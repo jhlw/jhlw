@@ -2,8 +2,8 @@
 
 ## Knowledge（书籍）
 
-- [《实例化需求：团队如何交付正确的软件》— Gojko Adzic](https://book.douban.com/subject/24801575/)
-  原名 *Specification by Example*，2011。中译本由人民邮电出版社出版（图灵系列）。30 个真实团队案例研究。**使用场景**：规则密集型需求（拆分公式、报送口径）的例子化验证，配套 lessons/01。
+- [《实例化需求：团队如何交付正确的软件》— Gojko Adzic](https://book.douban.com/subject/11611022/)
+  原名 *Specification by Example*，2011。中译本：人民邮电出版社（图灵丛书）2012，190 页。30 个真实团队案例研究。**电子版**：得到 APP 有售（23.53 元，可试读）；微信读书未上架；纸质书已绝版，二手市场活跃。全书解析见 [reference/实例化需求-全书解析.md](reference/实例化需求-全书解析.md)。**使用场景**：规则密集型需求（拆分公式、报送口径）的例子化验证，配套 lessons/01。
 
 - [《掌握需求过程》— Suzanne Robertson & James Robertson](https://book.douban.com/subject_search?search_text=掌握需求过程)
   原名 *Mastering the Requirements Process*（第 3 版），2011。有中译本。**使用场景**：需求壳、fit criterion（验收标准写法）、27 类需求类型完整性检查，配套 lessons/02。购书前先下载官方免费模板试用（见下）。
