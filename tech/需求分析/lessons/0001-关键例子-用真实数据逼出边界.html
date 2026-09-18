@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>0001 · 关键例子：用真实数据逼出边界</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="page">
+
+<header class="lesson-header">
+  <p class="lesson-kicker">需求分析 · 实例化需求 · 课 0001</p>
+  <h1>关键例子：用真实数据逼出边界</h1>
+  <p class="lesson-meta">约 5–8 分钟 ｜ 对应《实例化需求》第 7 章「举例说明」｜ 练习素材：私募业绩披露 C2 规则</p>
+</header>
+
+<p class="lead">你的拷问已经能定稿「用哪条规则」——Q1–Q35、C1–C15 都是证据。但定稿的规则仍会在一类地方翻车：<strong>边界上的真实数据</strong>。这一课只教一件事：给规则配一行真实数据，让缺陷自己开口。</p>
+
+<blockquote>
+  拷问能定稿「用哪条规则」，但规则的边界缺陷只有带真实数据的例子能暴露。
+  <span class="src">—— <a href="../MISSION.md">tech/需求分析/MISSION.md</a>，本次学习的立项理由</span>
+</blockquote>
+
+<h2><span class="sec-no">§1</span>一个翻车现场</h2>
+
+<p>下面这条规则来自建行渠道业绩披露的真实需求，表格定稿、口径确认过的（<a href="../../../项目/私募业绩披露/需求规则分析.md">需求规则分析.md §2.1</a>）：</p>
+
+<table>
+  <thead>
+    <tr><th>产品类别</th><th>成立时间</th><th>展示内容</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>固收类</td><td>&lt; 1 个月</td><td>仅展示产品净值（累计净值）</td></tr>
+    <tr><td>固收类</td><td>≥ 1 个月且 &lt; 1 年</td><td>成立以来涨跌幅</td></tr>
+    <tr><td>固收类</td><td>≥ 1 年</td><td>成立以来年化收益率（几何）</td></tr>
+    <tr><td>非固收类</td><td>&lt; 6 个月</td><td>仅展示产品净值（累计净值）</td></tr>
+    <tr><td>非固收类</td><td>≥ 6 个月</td><td>成立以来涨跌幅（满 1 年<strong>不</strong>切换年化）</td></tr>
+  </tbody>
+</table>
+
+<p>阈值基准：成立时间 = <strong>基金合同生效日</strong>，按<strong>自然日</strong>计算，<strong>满的当日切换</strong>（C2 待确认）。</p>
+
+<p>看起来毫无歧义，对吗？现在读三个日期，再回头看这张表：</p>
+
+<table>
+  <thead>
+    <tr><th>#</th><th>输入：生效日 → 估值日</th><th>期望输出（你来手算）</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td class="mono">2024-03-15 → 2024-04-14</td><td>？</td></tr>
+    <tr><td>2</td><td class="mono">2024-03-15 → 2025-03-15</td><td>？</td></tr>
+    <tr><td>3</td><td class="mono">2024-01-31 → 2024-02-29</td><td>？？</td></tr>
+  </tbody>
+</table>
+
+<p>例 1、例 2 按「自然日、满当日切换」都能算出唯一答案（差一天满月 → 净值档；整 365 天 → 当日切年化）。例 3 呢？——间隔只有 29 天，可日历上「1 月 31 日再过一个自然月」根本没有 2 月 31 日，2 月 29 日已经是月底了。<strong>「满 1 个月」按 30 天算还是按日历月算，这张表没有答案。</strong>两种口径结论相反。</p>
+
+<div class="alert">
+  <p><strong>规则没有坏，是它从未被真实日期审问过。</strong>这不是抠字眼——上线后建行侧按日历月、我方按 30 天实现，同一产品在 2 月 29 日这天两边展示档位不一致，就是一条生产缺陷。C2 悬而未决的实质正是它。</p>
+</div>
+
+<h2><span class="sec-no">§2</span>关键例子是什么</h2>
+
+<div class="card">
+  <p class="card-title">定义</p>
+  <p><strong>关键例子（key example）</strong> = 一行<strong>真实</strong>的输入数据 + 一个<strong>手算</strong>的期望输出，专门挑能让规则开口说话的那种组合。它是《实例化需求》全书的原子单位：业务目标 → 范围 → <em>关键实例</em> → 可执行规格 → 活文档。</p>
+</div>
+
+<p>Adzic 在第 7 章给了四条挑选标准，每条都对着一个反模式（详见 <a href="../reference/实例化需求-全书解析.md">全书解析 · 模式 3</a>）：</p>
+
+<table>
+  <thead>
+    <tr><th>标准</th><th>反模式（看到就退回）</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>精确到位</strong></td><td>「是/否」式回答；抽象等价类（「成立满 A 月的产品 B」）</td></tr>
+    <tr><td><strong>完整</strong></td><td>只用一套数据试一遍；不换替代方法复核</td></tr>
+    <tr><td><strong>真实</strong></td><td>虚构数据（「假设有个产品 2024-01-31 成立」要换成真实产品的真实生效日）</td></tr>
+    <tr><td><strong>易于理解</strong></td><td>穷举所有日期组合；不给出例 3 那样的边界命名</td></tr>
+  </tbody>
+</table>
+
+<p>对照 §1 的三行数据：例 1 是<strong>贴边界的正常例</strong>（差一天），例 2 是<strong>切换当日的边界例</strong>，例 3 是<strong>暴露缺陷的待确认例</strong>——期望输出写不出来，这个「写不出」本身就是产出，它直接变成你的下一个 C 编号。</p>
+
+<h2><span class="sec-no">§3</span>动手：三道题</h2>
+
+<div class="quiz" data-answer="c">
+  <p class="quiz-q" data-no="Q1">固收类产品，基金合同生效日 2024-03-15，估值日 2025-03-15（满一年当天）。F33 渠道优先行当天应展示什么？</p>
+  <p class="quiz-sub">规则回顾：满的<strong>当日</strong>切换，按自然日。</p>
+  <ul class="quiz-opts">
+    <li data-key="a"><span class="key">a</span>仅展示累计净值</li>
+    <li data-key="b"><span class="key">b</span>成立以来涨跌幅</li>
+    <li data-key="c"><span class="key">c</span>几何年化收益率</li>
+  </ul>
+  <div class="quiz-explain" hidden>满 1 年的<strong>当日</strong>＝2025-03-15，当天即切换为年化。注意前一天（2025-03-14）还是涨跌幅档——一对相邻日期，就是两个关键例子。若「当日」二字被实现成「次日起」，这对例子立刻抓住它。</div>
+</div>
+
+<div class="quiz" data-answer="b">
+  <p class="quiz-q" data-no="Q2">同一条规则，下面哪组「生效日 → 估值日」最能暴露尚未定义的边界？</p>
+  <ul class="quiz-opts">
+    <li data-key="a"><span class="key">a</span>生效 2024-03-15，估值 2024-06-20</li>
+    <li data-key="b"><span class="key">b</span>生效 2024-01-31，估值 2024-02-29</li>
+    <li data-key="c"><span class="key">c</span>生效 2024-03-15，估值 2025-03-14</li>
+  </ul>
+  <div class="quiz-explain" hidden>a、c 按「自然日满当日切换」都能算出唯一档位，<strong>不暴露任何东西</strong>。b 逼问「1 个月＝30 天还是日历月」：29 天 &lt; 30 天（未满），但 2-29 已是日历月的月末（算满）——两种口径结论相反。好例子的挑选直觉：<strong>月末生效日 × 闰年 × 档位阈值</strong>三件事撞在一起的地方。</div>
+</div>
+
+<div class="quiz selfcheck">
+  <p class="quiz-q" data-no="Q3">轮到非固收类（&lt;6 个月净值，≥6 个月涨跌幅，满 1 年不切年化）。写出一组最可能把开发问住的「生效日 → 估值日」，并手算它落在哪一档——算不出来就写下卡在哪。</p>
+  <textarea placeholder="生效 ____-__-__ → 估值 ____-__-__；落档：______；卡点：______"></textarea>
+  <button class="quiz-reveal" type="button">对答案</button>
+  <div class="quiz-explain" hidden>参考：生效 <span class="mono">2024-08-31</span> → 估值 <span class="mono">2025-02-26</span>。按 180 天口径恰好第 180 天 → 涨跌幅档；按日历月口径「8-31 的 6 个对月」是 2-31（不存在，2-28 才算月底）→ 净值档。<strong>两种口径不同档。</strong>另外「8 月 31 日成立」这类月末生效日本身就没有干净的对月映射，凡是你写不出唯一档位的组合，都该领一个 C 编号进待确认清单——这就是例子在替你拷问。</div>
+</div>
+
+<h2><span class="sec-no">§4</span>今天带走的三条直觉</h2>
+
+<div class="card">
+  <p class="card-title">挑关键例子</p>
+  <ol>
+    <li><strong>贴边界</strong>：阈值前后各取一对相邻日期（3-14 / 3-15），别取躺在档位正中间的安逸数据。</li>
+    <li><strong>要真实</strong>：用真实产品的真实生效日，不用「假设有个产品」——虚构数据骗不过日历。</li>
+    <li><strong>手算输出</strong>：期望输出写成具体档位、具体数字，写公式不算数；<strong>写不出输出的例子 = 下一个待确认问题</strong>。</li>
+  </ol>
+</div>
+
+<p>这套做法在净收入拆分项目里已有标准容器——<strong>三栏例子表</strong>（输入数据（真实）→ 适用规则 → 期望输出（手算）），格式与示例见 <a href="../lessons/01-实例化需求-精读指南.md">精读指南 01 · 三栏例子表</a>。下一课我们就用它给净收入的 R1 直销规则配第一张表。</p>
+
+<footer class="lesson-footer">
+  <div class="ask-teacher">
+    <strong>有任何不清楚的，直接回会话里问我。</strong>我是这门课的老师——「为什么 2-29 算暴露边界」「我手头哪条规则适合先练」，什么都可以问。
+  </div>
+
+  <p><strong>主推资源</strong>（一次只推一个）：<a href="../lessons/01-实例化需求-精读指南.md">《实例化需求》精读指南</a>——本课对应其「关键例子」一节与三栏例子表。书本体：得到 APP 有售（23.53 元可试读），不急着买，先读指南。</p>
+
+  <p class="cite">引用：规则素材 <a href="../../../项目/私募业绩披露/需求规则分析.md">项目/私募业绩披露/需求规则分析.md §2.1</a>（C2/C12 待确认口径）｜概念出处 Adzic《<a href="https://book.douban.com/subject/11611022/">实例化需求</a>》第 7 章，中文摘要见 <a href="../reference/实例化需求-全书解析.md">全书解析</a>｜样式与测验为本工作区组件 <span class="mono">assets/style.css</span> · <span class="mono">assets/quiz.js</span></p>
+
+  <p class="cite">下一课：0002 · 三栏例子表实战——给净收入 R1 配第一张表 ｜ <a href="../MISSION.md">返回学习使命</a></p>
+</footer>
+
+</div>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>
