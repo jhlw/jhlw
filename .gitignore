@@ -23,3 +23,6 @@ tech/需求分析/reference/实例化需求：团队如何交付正确的软件 
 tech/需求分析/reference/实例化需求：团队如何交付正确的软件 (图灵程序设计丛书 39).epub
 tech/需求分析/reference/实例化需求-全书框架与重点.docx
 tech/需求分析/reference/掌握需求过程-全书框架与重点.docx
+
+# Claude Code 本地个人配置，不进行版本管理
+**/.claude/settings.local.json
