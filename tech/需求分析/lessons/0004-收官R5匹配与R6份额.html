@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>0004 · 收官：R5 匹配拆分与 R6 总部份额</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="page">
+
+<header class="lesson-header">
+  <p class="lesson-kicker">需求分析 · 实例化需求 · 课 0004</p>
+  <h1>收官：R5 匹配拆分与 R6 总部份额</h1>
+  <p class="lesson-meta">约 15 分钟 ｜ 上接 <a href="0003-三表见共性-R2代销与R3混合.html">课 0003 · 三表见共性</a> ｜ 实战素材：净收入拆分 R5 / R6 / Q13 / Q30</p>
+</header>
+
+<p class="lead">六条规则配表的最后一课。规矩变了：<strong>R5 没有参考表</strong>——R1 到 R3 你都是对着我的答案核，这次你先写、回传、我核对后才落库。这是「会看表」和「会写表」之间的那道门。</p>
+
+<h2><span class="sec-no">§1</span>热身：换一条规则，发生器怎么用</h2>
+
+<div class="quiz" data-answer="b">
+  <p class="quiz-q" data-no="Q1">R5 自己不做除法——占比已由 R1–R3 算好，R5 只做匹配和乘法。三个发生器里，R5 的新主力是？</p>
+  <ul class="quiz-opts">
+    <li data-key="a"><span class="key">a</span>除法与并列尾差族</li>
+    <li data-key="b"><span class="key">b</span>外部参照与匹配缺失</li>
+    <li data-key="c"><span class="key">c</span>分组与单行退化族</li>
+  </ul>
+  <div class="quiz-explain" hidden>b——<strong>匹配是最强的外部参照</strong>：两张表互为参照物，任何一边多出、少掉、对不上号，都是结构性边界。除法族（E-a 并列、E-g 除零）在上游 R1–R3 已拦截，轮不到 R5；分组退化同样上游已处理。发生器清单是按规则骨架勾的，不是按记忆套的。</div>
+</div>
+
+<h2><span class="sec-no">§2</span>R5 是什么：匹配 ＋ 乘法 ＋ 补数</h2>
+
+<p>规则原文（<a href="../../../项目/净收入比例录入/专户产品KPI净收入数据拆分及确认流程需求20260303_修订20260908.xlsx">需求 xlsx · 处理规则 sheet</a>）：</p>
+
+<blockquote>
+  R5 净收入匹配与拆分：净收入表（③）匹配到专户数据更新的净收入（总）；净收入拆分＝<strong>收入占比×净收入（总）</strong>；与 able 源 sheet 对比，缺少的产品<strong>补入</strong>。（计算与缺数补全 · Q13）
+  <span class="src">三个动词：匹配（净收入表③ ⏤ 专户数据更新）、乘（占比×总额）、补（对 able 源 sheet，缺的产品补入）。</span>
+</blockquote>
+
+<p>结构对比前五张表：R1–R3 是「归一化除法」，R5 是<strong>「匹配 ＋ 乘法」</strong>——它把 R1–R3 的输出当输入（跟 R3 的手法一样），再加上第三个参照物 able 源 sheet。边界几乎必然长在「匹配」上：两表各一翼，一边有一边没有。</p>
+
+<div class="quiz" data-answer="b">
+  <p class="quiz-q" data-no="Q2">给 R5 挑边界例，下面哪一行最值得进表？</p>
+  <ul class="quiz-opts">
+    <li data-key="a"><span class="key">a</span>净收入金额巨大的老产品</li>
+    <li data-key="b"><span class="key">b</span>只在一张表出现的产品</li>
+    <li data-key="c"><span class="key">c</span>净收入行数很多的产品</li>
+  </ul>
+  <div class="quiz-explain" hidden>b——「只在一张表出现」有两个方向，<strong>各值一行</strong>：净收入表（③）有、专户数据更新没有（新品？销量漏报？→ 无占比可乘）；专户数据更新有、净收入表没有（→ 无总额可拆，Q13 的补数正是补这边）。a 是量级（乘法对它同样免疫），c 是行数规模，规则无感。</div>
+</div>
+
+<h2><span class="sec-no">§3</span>独立产出：R5 三行表（无参考，回传核对）</h2>
+
+<div class="quiz selfcheck">
+  <p class="quiz-q" data-no="Q3">给 R5 写三行：1 个正常例 ＋ 2 个边界例。格式沿用「产品××××××：…… → 期望输出 ____」。写完展开自查清单，勾完把三行贴回会话——<strong>我核对通过后才落库</strong>。</p>
+  <textarea placeholder="正常例：产品______：占比____×净收入（总）____ → ____&#10;边界例1：……&#10;边界例2：……"></textarea>
+  <button class="quiz-reveal" type="button">展开自查清单</button>
+  <div class="quiz-explain" hidden>
+    <p><strong>自查清单</strong>（这课没有参考表，用这个代替）：</p>
+    <ol>
+      <li>正常例的输出算到了<strong>具体金额</strong>吗？（占比×净收入总额，算到元，别只抄公式）</li>
+      <li>两个边界例是否都打在<strong>匹配的结构</strong>上？（一边有一边没有／匹配键不规范——而不是量级）</li>
+      <li>有没有一行考虑<strong>净收入（总）为 0 或为负</strong>？（乘法的新端点：拆出 0 元、或负总额×正占比＝负金额）</li>
+      <li>每行「待确认」是否标了核实对象？（提示：净收入表归口是谁，Q13 的 able 对比谁来核）</li>
+      <li>Q13 补数的<strong>方向</strong>说清了吗——从 able 补进哪一张表、补的是产品还是金额？</li>
+    </ol>
+    <p>五项全勾，贴回来。核对意见会直接标在你那三行上；通过后我落 <span class="mono">docs/R5-匹配拆分-例子表.md</span>，新待确认从 E-h 起编号。</p>
+  </div>
+</div>
+
+<h2><span class="sec-no">§4</span>R6 总部份额：一次乘法，一个已定稿的口径</h2>
+
+<blockquote>
+  R6 总部份额：银行部<strong>每月设置</strong>总部份额（界面展示柜台占比参考值，<strong>不自动采用</strong>）；R1–R3 算得的地区占比<strong>×（1−总部份额）</strong>分配至分公司。（目标系统模型 · Q30 融合，<a href="../../../项目/净收入比例录入/docs/adr/0001-银行部拆分-总部份额可设置剩余纯计算.md">ADR-0001</a>）
+</blockquote>
+
+<p>走查（接 0003 的 536392）：银行部当月设总部份额 20%，界面参考值显示柜台占比 15%——<strong>以 20% 为准</strong>：</p>
+
+<table>
+  <thead><tr><th>步骤</th><th>算式</th><th>结果</th></tr></thead>
+  <tbody>
+    <tr><td>北京分公司</td><td>0.5300 ×（1−0.2000）</td><td>0.4240</td></tr>
+    <tr><td>上海分公司</td><td>0.4700 ×（1−0.2000）</td><td>0.3760</td></tr>
+    <tr><td>合计校验</td><td>0.4240＋0.3760＋总部 0.2000</td><td>1.0000 ✓</td></tr>
+  </tbody>
+</table>
+
+<p>注意 R6 的例子表会出现第一行<strong>「已定稿」</strong>的边界例：参考值 15% ≠ 设置值 20% 时以设置值为准——这不是待确认，是 <a href="../../../项目/净收入比例录入/docs/adr/0001-银行部拆分-总部份额可设置剩余纯计算.md">ADR-0001</a> 定死的口径。例子表的另一半价值正在这：<strong>不只暴露未知，还锁定已知</strong>——已定稿的行放在表里，回归测试和后来人都有据可查。真正的待确认只剩端点：份额设 100%（分公司全 0）允许吗、设 0%（纯 R1–R3）呢。</p>
+
+<div class="quiz selfcheck">
+  <p class="quiz-q" data-no="Q4">银行部当月设总部份额 20%，界面参考值 15% 未采用。536392 经 R3 算得北京 0.5300 / 上海 0.4700。手算两分公司最终比例并校验——顺带答：为什么不用 15%？</p>
+  <textarea placeholder="北京 = ____&#10;上海 = ____&#10;校验：____&#10;不用 15% 的理由：____"></textarea>
+  <button class="quiz-reveal" type="button">对答案</button>
+  <div class="quiz-explain" hidden>北京＝0.5300×0.8000＝<strong>0.4240</strong>；上海＝0.4700×0.8000＝<strong>0.3760</strong>；校验：0.4240＋0.3760＝0.8000，＋总部 0.2000＝1.0000 ✓。不用 15%：ADR-0001 的核心决策——总部份额承载客户管理诉求（C5 原意），柜台占比只是参考展示，<strong>不自动采用</strong>。你若顺手答出「这是已定稿行不是待确认行」，说明你已经在用「锁已知」的眼光看表了。</div>
+</div>
+
+<h2><span class="sec-no">§5</span>里程碑：六条规则，清点</h2>
+
+<table>
+  <thead><tr><th>规则</th><th>例子表</th><th>状态</th></tr></thead>
+  <tbody>
+    <tr><td>R1 直销</td><td><a href="../../../项目/净收入比例录入/docs/R1-直销链-例子表.md">docs/R1-直销链-例子表.md</a></td><td>已落库，示意数待换真（E-a/E-b）</td></tr>
+    <tr><td>R2 代销</td><td><a href="../../../项目/净收入比例录入/docs/R2-代销链-例子表.md">docs/R2-代销链-例子表.md</a></td><td>已落库，示意数待换真（E-c/E-d/E-g）</td></tr>
+    <tr><td>R3 混合</td><td><a href="../../../项目/净收入比例录入/docs/R3-混合链-例子表.md">docs/R3-混合链-例子表.md</a></td><td>已落库，示意数待换真（E-e/E-f/E-g）</td></tr>
+    <tr><td>R4 输出加工</td><td>—（豁免）</td><td>非计算规则：属性列靠产品信息表接口下拉（风险在 C5 接口同步，不在算例）</td></tr>
+    <tr><td>R5 匹配拆分</td><td>docs/R5-匹配拆分-例子表.md</td><td><strong>等你回传 Q3 后落库</strong></td></tr>
+    <tr><td>R6 总部份额</td><td>docs/R6-总部份额-例子表.md</td><td>走查已给，本课实战自落</td></tr>
+  </tbody>
+</table>
+
+<p>Q3 回传、R6 落库之后，<a href="../MISSION.md">mission</a> 的第一条成功标准——每条计算规则配真实数字算例——就达成了。还剩的尾巴只有一个字：<strong>真</strong>（三张示意表换上当月报表数）。</p>
+
+<div class="alert">
+  <p>七条 E 清单（E-a–E-g）拿去对口径，答案回来那天，问题就变了：从「规则是什么」变成「答案怎么记才不丢」。那是第二本书的领地——<strong>fit criterion</strong>。预告一下 E-a 定稿后的样子：「给定组内三地区销量各 20 万份，系统输出合计恰为 1.0000，且尾差归属符合定稿规则」——一句话，让「定稿」变成可检验的验收标准。</p>
+</div>
+
+<h2><span class="sec-no">§6</span>实战（真实步骤）</h2>
+
+<div class="card">
+  <p class="card-title">两步闭环</p>
+  <ol>
+    <li><strong>回传</strong>：Q3 的三行贴回会话——核对意见会标在你那三行上；通过后落 R5 表、新待确认编 E-h 起、同步 <a href="../../../项目/净收入比例录入/docs/例子表-待确认汇总.md">汇总清单</a>。</li>
+    <li><strong>自落 R6</strong>：照本课走查＋端点两行（份额 100%／0%），存 <span class="mono">项目/净收入比例录入/docs/R6-总部份额-例子表.md</span>——格式抄 R1–R3，注意它有第一行「已定稿」（参考值≠设置值，以设置值为准）。</li>
+  </ol>
+</div>
+
+<footer class="lesson-footer">
+  <div class="ask-teacher">
+    <strong>Q3 写完就贴回来</strong>——这是四课以来第一次没有参考表的独立产出，卡在哪儿（挑不出边界？输出算不到具体数？）都直说，卡点本身就是下一课的教什么。
+  </div>
+
+  <p><strong>主推资源</strong>：<a href="02-掌握需求过程-精读指南.md">精读指南 02 · 需求壳与 fit criterion</a>——第二本书的入口，E 清单答案落地要用它的格式；动手前可先去 <a href="https://volere.org">volere.org</a> 下免费需求壳模板。</p>
+
+  <p class="cite">引用：规则与口径 <a href="../../../项目/净收入比例录入/专户产品KPI净收入数据拆分及确认流程需求20260303_修订20260908.xlsx">净收入需求 xlsx</a>（R5 / R6 / Q13 / Q30）｜<a href="../../../项目/净收入比例录入/docs/adr/0001-银行部拆分-总部份额可设置剩余纯计算.md">ADR-0001</a>｜上一课 <a href="0003-三表见共性-R2代销与R3混合.html">0003 · 三表见共性</a>｜速查 <a href="../reference/边界发生器-速查.md">边界发生器</a></p>
+
+  <p class="cite">下一课：0005 · 需求壳与 fit criterion——用 Volere 需求壳把 E 清单的定稿答案写成完整需求（含验收标准），正式开第二本书《掌握需求过程》。｜ <a href="../MISSION.md">返回学习使命</a></p>
+</footer>
+
+</div>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>0003 · 三表见共性：R2 代销链与 R3 混合链</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="page">
+
+<header class="lesson-header">
+  <p class="lesson-kicker">需求分析 · 实例化需求 · 课 0003</p>
+  <h1>三表见共性：R2 代销链与 R3 混合链</h1>
+  <p class="lesson-meta">约 15 分钟 ｜ 上接 <a href="0002-三栏例子表实战-R1直销链.html">课 0002 · R1 直销链</a> ｜ 实战素材：净收入拆分 R2 / R3</p>
+</header>
+
+<p class="lead">上一课你是扶着栏杆写的表：先替你挑好边界，再给你参考答案。这一课栏杆撤一半——<strong>先写后对</strong>。两条新规则写完，把三张表并排摆，你会看到 Adzic 说的复利：<strong>例子表写得多了，边界会自己长出共性</strong>。</p>
+
+<h2><span class="sec-no">§1</span>热身：R1 的边界，R2 会复发哪条</h2>
+
+<div class="quiz" data-answer="c">
+  <p class="quiz-q" data-no="Q1">R2 与 R1 同骨架：按产品分组、算组内占比，只是分子从销量换成管理费。R1 表里的哪类边界会在 R2 原样再现？</p>
+  <ul class="quiz-opts">
+    <li data-key="a"><span class="key">a</span>两个地区销量量级悬殊</li>
+    <li data-key="b"><span class="key">b</span>产品代码位数长短不一</li>
+    <li data-key="c"><span class="key">c</span>三地区管理费恰好相等</li>
+  </ul>
+  <div class="quiz-explain" hidden>c——「并列→尾差无最大方」是<strong>归一化除法</strong>的结构性缺陷，它跟着除法走，不跟着业务字段走：销量换成管理费，0.3333 并列照样出现。a 是量级（占比对量级免疫，0002 §3 的老朋友）；b 是抠字眼。这条边界你已经不用「想」了——它是除法自带的。</div>
+</div>
+
+<h2><span class="sec-no">§2</span>R2 代销链：多了两道前处理</h2>
+
+<p>规则原文（<a href="../../../项目/净收入比例录入/专户产品KPI净收入数据拆分及确认流程需求20260303_修订20260908.xlsx">需求 xlsx · 处理规则 sheet</a>）：</p>
+
+<blockquote>
+  R2 代销：管理费表筛选<strong>销售商名称＝建设银行</strong>，名称拆分<strong>保留地名</strong>，按产品分组计算组内各地区管理费占比。（剩余份额分配算法 · 代销链）
+  <span class="src">配套口径：Q14 比例保留 4 位小数，尾差计入占比最大方。C2：代销渠道清单初始值「当前仅建设银行」——筛选步的等号，眼下只认这一家。</span>
+</blockquote>
+
+<p>对比 R1 找不同：R1 的地区是销量表里的<strong>现成字段</strong>；R2 的地区藏在销售商名称里，要拆出来。前处理从零道变成两道——<strong>筛选</strong>（名称＝建设银行）＋<strong>拆分</strong>（保留地名）。记住 0002 的结论反过来用：每多一道前处理，就多一类边界。</p>
+
+<div class="quiz" data-answer="b">
+  <p class="quiz-q" data-no="Q2">下面三行管理费表数据，哪一行能同时拷问「筛选」和「拆分」两步？</p>
+  <ul class="quiz-opts">
+    <li data-key="a"><span class="key">a</span>建设银行北京分行，60 万</li>
+    <li data-key="b"><span class="key">b</span>中国建设银行，60 万</li>
+    <li data-key="c"><span class="key">c</span>建设银行杭州分行，60 万</li>
+  </ul>
+  <div class="quiz-explain" hidden>b——筛选步做的是名称<strong>等号匹配</strong>（＝建设银行）：全称「中国建设银行」过不过得了这个等号，规则没说；即便过了，拆地名也无地可拆。a、c 两步全绿，是好正常例。这不是抬杠：管理费表由外部报送，名称是否永远规范，正是这行例子替你问的问题——回头去真实表里挑一行验证，答案回填规则。</div>
+</div>
+
+<h2><span class="sec-no">§3</span>动手：R2 三行表（先写，后对）</h2>
+
+<div class="quiz selfcheck">
+  <p class="quiz-q" data-no="Q3">给 R2 写三行：1 个正常例 ＋ 2 个边界例——一个打在「前处理」上，一个从 R1 继承。格式沿用「产品××××××：…… → 期望输出 ____」，写完再展开对。</p>
+  <textarea placeholder="正常例：产品______：______→ ______&#10;边界例1（前处理）：……&#10;边界例2（继承）：……"></textarea>
+  <button class="quiz-reveal" type="button">对答案</button>
+  <div class="quiz-explain" hidden>
+    <p><strong>参考三栏例子表（R2 代销链）</strong>：</p>
+    <table>
+      <thead><tr><th>#</th><th>输入（当月管理费表）</th><th>规则</th><th>期望输出（手算）</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>产品 536288：建设银行北京分行 60 万、建设银行上海分行 40 万</td><td>R2</td><td>北京 0.6000 / 上海 0.4000（合计恰 1.0000）</td></tr>
+        <tr><td>2</td><td>产品 536301：南京 / 成都 / 武汉分行各 20 万</td><td>R2 × Q14</td><td>各 0.3333，三方并列无最大方 → <strong>待确认</strong>（R1 同款，已复发）</td></tr>
+        <tr><td>3</td><td>产品 536455：一行「中国建设银行」30 万</td><td>R2 × 前处理</td><td>等号匹配存疑 ＋ 拆不出地名 → <strong>待确认</strong></td></tr>
+        <tr><td>4</td><td>产品 536512：仅苏州分行一行 35 万</td><td>R2</td><td>苏州 1.0000（单地区退化，无歧义）</td></tr>
+      </tbody>
+    </table>
+    <p>对答案看三处：正常例的输出你是否算到了 4 位具体数；「继承」那条你写的是不是<strong>并列/尾差族</strong>而不是量级；「前处理」那条是否打在筛选或拆分的<strong>结构</strong>上。数字仍为示意，落库时换真实管理费表行。</p>
+  </div>
+</div>
+
+<h2><span class="sec-no">§4</span>R3 混合链：两条链的加权合成</h2>
+
+<blockquote>
+  R3 混合产品：动态识别<strong>两销售商并存</strong>的产品（当前如 536392、536744）；直销总占比＝建信直销柜台管理费/总管理费，代销总占比＝其余/总管理费；<strong>地区占比＝直销总占比×直销内地区占比＋代销总占比×代销内地区占比</strong>。（剩余份额分配算法 · 混合链）
+  <span class="src">「当前如」三个字是重点：并存产品是动态识别的，536392、536744 是举例，不是硬编码名单。</span>
+</blockquote>
+
+<p>先看公式怎么走。产品 536392 当月：总管理费 100 万，其中建信直销柜台 30 万；两条腿的组内占比已由 R1、R2 算好——直销内北京 0.6000 / 上海 0.4000，代销内北京 0.5000 / 上海 0.5000：</p>
+
+<table>
+  <thead><tr><th>步骤</th><th>算式</th><th>结果</th></tr></thead>
+  <tbody>
+    <tr><td>直销总占比</td><td>30 ÷ 100</td><td>0.3000</td></tr>
+    <tr><td>代销总占比</td><td>70 ÷ 100</td><td>0.7000</td></tr>
+    <tr><td>北京</td><td>0.3000×0.6000 ＋ 0.7000×0.5000 ＝ 0.1800＋0.3500</td><td>0.5300</td></tr>
+    <tr><td>上海</td><td>0.3000×0.4000 ＋ 0.7000×0.5000 ＝ 0.1200＋0.3500</td><td>0.4700</td></tr>
+    <tr><td>合计校验</td><td>0.5300 ＋ 0.4700</td><td>1.0000 ✓</td></tr>
+  </tbody>
+</table>
+
+<p>注意结构：R3 不发明新除法，它<strong>把 R1、R2 两张表的输出当输入</strong>，加权再合成。所以它的边界多半不在自己身上，在两条腿和「识别」这一步上。</p>
+
+<div class="quiz" data-answer="b">
+  <p class="quiz-q" data-no="Q4">「动态识别两销售商并存的产品（当前如 536392、536744）」——例子表里最该配的一行边界是？</p>
+  <ul class="quiz-opts">
+    <li data-key="a"><span class="key">a</span>536392 总管理费金额特别巨大</li>
+    <li data-key="b"><span class="key">b</span>某月新出现的并存产品不在编号内</li>
+    <li data-key="c"><span class="key">c</span>536392 的产品代码位数不统一</li>
+  </ul>
+  <div class="quiz-explain" hidden>b——「当前如」是举例不是清单，规则的本体是<strong>动态识别</strong>；新并存产品能否被认出来，正是这条规则存在的理由，值得拿一行例子盯住它。a 量级、c 抠字眼（0002 §3 的老朋友又来了）。另一个值得配的是<strong>退化</strong>：某月只剩一家销售商，「混合」消失，公式退化成单链还成立吗——直销总占比走到 0 或 1 的端点。</div>
+</div>
+
+<div class="quiz selfcheck">
+  <p class="quiz-q" data-no="Q5">产品 536744 当月：总管理费 80 万，其中建信直销柜台 20 万；直销内杭州占比 1.0000；代销内杭州占比 0.2500。手算杭州最终占比（4 位小数），并做合计校验。</p>
+  <textarea placeholder="直销总占比 = ____&#10;代销总占比 = ____&#10;杭州 = ____&#10;校验：____"></textarea>
+  <button class="quiz-reveal" type="button">对答案</button>
+  <div class="quiz-explain" hidden>直销总占比 20÷80＝0.2500；代销总占比 0.7500；杭州＝0.2500×1.0000＋0.7500×0.2500＝0.2500＋0.1875＝<strong>0.4375</strong>。校验：其余地区＝0.7500×0.7500＝0.5625，0.4375＋0.5625＝1.0000 ✓。这道算式写顺了，R3 你就会了——它本质是一次带权重的加法。</div>
+</div>
+
+<h2><span class="sec-no">§5</span>三表并排：边界开始重复</h2>
+
+<p>把 R1、R2、R3 的边界放到一张表里，规律浮出来了——三条链公式各异，却共享同一个骨架「<strong>分组 ＋ 归一化除法 ＋ 外部参照物</strong>」，骨架的每个部件贡献一类边界：</p>
+
+<table>
+  <thead><tr><th>发生器</th><th>为什么</th><th>R1 直销</th><th>R2 代销</th><th>R3 混合</th></tr></thead>
+  <tbody>
+    <tr><td><strong>除法</strong></td><td>分母可为 0；并列让「尾差进最大方」失去定义</td><td>销量合计 0／三地区等量</td><td>管理费合计 0／三地区等额</td><td>总管理费 0／柜台份额并列</td></tr>
+    <tr><td><strong>分组</strong></td><td>组可退化为单行甚至空组</td><td>单地区产品</td><td>单地区代销</td><td>某月只剩一家销售商</td></tr>
+    <tr><td><strong>外部参照</strong></td><td>规则自己不带、别处维护的参照物</td><td>地区→分公司映射（主数据⑤）</td><td>销售商名称规范</td><td>并存识别逻辑（非名单）</td></tr>
+  </tbody>
+</table>
+
+<p>写到第三张表，找边界从「想」变成「查」——对着发生器勾，每条规则十分钟出边界行。这张表已存为速查文档：<a href="../reference/边界发生器-速查.md">边界发生器速查</a>，R5、R6 动笔前先勾它。</p>
+
+<div class="alert">
+  <p>三张表攒出的「待确认」已经六条：尾差并列、映射缺地区（0002）＋ 筛选等号、名称无地名（本课）＋ 新并存识别、混合退化（本课）。它们不是练习的副产品——<strong>它们是对口径会议的议程</strong>。这份清单，就是下一本书的入场券。</p>
+</div>
+
+<h2><span class="sec-no">§6</span>实战：三张表落库（真实步骤）</h2>
+
+<div class="card">
+  <p class="card-title">三步闭环</p>
+  <ol>
+    <li><strong>补挂</strong>：0002 欠的那步——把 R1 参考表存成 markdown 落到 <span class="mono">项目/净收入比例录入/docs/R1-直销链-例子表.md</span>，两分钟。</li>
+    <li><strong>同法</strong>：R2、R3 照本课参考表各落一张（<span class="mono">R2-代销链-例子表.md</span>、<span class="mono">R3-混合链-例子表.md</span>），结构照抄、数字换真——管理费表从当月邮件取真实行，混合链直接用 536392 的真实数。</li>
+    <li><strong>汇总</strong>：把三张表里的「待确认」抄进一个清单文件（或作为需求 xlsx 待确认 sheet 的增补草案），下次与银行业务部对口径时逐条抛出，答案回填之日，就是这三张表成为<strong>活文档</strong>之时。</li>
+  </ol>
+</div>
+
+<footer class="lesson-footer">
+  <div class="ask-teacher">
+    <strong>做完回会话说一声</strong>——Q5 的算式、你写的 R2 三行，贴回来我陪你逐行核。「边界发生器」清单若觉得缺一类（比如时间型的：跨月数据迟到），告诉我——它是速查文档的初版，会长草。
+  </div>
+
+  <p><strong>主推资源</strong>：<a href="../reference/边界发生器-速查.md">边界发生器速查</a>（本课新增）——写 R5、R6 的例子表前先勾它。深化：<a href="01-实例化需求-精读指南.md">精读指南 01</a> 的 R2–R6 练习清单。</p>
+
+  <p class="cite">引用：规则与口径 <a href="../../../项目/净收入比例录入/专户产品KPI净收入数据拆分及确认流程需求20260303_修订20260908.xlsx">净收入需求 xlsx</a>（R2 / R3 / Q14 / C2）｜总部份额模型 <a href="../../../项目/净收入比例录入/docs/adr/0001-银行部拆分-总部份额可设置剩余纯计算.md">ADR-0001</a>｜上一课 <a href="0002-三栏例子表实战-R1直销链.html">0002 · 三栏例子表</a></p>
+
+  <p class="cite">下一课：0004 · R5 净收入匹配与 R6 总部份额——六条规则配表收官，mission 首个里程碑达成；然后带着这六条「待确认」接第二本书《掌握需求过程》：把每个答案写成 fit criterion。｜ <a href="../MISSION.md">返回学习使命</a></p>
+</footer>
+
+</div>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>
