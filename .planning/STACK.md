@@ -3,6 +3,7 @@
 Language: TypeScript（harness/ai-news/remotion 主栈）、Python 3（Study）、HTML/JS（产品画像、recruitment、point）
 Framework: React 19 + Remotion 4（remotion 子项目）；其余无统一框架
 Runtime: Node.js ≥ 18（npm 包、tsx）、Python 3
+Spec-driven tooling: GitHub Spec Kit（specify-cli 1.0.8）；默认 Codex 集成，保留 Claude 集成
 Database: 无集中数据库；状态存 Git + .planning/ Markdown + .codebase/beads.json
 Package manager: npm（根级 harness 为全局 npm 包；子项目各自独立工作区）
 Test framework: 根级 harness gates（verify.sh / run-evals.sh）；子项目按需（Python unittest / Vitest 待定）

@@ -9,6 +9,7 @@
 
 ## Recent Changes
 
+- [x] TOOL-001 安装并接入 GitHub Spec Kit：`specify-cli` 1.0.8、`.specify/` 脚手架与 Claude/Codex 双集成就绪，默认集成为 Codex。
 - [x] BUG-002 修复 pencil MCP 启动失败：扩展升级导致配置里的 0.6.68 路径失效，已更新为 0.6.70 并验证。
 
 - [x] BUG-001 修复用户级 Codex models.json：GLM 模型移回顶层 models 数组，JSON 与配置加载验证通过。

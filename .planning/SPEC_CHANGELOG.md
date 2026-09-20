@@ -6,3 +6,4 @@
 | 2026-08-13 | 产品方向确认：整仓平台化 | 用户确认层次一 | PROJECT / REQUIREMENTS / ROADMAP / STACK / INIT_QA | 无（未接业务代码） | 子项目逐个登记 |
 | 2026-08-13 | F001 ai-news 子项目登记 | Phase 02 注册 | FEATURE_REGISTRY / FEATURE_INDEX / ROADMAP | verify-cmd: tsc --noEmit | ai-news 安装 @types/node |
 | 2026-08-13 | F002 产品画像 子项目登记 | Phase 02 注册 | FEATURE_REGISTRY / FEATURE_INDEX / ROADMAP | verify-cmd: verify-chanpin-huaxiang.js | 新增 .planning/scripts 验证脚本 |
+| 2026-09-20 | TOOL-001 安装并接入 GitHub Spec Kit，默认集成为 Codex | 支持规格驱动开发工作流 | SUMMARY / STATE / STACK / .specify / .agents | specify check；specify integration status；create-new-feature.ps1 -DryRun -Json | 无业务代码迁移；Spec Kit 技能需新会话加载 |
