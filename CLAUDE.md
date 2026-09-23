@@ -29,3 +29,13 @@
 ## 语言
 
 会话与注释默认使用简体中文。
+
+## Agent skills
+
+### Issue tracker
+
+Issues 跟踪在本仓库的 GitHub Issues（gh CLI）。见 `docs/agents/issue-tracker.md`。
+
+### Domain docs
+
+multi-context 布局：根 `CONTEXT-MAP.md` 指向各子项目的 `CONTEXT.md`。见 `docs/agents/domain.md`。
