@@ -1,0 +1,95 @@
+{
+  "version": 2,
+  "plugins": {
+    "playwright@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "C:\\Users\\jhlw\\.claude\\plugins\\cache\\claude-plugins-official\\playwright\\fa59bc903774",
+        "version": "fa59bc903774",
+        "installedAt": "2026-07-08T02:59:55.163Z",
+        "lastUpdated": "2026-09-28T08:24:36.147Z",
+        "gitCommitSha": "fa59bc9037741ecfa131aa27938272605710d7b2"
+      }
+    ],
+    "context7@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "C:\\Users\\jhlw\\.claude\\plugins\\cache\\claude-plugins-official\\context7\\fa59bc903774",
+        "version": "fa59bc903774",
+        "installedAt": "2026-07-08T02:59:55.163Z",
+        "lastUpdated": "2026-09-28T08:24:37.995Z",
+        "gitCommitSha": "fa59bc9037741ecfa131aa27938272605710d7b2"
+      }
+    ],
+    "superpowers@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "C:\\Users\\jhlw\\.claude\\plugins\\cache\\claude-plugins-official\\superpowers\\6.4.1",
+        "version": "6.4.1",
+        "installedAt": "2026-07-08T03:31:14.808Z",
+        "lastUpdated": "2026-09-28T08:19:24.972Z",
+        "gitCommitSha": "5bf4e78011075bcfc0dc295f0724994cd123ee71"
+      }
+    ],
+    "frontend-design@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "C:\\Users\\jhlw\\.claude\\plugins\\cache\\claude-plugins-official\\frontend-design\\fa59bc903774",
+        "version": "fa59bc903774",
+        "installedAt": "2026-07-08T03:41:52.570Z",
+        "lastUpdated": "2026-09-28T08:24:40.225Z",
+        "gitCommitSha": "fa59bc9037741ecfa131aa27938272605710d7b2"
+      }
+    ],
+    "mattpocock-skills@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "C:\\Users\\jhlw\\.claude\\plugins\\cache\\claude-plugins-official\\mattpocock-skills\\1.2.3",
+        "version": "1.2.3",
+        "installedAt": "2026-08-02T03:01:50.193Z",
+        "lastUpdated": "2026-08-07T02:07:00.042Z",
+        "gitCommitSha": "2ab958093e83e0ec752e6c1c5932da465bf23e0c"
+      }
+    ],
+    "github@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "C:\\Users\\jhlw\\.claude\\plugins\\cache\\claude-plugins-official\\github\\fa59bc903774",
+        "version": "fa59bc903774",
+        "installedAt": "2026-08-06T02:01:42.338Z",
+        "lastUpdated": "2026-09-28T08:24:42.264Z",
+        "gitCommitSha": "fa59bc9037741ecfa131aa27938272605710d7b2"
+      }
+    ],
+    "minimax-skills@minimax-skills": [
+      {
+        "scope": "user",
+        "installPath": "C:\\Users\\jhlw\\.claude\\plugins\\cache\\minimax-skills\\minimax-skills\\1.0.0",
+        "version": "1.0.0",
+        "installedAt": "2026-08-06T02:06:32.501Z",
+        "lastUpdated": "2026-08-06T02:06:32.501Z",
+        "gitCommitSha": "60aaae52bb2af8162732751a4332f62a5fef518b"
+      }
+    ],
+    "claude-code-harness@claude-code-harness-marketplace": [
+      {
+        "scope": "user",
+        "installPath": "C:\\Users\\jhlw\\.claude\\plugins\\cache\\claude-code-harness-marketplace\\claude-code-harness\\5.13.0",
+        "version": "5.13.0",
+        "installedAt": "2026-08-13T08:38:59.709Z",
+        "lastUpdated": "2026-08-25T08:18:06.430Z",
+        "gitCommitSha": "db54f9117591241874ee4a1be7e874f60996c89e"
+      }
+    ],
+    "claude-md-management@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "C:\\Users\\jhlw\\.claude\\plugins\\cache\\claude-plugins-official\\claude-md-management\\1.0.0",
+        "version": "1.0.0",
+        "installedAt": "2026-09-22T05:58:44.368Z",
+        "lastUpdated": "2026-09-22T05:58:44.368Z",
+        "gitCommitSha": "b819188d2eea14e0400556ca29dbd1179a7c595b"
+      }
+    ]
+  }
+}

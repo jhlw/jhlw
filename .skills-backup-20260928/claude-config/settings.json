@@ -1,0 +1,117 @@
+{
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "29c5aed1f48b4f56aa8648a9ba4dc89a.dyD09BgVXEKds4yU",
+    "ANTHROPIC_BASE_URL": "https://open.bigmodel.cn/api/anthropic",
+    "ANTHROPIC_DEFAULT_FABLE_MODEL": "glm-5.3[1M]",
+    "ANTHROPIC_DEFAULT_FABLE_MODEL_NAME": "glm-5.3",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "glm-5.3-flash",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL_NAME": "glm-5.3-flash",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "glm-5.3[1M]",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL_NAME": "glm-5.3",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "glm-5.3[1M]",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL_NAME": "glm-5.3",
+    "ANTHROPIC_MODEL": "glm-5.3[1M]",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+    "CLAUDE_CODE_EFFORT_LEVEL": "max",
+    "CLAUDE_CODE_SESSIONEND_HOOKS_TIMEOUT_MS": "10000",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "glm-5.3-flash[1M]"
+  },
+  "permissions": {
+    "allow": [
+      "mcp__playwright",
+      "mcp__context7",
+      "mcp__agent-reach",
+      "mcp__pencil"
+    ]
+  },
+  "model": "sonnet",
+  "skillOverrides": {
+    "add-e2e-test": "off",
+    "add-empty-error-states": "off",
+    "add-feature": "off",
+    "add-migration": "off",
+    "add-observability": "off",
+    "add-regression-test": "off",
+    "address-pr-comments": "off",
+    "audit": "off",
+    "audit-a11y": "off",
+    "audit-analytics": "off",
+    "audit-authz": "off",
+    "audit-perf": "off",
+    "audit-responsive": "off",
+    "audit-seo-meta": "off",
+    "check-pr-readiness": "off",
+    "check-release-risk": "off",
+    "firecrawl": "off",
+    "firecrawl-build": "off",
+    "firecrawl-build-interact": "off",
+    "firecrawl-build-onboarding": "off",
+    "firecrawl-build-scrape": "off",
+    "firecrawl-build-search": "off",
+    "firecrawl-company-directories": "off",
+    "firecrawl-competitive-intel": "off",
+    "firecrawl-dashboard-reporting": "off",
+    "firecrawl-demo-walkthrough": "off",
+    "firecrawl-knowledge-base": "off",
+    "firecrawl-knowledge-ingest": "off",
+    "firecrawl-lead-gen": "off",
+    "firecrawl-lead-research": "off",
+    "firecrawl-market-research": "off",
+    "firecrawl-qa": "off",
+    "firecrawl-research-index": "off",
+    "firecrawl-seo-audit": "off",
+    "firecrawl-shop": "off",
+    "firecrawl-website-design-clone": "off",
+    "fix-bug": "off",
+    "fix-pr-tests": "off",
+    "harden-types": "off",
+    "modify-feature": "off",
+    "open-pr": "off",
+    "polish-ui": "off",
+    "propagate-ui-pattern": "off",
+    "realign": "off",
+    "release": "off",
+    "remove-feature": "off",
+    "resolve-conflict": "off",
+    "ship": "off",
+    "simplify": "off",
+    "testing-plan": "off",
+    "write-tests": "off"
+  },
+  "enabledPlugins": {
+    "claude-code-harness@claude-code-harness-marketplace": true,
+    "context7@claude-plugins-official": false,
+    "frontend-design@claude-plugins-official": true,
+    "github@claude-plugins-official": false,
+    "mattpocock-skills@claude-plugins-official": true,
+    "minimax-skills@minimax-skills": false,
+    "playwright@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "claude-code-harness-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "Chachamaru127/claude-code-harness"
+      }
+    },
+    "claude-community": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/anthropics/claude-plugins-community.git"
+      }
+    },
+    "minimax-skills": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/MiniMax-AI/skills.git"
+      }
+    }
+  },
+  "language": "zh-CN",
+  "cleanupPeriodDays": 36500,
+  "tui": "fullscreen",
+  "theme": "dark",
+  "editorMode": "normal"
+}
