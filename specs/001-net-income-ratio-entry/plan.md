@@ -67,3 +67,15 @@ specs/001-net-income-ratio-entry/
 ## Complexity Tracking
 
 > 无宪法违反项，本节留空。
+
+## Migration Note
+
+**2026-09-29**：本 feature 迁入 Matt Pocock skills 流线。spec 已转正（Approved）；工单改由 `/to-tickets` 生成至 GitHub Issues（tracer-bullet 拆分 + 原生 blocked-by 依赖边），speckit `tasks.md` 不再生成。构建纪律：逐票 `/implement`（内部驱动 `/tdd`、收尾 `/code-review`），票间 `/clear`。A3 待定稿边界项按建议默认执行，业务定稿后回填修订。
+
+## Rollback
+
+**2026-09-29（同日）**：项目回滚至需求阶段——[E 清单](../../项目/净收入比例录入/docs/例子表-待确认汇总.md)（E-a～E-l 共 12 项）尚待业务确认，不再按 A3 建议默认口径先行实现。处置：
+
+- spec Status 退回 On Hold（待业务定稿）
+- 工单 #1–#7 全部关闭（GitHub Issues，评论注明回滚原因）
+- 恢复路径：业务答案回填各例子表与 E 清单 → 修订 spec（落实 A3 各假设）→ 重新 `/to-tickets` 拆票

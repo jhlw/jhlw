@@ -4,7 +4,7 @@
 
 **Created**: 2026-09-21
 
-**Status**: Draft
+**Status**: On Hold — 回滚至需求阶段（2026-09-29），待 E 清单业务定稿后回填修订再转正
 
 **Input**: User description: "净收入比例录入"
 
