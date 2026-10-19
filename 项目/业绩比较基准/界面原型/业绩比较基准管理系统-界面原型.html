@@ -31,6 +31,7 @@ button{font-family:inherit;cursor:pointer}
 .nav a:hover{background:rgba(255,255,255,.06);color:#fff}
 .nav a.on{background:var(--navy2);color:#fff;border-left-color:#4E9BFF;font-weight:600}
 .nav a .dot{margin-left:auto;width:7px;height:7px;border-radius:50%;background:var(--red)}
+.nav a.sub{padding-left:34px;font-size:12.5px}
 .side-foot{padding:12px 18px;border-top:1px solid rgba(255,255,255,.08);font-size:11px;color:#5F7B99;line-height:1.7}
 .main{flex:1;min-width:0;display:flex;flex-direction:column}
 .topbar{height:52px;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:18px;padding:0 22px;position:sticky;top:0;z-index:20}
@@ -56,6 +57,7 @@ button{font-family:inherit;cursor:pointer}
 .tbl tr:last-child td{border-bottom:none}
 .tbl tr:hover td{background:#FAFBFD}
 .tbl tr.sel td{background:var(--blue-bg)}
+.tbl tr.errrow td{background:var(--red-bg)}
 .tbl td.num,.tbl th.num{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
 .tbl td.ctr,.tbl th.ctr{text-align:center}
 .tag{display:inline-block;padding:1.5px 8px;border-radius:3px;font-size:11px;font-weight:600;white-space:nowrap}
@@ -85,6 +87,21 @@ button{font-family:inherit;cursor:pointer}
 .banner.err{background:var(--red-bg);border-color:#EEC9C9;color:#932020}
 .banner.warn{background:var(--amber-bg);border-color:#EBD9B4;color:#7E4A08}
 .banner b{font-weight:700}
+/* 查询条件条 */
+.qry{display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:12.5px;color:var(--ink2);padding:11px 16px;border-bottom:1px solid var(--line2);background:#FBFCFE}
+.qry label{display:flex;align-items:center;gap:6px}
+.qry input,.qry select{border:1px solid var(--line);border-radius:4px;padding:5px 8px;font-size:12px;background:#fff;font-family:inherit}
+.qry input[type="date"]{font-family:var(--mono)}
+.qry input::placeholder{color:var(--ink3)}
+.tabops{display:flex;justify-content:flex-end;gap:10px;align-items:center;padding:10px 16px 0}
+.procinfo{background:#F3F7FC;border:1px solid var(--line2);border-radius:6px;padding:10px 14px;display:grid;grid-template-columns:1fr 1fr;gap:5px 20px;font-size:12px;color:var(--ink2)}
+.procinfo b{color:var(--ink)}
+.sortbtn{border:none;background:none;color:var(--blue);font-size:11px;padding:0 2px;font-family:var(--mono)}
+/* 分页条 */
+.pager{display:flex;align-items:center;gap:14px;padding:9px 16px;border-top:1px solid var(--line2);font-size:12px;color:var(--ink2);flex-wrap:wrap}
+.pager label{display:flex;align-items:center;gap:6px}
+.pager select{border:1px solid var(--line);border-radius:4px;padding:3px 6px;font-size:12px;background:#fff}
+.pager .pnote{margin-left:auto;color:var(--ink3);font-size:11px}
 /* ===== 流水线（总览记忆点） ===== */
 .pipe{display:flex;align-items:stretch;gap:0;padding:18px 16px 14px;overflow-x:auto}
 .pipe .step{flex:1;min-width:118px;position:relative;padding:0 6px}
@@ -120,11 +137,6 @@ button{font-family:inherit;cursor:pointer}
 .tabs button{border:none;background:none;padding:9px 14px;font-size:12.5px;color:var(--ink2);border-bottom:2px solid transparent;margin-bottom:-1px}
 .tabs button.on{color:var(--blue);border-bottom-color:var(--blue);font-weight:600;background:#fff}
 .tabpane{display:none} .tabpane.on{display:block}
-/* 权重条 */
-.wbar{display:flex;height:16px;border-radius:3px;overflow:hidden;border:1px solid var(--line)}
-.wbar i{display:block;height:100%}
-.wbar-l{display:flex;gap:14px;font-size:11.5px;color:var(--ink2);margin-top:6px;flex-wrap:wrap}
-.wbar-l b{font-weight:600}
 /* 弹层 */
 .mask{display:none;position:fixed;inset:0;background:rgba(10,30,50,.45);z-index:50;align-items:flex-start;justify-content:center;padding:8vh 16px}
 .mask.on{display:flex}
@@ -139,52 +151,6 @@ button{font-family:inherit;cursor:pointer}
 .frm input,.frm select,.frm textarea{border:1px solid var(--line);border-radius:4px;padding:6px 9px;font-size:12.5px;font-family:inherit;width:100%;background:#fff}
 .frm textarea{resize:vertical;min-height:52px}
 .frm .req::before{content:"*";color:var(--red);margin-right:2px}
-/* 展示效果页 */
-.demo-wrap{display:grid;grid-template-columns:1.35fr .65fr;gap:18px}
-@media(max-width:1100px){.demo-wrap{grid-template-columns:1fr}}
-.browser{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff}
-.browser .bbar{display:flex;align-items:center;gap:6px;padding:8px 12px;background:#EDF0F4;border-bottom:1px solid var(--line)}
-.browser .bbar i{width:9px;height:9px;border-radius:50%;background:#C8CFD9}
-.browser .url{flex:1;background:#fff;border:1px solid var(--line);border-radius:10px;padding:2px 10px;font-size:11px;color:var(--ink3);font-family:var(--mono);margin-left:6px}
-.site-hd{display:flex;align-items:center;gap:10px;padding:12px 18px;border-bottom:2px solid var(--navy)}
-.site-logo{width:30px;height:30px;border-radius:4px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
-.site-hd .sn{font-size:15px;font-weight:700;color:var(--navy)}
-.site-hd .sn small{display:block;font-size:9.5px;color:var(--ink3);font-weight:400;letter-spacing:1.6px}
-.site-nav{margin-left:auto;display:flex;gap:16px;font-size:12px;color:var(--ink2)}
-.site-nav b{color:var(--navy);border-bottom:2px solid var(--navy);padding-bottom:2px}
-.fund-hd{padding:14px 18px 10px}
-.fund-hd .fn{font-size:17px;font-weight:700}
-.fund-hd .fc{font-size:12px;color:var(--ink3);margin-top:2px;font-family:var(--mono)}
-.perf{padding:6px 18px 16px}
-.perf .pt{display:flex;align-items:center;margin-bottom:8px}
-.perf .pt h4{font-size:13.5px}
-.perf .pt .src{margin-left:auto;font-size:10.5px;color:var(--ink3)}
-.ptabs{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
-.ptabs button{border:1px solid var(--line);background:#fff;border-radius:12px;padding:3px 11px;font-size:11.5px;color:var(--ink2)}
-.ptabs button.on{background:var(--navy);border-color:var(--navy);color:#fff;font-weight:600}
-.chartbox{border:1px solid var(--line2);border-radius:6px;padding:10px 8px 4px;background:#FDFEFF}
-.legend{display:flex;gap:18px;padding:6px 6px 2px;font-size:11.5px;color:var(--ink2);flex-wrap:wrap}
-.legend i{display:inline-block;width:18px;height:0;border-top:3px solid;vertical-align:middle;margin-right:6px;border-radius:2px}
-.legend .v{font-family:var(--mono);font-weight:700;margin-left:4px}
-.perf-nums{display:flex;gap:0;margin-top:10px;border:1px solid var(--line2);border-radius:6px;overflow:hidden}
-.perf-nums .pn{flex:1;padding:9px 12px;background:#F8FAFD}
-.perf-nums .pn+.pn{border-left:1px solid var(--line2)}
-.perf-nums .pl{font-size:11px;color:var(--ink3)}
-.perf-nums .pv{font-size:17px;font-weight:700;font-family:var(--mono);margin-top:1px}
-.perf-foot{font-size:10.5px;color:var(--ink3);margin-top:9px;line-height:1.7}
-.phone{width:295px;border:8px solid #1B2430;border-radius:26px;overflow:hidden;background:#fff;margin:0 auto;box-shadow:0 8px 24px rgba(10,30,50,.18)}
-.phone .pstat{background:#1B2430;color:#8B96A5;font-size:9px;padding:3px 14px;display:flex;justify-content:space-between;font-family:var(--mono)}
-.phone .phd{padding:10px 12px 8px;border-bottom:1px solid var(--line2)}
-.phone .phd .fn{font-size:13.5px;font-weight:700}
-.phone .phd .fc{font-size:10.5px;color:var(--ink3);font-family:var(--mono)}
-.phone .pperf{padding:8px 10px 12px}
-.phone .ptabs{gap:4px}
-.phone .ptabs button{padding:2px 8px;font-size:10px;border-radius:10px}
-.phone .perf-nums .pv{font-size:14px}
-.phone .perf-foot{font-size:9px}
-.selrow{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
-.selrow select{border:1px solid var(--line);border-radius:4px;padding:6px 10px;font-size:12.5px;background:#fff;min-width:280px}
-.hint{font-size:11px;color:var(--ink3);background:var(--canvas);border:1px dashed var(--line);border-radius:4px;padding:2px 8px}
 @media print{.side,.topbar{display:none}}
 </style>
 </head>
@@ -198,16 +164,14 @@ button{font-family:inherit;cursor:pointer}
   </div>
   <nav class="nav" id="nav" aria-label="主导航">
     <div class="nav-group">运行监控</div>
-    <a href="#s1" class="on" data-s="s1"><span class="ic">◧</span>今日批次总览</a>
-    <a href="#s5" data-s="s5"><span class="ic">▶</span>计算任务监控</a>
-    <a href="#s6" data-s="s6"><span class="ic">✓</span>质量复核<span class="dot" id="navDot6" title="有待确认事项"></span></a>
-    <a href="#s7" data-s="s7"><span class="ic">⇪</span>推送管理</a>
+    <a href="#s1" class="on" data-s="s1"><span class="ic">◧</span>业绩比较基准总览</a>
     <div class="nav-group">数据与配置</div>
+    <a href="#s2i" data-s="s2i"><span class="ic">⊞</span>指数库</a>
     <a href="#s2" data-s="s2"><span class="ic">≣</span>产品基准配置</a>
-    <a href="#s3" data-s="s3"><span class="ic">∿</span>基准行情库<span class="dot" style="background:var(--amber)" title="缺行情告警"></span></a>
-    <a href="#s4" data-s="s4"><span class="ic">⇄</span>估值数据接入</a>
-    <div class="nav-group">披露端</div>
-    <a href="#s8" data-s="s8"><span class="ic">◫</span>官网 / APP 效果</a>
+    <div class="nav-group">基准行情库</div>
+    <a href="#s3" data-s="s3" class="sub"><span class="ic">∿</span>基准行情查询</a>
+    <a href="#s3m" data-s="s3m" class="sub"><span class="ic">✎</span>基准行情维护</a>
+    <a href="#s4" data-s="s4"><span class="ic">⇄</span>基金净值增长率查询</a>
   </nav>
   <div class="side-foot">
     界面原型 · 示例数据<br>依据《业务解决方案 v2.1》<br>建信基金（产品代码源自生产工作簿，其余标注"示例"）
@@ -216,457 +180,667 @@ button{font-family:inherit;cursor:pointer}
 <!-- ================= 主区 ================= -->
 <div class="main">
   <header class="topbar">
-    <span class="crumb" id="crumb">今日批次总览</span>
-    <span class="chip">批次日 <b class="mono">2026-10-15</b></span>
-    <span class="chip">估值截止日 <b class="mono">2026-10-14</b></span>
-    <span class="chip" id="chipBatch">今日批次 <b>推送完成</b></span>
+    <span class="crumb" id="crumb">业绩比较基准总览</span>
     <span class="right">
       <span>创新部 · 李工</span><span class="avatar">李</span>
     </span>
   </header>
   <main class="content">
-<!-- ============ S1 今日批次总览 ============ -->
+<!-- ============ S1 业绩比较基准总览（业绩基准数据查询，参照 jizhundianwei.html 设计） ============ -->
 <section class="screen on" id="s1">
   <div class="panel">
-    <div class="ph"><h3>今日批次流水线</h3><span class="sub">批次 PB20261015-01 · 估值截止日 2026-10-14 · 日频自动触发</span>
-      <span class="ops"><span class="tag ok">推送完成 19:03</span></span></div>
-    <div class="pipe">
-      <div class="step done"><div class="ball">✓</div><div class="lb">估值数据到位</div><div class="tm">18:32:07</div></div>
-      <div class="step done"><div class="ball">✓</div><div class="lb">Wind 行情到位</div><div class="tm">17:05:44</div></div>
-      <div class="step err"><div class="ball">!</div><div class="lb">齐套检查</div><div class="tm">2 只阻断</div></div>
-      <div class="step done"><div class="ball">✓</div><div class="lb">成分基准日收益</div><div class="tm">18:41:20</div></div>
-      <div class="step done"><div class="ball">✓</div><div class="lb">组合基准合成</div><div class="tm">18:42:56</div></div>
-      <div class="step done"><div class="ball">✓</div><div class="lb">质量复核</div><div class="tm">18:55:31</div></div>
-      <div class="step done"><div class="ball">✓</div><div class="lb">推送官网/APP</div><div class="tm">19:03:05</div></div>
+    <div class="ph"><h3>业绩基准数据查询</h3><span class="sub">③基准自算结果 · 组合基准逐日点位与收益率 · 数据范围为今日及历史数据（今日批次＋全量历史序列）· 默认按交易日期倒序</span>
+      <span class="ops"><span class="note" id="bqNote"></span><button class="btn" id="bqExportBtn" onclick="bqExport()">导出数据</button></span></div>
+    <div class="qry">
+      <label>基金代码<input id="bqFund" placeholder="例如：530003" style="width:150px"></label>
+      <label>开始日期<input type="date" id="bqStart" value="2026-10-08"></label>
+      <label>结束日期<input type="date" id="bqEnd" value="2026-10-14"></label>
+      <button class="btn pri" onclick="bqQuery()">查询</button><button class="btn" onclick="bqReset()">重置</button>
+      <span class="note" style="margin-left:auto">基金代码精确匹配；含外币成分的基金展示人民币中间价（当日 / 上日）</span>
     </div>
-    <div class="banner err" style="margin:0 16px 14px"><span>⛔</span><div><b>齐套检查阻断 2 只基金：</b>成分基准 000300.CSI（沪深300）2026-10-14 行情缺失（Wind 漏更）——受影响基金 026663 建信资源严选股票发起C、007830 建信荣瑞一年定开。按定稿口径<b>即阻断＋告警、不沿用前值</b>，修复后自动重算并随下一批次补推。<a href="#s3" data-goto="s3" style="color:inherit;font-weight:700">前往行情库处理 →</a></div></div>
-  </div>
-
-  <div class="grid4" style="margin-bottom:16px">
-    <div class="kpi blue"><div class="k1">在管产品（全部产品口径）</div><div class="k2">486</div><div class="k3">含货币 12 · REITs 2 · 无基准仅推① 14</div></div>
-    <div class="kpi green"><div class="k1">今日计算完成</div><div class="k2">484</div><div class="k3">①估值透传 ＋ ③基准自算</div></div>
-    <div class="kpi red"><div class="k1">缺数阻断</div><div class="k2">2</div><div class="k3">基金粒度隔离 · 不阻塞整批</div></div>
-    <div class="kpi amber"><div class="k1">待人工确认（跳变）</div><div class="k2" id="kpiConfirm">1</div><div class="k3">确认后方可发布下一批次</div></div>
-  </div>
-
-  <div class="grid2">
-    <div class="panel">
-      <div class="ph"><h3>今日推送批次</h3><span class="ops"><a class="btn sm" href="#s7" data-goto="s7">推送管理</a></span></div>
-      <div class="pb flush"><table class="tbl">
-        <tr><th>批次号</th><th>类型</th><th class="ctr">渠道</th><th class="num">记录数</th><th class="ctr">官网回执</th><th class="ctr">APP回执</th><th class="ctr">状态</th></tr>
-        <tr><td class="mono">PB20261015-01</td><td>日批</td><td class="ctr">官网＋APP</td><td class="num">968</td><td class="ctr mono">19:02:40 ✓</td><td class="ctr mono">19:03:05 ✓</td><td class="ctr"><span class="tag ok">对账一致</span></td></tr>
-        <tr><td class="mono">PB20261012-R1</td><td>更正重推</td><td class="ctr">官网＋APP</td><td class="num">2</td><td class="ctr mono">10-12 ✓</td><td class="ctr mono">10-12 ✓</td><td class="ctr"><span class="tag gray">已归档</span></td></tr>
-      </table></div>
+    <div class="pb flush"><table class="tbl" id="bqTbl">
+      <tr><th class="ctr" style="width:34px"><input type="checkbox" id="bqCkAll" title="全选"></th><th>基金代码</th><th>基金名称</th><th class="mono" id="bqDateTh">交易日期 <button class="sortbtn" title="切换升序/倒序">↓</button></th><th class="num">基准当日点位</th><th class="num">基准当日收益率</th><th>指数名称</th><th class="num">指数收盘点位</th><th class="num">当日汇率</th><th class="num">上日汇率</th><th class="num">日环比 1+r</th><th class="ctr">计算状态</th></tr>
+      <tbody id="bqBody"></tbody>
+    </table>
+    <div id="bqEmpty" style="display:none;padding:36px;text-align:center;color:var(--ink3)">暂无查询结果，请调整查询条件后重试</div>
+    <div class="pager" id="bqPager" data-manual>
+      <span>共 <b class="mono" id="bqTotal">0</b> 条</span>
+      <label>每页<select class="psize" id="bqSize"><option>10</option><option selected>30</option><option>50</option><option>100</option></select>条</label>
+      <span>第 <b class="mono pcur" id="bqCur">1</b> / <span class="mono pall" id="bqAll">1</span> 页</span>
+      <button class="btn sm pprev" id="bqPrev" disabled>上一页</button><button class="btn sm pnext" id="bqNext">下一页</button>
+      <span class="pnote">数据较多时建议缩小日期范围或按基金代码过滤 · 点击表头「交易日期」可切换排序方向</span>
     </div>
-    <div class="panel">
-      <div class="ph"><h3>待办事项</h3></div>
-      <div class="pb flush"><table class="tbl">
-        <tr><th>事项</th><th>来源</th><th class="ctr">操作</th></tr>
-        <tr><td><span class="tag err">阻断</span>　000300.CSI 缺行情 → 2 只基金挂起</td><td>齐套检查</td><td class="ctr"><a class="btn sm" href="#s3" data-goto="s3">处理</a></td></tr>
-        <tr><td><span class="tag warn">跳变</span>　020932（示例）基准日收益 +1.87% 待确认</td><td>质量复核</td><td class="ctr"><a class="btn sm" href="#s6" data-goto="s6">确认</a></td></tr>
-        <tr><td><span class="tag info">审批</span>　007830 荣瑞一年定开 基准变更 v5 复核中</td><td>配置审批流</td><td class="ctr"><a class="btn sm" href="#s2" data-goto="s2">查看</a></td></tr>
-      </table></div>
+    <div class="note" style="padding:9px 16px;border-top:1px solid var(--line2)">组合基准点位由成分基准按合同权重逐日合成（每日再平衡）；含外币成分的基金按估值日人民银行中间价折算（当日 / 上日汇率列）。指数收益率按日环比（1+r）口径展示；基准收益率缺失（计算异常）的基金整行标红并置顶，计算状态显示「异常」。查询结果默认按交易日期倒序。导出规则：勾选行则仅导出勾选项，未勾选则按当前查询结果导出（同基金净值增长率查询页面）。</div>
     </div>
-  </div>
-
-  <div class="panel">
-    <div class="ph"><h3>近 7 日批次</h3><span class="sub">日频调度 · 特殊披露频率产品随各自披露日推送</span></div>
-    <div class="pb flush"><table class="tbl">
-      <tr><th>批次日</th><th>估值截止日</th><th class="num">计算完成</th><th class="num">阻断</th><th class="num">跳变确认</th><th class="ctr">推送</th><th class="num">耗时</th></tr>
-      <tr><td class="mono">2026-10-15</td><td class="mono">2026-10-14</td><td class="num">484</td><td class="num" style="color:var(--red)">2</td><td class="num">1</td><td class="ctr"><span class="tag ok">完成</span></td><td class="num">96.2s</td></tr>
-      <tr><td class="mono">2026-10-14</td><td class="mono">2026-10-13</td><td class="num">486</td><td class="num">0</td><td class="num">0</td><td class="ctr"><span class="tag ok">完成</span></td><td class="num">94.8s</td></tr>
-      <tr><td class="mono">2026-10-13</td><td class="mono">2026-10-12</td><td class="num">486</td><td class="num">0</td><td class="num">2</td><td class="ctr"><span class="tag ok">完成</span></td><td class="num">95.1s</td></tr>
-      <tr><td class="mono">2026-10-12</td><td class="mono">—</td><td class="num" colspan="4" style="text-align:center;color:var(--ink3)">非披露日（周一批次跳过）</td><td class="num">—</td></tr>
-      <tr><td class="mono">2026-10-11</td><td class="mono">2026-10-10</td><td class="num">485</td><td class="num" style="color:var(--red)">1</td><td class="num">0</td><td class="ctr"><span class="tag ok">完成＋R1更正</span></td><td class="num">97.4s</td></tr>
-      <tr><td class="mono">2026-10-10</td><td class="mono">2026-10-09</td><td class="num">486</td><td class="num">0</td><td class="num">1</td><td class="ctr"><span class="tag ok">完成</span></td><td class="num">93.9s</td></tr>
-      <tr><td class="mono">2026-10-09</td><td class="mono">2026-10-08</td><td class="num">486</td><td class="num">0</td><td class="num">0</td><td class="ctr"><span class="tag ok">完成</span></td><td class="num">94.2s</td></tr>
-    </table></div>
   </div>
 </section>
 
 <!-- ============ S2 产品基准配置 ============ -->
 <section class="screen" id="s2">
   <div class="panel">
-    <div class="ph"><h3>产品基准配置管理</h3><span class="sub">F02 · 创新部维护 · 配置版本化（生效起止区间）· 变更触发历史追溯重算</span>
+    <div class="ph"><h3>产品基准配置管理</h3><span class="sub">F02 · 投资风险部维护 · 配置版本化（生效起止区间）· 变更触发历史追溯重算</span>
       <span class="ops">
-        <input placeholder="搜索产品代码 / 简称" style="border:1px solid var(--line);border-radius:4px;padding:5px 10px;font-size:12px;width:190px">
-        <button class="btn pri" id="btnChange">＋ 发起基准变更</button>
+        <input id="cfgSearchKey" placeholder="搜索产品代码 / 简称" style="border:1px solid var(--line);border-radius:4px;padding:5px 10px;font-size:12px;width:170px">
+        <label style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--ink2)">生效日期<input type="date" id="cfgSearchDate" style="border:1px solid var(--line);border-radius:4px;padding:4px 6px;font-size:12px"></label>
+        <button class="btn">查询</button><button class="btn" onclick="cfgResetSearch()">重置</button>
+        <button class="btn pri" id="btnChange">＋ 发起基准配置</button>
       </span></div>
     <div class="pb flush"><table class="tbl" id="cfgTbl">
-      <tr><th>产品代码</th><th>产品简称</th><th>类型</th><th>成分基准</th><th class="ctr">当前版本</th><th class="mono">生效起</th><th class="ctr">状态</th><th class="ctr">操作</th></tr>
-      <tr data-p="530001"><td class="mono">530001</td><td>建信恒久价值混合</td><td>混合</td><td class="num">3</td><td class="ctr mono">v3</td><td class="mono">2024-05-06</td><td class="ctr"><span class="tag ok">生效</span></td><td class="ctr"><button class="btn sm">详情</button></td></tr>
-      <tr data-p="530003" class="sel"><td class="mono">530003</td><td>建信优选成长混合A</td><td>混合</td><td class="num">3</td><td class="ctr mono">v2</td><td class="mono">2023-08-01</td><td class="ctr"><span class="tag ok">生效</span></td><td class="ctr"><button class="btn sm">详情</button></td></tr>
-      <tr data-p="960028"><td class="mono">960028</td><td>建信优选成长H</td><td>混合</td><td class="num">3</td><td class="ctr mono">v2</td><td class="mono">2023-08-01</td><td class="ctr"><span class="tag ok">生效</span></td><td class="ctr"><button class="btn sm">详情</button></td></tr>
-      <tr data-p="007830"><td class="mono">007830</td><td>建信荣瑞一年定开混合</td><td>混合偏债</td><td class="num">3 <span class="hint" style="padding:0 4px">复合基准已拆解</span></td><td class="ctr mono">v4</td><td class="mono">2025-11-19</td><td class="ctr"><span class="tag warn">v5 复核中</span></td><td class="ctr"><button class="btn sm">详情</button></td></tr>
-      <tr data-p="026663"><td class="mono">026663</td><td>建信资源严选股票发起C</td><td>股票</td><td class="num">2</td><td class="ctr mono">v1</td><td class="mono">2026-03-12</td><td class="ctr"><span class="tag err">今日阻断</span></td><td class="ctr"><button class="btn sm">详情</button></td></tr>
-      <tr data-p="020932"><td class="mono">020932</td><td>建信沪港深价值混合A（示例）</td><td>混合</td><td class="num">2 <span class="hint" style="padding:0 4px">含港币成分·自动折算</span></td><td class="ctr mono">v1</td><td class="mono">2025-06-18</td><td class="ctr"><span class="tag warn">跳变待确认</span></td><td class="ctr"><button class="btn sm">详情</button></td></tr>
-      <tr data-p="539001"><td class="mono">539001</td><td>建信稳定增利债券A（示例）</td><td>债券</td><td class="num">2</td><td class="ctr mono">v2</td><td class="mono">2024-01-15</td><td class="ctr"><span class="tag ok">生效</span></td><td class="ctr"><button class="btn sm">详情</button></td></tr>
-      <tr data-p="021111"><td class="mono">021111</td><td>建信安心货币A（示例）</td><td>货币</td><td class="num">—</td><td class="ctr mono">—</td><td class="mono">—</td><td class="ctr"><span class="tag gray">无基准 · 仅推①</span></td><td class="ctr"><button class="btn sm" disabled>详情</button></td></tr>
-    </table></div>
+      <tr><th>产品代码</th><th>产品简称</th><th class="mono">生效日期</th><th class="ctr">操作</th></tr>
+      <tr data-p="530001"><td class="mono">530001</td><td>建信恒久价值混合</td><td class="mono">2024-05-06</td><td class="ctr"><button class="btn sm" onclick="renderCfg('530001')">详情</button> <button class="btn sm" onclick="modCfg('530001')">修改</button> <button class="btn sm dgr" onclick="delRow(this)">删除</button></td></tr>
+      <tr data-p="530003" class="sel"><td class="mono">530003</td><td>建信优选成长混合A</td><td class="mono">2023-08-01</td><td class="ctr"><button class="btn sm" onclick="renderCfg('530003')">详情</button> <button class="btn sm" onclick="modCfg('530003')">修改</button> <button class="btn sm dgr" onclick="delRow(this)">删除</button></td></tr>
+      <tr data-p="960028"><td class="mono">960028</td><td>建信优选成长H</td><td class="mono">2023-08-01</td><td class="ctr"><button class="btn sm" onclick="renderCfg('960028')">详情</button> <button class="btn sm" onclick="modCfg('960028')">修改</button> <button class="btn sm dgr" onclick="delRow(this)">删除</button></td></tr>
+      <tr data-p="007830"><td class="mono">007830</td><td>建信荣瑞一年定开混合</td><td class="mono">2025-11-19</td><td class="ctr"><button class="btn sm" onclick="renderCfg('007830')">详情</button> <button class="btn sm" onclick="modCfg('007830')">修改</button> <button class="btn sm dgr" onclick="delRow(this)">删除</button></td></tr>
+      <tr data-p="026663"><td class="mono">026663</td><td>建信资源严选股票发起C</td><td class="mono">2026-03-12</td><td class="ctr"><button class="btn sm" onclick="renderCfg('026663')">详情</button> <button class="btn sm" onclick="modCfg('026663')">修改</button> <button class="btn sm dgr" onclick="delRow(this)">删除</button></td></tr>
+      <tr data-p="020932"><td class="mono">020932</td><td>建信沪港深价值混合A（示例）</td><td class="mono">2025-06-18</td><td class="ctr"><button class="btn sm" onclick="renderCfg('020932')">详情</button> <button class="btn sm" onclick="modCfg('020932')">修改</button> <button class="btn sm dgr" onclick="delRow(this)">删除</button></td></tr>
+      <tr data-p="539001"><td class="mono">539001</td><td>建信稳定增利债券A（示例）</td><td class="mono">2024-01-15</td><td class="ctr"><button class="btn sm" onclick="renderCfg('539001')">详情</button> <button class="btn sm" onclick="modCfg('539001')">修改</button> <button class="btn sm dgr" onclick="delRow(this)">删除</button></td></tr>
+    </table>
+    <div class="pager" data-total="486">
+      <span>共 <b class="mono">486</b> 条</span>
+      <label>每页<select class="psize"><option>10</option><option selected>30</option><option>50</option><option>100</option></select>条</label>
+      <span>第 <b class="mono pcur">1</b> / <span class="mono pall">17</span> 页</span>
+      <button class="btn sm pprev" disabled>上一页</button><button class="btn sm pnext">下一页</button>
+      <span class="pnote">原型演示：分页仅联动指示器</span>
+    </div></div>
   </div>
+</section>
 
-  <div class="grid2">
-    <div class="panel">
-      <div class="ph"><h3>配置详情 · <span id="cfgName">530003 建信优选成长混合A</span></h3><span class="ops"><span class="tag info" id="cfgVer">版本 v2 · 2023-08-01 起生效</span></span></div>
-      <div class="pb">
-        <table class="tbl" style="margin-bottom:10px">
-          <tr><th>成分基准（Wind 代码）</th><th>名称</th><th class="ctr">基准类型</th><th class="num">权重</th><th class="ctr">币种</th></tr>
-          <tr><td class="mono">000906.CSI</td><td>中证800指数</td><td class="ctr">指数</td><td class="num">75.0000%</td><td class="ctr">CNY</td></tr>
-          <tr><td class="mono">CBA00101.CS</td><td>中债-新综合财富指数</td><td class="ctr">指数</td><td class="num">20.0000%</td><td class="ctr">CNY</td></tr>
-          <tr><td class="mono">DEP1Y（示例）</td><td>一年期定期存款利率（税前）</td><td class="ctr">利率 · 分段</td><td class="num">5.0000%</td><td class="ctr">CNY</td></tr>
-        </table>
-        <div class="wbar"><i style="width:75%;background:#1668DC"></i><i style="width:20%;background:#5B9BD5"></i><i style="width:5%;background:#B4690E"></i></div>
-        <div class="wbar-l"><span><b style="color:#1668DC">■</b> 中证800 75%</span><span><b style="color:#5B9BD5">■</b> 中债-新综合 20%</span><span><b style="color:#B4690E">■</b> 一年定存 5%</span>
-          <span style="margin-left:auto"><span class="tag ok">权重合计 100.0000% ✓（容差 ±0.0001）</span></span></div>
-        <dl class="kv" style="margin-top:12px">
-          <dt>口径</dt><dd>每日再平衡（合同固定权重逐日加权）· 仅基金有净值日计算</dd>
-          <dt>合同关联</dt><dd>《建信优选成长混合基金合同》2023-08-01 修订版 · 第十二条</dd>
-          <dt>维护</dt><dd>创新部发起 ＋ 创新部负责人复核 · 审批通过后生效</dd>
-        </dl>
-      </div>
+<!-- ============ S2i 指数库（参照 zhishu.html 设计） ============ -->
+<section class="screen" id="s2i">
+  <div class="panel">
+    <div class="ph"><h3>指数库维护</h3><span class="sub">数据与配置 · 投资风险部维护 · 供应产品基准配置的成分基准选用 · 指数编码（Wind 代码）为唯一键</span></div>
+    <div class="qry">
+      <label>指数编码<input id="zSearchCode" placeholder="如 000300.CSI" style="width:150px"></label>
+      <label>指数名称<input id="zSearchName" placeholder="如 沪深300" style="width:140px"></label>
+      <label>是否外盘指数<select id="zSearchForeign"><option>全部</option><option>是</option><option>否</option></select></label>
+      <label>类型<select id="zSearchType"><option>全部</option><option>利率</option><option>指数</option></select></label>
+      <button class="btn pri" onclick="zRender()">查询</button><button class="btn" onclick="zResetSearch()">重置</button>
+      <span class="note" style="margin-left:auto">共 <b class="mono" id="zCount">10</b> 条记录</span>
     </div>
-    <div class="panel">
-      <div class="ph"><h3>版本历史与在途审批</h3></div>
-      <div class="pb flush"><table class="tbl">
-        <tr><th>版本</th><th class="mono">生效区间</th><th>成分概要</th><th class="ctr">状态</th></tr>
-        <tr><td class="mono">v2</td><td class="mono">2023-08-01 → 至今</td><td>中证800 75% ＋ 中债新综合 20% ＋ 一年定存 5%</td><td class="ctr"><span class="tag ok">现行</span></td></tr>
-        <tr><td class="mono">v1</td><td class="mono">2010-05-11 → 2023-07-31</td><td>沪深300 80% ＋ 中债综合 20%（历史区间按此版本追溯计算）</td><td class="ctr"><span class="tag gray">已失效·留档</span></td></tr>
+    <div class="pb flush">
+      <div class="tabops" style="justify-content:flex-start"><button class="btn pri" onclick="zOpenAdd()">＋ 新增指数</button></div>
+      <table class="tbl" id="zTbl">
+        <tr><th class="ctr" style="width:44px">序号</th><th class="mono">指数编码</th><th>指数名称</th><th class="ctr">类型</th><th class="ctr">是否自有指数</th><th class="ctr">是否外盘</th><th class="ctr">计价币种</th><th>数据来源</th><th>维护人</th><th class="ctr">操作</th></tr>
+        <tbody id="zBody"></tbody>
       </table>
-      <div style="padding:12px 16px;border-top:1px solid var(--line2)">
-        <div style="font-size:12px;color:var(--ink3);margin-bottom:6px">在途变更 · 007830 建信荣瑞一年定开 v4→v5（复合基准成分权重调整）</div>
-        <div class="flow">
-          <div class="fnode done"><div class="fball">✓</div><div class="fname">发起<br><small style="font-weight:400;color:var(--ink3)">创新部·李工 10-13</small></div></div>
-          <div class="fline done"></div>
-          <div class="fnode cur"><div class="fball">2</div><div class="fname">复核<br><small style="font-weight:400;color:var(--ink3)">创新部负责人</small></div></div>
-          <div class="fline"></div>
-          <div class="fnode"><div class="fball">3</div><div class="fname">生效·公告<br><small style="font-weight:400;color:var(--ink3)">提前30日 11-15</small></div></div>
-          <div class="fline"></div>
-          <div class="fnode"><div class="fball">4</div><div class="fname">追溯重算<br><small style="font-weight:400;color:var(--ink3)">自动触发</small></div></div>
-        </div>
-        <div class="banner warn" style="margin:10px 0 0"><span>↻</span><div>变更生效后系统将按 v5 配置对 007830 <b>历史区间级联重算</b>，并评估已推送数据的更正重推（差异＞0.01 个百分点触发）。变更日所在区间按旧/新版本<b>分段计算</b>（日因子拼接）。</div></div>
-      </div></div>
+      <div class="pager" id="zPager" data-manual>
+        <span>共 <b class="mono" id="zTotal">13</b> 条</span>
+        <label>每页<select class="psize" id="zSize"><option>10</option><option selected>30</option><option>50</option><option>100</option></select>条</label>
+        <span>第 <b class="mono pcur" id="zCur">1</b> / <span class="mono pall" id="zAll">1</span> 页</span>
+        <button class="btn sm pprev" id="zPrev" disabled>上一页</button><button class="btn sm pnext" id="zNext">下一页</button>
+      </div>
+      <div style="padding:9px 16px;border-top:1px solid var(--line2)" class="note">指数库为产品基准配置的成分基准主数据；外盘指数按原币存储，人民币折算仅在计算层按 §5.4 口径执行；删除前请确认无在用配置引用。</div>
     </div>
   </div>
 </section>
 
 <!-- ============ S3 基准行情库 ============ -->
 <section class="screen" id="s3">
-  <div class="banner err"><span>⛔</span><div><b>缺行情阻断（Q26 口径：即阻断＋告警，不沿用前值）：</b>000300.CSI 沪深300 · 2026-10-14 缺失（Wind 漏更）→ 阻断 026663、007830 两只基金，人工修复后自动重算。　<button class="btn sm dgr" id="btnFix">登记修复（补录行情）</button></div></div>
   <div class="panel">
+    <div class="ph"><h3>基准行情查询</h3><span class="sub">F03 查询视角 · Wind 代码为唯一键 · 只读</span></div>
+    <div class="qry">
+      <label>代码/名称<input placeholder="如 000906.CSI / 中证800" style="width:190px"></label>
+      <label>起始日<input type="date"></label>
+      <label>截止日<input type="date"></label>
+      <label>数据来源<select><option>全部</option><option>系统</option><option>人工维护</option></select></label>
+      <button class="btn pri">查询</button><button class="btn" onclick="resetQry(this)">重置</button>
+      <span class="note" style="margin-left:auto">查询范围跟随当前页签（指数行情 / 利率 / 汇率）</span>
+    </div>
     <div class="tabs" role="tablist">
       <button class="on" data-tab="t31" role="tab">指数行情</button>
-      <button data-tab="t32" role="tab">分段利率</button>
+      <button data-tab="t32" role="tab">利率</button>
       <button data-tab="t33" role="tab">汇率（人民银行中间价）</button>
-      <button data-tab="t34" role="tab">修订登记</button>
     </div>
-    <div class="tabpane on" id="t31"><table class="tbl">
-      <tr><th>Wind 代码（唯一键）</th><th>简称</th><th class="ctr">类型</th><th class="num">最新点位</th><th class="mono">行情日期</th><th class="num">日环比 1+r</th><th class="ctr">状态</th></tr>
-      <tr><td class="mono">000906.CSI</td><td>中证800</td><td class="ctr">指数</td><td class="num">5,187.3200</td><td class="mono">2026-10-14</td><td class="num">1.00812345</td><td class="ctr"><span class="tag ok">正常</span></td></tr>
-      <tr><td class="mono">CBA00101.CS</td><td>中债-新综合财富</td><td class="ctr">指数</td><td class="num">245.1187</td><td class="mono">2026-10-14</td><td class="num">1.00012345</td><td class="ctr"><span class="tag ok">正常</span></td></tr>
-      <tr><td class="mono">000300.CSI</td><td>沪深300</td><td class="ctr">指数</td><td class="num">—</td><td class="mono">2026-10-14</td><td class="num">—</td><td class="ctr"><span class="tag err">缺失 · 阻断2基金</span></td></tr>
-      <tr><td class="mono">HSI.HI</td><td>恒生指数（HKD → CNY 自动折算）</td><td class="ctr">指数 · 跨境</td><td class="num">25,310.8800</td><td class="mono">2026-10-14</td><td class="num">1.01934521</td><td class="ctr"><span class="tag ok">正常 · 已折算</span></td></tr>
-      <tr><td class="mono">CBA10201.CS</td><td>中债-总财富指数</td><td class="ctr">指数</td><td class="num">238.9054</td><td class="mono">2026-10-14</td><td class="num">1.00009876</td><td class="ctr"><span class="tag ok">正常</span></td></tr>
-    </table></div>
+    <div class="tabpane on" id="t31">
+      <div class="tabops"><span class="note" id="expNote31"></span><button class="btn" id="exp31">导出当前结果</button></div>
+      <table class="tbl" id="t31Tbl">
+      <tr><th class="ctr" style="width:34px"><input type="checkbox" class="ckAll" title="全选"></th><th>Wind 代码（唯一键）</th><th>名称</th><th class="mono" id="t31DateTh">行情日期 <button class="sortbtn" title="切换升序/倒序">↓</button></th><th class="num">点位</th><th class="num">日环比 1+r</th><th class="ctr">数据来源</th></tr>
+      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">000906.CSI</td><td>中证800</td><td class="mono">2026-10-14</td><td class="num">5,187.3200</td><td class="num">1.00812345</td><td class="ctr"><span class="tag info">系统</span></td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">CBA00101.CS</td><td>中债-新综合财富</td><td class="mono">2026-10-14</td><td class="num">245.1187</td><td class="num">1.00012345</td><td class="ctr"><span class="tag info">系统</span></td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">000300.CSI</td><td>沪深300</td><td class="mono">2026-10-14</td><td class="num">4,721.5500</td><td class="num">1.00813720</td><td class="ctr"><span class="tag warn">人工维护</span></td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">HSI.HI</td><td>恒生指数（原币 HKD · 不折算）</td><td class="mono">2026-10-14</td><td class="num">25,310.8800</td><td class="num">1.01934521</td><td class="ctr"><span class="tag info">系统</span></td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">CBA10201.CS</td><td>中债-总财富指数</td><td class="mono">2026-10-14</td><td class="num">238.9054</td><td class="num">1.00009876</td><td class="ctr"><span class="tag info">系统</span></td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">000906.CSI</td><td>中证800</td><td class="mono">2026-10-13</td><td class="num">5,145.5100</td><td class="num">0.99876543</td><td class="ctr"><span class="tag info">系统</span></td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">000300.CSI</td><td>沪深300</td><td class="mono">2026-10-13</td><td class="num">4,683.4400</td><td class="num">0.99891234</td><td class="ctr"><span class="tag info">系统</span></td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">HSI.HI</td><td>恒生指数（原币 HKD · 不折算）</td><td class="mono">2026-10-13</td><td class="num">24,830.4500</td><td class="num">0.99754321</td><td class="ctr"><span class="tag info">系统</span></td></tr>
+      </table>
+      <div class="pager" data-total="673484">
+        <span>共 <b class="mono">673,484</b> 条</span>
+        <label>每页<select class="psize"><option>10</option><option selected>30</option><option>50</option><option>100</option></select>条</label>
+        <span>第 <b class="mono pcur">1</b> / <span class="mono pall">22450</span> 页</span>
+        <button class="btn sm pprev" disabled>上一页</button><button class="btn sm pnext">下一页</button>
+        <span class="pnote">原型演示：分页仅联动指示器</span>
+      </div>
+      <div style="padding:8px 16px" class="note">外币指数（如恒生指数）按<b>原币存储与查询、不折算人民币</b>；人民币折算仅在计算层按 §5.4 折算口径执行。查询结果默认按日期倒序。</div>
+    </div>
     <div class="tabpane" id="t32">
       <div style="padding:10px 16px 0"><span class="banner info" style="margin:0"><span>ℹ</span><div>天数基准分时点切换（Q16 定稿）：<b>2026-07-01 前（至 06-30）ACT/360，2026-07-01 起（含当日）ACT/365</b>；利率按「生效起止＋适用利率」分段记录，历史区间按当时适用利率计提。</div></span></div>
-      <table class="tbl">
-      <tr><th>利率基准（Wind 代码）</th><th class="mono">生效起</th><th class="mono">生效止</th><th class="num">适用年利率</th><th class="ctr">天数基准</th><th class="num">示例日因子</th><th>拆分依据</th></tr>
-      <tr><td>一年定存（税前）DEP1Y（示例）</td><td class="mono">2025-05-20</td><td class="mono">至今</td><td class="num">0.95%</td><td class="ctr"><span class="tag info">360→365</span><br><small class="note">2026-07-01 分段</small></td><td class="num">1.00002603</td><td>央行 2025-05-20 降息公告</td></tr>
-      <tr><td>一年定存（税前）DEP1Y（示例）</td><td class="mono">2024-10-21</td><td class="mono">2025-05-19</td><td class="num">1.10%</td><td class="ctr">ACT/360</td><td class="num">1.00003056</td><td>央行 2024-10-21 降息公告</td></tr>
-      <tr><td>一年定存（税前）DEP1Y（示例）</td><td class="mono">2024-07-25</td><td class="mono">2024-10-20</td><td class="num">1.35%</td><td class="ctr">ACT/360</td><td class="num">1.00003750</td><td>央行 2024-07-25 降息公告</td></tr>
-      <tr><td>一年定存（税前）DEP1Y（示例）</td><td class="mono">2023-09-01</td><td class="mono">2024-07-24</td><td class="num">1.45%</td><td class="ctr">ACT/360</td><td class="num">1.00004028</td><td>央行 2023-09-01 降息公告（存量迁移拆分）</td></tr>
-      <tr><td>七天通知存款 DEP7D（示例）</td><td class="mono">2025-05-20</td><td class="mono">至今</td><td class="num">0.45%</td><td class="ctr"><span class="tag info">360→365</span></td><td class="num">1.00001233</td><td>央行公告</td></tr>
-    </table></div>
-    <div class="tabpane" id="t33"><table class="tbl">
-      <tr><th>Wind 代码</th><th>币种对</th><th class="num">中间价</th><th class="mono">日期</th><th>来源</th><th class="ctr">到位时点</th><th class="ctr">状态</th></tr>
-      <tr><td class="mono">M0000185</td><td>美元 / 人民币</td><td class="num">7.0876</td><td class="mono">2026-10-14</td><td>中国人民银行中间价</td><td class="ctr mono">16:42 ✓</td><td class="ctr"><span class="tag ok">正常</span></td></tr>
-      <tr><td class="mono">M0000187</td><td>港元 / 人民币</td><td class="num">0.90912</td><td class="mono">2026-10-14</td><td>中国人民银行中间价</td><td class="ctr mono">16:42 ✓</td><td class="ctr"><span class="tag ok">正常</span></td></tr>
-    </table>
-    <div style="padding:10px 16px" class="note">要求 T 日 17:00 前随行情包到位；缺失时告警＋人工补录留痕。境外成分折算：经汇率调整指数ₜ = Indexₜ × FXₜ，日收益按折算后序列计算（直接汇率、估值日当日中间价）。</div></div>
-    <div class="tabpane" id="t34"><table class="tbl">
-      <tr><th class="mono">登记时间</th><th>来源</th><th>修订内容</th><th>影响评估</th><th class="ctr">处置</th></tr>
-      <tr><td class="mono">2026-10-10 09:14</td><td>Wind</td><td>000906.CSI 2026-09-30 收盘点位修订 −0.02</td><td class="mono">重算差异 0.0001pp ＜ 0.01pp</td><td class="ctr"><span class="tag gray">归档 · 未重推</span></td></tr>
-      <tr><td class="mono">2026-10-12 20:05</td><td>估值系统</td><td>007830 2026-09 历史净值修订（分红更正）</td><td class="mono">差异 0.0312pp ＞ 0.01pp</td><td class="ctr"><span class="tag ok">已触发更正重推 PB20261012-R1</span></td></tr>
-    </table>
-    <div style="padding:10px 16px"><button class="btn">＋ 登记修订</button>　<span class="note">行情侧重新披露/更正流程细节待业务明确（原型按"触发重算＋差异阈值 0.01pp 重推"演示）</span></div></div>
+      <div class="tabops"><span class="note" id="expNote32"></span><button class="btn" id="exp32">导出当前结果</button></div>
+      <table class="tbl" id="t32Tbl">
+      <tr><th class="ctr" style="width:34px"><input type="checkbox" class="ckAll" title="全选"></th><th>利率代码（Wind 代码）</th><th>利率名称</th><th class="mono" id="t32DateTh">生效起 <button class="sortbtn" title="切换升序/倒序">↓</button></th><th class="mono">生效止</th><th class="num">适用年利率</th><th class="ctr">天数基准</th><th class="ctr">数据来源</th></tr>
+      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">DEP1Y（示例）</td><td>一年定存（税前）</td><td class="mono">2025-05-20</td><td class="mono">至今</td><td class="num">0.95%</td><td class="ctr"><span class="tag info">360→365</span><br><small class="note">2026-07-01 分段</small></td><td class="ctr"><span class="tag info">系统</span></td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">DEP7D（示例）</td><td>七天通知存款</td><td class="mono">2025-05-20</td><td class="mono">至今</td><td class="num">0.45%</td><td class="ctr"><span class="tag info">360→365</span></td><td class="ctr"><span class="tag info">系统</span></td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">DEP1Y（示例）</td><td>一年定存（税前）</td><td class="mono">2024-10-21</td><td class="mono">2025-05-19</td><td class="num">1.10%</td><td class="ctr">ACT/360</td><td class="ctr"><span class="tag info">系统</span></td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">DEP1Y（示例）</td><td>一年定存（税前）</td><td class="mono">2024-07-25</td><td class="mono">2024-10-20</td><td class="num">1.35%</td><td class="ctr">ACT/360</td><td class="ctr"><span class="tag info">系统</span></td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">DEP1Y（示例）</td><td>一年定存（税前）</td><td class="mono">2023-09-01</td><td class="mono">2024-07-24</td><td class="num">1.45%</td><td class="ctr">ACT/360</td><td class="ctr"><span class="tag warn">人工维护</span></td></tr>
+      </table>
+      <div class="pager" data-total="386">
+        <span>共 <b class="mono">386</b> 条</span>
+        <label>每页<select class="psize"><option>10</option><option selected>30</option><option>50</option><option>100</option></select>条</label>
+        <span>第 <b class="mono pcur">1</b> / <span class="mono pall">13</span> 页</span>
+        <button class="btn sm pprev" disabled>上一页</button><button class="btn sm pnext">下一页</button>
+        <span class="pnote">原型演示：分页仅联动指示器</span>
+      </div>
+    </div>
+    <div class="tabpane" id="t33">
+      <div class="tabops"><span class="note" id="expNote33"></span><button class="btn" id="exp33">导出当前结果</button></div>
+      <table class="tbl" id="t33Tbl">
+      <tr><th class="ctr" style="width:34px"><input type="checkbox" class="ckAll" title="全选"></th><th>Wind 代码</th><th>币种对</th><th class="num">中间价</th><th class="mono" id="t33DateTh">日期 <button class="sortbtn" title="切换升序/倒序">↓</button></th><th class="ctr">数据来源</th></tr>
+      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">M0000185</td><td>美元 / 人民币</td><td class="num">7.0876</td><td class="mono">2026-10-14</td><td class="ctr"><span class="tag info">系统</span></td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">M0000187</td><td>港元 / 人民币</td><td class="num">0.90912</td><td class="mono">2026-10-14</td><td class="ctr"><span class="tag warn">人工维护</span></td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">M0000185</td><td>美元 / 人民币</td><td class="num">7.0902</td><td class="mono">2026-10-13</td><td class="ctr"><span class="tag info">系统</span></td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">M0000187</td><td>港元 / 人民币</td><td class="num">0.90945</td><td class="mono">2026-10-13</td><td class="ctr"><span class="tag info">系统</span></td></tr>
+      </table>
+      <div class="pager" data-total="16040">
+        <span>共 <b class="mono">16,040</b> 条</span>
+        <label>每页<select class="psize"><option>10</option><option selected>30</option><option>50</option><option>100</option></select>条</label>
+        <span>第 <b class="mono pcur">1</b> / <span class="mono pall">535</span> 页</span>
+        <button class="btn sm pprev" disabled>上一页</button><button class="btn sm pnext">下一页</button>
+        <span class="pnote">原型演示：分页仅联动指示器</span>
+      </div>
+      <div style="padding:8px 16px" class="note">来源固定为中国人民银行中间价（直接汇率、估值日当日）；要求 T 日 17:00 前随行情包到位，缺失时告警＋人工补录（经经办→审核生效后入库）。查询结果默认按日期倒序。</div>
+    </div>
   </div>
 </section>
 
-<!-- ============ S4 估值数据接入 ============ -->
+<!-- ============ S3m 基准行情维护 ============ -->
+<section class="screen" id="s3m">
+  <div class="panel">
+    <div class="tabs">
+      <button class="on" data-tab="m1">指数行情维护</button>
+      <button data-tab="m2">利率维护</button>
+      <button data-tab="m3">汇率维护</button>
+    </div>
+    <div class="tabpane on" id="m1">
+      <div class="tabops" style="justify-content:flex-start">
+        <button class="btn pri" onclick="openIdxModal()">＋ 发起维护</button>
+        <span class="note" style="margin-left:auto">维护记录须经经办→审核方可生效；生效前不进入计算</span>
+      </div>
+      <div class="qry" style="border-top:none;border-bottom:1px solid var(--line2)">
+        <label>交易日期<input type="date"></label>
+        <label>指数名称<select><option>全部</option><option>沪深300</option><option>中证800</option><option>恒生指数</option><option>中债-新综合财富</option></select></label>
+        <label>维护人<input placeholder="请输入维护人" style="width:110px"></label>
+        <label>维护日期<input type="date"></label>
+        <button class="btn pri">查询</button><button class="btn">重置</button>
+      </div>
+      <div style="padding:10px 16px 4px;font-size:12.5px;font-weight:700">指数点位维护记录</div>
+      <table class="tbl" id="m1Tbl">
+        <tr><th class="mono" id="m1DateTh">交易日期 <button class="sortbtn" title="切换升序/倒序">↓</button></th><th class="mono">指数代码</th><th>指数名称</th><th class="num">指数收盘点位</th><th>维护人</th><th class="mono">维护时间</th></tr>
+        <tr><td class="mono">2026-10-14</td><td class="mono">000300.CSI</td><td>沪深300</td><td class="num">4,721.5500</td><td>李工</td><td class="mono">2026-10-15 09:20</td></tr>
+        <tr><td class="mono">2026-09-30</td><td class="mono">000906.CSI</td><td>中证800</td><td class="num">5,102.4400</td><td>李工</td><td class="mono">2026-10-10 09:15</td></tr>
+      </table>
+      <div class="pager" data-total="412">
+        <span>共 <b class="mono">412</b> 条</span>
+        <label>每页<select class="psize"><option>10</option><option selected>30</option><option>50</option><option>100</option></select>条</label>
+        <span>第 <b class="mono pcur">1</b> / <span class="mono pall">14</span> 页</span>
+        <button class="btn sm pprev" disabled>上一页</button><button class="btn sm pnext">下一页</button>
+        <span class="pnote">原型演示：分页仅联动指示器</span>
+      </div>
+    </div>
+    <div class="tabpane" id="m2">
+      <div class="tabops" style="justify-content:flex-start">
+        <button class="btn pri" onclick="openRateModal()">＋ 发起维护</button>
+        <span class="note" style="margin-left:auto">维护记录须经经办→审核方可生效；生效前不进入计算</span>
+      </div>
+      <div class="qry" style="border-top:none">
+        <label>利率名称<select><option>全部</option><option>一年定存（税前）</option><option>七天通知存款</option></select></label>
+        <label>维护人<input placeholder="请输入维护人" style="width:110px"></label>
+        <label>生效起<input type="date"></label>
+        <button class="btn pri">查询</button><button class="btn">重置</button>
+      </div>
+      <div style="padding:10px 16px 4px;font-size:12.5px;font-weight:700">利率分段维护记录</div>
+      <table class="tbl" id="m2Tbl">
+        <tr><th class="mono" id="m2DateTh">生效起 <button class="sortbtn" title="切换升序/倒序">↓</button></th><th class="mono">生效止</th><th class="mono">利率代码</th><th>利率名称</th><th class="num">适用年利率</th><th>维护人</th><th class="mono">维护时间</th></tr>
+        <tr><td class="mono">2026-10-20</td><td class="mono">至今</td><td class="mono">DEP1Y（示例）</td><td>一年定存（税前）</td><td class="num">0.85%</td><td>李工</td><td class="mono">2026-10-15 10:02</td></tr>
+        <tr><td class="mono">2025-05-20</td><td class="mono">至今</td><td class="mono">DEP1Y（示例）</td><td>一年定存（税前）</td><td class="num">0.95%</td><td>李工</td><td class="mono">2025-05-20 10:02</td></tr>
+      </table>
+      <div class="note" style="padding:8px 16px">维护规则：① 外部系统提供同一利率代码新的生效起时，系统<b>自动新增</b>「利率代码＋生效起」数据，原数据生效止自动按新生效起−1 填上；② 人工维护同一利率代码仅有<b>新增模式</b>，按「利率代码＋生效起」为键新增，原数据生效止同样自动截断。天数基准按生效日自动判定：2026-07-01 前 ACT/360、起 ACT/365。查询结果默认按生效起倒序。</div>
+      <div class="pager" data-total="86">
+        <span>共 <b class="mono">86</b> 条</span>
+        <label>每页<select class="psize"><option>10</option><option selected>30</option><option>50</option><option>100</option></select>条</label>
+        <span>第 <b class="mono pcur">1</b> / <span class="mono pall">3</span> 页</span>
+        <button class="btn sm pprev" disabled>上一页</button><button class="btn sm pnext">下一页</button>
+        <span class="pnote">原型演示：分页仅联动指示器</span>
+      </div>
+    </div>
+    <div class="tabpane" id="m3">
+      <div class="tabops" style="justify-content:flex-start">
+        <button class="btn pri" onclick="openFxModal()">＋ 发起维护</button>
+        <span class="note" style="margin-left:auto">维护记录须经经办→审核方可生效；生效前不进入计算</span>
+      </div>
+      <div class="qry" style="border-top:none">
+        <label>币种对<select><option>全部</option><option>美元 / 人民币</option><option>港元 / 人民币</option></select></label>
+        <label>交易日期<input type="date"></label>
+        <label>维护人<input placeholder="请输入维护人" style="width:110px"></label>
+        <label>维护日期<input type="date"></label>
+        <button class="btn pri">查询</button><button class="btn">重置</button>
+      </div>
+      <div style="padding:10px 16px 4px;font-size:12.5px;font-weight:700">汇率中间价维护记录</div>
+      <table class="tbl" id="m3Tbl">
+        <tr><th class="mono" id="m3DateTh">日期 <button class="sortbtn" title="切换升序/倒序">↓</button></th><th>币种对</th><th class="num">中间价</th><th>维护人</th><th class="mono">维护时间</th></tr>
+        <tr><td class="mono">2026-10-14</td><td>港元 / 人民币（M0000187）</td><td class="num">0.90912</td><td>李工</td><td class="mono">2026-10-14 17:22</td></tr>
+      </table>
+      <div class="note" style="padding:8px 16px">来源固定为中国人民银行中间价（直接汇率、估值日当日）；要求 T 日 17:00 前随行情包到位，缺失时告警＋人工补录。查询结果默认按日期倒序。</div>
+      <div class="pager" data-total="128">
+        <span>共 <b class="mono">128</b> 条</span>
+        <label>每页<select class="psize"><option>10</option><option selected>30</option><option>50</option><option>100</option></select>条</label>
+        <span>第 <b class="mono pcur">1</b> / <span class="mono pall">5</span> 页</span>
+        <button class="btn sm pprev" disabled>上一页</button><button class="btn sm pnext">下一页</button>
+        <span class="pnote">原型演示：分页仅联动指示器</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S4 基金净值增长率查询 ============ -->
 <section class="screen" id="s4">
-  <div class="banner info"><span>⇄</span><div><b>透传原则（定稿口径）：</b>基金净值增长率以估值系统输出为准——本系统<b>不重算、不校验口径、不加工修改</b>（分红、份额折算等总回报处理的口径责任在估值系统侧）。本系统仅做：接口全精度接收（中间结果统一 8 位小数）、按估值净值日期序列对齐日期轴、按产品代码（A/C 份额独立）分发。</div></div>
-  <div class="grid3" style="margin-bottom:16px">
-    <div class="kpi green"><div class="k1">接口状态</div><div class="k2" style="font-size:18px">● 在线</div><div class="k3">估值系统 · 直连接口</div></div>
-    <div class="kpi blue"><div class="k1">今日到位</div><div class="k2">18:32:07</div><div class="k3">512 条（486 产品 · A/C 份额独立）</div></div>
-    <div class="kpi"><div class="k1">基准日期轴</div><div class="k2" style="font-size:18px">2005-11-30 → 2026-10-14</div><div class="k3">以估值净值日期序列为准 · 日历：A股/货币市场/QD</div></div>
-  </div>
   <div class="panel">
-    <div class="ph"><h3>今日透传数据抽样</h3><span class="sub">全精度接收 → 中间结果统一 8 位小数</span></div>
-    <div class="pb flush"><table class="tbl">
-      <tr><th>产品代码</th><th>产品简称</th><th class="ctr">份额</th><th class="mono">净值日期</th><th class="num">日净值增长率（8位）</th><th class="ctr">类型</th></tr>
-      <tr><td class="mono">530003</td><td>建信优选成长混合A</td><td class="ctr">A</td><td class="mono">2026-10-14</td><td class="num">0.00710233</td><td class="ctr">混合</td></tr>
-      <tr><td class="mono">530005</td><td>建信优选成长混合C（示例）</td><td class="ctr">C</td><td class="mono">2026-10-14</td><td class="num">0.00708912</td><td class="ctr">混合</td></tr>
-      <tr><td class="mono">530001</td><td>建信恒久价值混合</td><td class="ctr">—</td><td class="mono">2026-10-14</td><td class="num">0.00453317</td><td class="ctr">混合</td></tr>
-      <tr><td class="mono">007830</td><td>建信荣瑞一年定开混合</td><td class="ctr">—</td><td class="mono">2026-10-14</td><td class="num">0.00089452</td><td class="ctr">混合偏债</td></tr>
-      <tr><td class="mono">021111</td><td>建信安心货币A（示例）</td><td class="ctr">A</td><td class="mono">2026-10-14</td><td class="num">0.00003561</td><td class="ctr">货币 · 无基准仅推①</td></tr>
-    </table></div>
-  </div>
-  <div class="panel">
-    <div class="ph"><h3>估值修订 · 影响评估</h3><span class="sub">修订登记 → 自动比对差异 → 差异＞0.01 个百分点触发官网/APP 更正重推 → 全程留痕</span></div>
-    <div class="pb flush"><table class="tbl">
-      <tr><th class="mono">修订时间</th><th>产品</th><th>修订内容</th><th class="num">重算差异</th><th class="ctr">阈值判定</th><th class="ctr">处置</th><th class="ctr">留痕</th></tr>
-      <tr><td class="mono">2026-10-12 20:05</td><td class="mono">007830</td><td>2026-09 历史净值修订（分红更正）</td><td class="num">0.0312pp</td><td class="ctr"><span class="tag err">＞0.01pp</span></td><td class="ctr"><span class="tag ok">更正重推完成 PB20261012-R1</span></td><td class="ctr"><button class="btn sm">日志</button></td></tr>
-      <tr><td class="mono">2026-10-08 21:17</td><td class="mono">539001</td><td>2026-08-15 净值小数位修正</td><td class="num">0.0043pp</td><td class="ctr"><span class="tag ok">≤0.01pp</span></td><td class="ctr"><span class="tag gray">归档 · 不重推</span></td><td class="ctr"><button class="btn sm">日志</button></td></tr>
-    </table></div>
-  </div>
-</section>
-<!-- ============ S5 计算任务监控 ============ -->
-<section class="screen" id="s5">
-  <div class="panel">
-    <div class="ph"><h3>计算任务实例</h3><span class="sub">F05/F06 · 日频自动触发 · 支持重算 / 补算 / 历史追溯重算</span>
-      <span class="ops"><button class="btn" id="btnRecalc">↻ 重算 / 补算</button></span></div>
-    <div class="pb flush"><table class="tbl">
-      <tr><th>任务 ID</th><th>类型</th><th class="mono">触发时间</th><th class="mono">估值截止日</th><th>产品范围</th><th class="ctr">状态</th><th class="num">耗时</th><th class="ctr">操作</th></tr>
-      <tr><td class="mono">TASK20261015-01</td><td>日批</td><td class="mono">2026-10-15 18:40:02</td><td class="mono">2026-10-14</td><td>全部产品（486）</td><td class="ctr"><span class="tag ok">完成 484 · 阻断 2</span></td><td class="num">96.2s</td><td class="ctr"><button class="btn sm">日志</button></td></tr>
-      <tr><td class="mono">TASK20261015-R1</td><td>修订重算</td><td class="mono">2026-10-15 08:12:44</td><td class="mono">2026-09-30</td><td>007830（估值修订影响区间）</td><td class="ctr"><span class="tag ok">完成</span></td><td class="num">8.4s</td><td class="ctr"><button class="btn sm">日志</button></td></tr>
-      <tr><td class="mono">TASK20261014-01</td><td>日批</td><td class="mono">2026-10-14 18:39:51</td><td class="mono">2026-10-13</td><td>全部产品（486）</td><td class="ctr"><span class="tag ok">完成 486</span></td><td class="num">94.8s</td><td class="ctr"><button class="btn sm">日志</button></td></tr>
-      <tr><td class="mono">TASK20261001-H1</td><td>历史追溯重算</td><td class="mono">2026-10-01 02:00:00</td><td class="mono">2010-05-10 → 2023-07-31</td><td>530003 / 960028（基准变更 v1→v2 追溯）</td><td class="ctr"><span class="tag ok">完成</span></td><td class="num">412.7s</td><td class="ctr"><button class="btn sm">日志</button></td></tr>
-    </table></div>
-  </div>
-  <div class="grid2">
-    <div class="panel">
-      <div class="ph"><h3>日因子抽样明细 · 530003 · 2026-10-14</h3><span class="sub">中间结果 8 位小数 · 过程数据开放查询、永久保留</span></div>
-      <div class="pb flush"><table class="tbl">
-        <tr><th>项目</th><th>取值 / 公式</th><th class="num">结果（8 位）</th></tr>
-        <tr><td>中证800 日收益</td><td class="mono">5187.32 / 5145.51</td><td class="num">r = 0.00812558</td></tr>
-        <tr><td>中债-新综合 日收益</td><td class="mono">245.1187 / 245.0884</td><td class="num">r = 0.00012363</td></tr>
-        <tr><td>一年定存 日计提</td><td class="mono">1 + 0.95%/365 × 1 <span class="tag info" style="margin-left:4px">ACT/365（2026-07-01 起）</span></td><td class="num">r = 0.00002603</td></tr>
-        <tr style="background:#F7FAFF"><td><b>组合基准日收益 ③</b></td><td class="mono">0.75×r₁ + 0.20×r₂ + 0.05×r₃（每日再平衡）</td><td class="num"><b>rᵇ = 0.00634271</b></td></tr>
-        <tr><td>净值增长率 ①（估值透传）</td><td class="mono">不重算 · 原值转发</td><td class="num">0.00710233</td></tr>
-        <tr><td>当日对齐</td><td colspan="2">基金 2026-10-14 有净值 → 基准正常累计（无净值日不累计，Q18/Q37 口径）</td></tr>
-      </table></div>
+    <div class="ph"><h3>基金净值增长率</h3><span class="sub">来源：估值系统 · 2005-11-30 起全量历史序列（含今日批次）· 永久保留 · 开放查询 · 默认按日期倒序</span>
+      <span class="ops"><span class="note" id="histExpNote"></span><button class="btn" id="histExport">导出当前结果</button></span></div>
+    <div class="qry">
+      <label>产品代码/简称<input placeholder="如 530003 / 优选成长" style="width:170px"></label>
+      <label>起始日<input type="date"></label>
+      <label>截止日<input type="date"></label>
+      <label>份额<select><option>全部</option><option>A</option><option>C</option><option>H</option></select></label>
+      <button class="btn pri">查询</button><button class="btn" onclick="resetQry(this)">重置</button>
+      <span class="note" style="margin-left:auto">示例：含今日批次（2026-10-14）6 条 ＋ 历史 21 条</span>
     </div>
-    <div class="panel">
-      <div class="ph"><h3>阻断与挂起（按基金粒度隔离）</h3></div>
-      <div class="pb flush"><table class="tbl">
-        <tr><th>产品</th><th>原因</th><th class="mono">发生时间</th><th class="ctr">处置</th></tr>
-        <tr><td class="mono">026663 建信资源严选股票发起C</td><td>成分 000300.CSI 缺行情</td><td class="mono">18:40:31</td><td class="ctr"><span class="tag err">阻断 · 待修复</span></td></tr>
-        <tr><td class="mono">007830 建信荣瑞一年定开</td><td>成分 000300.CSI 缺行情</td><td class="mono">18:40:31</td><td class="ctr"><span class="tag err">阻断 · 待修复</span></td></tr>
-        <tr><td class="mono">531017 建信XX周开债（示例）</td><td>周频产品 · 非披露日</td><td class="mono">—</td><td class="ctr"><span class="tag gray">随披露日推送</span></td></tr>
-      </table>
-      <div style="padding:10px 16px" class="note">修复行情后系统自动重算受阻基金，并随下一批次补推；「数据未齐」标注同步解除。</div></div>
-    </div>
+    <div class="pb flush"><table class="tbl" id="histTbl">
+      <tr><th class="ctr" style="width:34px"><input type="checkbox" id="histAll" title="全选"></th><th>产品代码</th><th>产品简称</th><th class="ctr">份额</th><th class="mono" id="histDateTh">净值日期 <button class="sortbtn" title="切换升序/倒序">↓</button></th><th class="num">净值增长率</th></tr>
+      <tr><td class="ctr"><input type="checkbox" class="histCk"></td><td class="mono">530003</td><td>建信优选成长混合A</td><td class="ctr">A</td><td class="mono">2026-10-14</td><td class="num">0.00710233</td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="histCk"></td><td class="mono">530005</td><td>建信优选成长混合C（示例）</td><td class="ctr">C</td><td class="mono">2026-10-14</td><td class="num">0.00708912</td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="histCk"></td><td class="mono">530001</td><td>建信恒久价值混合</td><td class="ctr">—</td><td class="mono">2026-10-14</td><td class="num">0.00453317</td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="histCk"></td><td class="mono">007830</td><td>建信荣瑞一年定开混合</td><td class="ctr">—</td><td class="mono">2026-10-14</td><td class="num">0.00089452</td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="histCk"></td><td class="mono">026663</td><td>建信资源严选股票发起C</td><td class="ctr">C</td><td class="mono">2026-10-14</td><td class="num">0.00582310</td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="histCk"></td><td class="mono">021111</td><td>建信安心货币A（示例）</td><td class="ctr">A</td><td class="mono">2026-10-14</td><td class="num">0.00003561</td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="histCk"></td><td class="mono">007830</td><td>建信荣瑞一年定开混合</td><td class="ctr">—</td><td class="mono">2026-09-30</td><td class="num">0.00091234</td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="histCk"></td><td class="mono">007830</td><td>建信荣瑞一年定开混合</td><td class="ctr">—</td><td class="mono">2026-09-29</td><td class="num">0.00087712</td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="histCk"></td><td class="mono">007830</td><td>建信荣瑞一年定开混合</td><td class="ctr">—</td><td class="mono">2026-09-28</td><td class="num">0.00102345</td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="histCk"></td><td class="mono">007830</td><td>建信荣瑞一年定开混合</td><td class="ctr">—</td><td class="mono">2026-09-25</td><td class="num">0.00076543</td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="histCk"></td><td class="mono">007830</td><td>建信荣瑞一年定开混合</td><td class="ctr">—</td><td class="mono">2026-09-24</td><td class="num">−0.00043210</td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="histCk"></td><td class="mono">007830</td><td>建信荣瑞一年定开混合</td><td class="ctr">—</td><td class="mono">2026-09-23</td><td class="num">0.00068901</td></tr>
+    </table>
+    <div class="pager" data-total="533">
+      <span>共 <b class="mono">533</b> 条</span>
+      <label>每页<select class="psize"><option>10</option><option selected>30</option><option>50</option><option>100</option></select>条</label>
+      <span>第 <b class="mono pcur">1</b> / <span class="mono pall">18</span> 页</span>
+      <button class="btn sm pprev" disabled>上一页</button><button class="btn sm pnext">下一页</button>
+      <span class="pnote">原型演示：分页仅联动指示器</span>
+    </div></div>
+    <div style="padding:9px 16px;border-top:1px solid var(--line2)" class="note">数据含今日批次（净值日期 2026-10-14）与全量历史序列，默认按净值日期倒序（点击表头可切换升/倒序）。导出规则：<b>勾选行则仅导出勾选项；未勾选则按当前查询结果导出</b>。修订记录保留历史版本（留档不覆盖），导出含版本号与修订留痕字段。</div>
   </div>
 </section>
 
-<!-- ============ S6 质量复核 ============ -->
-<section class="screen" id="s6">
-  <div class="panel">
-    <div class="ph"><h3>发布控制</h3><span class="sub">复核通过后方可发布推送</span></div>
-    <div class="pb">
-      <div class="flow">
-        <div class="fnode done"><div class="fball">✓</div><div class="fname">数据层<br><small style="font-weight:400;color:var(--ink3)">缺数阻断2 · 已隔离</small></div></div>
-        <div class="fline done"></div>
-        <div class="fnode done"><div class="fball">✓</div><div class="fname">计算层<br><small style="font-weight:400;color:var(--ink3)">独立复核抽样 10/10 一致</small></div></div>
-        <div class="fline" id="flowLine3"></div>
-        <div class="fnode cur" id="flowNode3"><div class="fball" id="flowBall3">!</div><div class="fname" id="flowName3">业务层<br><small style="font-weight:400;color:var(--ink3)" id="flowSub3">跳变待确认 1 条</small></div></div>
-        <div class="fline" id="flowLine4"></div>
-        <div class="fnode" id="flowNode4"><div class="fball">4</div><div class="fname" id="flowName4">发布推送<br><small style="font-weight:400;color:var(--ink3)" id="flowSub4">等待业务层确认</small></div></div>
-      </div>
-    </div>
-  </div>
-  <div class="grid2">
-    <div class="panel">
-      <div class="ph"><h3>独立复核引擎 · 抽样比对</h3><span class="sub">同公式独立实现重算 · 本日抽样 10 只</span></div>
-      <div class="pb flush"><table class="tbl">
-        <tr><th>产品</th><th class="mono">日期</th><th class="num">引擎值 ③</th><th class="num">复核值 ③</th><th class="num">差异</th><th class="ctr">结论</th></tr>
-        <tr><td class="mono">530003</td><td class="mono">10-14</td><td class="num">0.00634271</td><td class="num">0.00634271</td><td class="num">0.00000000</td><td class="ctr"><span class="tag ok">一致</span></td></tr>
-        <tr><td class="mono">530001</td><td class="mono">10-14</td><td class="num">0.00418802</td><td class="num">0.00418802</td><td class="num">0.00000000</td><td class="ctr"><span class="tag ok">一致</span></td></tr>
-        <tr><td class="mono">960028</td><td class="mono">10-14</td><td class="num">0.00631045</td><td class="num">0.00631045</td><td class="num">0.00000000</td><td class="ctr"><span class="tag ok">一致</span></td></tr>
-        <tr><td class="mono">539001</td><td class="mono">10-14</td><td class="num">0.00074519</td><td class="num">0.00074519</td><td class="num">0.00000000</td><td class="ctr"><span class="tag ok">一致</span></td></tr>
-        <tr><td class="mono">020932</td><td class="mono">10-14</td><td class="num">0.01548837</td><td class="num">0.01548837</td><td class="num">0.00000000</td><td class="ctr"><span class="tag ok">一致</span></td></tr>
-        <tr><td colspan="6" class="ctr note" style="padding:6px">…其余 5 只抽样全部一致（差异 ≤ 1e-8）</td></tr>
-      </table></div>
-    </div>
-    <div class="panel">
-      <div class="ph"><h3>异常跳变 · 人工确认清单</h3><span class="sub">确认后方可发布</span></div>
-      <div class="pb flush"><table class="tbl" id="confirmTbl">
-        <tr><th>产品</th><th>异常描述</th><th class="num">当日 ③</th><th class="ctr">操作</th></tr>
-        <tr id="cfRow1"><td class="mono">020932 建信沪港深价值A（示例）</td><td>基准日收益跳变超阈值（±1.5%）<br><span class="note">归因参考：恒生指数 +2.1%（港股大涨）× 60% 权重 ＋ 汇率折算叠加</span></td><td class="num">0.01548837</td>
-          <td class="ctr"><button class="btn sm pri" onclick="cfPass()">确认通过</button> <button class="btn sm dgr" onclick="cfReject()">驳回挂起</button></td></tr>
-      </table>
-      <div id="cfEmpty" style="display:none;padding:22px 16px;text-align:center;color:var(--ink3);font-size:12.5px">✓ 本批次无待确认异常，可发布</div></div>
-    </div>
-  </div>
-</section>
 
-<!-- ============ S7 推送管理 ============ -->
-<section class="screen" id="s7">
-  <div class="panel">
-    <div class="ph"><h3>推送批次</h3><span class="sub">F08 · ①③日频序列 → 官网＋APP · 同源同批次 · 错误批次按批次号整批覆盖重推</span></div>
-    <div class="pb flush"><table class="tbl">
-      <tr><th>批次号</th><th>类型</th><th class="ctr">渠道</th><th class="num">记录数</th><th class="mono">推送时间</th><th class="ctr">官网回执</th><th class="ctr">APP回执</th><th class="ctr">对账</th><th class="ctr">操作</th></tr>
-      <tr><td class="mono">PB20261015-01</td><td>日批</td><td class="ctr">官网＋APP</td><td class="num">968</td><td class="mono">2026-10-15 19:02:11</td><td class="ctr mono">19:02:40 ✓</td><td class="ctr mono">19:03:05 ✓</td><td class="ctr"><span class="tag ok">一致</span></td><td class="ctr"><button class="btn sm" onclick="openRepush('PB20261015-01')">覆盖重推</button></td></tr>
-      <tr><td class="mono">PB20261014-01</td><td>日批</td><td class="ctr">官网＋APP</td><td class="num">972</td><td class="mono">2026-10-14 19:00:47</td><td class="ctr mono">19:01:22 ✓</td><td class="ctr mono">19:01:58 ✓</td><td class="ctr"><span class="tag ok">一致</span></td><td class="ctr"><button class="btn sm" onclick="openRepush('PB20261014-01')">覆盖重推</button></td></tr>
-      <tr><td class="mono">PB20261012-R1</td><td>更正重推</td><td class="ctr">官网＋APP</td><td class="num">2</td><td class="mono">2026-10-12 20:31:09</td><td class="ctr mono">20:31:40 ✓</td><td class="ctr mono">20:32:11 ✓</td><td class="ctr"><span class="tag ok">一致</span></td><td class="ctr"><span class="tag gray">已归档</span></td></tr>
-      <tr><td class="mono">PB20261011-W1</td><td>周频随批</td><td class="ctr">官网＋APP</td><td class="num">36</td><td class="mono">2026-10-11 19:05:12</td><td class="ctr mono">19:05:44 ✓</td><td class="ctr mono">19:06:20 ✓</td><td class="ctr"><span class="tag ok">一致</span></td><td class="ctr"><button class="btn sm" onclick="openRepush('PB20261011-W1')">覆盖重推</button></td></tr>
-    </table></div>
-  </div>
-  <div class="grid2">
-    <div class="panel">
-      <div class="ph"><h3>推送内容（批次 PB20261015-01 抽样）</h3><span class="sub">仅①③两项 · 日频序列 · 不推区间指标/波动率/差值/文案</span></div>
-      <div class="pb flush"><table class="tbl">
-        <tr><th>产品代码</th><th class="mono">净值日期</th><th class="num">①净值增长率</th><th class="num">③基准收益率</th><th class="ctr">备注</th></tr>
-        <tr><td class="mono">530003</td><td class="mono">2026-10-14</td><td class="num">0.00710233</td><td class="num">0.00634271</td><td class="ctr">—</td></tr>
-        <tr><td class="mono">530005</td><td class="mono">2026-10-14</td><td class="num">0.00708912</td><td class="num">0.00634271</td><td class="ctr">C 份额独立输出</td></tr>
-        <tr><td class="mono">021111</td><td class="mono">2026-10-14</td><td class="num">0.00003561</td><td class="num">—</td><td class="ctr"><span class="tag gray">无基准 · 仅推①</span></td></tr>
-        <tr><td class="mono">026663</td><td class="mono">2026-10-14</td><td class="num">0.00582310</td><td class="num">—</td><td class="ctr"><span class="tag err">③阻断 · 未推</span></td></tr>
-      </table></div>
-    </div>
-    <div class="panel">
-      <div class="ph"><h3>推送规则（定稿口径）</h3></div>
-      <div class="pb">
-        <dl class="kv">
-          <dt>频率</dt><dd>每个净值披露批次复核通过后自动推送；周频/月频/QDII 随各自披露日推送</dd>
-          <dt>范围</dt><dd>全部产品（含货币/REITs）；清盘基金按<b>清盘公告日</b>移出，历史归档可查；封闭期按净值披露频率</dd>
-          <dt>对账</dt><dd>批次号＋记录数＋渠道回执；错误批次<b>按批次号整批覆盖重推</b>并登记留痕</dd>
-          <dt>边界</dt><dd>本系统至推送/接口＋联调支持；官网/APP 前端"同位置展示"改造由各端条线负责</dd>
-        </dl>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- ============ S8 官网/APP 展示效果 ============ -->
-<section class="screen" id="s8">
-  <div class="selrow">
-    <b style="font-size:13px">演示产品：</b>
-    <select id="demoSel" aria-label="选择演示产品">
-      <option value="mix" selected>530003 建信优选成长混合A（非货币 · 展示 4 位小数）</option>
-      <option value="hybrid">007830 建信荣瑞一年定开混合（复合基准已拆解 · 4 位小数）</option>
-      <option value="mmf">021111 建信安心货币A（示例）（货币 · 展示 6 位小数 · 无基准仅推①）</option>
-    </select>
-    <span class="hint">数据同源：官网与 APP 渲染同一推送批次（禁止渠道自算）</span>
-  </div>
-  <div class="demo-wrap">
-    <div class="browser">
-      <div class="bbar"><i></i><i></i><i></i><span class="url">https://www.ccbfund.cn/fund/530003.shtml（示意）</span></div>
-      <div class="site-hd">
-        <div class="site-logo">建</div>
-        <div class="sn">建信基金<small>CCB PRINCIPAL ASSET MANAGEMENT</small></div>
-        <nav class="site-nav"><span>首页</span><span>旗下产品</span><b>基金详情</b><span>投教专区</span><span>信息披露</span></nav>
-      </div>
-      <div class="fund-hd">
-        <div class="fn" id="siteFundName">建信优选成长混合A</div>
-        <div class="fc" id="siteFundCode">530003 · 混合型 · 数据截至 2026-10-14</div>
-      </div>
-      <div class="perf">
-        <div class="pt"><h4>业绩表现</h4><span class="src">同一位置展示净值增长率与业绩比较基准（《指引》第十六条）</span></div>
-        <div class="ptabs" id="siteTabs">
-          <button data-d="21">近1月</button><button data-d="63">近3月</button><button data-d="126" class="on">近6月</button><button data-d="252">近1年</button><button data-d="0">今年以来</button><button data-d="9999">成立以来</button>
-        </div>
-        <div class="chartbox"><svg id="siteChart" viewBox="0 0 640 240" width="100%" height="240" role="img" aria-label="净值增长率与业绩比较基准收益率走势对比图"></svg></div>
-        <div class="legend">
-          <span><i style="border-color:#1668DC"></i>基金净值增长率①<span class="v" id="lgFund" style="color:#1668DC">—</span></span>
-          <span id="lgBenchWrap"><i style="border-color:#C8922A;border-top-style:dashed"></i>业绩比较基准收益率③<span class="v" id="lgBench" style="color:#C8922A">—</span></span>
-          <span class="note" id="lgNote"></span>
-        </div>
-        <div class="perf-nums">
-          <div class="pn"><div class="pl">区间净值增长率 ①</div><div class="pv" id="pnFund" style="color:#1668DC">—</div></div>
-          <div class="pn" id="pnBenchBox"><div class="pl">区间业绩比较基准收益率 ③</div><div class="pv" id="pnBench" style="color:#C8922A">—</div></div>
-          <div class="pn"><div class="pl">展示精度</div><div class="pv" id="pnPrec" style="font-size:13px;color:var(--ink2)">—</div></div>
-        </div>
-        <div class="perf-foot" id="siteFoot">本基金业绩比较基准：中证800指数收益率×75% ＋ 中债-新综合财富指数收益率×20% ＋ 一年期定期存款利率（税前）×5%（示例）。曲线按①③日频序列渲染，区间数值由展示端按窗口累计计算；数据来源：产品系统统一推送，渠道不自算。</div>
-      </div>
-    </div>
-    <div>
-      <div class="phone">
-        <div class="pstat"><span>19:03</span><span>建信基金APP ▮▮▯</span></div>
-        <div class="phd"><div class="fn" id="appFundName">建信优选成长混合A</div><div class="fc" id="appFundCode">530003 · 数据截至 2026-10-14</div></div>
-        <div class="pperf">
-          <div class="ptabs" id="appTabs">
-            <button data-d="21">近1月</button><button data-d="63">近3月</button><button data-d="126" class="on">近6月</button><button data-d="252">近1年</button><button data-d="0">今年</button>
-          </div>
-          <div class="chartbox" style="padding:6px 4px 2px"><svg id="appChart" viewBox="0 0 280 130" width="100%" height="130" role="img" aria-label="APP 业绩对比图"></svg></div>
-          <div class="perf-nums">
-            <div class="pn"><div class="pl">净值增长率①</div><div class="pv" id="appFund" style="color:#1668DC">—</div></div>
-            <div class="pn" id="appBenchBox"><div class="pl">基准收益率③</div><div class="pv" id="appBench" style="color:#C8922A">—</div></div>
-          </div>
-          <div class="perf-foot">官网/APP 同源同批次展示 · 无基准产品仅展示净值增长率</div>
-        </div>
-      </div>
-      <div class="panel" style="margin-top:16px">
-        <div class="ph"><h3>展示规则备注</h3></div>
-        <div class="pb note" style="line-height:1.9">
-          · 展示精度：非货币类 <b class="mono">4</b> 位小数、货币类 <b class="mono">6</b> 位小数（中间结果 8 位）<br>
-          · 曲线数据＝①③日频序列；区间数值由展示端按所选窗口对日序列累计（系统不推送区间指标）<br>
-          · 成立未满窗口的区间按实际存续期起点展示<br>
-          · 清盘基金按清盘公告日移出展示；封闭期产品按净值披露频率更新<br>
-          · 前端"同位置展示"改造由各端条线负责，2027-01 前完成（监管时限 2027-03-01）
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+
+
+
+
 
   </main>
 </div>
 </div>
 
-<!-- ============ 弹层：基准变更 ============ -->
-<div class="mask" id="mChange" role="dialog" aria-modal="true" aria-label="发起基准变更">
-  <div class="modal">
-    <div class="mh"><h3>发起基准变更（创新部）</h3><button class="x" onclick="closeM('mChange')">✕</button></div>
+<!-- ============ 弹层：发起/修改基准配置（参照 yeji.html 流程式设计） ============ -->
+<div class="mask" id="mChange" role="dialog" aria-modal="true" aria-label="发起基准配置">
+  <div class="modal" style="width:900px">
+    <div class="mh"><h3 id="mChangeTitle">发起基准配置（投资风险部）</h3>
+      <span style="margin-left:16px;display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink2)">紧急程度<select id="cfgUrgency" style="border:1px solid var(--line);border-radius:4px;padding:3px 6px;font-size:12px"><option>一般</option><option>紧急</option><option>特急</option></select></span>
+      <span style="margin-left:auto;display:inline-flex;gap:8px"><button class="btn pri" onclick="submitCfgMaint()">提交</button><button class="btn" onclick="closeM('mChange')">返回</button></span>
+    </div>
     <div class="mb">
-      <div class="frm">
-        <label class="req">产品</label><select><option>007830 建信荣瑞一年定开混合</option><option>530001 建信恒久价值混合</option><option>530003 建信优选成长混合A</option></select>
-        <label class="req">新成分配置</label><div>
-          <table class="tbl" style="border:1px solid var(--line);border-radius:4px">
-            <tr><th>成分基准（Wind 代码）</th><th class="num" style="width:90px">权重%</th><th class="ctr" style="width:70px">类型</th></tr>
-            <tr><td class="mono">CBA10201.CS 中债-总财富</td><td class="num">70.0000</td><td class="ctr">指数</td></tr>
-            <tr><td class="mono">000300.CSI 沪深300</td><td class="num">25.0000</td><td class="ctr">指数</td></tr>
-            <tr><td class="mono">DEP1Y 一年定存（税前）</td><td class="num">5.0000</td><td class="ctr">利率</td></tr>
-          </table>
-          <div style="margin-top:6px"><span class="tag ok">合计 100.0000% ✓</span> <span class="note">保存强制校验（容差 ±0.0001），不等即阻断</span></div>
-        </div>
-        <label class="req">变更原因</label><textarea placeholder="如：原基准编制方案调整 / 合同约定的变更情形">原复合基准上游停止维护，按定稿口径拆解为成分＋权重配置并微调权重</textarea>
-        <label class="req">客观依据</label><input value="指数商公告 2026-09-30 · 基金合同第十二条">
-        <label class="req">公告安排</label><input value="提前 30 日公告，拟公告日 2026-11-15">
-        <label>生效日期</label><input class="mono" value="2026-11-16">
+      <div class="procinfo">
+        <span>创建人：<b>李工</b></span><span>归属部门：<b>投资风险部</b></span>
+        <span>前序任务处理人：<b>李工（经办）</b></span><span>审核处理人：<b>投资风险部负责人</b></span>
+        <span>流程创建时间：<b class="mono" id="cfgCreateTime">—</b></span><span>任务到达时间：<b class="mono" id="cfgTaskTime">—</b></span>
       </div>
-      <div class="banner warn" style="margin:12px 0 0"><span>↻</span><div>提交后进入审批流（创新部发起 → 负责人复核 → 生效）。生效时系统自动：① 生成新版本配置（旧版本留档，历史区间按旧版本计算）；② 变更日所在区间<b>分段计算</b>；③ 触发<b>历史追溯重算</b>与已推送数据的更正重推评估（差异＞0.01pp）。</div></div>
+      <div class="flow" style="margin:14px 0 12px">
+        <div class="fnode done"><div class="fball">✓</div><div class="fname">发起维护</div></div>
+        <div class="fline done"></div>
+        <div class="fnode" id="cfgFNode2"><div class="fball">2</div><div class="fname">审核维护</div></div>
+        <div class="fline" id="cfgFLine2"></div>
+        <div class="fnode"><div class="fball">3</div><div class="fname">流程轨迹</div></div>
+      </div>
+      <div class="tabs" style="border:1px solid var(--line);margin-bottom:14px">
+        <button class="on" id="cfgTabInit" onclick="switchCfgStep('init')">发起基准配置维护</button>
+        <button id="cfgTabAudit" onclick="switchCfgStep('audit')">审核基准配置维护</button>
+      </div>
+      <!-- 发起面板 -->
+      <div id="cfgPanelInit">
+        <div style="font-size:12.5px;font-weight:700;margin-bottom:8px">产品选择 <span style="color:var(--red)">*</span></div>
+        <div class="frm" style="grid-template-columns:110px 1fr;margin-bottom:14px">
+          <label class="req">公募产品名称</label><select id="cfgProduct" onchange="cfgProductChange()"></select>
+        </div>
+        <div style="font-size:12.5px;font-weight:700;margin-bottom:8px">基准基本信息</div>
+        <div class="frm" style="grid-template-columns:110px 1fr;margin-bottom:14px">
+          <label class="req">生效日期</label><div><input type="date" class="mono" id="cfgEffDate" style="width:180px"><div class="note" style="margin-top:3px">默认值：所选产品的合同生效日</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <b style="font-size:12.5px">成分配置 <span style="color:var(--red)">*</span></b>
+          <span style="margin-left:auto;display:inline-flex;gap:8px"><button class="btn sm" onclick="addCompRow()">＋ 添加成分</button></span>
+        </div>
+        <table class="tbl" style="border:1px solid var(--line);border-radius:4px">
+          <tr><th style="width:170px">成分基准（Wind 代码）</th><th>名称</th><th class="ctr" style="width:64px">类型</th><th class="num" style="width:110px">调整点(%)</th><th class="num" style="width:130px">权重(%)</th><th class="ctr" style="width:64px">操作</th></tr>
+          <tbody id="cfgCompBody"></tbody>
+        </table>
+        <div style="display:flex;align-items:center;gap:14px;padding:8px 2px 14px;font-size:12px;color:var(--ink2);flex-wrap:wrap">
+          <span>成分合计：<b class="mono" id="cfgWTotal" style="font-size:13px">0.0000</b>%</span>
+          <span>现金（差额自动归属）：<b class="mono" id="cfgWCash" style="font-size:13px">100.0000</b>%</span>
+          <span>总计：<b class="mono">100.0000</b>%</span>
+          <span id="cfgWTips" class="tag err" style="display:none">成分合计超过 100%，请调整</span>
+        </div>
+        <div style="font-size:12.5px;margin-bottom:6px"><b>备注</b></div>
+        <textarea id="cfgRemark" rows="3" placeholder="如：原基准编制方案调整 / 合同约定的变更情形…" style="width:100%;border:1px solid var(--line);border-radius:4px;padding:7px 9px;font-size:12.5px;font-family:inherit"></textarea>
+        <div class="note" style="margin-top:6px">各成分权重相加须 ≤ 100%；小于 100% 时，差额部分默认自动归属于现金。成分基准类型为「利率」时须录入调整点（百分数）：录入带减号（-）的值，为在利率指数的基础上减去该值；反之为在利率指数的基础上加上该值。</div>
+        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px">
+          <button class="btn" onclick="alert('草稿已保存（原型演示）')">保存草稿</button>
+          <button class="btn pri" onclick="submitCfgMaint()">提交审核</button>
+        </div>
+      </div>
+      <!-- 审核面板 -->
+      <div id="cfgPanelAudit" style="display:none">
+        <div class="banner info" style="margin:0 0 14px"><span>ℹ</span><div>审核页面与经办界面一致，可查看完整维护信息，根据实际情况选择通过 / 退回。</div></div>
+        <div id="cfgAuditInfo"></div>
+        <div style="font-size:12.5px;font-weight:700;margin:16px 0 8px">审核意见</div>
+        <div style="display:grid;grid-template-columns:110px 1fr;gap:10px 12px;align-items:start;font-size:12.5px">
+          <label style="color:var(--ink2);text-align:right;padding-top:4px">审核结果</label>
+          <div style="display:flex;gap:16px;padding-top:4px">
+            <label style="display:inline-flex;align-items:center;gap:5px"><input type="radio" name="cfgAuditResult" value="pass" checked>审核通过</label>
+            <label style="display:inline-flex;align-items:center;gap:5px"><input type="radio" name="cfgAuditResult" value="reject">退回修改</label>
+          </div>
+          <label style="color:var(--ink2);text-align:right">退回意见</label>
+          <textarea id="cfgRejectReason" rows="3" placeholder="退回时必填，请输入退回原因…" style="border:1px solid var(--line);border-radius:4px;padding:6px 9px;font-size:12.5px;font-family:inherit"></textarea>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px">
+          <button class="btn dgr" onclick="rejectCfgAudit()">退回</button>
+          <button class="btn pri" onclick="passCfgAudit()">审核通过并提交</button>
+        </div>
+      </div>
     </div>
-    <div class="mf"><button class="btn" onclick="closeM('mChange')">取消</button><button class="btn pri" onclick="closeM('mChange')">提交复核</button></div>
   </div>
 </div>
 
-<!-- ============ 弹层：重算 ============ -->
-<div class="mask" id="mRecalc" role="dialog" aria-modal="true" aria-label="重算补算">
-  <div class="modal" style="width:520px">
-    <div class="mh"><h3>重算 / 补算</h3><button class="x" onclick="closeM('mRecalc')">✕</button></div>
-    <div class="mb"><div class="frm">
-      <label class="req">类型</label><select><option>修订重算（受影响区间）</option><option>历史追溯重算（配置变更）</option><option>补算（阻断基金修复后）</option></select>
-      <label class="req">产品范围</label><select><option>007830 建信荣瑞一年定开</option><option>026663 建信资源严选股票发起C</option><option>全部产品</option></select>
-      <label>估值截止日</label><input class="mono" value="2026-10-14">
-      <label class="req">原因</label><input value="000300.CSI 行情补录后恢复计算">
-    </div></div>
-    <div class="mf"><button class="btn" onclick="closeM('mRecalc')">取消</button><button class="btn pri" onclick="closeM('mRecalc')">提交任务</button></div>
+<!-- ============ 弹层：指数收盘点位维护 ============ -->
+<div class="mask" id="mIdx" role="dialog" aria-modal="true" aria-label="指数收盘点位维护">
+  <div class="modal" style="width:880px">
+    <div class="mh"><h3>指数收盘点位维护</h3>
+      <span style="margin-left:16px;display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink2)">紧急程度<select style="border:1px solid var(--line);border-radius:4px;padding:3px 6px;font-size:12px"><option>一般</option><option>紧急</option></select></span>
+      <span style="margin-left:auto;display:inline-flex;gap:8px"><button class="btn pri" onclick="submitIdxMaint()">提交</button><button class="btn" onclick="closeM('mIdx')">返回</button></span>
+    </div>
+    <div class="mb">
+      <div class="procinfo">
+        <span>创建人：<b>李工</b></span><span>归属部门：<b>创新部</b></span>
+        <span>前序任务处理人：<b>李工（经办）</b></span><span>审核处理人：<b>创新部主管（张主管）</b></span>
+        <span>流程创建时间：<b class="mono" id="idxCreateTime">—</b></span><span>任务到达时间：<b class="mono" id="idxTaskTime">—</b></span>
+      </div>
+      <div class="flow" style="margin:14px 0 12px">
+        <div class="fnode done"><div class="fball">✓</div><div class="fname">录入指数收盘点位</div></div>
+        <div class="fline done"></div>
+        <div class="fnode cur"><div class="fball">2</div><div class="fname">审核指数收盘点位</div></div>
+        <div class="fline"></div>
+        <div class="fnode"><div class="fball">3</div><div class="fname">流程轨迹</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <b style="font-size:12.5px">指数点位信息 <span style="color:var(--red)">*</span></b>
+        <span style="margin-left:auto;display:inline-flex;gap:8px">
+          <button class="btn sm" onclick="addIdxRow()">＋ 添加指数</button>
+          <button class="btn sm" onclick="alert('批量导入功能已触发（可对接后端实现）')">批量导入</button>
+        </span>
+      </div>
+      <table class="tbl" style="border:1px solid var(--line);border-radius:4px">
+        <tr><th style="width:150px">交易日期</th><th style="width:150px">指数代码</th><th>指数名称</th><th class="num" style="width:150px">手工录入点位</th><th class="ctr" style="width:64px">操作</th></tr>
+        <tbody id="idxFormBody"></tbody>
+      </table>
+      <div class="note" style="margin:6px 0 12px">注：请手工录入指数收盘点位；提交审核后经复核生效，生效值将用于受影响基金的重算并触发评估（差异＞0.01 个百分点走更正重推）。</div>
+      <div style="font-size:12.5px;margin-bottom:6px"><b>维护原因 <span style="color:var(--red)">*</span></b></div>
+      <textarea id="idxReason2" rows="3" placeholder="请详细说明维护原因（如 Wind 漏更，按交易所收盘数据补录）…" style="width:100%;border:1px solid var(--line);border-radius:4px;padding:7px 9px;font-size:12.5px;font-family:inherit"></textarea>
+    </div>
   </div>
 </div>
 
-<!-- ============ 弹层：覆盖重推 ============ -->
-<div class="mask" id="mRepush" role="dialog" aria-modal="true" aria-label="覆盖重推">
+<!-- ============ 弹层：利率维护 ============ -->
+<div class="mask" id="mRate" role="dialog" aria-modal="true" aria-label="利率维护">
+  <div class="modal" style="width:820px">
+    <div class="mh"><h3>利率维护</h3>
+      <span style="margin-left:16px;display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink2)">紧急程度<select style="border:1px solid var(--line);border-radius:4px;padding:3px 6px;font-size:12px"><option>一般</option><option>紧急</option></select></span>
+      <span style="margin-left:auto;display:inline-flex;gap:8px"><button class="btn pri" onclick="submitRateMaint()">提交</button><button class="btn" onclick="closeM('mRate')">返回</button></span>
+    </div>
+    <div class="mb">
+      <div class="procinfo">
+        <span>创建人：<b>李工</b></span><span>归属部门：<b>创新部</b></span>
+        <span>前序任务处理人：<b>李工（经办）</b></span><span>审核处理人：<b>创新部主管（张主管）</b></span>
+        <span>流程创建时间：<b class="mono" id="rateCreateTime">—</b></span><span>任务到达时间：<b class="mono" id="rateTaskTime">—</b></span>
+      </div>
+      <div class="flow" style="margin:14px 0 12px">
+        <div class="fnode done"><div class="fball">✓</div><div class="fname">录入利率数据</div></div>
+        <div class="fline done"></div>
+        <div class="fnode cur"><div class="fball">2</div><div class="fname">审核利率数据</div></div>
+        <div class="fline"></div>
+        <div class="fnode"><div class="fball">3</div><div class="fname">流程轨迹</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <b style="font-size:12.5px">利率数据 <span style="color:var(--red)">*</span></b>
+        <span style="margin-left:auto;display:inline-flex;gap:8px">
+          <button class="btn sm" onclick="addRateRow()">＋ 添加利率数据</button>
+          <button class="btn sm" onclick="alert('批量导入功能已触发（可对接后端实现）')">批量导入</button>
+        </span>
+      </div>
+      <table class="tbl" style="border:1px solid var(--line);border-radius:4px">
+        <tr><th style="width:150px">生效起</th><th style="width:170px">利率代码</th><th>利率名称</th><th class="num" style="width:150px">手工录入年利率%</th><th class="ctr" style="width:64px">操作</th></tr>
+        <tbody id="rateFormBody"></tbody>
+      </table>
+      <div class="note" style="margin:6px 0 12px">注：同一利率代码仅有<b>新增模式</b>——按「利率代码＋生效起」为键新增，无需填写生效止；提交后原分段生效止将自动截断为新生效起前一日（外部系统同步同样适用）。</div>
+      <div style="font-size:12.5px;margin-bottom:6px"><b>维护原因 <span style="color:var(--red)">*</span></b></div>
+      <textarea id="rateReason2" rows="3" placeholder="请详细说明维护原因（如 央行降息公告，新增分段）…" style="width:100%;border:1px solid var(--line);border-radius:4px;padding:7px 9px;font-size:12.5px;font-family:inherit"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 弹层：汇率维护 ============ -->
+<div class="mask" id="mFx" role="dialog" aria-modal="true" aria-label="汇率维护">
+  <div class="modal" style="width:760px">
+    <div class="mh"><h3>汇率维护</h3>
+      <span style="margin-left:16px;display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink2)">紧急程度<select style="border:1px solid var(--line);border-radius:4px;padding:3px 6px;font-size:12px"><option>一般</option><option>紧急</option></select></span>
+      <span style="margin-left:auto;display:inline-flex;gap:8px"><button class="btn pri" onclick="submitFxMaint()">提交</button><button class="btn" onclick="closeM('mFx')">返回</button></span>
+    </div>
+    <div class="mb">
+      <div class="procinfo">
+        <span>创建人：<b>李工</b></span><span>归属部门：<b>创新部</b></span>
+        <span>前序任务处理人：<b>李工（经办）</b></span><span>审核处理人：<b>创新部主管（张主管）</b></span>
+        <span>流程创建时间：<b class="mono" id="fxCreateTime">—</b></span><span>任务到达时间：<b class="mono" id="fxTaskTime">—</b></span>
+      </div>
+      <div class="flow" style="margin:14px 0 12px">
+        <div class="fnode done"><div class="fball">✓</div><div class="fname">录入汇率中间价</div></div>
+        <div class="fline done"></div>
+        <div class="fnode cur"><div class="fball">2</div><div class="fname">审核汇率中间价</div></div>
+        <div class="fline"></div>
+        <div class="fnode"><div class="fball">3</div><div class="fname">流程轨迹</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <b style="font-size:12.5px">汇率中间价信息 <span style="color:var(--red)">*</span></b>
+        <span style="margin-left:auto;display:inline-flex;gap:8px">
+          <button class="btn sm" onclick="addFxRow()">＋ 添加汇率</button>
+          <button class="btn sm" onclick="alert('批量导入功能已触发（可对接后端实现）')">批量导入</button>
+        </span>
+      </div>
+      <table class="tbl" style="border:1px solid var(--line);border-radius:4px">
+        <tr><th style="width:150px">交易日期</th><th style="width:180px">币种对</th><th class="num">手工录入中间价</th><th class="ctr" style="width:64px">操作</th></tr>
+        <tbody id="fxFormBody"></tbody>
+      </table>
+      <div class="note" style="margin:6px 0 12px">注：来源固定为中国人民银行中间价（直接汇率、估值日当日）；提交审核后经复核生效入库。</div>
+      <div style="font-size:12.5px;margin-bottom:6px"><b>维护原因 <span style="color:var(--red)">*</span></b></div>
+      <textarea id="fxReason2" rows="3" placeholder="请详细说明维护原因（如 行情包缺失，按人民银行公告补录）…" style="width:100%;border:1px solid var(--line);border-radius:4px;padding:7px 9px;font-size:12.5px;font-family:inherit"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 弹层：新增/编辑指数（参照 zhishu.html 设计） ============ -->
+<div class="mask" id="zModal" role="dialog" aria-modal="true" aria-label="新增指数">
+  <div class="modal" style="width:900px">
+    <div class="mh"><h3 id="zModalTitle">新增指数</h3><button class="x" onclick="closeM('zModal')">✕</button></div>
+    <div class="mb">
+      <div class="frm" style="grid-template-columns:110px 1fr">
+        <label class="req">指数编码</label><div><input id="zFormCode" class="mono" placeholder="如 000300.CSI（Wind 代码，唯一键）"><div class="note" style="margin-top:3px">须与基准行情库的 Wind 代码一致；保存后不可修改</div></div>
+        <label class="req">指数名称</label><div><input id="zFormName" placeholder="如 沪深300" oninput="zAutoType()"><div class="note" style="margin-top:3px">名称含「存款」「利率」字样时，类型自动识别为「利率」</div></div>
+        <label class="req">类型</label><div style="display:flex;gap:16px;padding:5px 0">
+          <label style="display:inline-flex;align-items:center;gap:5px"><input type="radio" name="zType" value="指数" checked style="width:auto">指数</label>
+          <label style="display:inline-flex;align-items:center;gap:5px"><input type="radio" name="zType" value="利率" style="width:auto">利率</label>
+          <span class="note">按名称自动识别，可手动调整</span>
+        </div>
+        <label class="req">是否自有指数</label><div style="display:flex;gap:16px;padding:5px 0">
+          <label style="display:inline-flex;align-items:center;gap:5px"><input type="radio" name="zOwn" value="否" checked style="width:auto" onchange="zToggleOwn()">否</label>
+          <label style="display:inline-flex;align-items:center;gap:5px"><input type="radio" name="zOwn" value="是" style="width:auto" onchange="zToggleOwn()">是</label>
+          <span class="note">自有指数无需配置外部数据来源</span>
+        </div>
+        <label class="req">是否外盘指数</label><div style="display:flex;gap:16px;padding:5px 0">
+          <label style="display:inline-flex;align-items:center;gap:5px"><input type="radio" name="zForeign" value="否" checked style="width:auto">否</label>
+          <label style="display:inline-flex;align-items:center;gap:5px"><input type="radio" name="zForeign" value="是" style="width:auto">是</label>
+          <span class="note" id="zFcTip">选择数据来源后按来源指数自动反显，不可修改</span>
+        </div>
+        <label class="req">计价币种</label><select id="zFormCurrency" style="width:180px">
+          <option value="CNY">人民币 CNY</option><option value="HKD">港币 HKD</option><option value="USD">美元 USD</option><option value="EUR">欧元 EUR</option><option value="GBP">英镑 GBP</option>
+        </select>
+      </div>
+      <div style="font-size:12.5px;margin:12px 0 6px"><b>指数说明</b></div>
+      <textarea id="zFormDesc" rows="3" placeholder="请输入指数说明、编制规则、适用场景等…" style="width:100%;border:1px solid var(--line);border-radius:4px;padding:7px 9px;font-size:12.5px;font-family:inherit"></textarea>
+      <div style="border:1px solid var(--line);border-radius:6px;padding:12px 14px;margin-top:14px" id="zSrcBox">
+        <div style="display:flex;align-items:center;margin-bottom:10px">
+          <b style="font-size:12.5px">数据来源配置 <span style="color:var(--red)">*</span></b>
+          <span class="note" style="margin-left:12px">仅支持选择一条数据来源；确认后自动反显是否外盘指数与计价币种</span>
+          <span style="margin-left:auto"><button class="btn sm pri" onclick="zOpenSrcSelect()">选择数据来源</button></span>
+        </div>
+        <div id="zSrcTags" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px"></div>
+        <table class="tbl" style="border:1px solid var(--line);border-radius:4px">
+          <tr><th>数据源类型</th><th class="mono">指数编码</th><th>指数名称</th><th class="ctr" style="width:60px">操作</th></tr>
+          <tbody id="zSrcBody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="mf"><button class="btn" onclick="closeM('zModal')">取消</button><button class="btn pri" onclick="zSave()">保存</button></div>
+  </div>
+</div>
+
+<!-- ============ 弹层：选择数据来源 ============ -->
+<div class="mask" id="zSrcModal" role="dialog" aria-modal="true" aria-label="选择数据来源">
+  <div class="modal" style="width:760px">
+    <div class="mh"><h3>选择数据来源</h3><button class="x" onclick="closeM('zSrcModal')">✕</button></div>
+    <div class="qry" style="border-top:none">
+      <label>数据来源名称<input id="zQryName" placeholder="如 万得资讯" style="width:140px"></label>
+      <label>指数编码<input id="zQryCode" placeholder="如 WIND001" style="width:120px"></label>
+      <label>指数名称<input id="zQryIdx" placeholder="如 沪深300指数" style="width:140px"></label>
+      <button class="btn pri" onclick="zFilterSrc()">查询</button><button class="btn" onclick="zResetSrc()">重置</button>
+      <span class="note" style="margin-left:auto">仅可选择一条，选中后反显是否外盘指数与计价币种</span>
+    </div>
+    <div class="pb flush"><table class="tbl" id="zSrcSelectTbl">
+      <tr><th class="ctr" style="width:44px">选择</th><th>数据来源名称</th><th class="mono">指数编码</th><th>指数名称</th><th class="ctr">是否外盘</th><th class="ctr">计价币种</th></tr>
+      <tbody id="zSrcSelectBody"></tbody>
+    </table></div>
+    <div class="mf"><button class="btn" onclick="closeM('zSrcModal')">取消</button><button class="btn pri" onclick="zConfirmSrc()">确认选择</button></div>
+  </div>
+</div>
+
+<!-- ============ 弹层：指数详情 ============ -->
+<div class="mask" id="zView" role="dialog" aria-modal="true" aria-label="指数详情">
+  <div class="modal" style="width:640px">
+    <div class="mh"><h3>指数详情</h3><button class="x" onclick="closeM('zView')">✕</button></div>
+    <div class="mb" id="zViewBody"></div>
+    <div class="mf"><button class="btn" onclick="closeM('zView')">关闭</button></div>
+  </div>
+</div>
+
+<!-- ============ 弹层：删除指数 ============ -->
+<div class="mask" id="zDel" role="dialog" aria-modal="true" aria-label="删除指数">
   <div class="modal" style="width:480px">
-    <div class="mh"><h3>整批覆盖重推</h3><button class="x" onclick="closeM('mRepush')">✕</button></div>
-    <div class="mb"><p style="font-size:12.5px">将按批次号 <b class="mono" id="repushId">PB20261015-01</b> 向官网＋APP <b>整批覆盖重推</b>，重推记录登记留痕（操作人、时间、原因、输出哈希）。</p>
-      <div class="frm" style="margin-top:10px"><label class="req">原因</label><input placeholder="如：下游回执记录数不符 / 数据更正"></div>
+    <div class="mh"><h3>删除指数</h3><button class="x" onclick="closeM('zDel')">✕</button></div>
+    <div class="mb">
+      <div style="text-align:center;margin-bottom:12px"><span style="font-size:30px;color:var(--amber)">⚠</span>
+        <p style="margin-top:6px;font-size:13px">确定删除该指数？</p></div>
+      <textarea id="zDelReason" rows="2" placeholder="请输入删除原因" style="width:100%;border:1px solid var(--line);border-radius:4px;padding:7px 9px;font-size:12.5px;font-family:inherit"></textarea>
     </div>
-    <div class="mf"><button class="btn" onclick="closeM('mRepush')">取消</button><button class="btn dgr" onclick="closeM('mRepush')">确认重推</button></div>
+    <div class="mf"><button class="btn" onclick="closeM('zDel')">取消</button><button class="btn dgr" onclick="zConfirmDel()">确认删除</button></div>
   </div>
 </div>
+
+<!-- ============ 弹层：配置详情 ============ -->
+<div class="mask" id="mCfg" role="dialog" aria-modal="true" aria-label="配置详情">
+  <div class="modal" style="width:720px">
+    <div class="mh"><h3 id="cfgTitle">配置详情</h3><button class="x" onclick="closeM('mCfg')">✕</button></div>
+    <div class="mb" id="cfgBody"></div>
+  </div>
+</div>
+
+<!-- ============ 弹层：删除基准配置（参照 yeji.html 流程式设计） ============ -->
+<div class="mask" id="mDel" role="dialog" aria-modal="true" aria-label="删除基准配置">
+  <div class="modal" style="width:760px">
+    <div class="mh"><h3>删除基准配置</h3>
+      <span style="margin-left:16px;display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink2)">紧急程度<select id="delUrgency" style="border:1px solid var(--line);border-radius:4px;padding:3px 6px;font-size:12px"><option>一般</option><option>紧急</option><option>特急</option></select></span>
+      <span style="margin-left:auto;display:inline-flex;gap:8px"><button class="btn pri" onclick="submitDelMaint()">提交</button><button class="btn" onclick="closeM('mDel')">返回</button></span>
+    </div>
+    <div class="mb">
+      <div class="procinfo">
+        <span>创建人：<b>李工</b></span><span>归属部门：<b>投资风险部</b></span>
+        <span>前序任务处理人：<b>李工（经办）</b></span><span>审核处理人：<b>投资风险部负责人</b></span>
+        <span>流程创建时间：<b class="mono" id="delCreateTime">—</b></span><span>任务到达时间：<b class="mono" id="delTaskTime">—</b></span>
+      </div>
+      <div class="flow" style="margin:14px 0 12px">
+        <div class="fnode done"><div class="fball">✓</div><div class="fname">发起删除</div></div>
+        <div class="fline done"></div>
+        <div class="fnode" id="delFNode2"><div class="fball">2</div><div class="fname">审核删除</div></div>
+        <div class="fline" id="delFLine2"></div>
+        <div class="fnode"><div class="fball">3</div><div class="fname">流程轨迹</div></div>
+      </div>
+      <div class="tabs" style="border:1px solid var(--line);margin-bottom:14px">
+        <button class="on" id="delTabInit" onclick="switchDelStep('init')">发起删除申请</button>
+        <button id="delTabAudit" onclick="switchDelStep('audit')">审核删除申请</button>
+      </div>
+      <!-- 发起面板 -->
+      <div id="delPanelInit">
+        <dl class="kv" id="delInfo" style="margin-bottom:12px"></dl>
+        <div class="banner warn" style="margin:0 0 12px"><span>⚠</span><div>删除后该产品<b>无业绩比较基准、仅推送①（净值增长率）</b>，历史结果归档可查。</div></div>
+        <div style="font-size:12.5px;margin-bottom:6px"><b>删除原因 <span style="color:var(--red)">*</span></b></div>
+        <textarea id="delReason" rows="3" placeholder="请详细说明删除原因（如 产品转型 / 基准条款废止）…" style="width:100%;border:1px solid var(--line);border-radius:4px;padding:7px 9px;font-size:12.5px;font-family:inherit"></textarea>
+        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px">
+          <button class="btn" onclick="alert('草稿已保存（原型演示）')">保存草稿</button>
+          <button class="btn pri" onclick="submitDelMaint()">提交审核</button>
+        </div>
+      </div>
+      <!-- 审核面板 -->
+      <div id="delPanelAudit" style="display:none">
+        <div class="banner info" style="margin:0 0 14px"><span>ℹ</span><div>审核页面与经办界面一致，可查看完整维护信息，根据实际情况选择通过 / 退回。</div></div>
+        <dl class="kv" id="delAuditInfo" style="margin-bottom:12px"></dl>
+        <div style="font-size:12.5px;font-weight:700;margin:0 0 8px">审核意见</div>
+        <div style="display:grid;grid-template-columns:110px 1fr;gap:10px 12px;align-items:start;font-size:12.5px">
+          <label style="color:var(--ink2);text-align:right;padding-top:4px">审核结果</label>
+          <div style="display:flex;gap:16px;padding-top:4px">
+            <label style="display:inline-flex;align-items:center;gap:5px"><input type="radio" name="delAuditResult" value="pass" checked>审核通过</label>
+            <label style="display:inline-flex;align-items:center;gap:5px"><input type="radio" name="delAuditResult" value="reject">退回修改</label>
+          </div>
+          <label style="color:var(--ink2);text-align:right">退回意见</label>
+          <textarea id="delRejectReason" rows="3" placeholder="退回时必填，请输入退回原因…" style="border:1px solid var(--line);border-radius:4px;padding:6px 9px;font-size:12.5px;font-family:inherit"></textarea>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px">
+          <button class="btn dgr" onclick="rejectDelAudit()">退回</button>
+          <button class="btn pri" onclick="passDelAudit()">审核通过并提交</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ================= 导航 ================= */
-const TITLES={s1:"今日批次总览",s2:"产品基准配置",s3:"基准行情库",s4:"估值数据接入",s5:"计算任务监控",s6:"质量复核",s7:"推送管理",s8:"官网 / APP 展示效果"};
+const TITLES={s1:"业绩比较基准总览",s2:"产品基准配置",s2i:"指数库",s3:"基准行情查询",s3m:"基准行情维护",s4:"基金净值增长率查询"};
 function goto(s){
   document.querySelectorAll(".screen").forEach(e=>e.classList.toggle("on",e.id===s));
   document.querySelectorAll(".nav a").forEach(a=>{a.classList.toggle("on",a.dataset.s===s);a.setAttribute("aria-current",a.dataset.s===s?"page":"false")});
@@ -682,146 +856,623 @@ document.querySelectorAll("#s3 .tabs button").forEach(b=>b.addEventListener("cli
 /* ================= 弹层 ================= */
 function openM(id){document.getElementById(id).classList.add("on")}
 function closeM(id){document.getElementById(id).classList.remove("on")}
-document.getElementById("btnChange").addEventListener("click",()=>openM("mChange"));
-document.getElementById("btnRecalc").addEventListener("click",()=>openM("mRecalc"));
-function openRepush(id){document.getElementById("repushId").textContent=id;openM("mRepush")}
+/* ================= 产品基准配置：发起/修改/删除（参照 yeji.html 流程式设计） ================= */
+const COMPALL={"000300.CSI":"沪深300","000906.CSI":"中证800","HSI.HI":"恒生指数（原币 HKD）","CBA00101.CS":"中债-新综合财富","CBA10201.CS":"中债-总财富","DEP1Y（示例）":"一年期定期存款利率（税前）","DEP7D（示例）":"七天通知存款"};
+const COMPTYPE={"DEP1Y（示例）":"利率","DEP7D（示例）":"利率"};
+const PRODUCTS=[["530001","建信恒久价值混合","2024-05-06"],["530003","建信优选成长混合A","2023-08-01"],["960028","建信优选成长H","2023-08-01"],["007830","建信荣瑞一年定开混合","2025-11-19"],["026663","建信资源严选股票发起C","2026-03-12"],["020932","建信沪港深价值混合A（示例）","2025-06-18"],["539001","建信稳定增利债券A（示例）","2024-01-15"]];
+function cfgResetSearch(){
+  document.getElementById("cfgSearchKey").value="";
+  document.getElementById("cfgSearchDate").value="";
+}
+document.getElementById("btnChange").addEventListener("click",()=>openCfgModal("发起基准配置（投资风险部）"));
+function modCfg(code){openCfgModal("修改基准配置 · "+code,code)}
+function openCfgModal(title,code){
+  document.getElementById("mChangeTitle").textContent=title;
+  openM("mChange");fillProc("cfgCreateTime","cfgTaskTime");
+  const sel=document.getElementById("cfgProduct");
+  sel.innerHTML='<option value="">请选择产品</option>'+PRODUCTS.map(p=>'<option value="'+p[0]+'">'+p[0]+' '+p[1]+'</option>').join("");
+  if(code)sel.value=code;
+  document.getElementById("cfgUrgency").selectedIndex=0;
+  document.getElementById("cfgEffDate").value=code?PRODUCTS.find(p=>p[0]===code)[2]:"";
+  document.getElementById("cfgRemark").value="";
+  document.getElementById("cfgRejectReason").value="";
+  document.querySelector('input[name="cfgAuditResult"][value="pass"]').checked=true;
+  document.getElementById("cfgCompBody").innerHTML="";
+  if(code&&CFG[code])CFG[code].comp.forEach(x=>addCompRow(x[0],x[3],x[5]));else addCompRow();
+  switchCfgStep("init");calcCompWeight();
+}
+function cfgProductChange(){
+  const p=PRODUCTS.find(x=>x[0]===document.getElementById("cfgProduct").value);
+  if(p)document.getElementById("cfgEffDate").value=p[2];
+}
+function addCompRow(code,weight,adj){
+  const tr=document.createElement("tr");
+  tr.innerHTML='<td><select class="c-code" onchange="compName(this)" style="width:100%;border:1px solid var(--line);border-radius:4px;padding:4px 6px"><option value="">请选择</option>'
+    +Object.keys(COMPALL).map(k=>'<option value="'+k+'"'+(k===code?' selected':'')+'>'+k+'</option>').join("")+'</select></td>'
+    +'<td class="c-name note">—</td>'
+    +'<td class="ctr c-type note">—</td>'
+    +'<td class="c-adj"><span class="note c-a-dash">—</span><input type="number" step="0.0001" class="c-a" value="'+(adj!=null?adj:'')+'" placeholder="如 -0.35" title="负值：在利率指数基础上减去该值；正值：在利率指数基础上加上该值" style="width:100%;border:1px solid var(--line);border-radius:4px;padding:4px 6px;text-align:right;font-family:var(--mono);display:none"></td>'
+    +'<td><input type="number" step="0.0001" min="0" max="100" class="c-w" value="'+(weight!=null?weight:'')+'" placeholder="0.0000" oninput="calcCompWeight()" style="width:100%;border:1px solid var(--line);border-radius:4px;padding:4px 6px;text-align:right;font-family:var(--mono)"></td>'
+    +'<td class="ctr"><button class="btn sm dgr" onclick="delCompRow(this)">删除</button></td>';
+  document.getElementById("cfgCompBody").appendChild(tr);
+  if(code)compName(tr.querySelector(".c-code"));
+}
+function compName(sel){
+  const tr=sel.closest("tr");
+  tr.querySelector(".c-name").textContent=COMPALL[sel.value]||"—";
+  const isRate=!!sel.value&&COMPTYPE[sel.value]==="利率";
+  tr.querySelector(".c-type").textContent=sel.value?(COMPTYPE[sel.value]||"指数"):"—";
+  tr.querySelector(".c-a").style.display=isRate?"":"none";
+  tr.querySelector(".c-a-dash").style.display=isRate?"none":"";
+}
+function delCompRow(el){
+  if(document.querySelectorAll("#cfgCompBody tr").length>1){el.closest("tr").remove();calcCompWeight()}
+  else alert("至少保留一条成分配置");
+}
+function calcCompWeight(){
+  let total=0;
+  document.querySelectorAll("#cfgCompBody .c-w").forEach(i=>total+=Number(i.value)||0);
+  total=Math.round(total*10000)/10000;
+  const cash=Math.max(0,Math.round((100-total)*10000)/10000);
+  document.getElementById("cfgWTotal").textContent=total.toFixed(4);
+  document.getElementById("cfgWCash").textContent=cash.toFixed(4);
+  document.getElementById("cfgWTips").style.display=total>100.0001?"":"none";
+}
+function switchCfgStep(step){
+  const init=step==="init";
+  document.getElementById("cfgPanelInit").style.display=init?"":"none";
+  document.getElementById("cfgPanelAudit").style.display=init?"none":"";
+  document.getElementById("cfgTabInit").classList.toggle("on",init);
+  document.getElementById("cfgTabAudit").classList.toggle("on",!init);
+  document.getElementById("cfgFNode2").className="fnode"+(init?"":" cur");
+  document.getElementById("cfgFLine2").className="fline"+(init?"":" done");
+  if(!init)fillCfgAudit();
+}
+function fillCfgAudit(){
+  const sel=document.getElementById("cfgProduct");
+  const pname=sel.options[sel.selectedIndex]?sel.options[sel.selectedIndex].text:"—";
+  const eff=document.getElementById("cfgEffDate").value||"—";
+  const remark=document.getElementById("cfgRemark").value.trim()||"—";
+  const rows=[...document.querySelectorAll("#cfgCompBody tr")].map(tr=>({c:tr.querySelector(".c-code").value,w:Number(tr.querySelector(".c-w").value)||0,a:tr.querySelector(".c-a").value})).filter(r=>r.c);
+  let total=0;rows.forEach(r=>total+=r.w);total=Math.round(total*10000)/10000;
+  const cash=Math.max(0,Math.round((100-total)*10000)/10000);
+  const foot=total>100.0001?'<span class="tag err">成分合计 '+total.toFixed(4)+'% 超出 100%，请退回修改</span>':(cash>0.0001?'<span class="tag ok">成分合计 '+total.toFixed(4)+'% ＋ 现金 '+cash.toFixed(4)+'% ＝ 100% ✓</span>':'<span class="tag ok">权重合计 100.0000% ✓</span>');
+  document.getElementById("cfgAuditInfo").innerHTML='<dl class="kv" style="margin-bottom:10px"><dt>公募产品名称</dt><dd>'+pname+'</dd><dt>生效日期</dt><dd class="mono">'+eff+'</dd><dt>备注</dt><dd>'+remark+'</dd></dl>'
+    +'<table class="tbl" style="border:1px solid var(--line);border-radius:4px"><tr><th style="width:170px">成分基准（Wind 代码）</th><th>名称</th><th class="ctr" style="width:64px">类型</th><th class="num" style="width:110px">调整点(%)</th><th class="num" style="width:130px">权重(%)</th></tr>'
+    +rows.map(r=>'<tr><td class="mono">'+r.c+'</td><td>'+COMPALL[r.c]+'</td><td class="ctr">'+(COMPTYPE[r.c]||"指数")+'</td><td class="num">'+(COMPTYPE[r.c]==="利率"?(r.a!==""?(+r.a).toFixed(4):"—"):"—")+'</td><td class="num">'+r.w.toFixed(4)+'</td></tr>').join("")
+    +(cash>0.0001&&total<=100.0001?'<tr><td class="mono">—</td><td>现金（差额权重自动归属）</td><td class="ctr">现金</td><td class="num">—</td><td class="num">'+cash.toFixed(4)+'</td></tr>':"")
+    +'</table><div style="margin-top:8px">'+foot+'</div>';
+}
+function submitCfgMaint(){
+  const prod=document.getElementById("cfgProduct").value;
+  let total=0;document.querySelectorAll("#cfgCompBody .c-w").forEach(i=>total+=Number(i.value)||0);
+  const filled=[...document.querySelectorAll("#cfgCompBody tr")].filter(tr=>tr.querySelector(".c-code").value&&tr.querySelector(".c-w").value!=="");
+  if(!prod){alert("请选择公募产品");return}
+  if(!filled.length){alert("请至少完整填写一条成分配置（代码＋权重）");return}
+  if(total>100.0001){alert("成分权重合计 "+total.toFixed(4)+"% 超过 100%，请调整后提交");return}
+  const cash=Math.round((100-total)*10000)/10000;
+  if(confirm(cash>0.0001?("成分合计 "+total.toFixed(4)+"%，差额 "+cash.toFixed(4)+"% 将自动归属现金。确认提交审核？"):"权重合计 100.0000%。确认提交审核？"))switchCfgStep("audit");
+}
+function passCfgAudit(){
+  alert("审核通过！基准配置维护流程完成，新版本生效（历史区间按旧版本计算，触发追溯重算评估）");
+  closeM("mChange");
+}
+function rejectCfgAudit(){
+  const reason=document.getElementById("cfgRejectReason").value.trim();
+  if(!reason){alert("请输入退回意见");return}
+  alert("已退回！退回意见："+reason);
+  switchCfgStep("init");
+}
+/* ---- 删除基准配置（同一流程模式） ---- */
+let delTargetRow=null,delTargetCode="";
+function delRow(btn){
+  delTargetRow=btn.closest("tr");delTargetCode=delTargetRow.dataset.p;
+  const tds=delTargetRow.cells;
+  const info='<dt>产品代码</dt><dd class="mono">'+delTargetCode+'</dd><dt>产品简称</dt><dd>'+tds[1].textContent+'</dd><dt>当前生效日期</dt><dd class="mono">'+tds[2].textContent+'</dd><dt>当前成分配置</dt><dd>'+(CFG[delTargetCode]?CFG[delTargetCode].comp.map(x=>x[0]+" "+x[3].toFixed(4)+"%").join("；"):"—")+'</dd>';
+  document.getElementById("delInfo").innerHTML=info;
+  document.getElementById("delAuditInfo").innerHTML=info;
+  openM("mDel");fillProc("delCreateTime","delTaskTime");
+  document.getElementById("delReason").value="";
+  document.getElementById("delRejectReason").value="";
+  document.querySelector('input[name="delAuditResult"][value="pass"]').checked=true;
+  switchDelStep("init");
+}
+function switchDelStep(step){
+  const init=step==="init";
+  document.getElementById("delPanelInit").style.display=init?"":"none";
+  document.getElementById("delPanelAudit").style.display=init?"none":"";
+  document.getElementById("delTabInit").classList.toggle("on",init);
+  document.getElementById("delTabAudit").classList.toggle("on",!init);
+  document.getElementById("delFNode2").className="fnode"+(init?"":" cur");
+  document.getElementById("delFLine2").className="fline"+(init?"":" done");
+}
+function submitDelMaint(){
+  if(!document.getElementById("delReason").value.trim()){alert("请填写删除原因");return}
+  if(confirm("确认提交删除申请？"))switchDelStep("audit");
+}
+function passDelAudit(){
+  alert("审核通过！删除流程完成，该产品基准配置已停用（无基准仅推送①，历史结果归档可查）");
+  if(delTargetRow)delTargetRow.remove();
+  closeM("mDel");
+}
+function rejectDelAudit(){
+  const reason=document.getElementById("delRejectReason").value.trim();
+  if(!reason){alert("请输入退回意见");return}
+  alert("已退回！退回意见："+reason);
+  switchDelStep("init");
+}
 document.querySelectorAll(".mask").forEach(m=>m.addEventListener("click",e=>{if(e.target===m)m.classList.remove("on")}));
 document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelectorAll(".mask.on").forEach(m=>m.classList.remove("on"))});
-/* ================= 缺行情修复演示 ================= */
-document.getElementById("btnFix").addEventListener("click",function(){
-  const b=this.closest(".banner");
-  b.className="banner info";
-  b.innerHTML="<span>✓</span><div><b>已登记补录：</b>000300.CSI 2026-10-14 行情补录完成 → 系统自动触发 026663、007830 重算，随下一批次补推①③序列（全程留痕）。</div>";
-  document.querySelector('.nav a[data-s="s3"] .dot')?.remove();
-});
-/* ================= 跳变确认 ================= */
-function cfPass(){
-  document.getElementById("cfRow1").style.display="none";
-  document.getElementById("cfEmpty").style.display="block";
-  document.getElementById("kpiConfirm").textContent="0";
-  document.getElementById("navDot6")?.remove();
-  const n3=document.getElementById("flowNode3"),n4=document.getElementById("flowNode4");
-  n3.classList.replace("cur","done");document.getElementById("flowBall3").textContent="✓";
-  document.getElementById("flowSub3").innerHTML='<small style="font-weight:400;color:var(--ink3)">已确认 1 条（港股大涨归因成立）</small>';
-  document.getElementById("flowLine3").classList.add("done");
-  n4.classList.add("cur");document.getElementById("flowSub4").innerHTML='<small style="font-weight:400;color:var(--ink3)">评估更正重推…</small>';
-  setTimeout(()=>{n4.classList.replace("cur","done");document.getElementById("flowBall4")&&(document.getElementById("flowBall4").textContent="✓");
-    n4.querySelector(".fball").textContent="✓";document.getElementById("flowLine4").classList.add("done");
-    document.getElementById("flowSub4").innerHTML='<small style="font-weight:400;color:var(--ink3)">无需重推（复核值一致，差异 0.00000000）</small>';},700);
+/* ================= 历史表：日期排序＋勾选导出 ================= */
+(function(){
+  const tbl=document.getElementById("histTbl");
+  const th=document.getElementById("histDateTh");
+  const btn=th.querySelector(".sortbtn");
+  let desc=true;
+  btn.addEventListener("click",()=>{
+    desc=!desc;
+    const rows=[...tbl.querySelectorAll("tr")].slice(1);
+    rows.sort((a,b)=>{const da=a.cells[4].textContent.trim(),db=b.cells[4].textContent.trim();
+      return desc?db.localeCompare(da):da.localeCompare(db)});
+    rows.forEach(r=>tbl.appendChild(r));
+    btn.textContent=desc?"↓":"↑";
+  });
+  const all=document.getElementById("histAll");
+  const cks=()=>[...tbl.querySelectorAll(".histCk")];
+  const expBtn=document.getElementById("histExport");
+  const expNote=document.getElementById("histExpNote");
+  function upd(){
+    const n=cks().filter(c=>c.checked).length;
+    expBtn.textContent=n?("导出勾选（"+n+" 条）"):"导出当前结果";
+    expNote.textContent=n?("已勾选 "+n+" 条，导出仅含勾选项"):"未勾选 · 按当前查询结果导出（533 条 · 日期"+(desc?"倒序":"升序")+"）";
+  }
+  all.addEventListener("change",()=>{cks().forEach(c=>c.checked=all.checked);upd()});
+  tbl.addEventListener("change",e=>{if(e.target.classList.contains("histCk")){all.checked=cks().length>0&&cks().every(c=>c.checked);upd()}});
+  btn.addEventListener("click",upd);
+  upd();
+})();
+/* ================= 行情维护：页签 / 提交审核 / 审核 ================= */
+document.querySelectorAll("#s3m .tabs button").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll("#s3m .tabs button").forEach(x=>x.classList.toggle("on",x===b));
+  document.querySelectorAll("#s3m .tabpane").forEach(p=>p.classList.toggle("on",p.id===b.dataset.tab));
+}));
+/* ================= 指数收盘点位维护弹层 ================= */
+const IDXNAMES={"000300.CSI":"沪深300","000906.CSI":"中证800","HSI.HI":"恒生指数","CBA00101.CS":"中债-新综合财富","CBA10201.CS":"中债-总财富"};
+function fmtTs(d){const p=n=>String(n).padStart(2,"0");return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+" "+p(d.getHours())+":"+p(d.getMinutes())+":"+p(d.getSeconds())}
+function openIdxModal(){
+  openM("mIdx");
+  const now=new Date();
+  document.getElementById("idxCreateTime").textContent=fmtTs(now);
+  document.getElementById("idxTaskTime").textContent=fmtTs(new Date(now.getTime()+864e5));
+  document.getElementById("idxFormBody").innerHTML="";
+  document.getElementById("idxReason2").value="";
+  addIdxRow();
 }
-function cfReject(){
-  const td=document.querySelector("#cfRow1 td:last-child");
-  td.innerHTML='<span class="tag err">已驳回 · 该产品挂起</span>';
-  document.getElementById("kpiConfirm").textContent="0";
-  document.getElementById("navDot6")?.remove();
-  document.getElementById("flowSub3").innerHTML='<small style="font-weight:400;color:var(--ink3)">驳回 1 条 · 020932 挂起待查</small>';
+function addIdxRow(){
+  const tr=document.createElement("tr");
+  tr.innerHTML='<td><input type="date" class="idx-d" value="2026-10-15" style="width:100%;border:1px solid var(--line);border-radius:4px;padding:4px 6px;font-family:var(--mono)"></td>'
+    +'<td><select class="idx-c" onchange="idxName(this)" style="width:100%;border:1px solid var(--line);border-radius:4px;padding:4px 6px"><option value="">请选择</option>'
+    +Object.keys(IDXNAMES).map(k=>'<option value="'+k+'">'+k+'</option>').join("")+'</select></td>'
+    +'<td class="idx-n note">—</td>'
+    +'<td><input type="number" step="0.0001" class="idx-v" placeholder="0.0000" style="width:100%;border:1px solid var(--line);border-radius:4px;padding:4px 6px;text-align:right;font-family:var(--mono)"></td>'
+    +'<td class="ctr"><button class="btn sm dgr" onclick="this.closest(\'tr\').remove()">删除</button></td>';
+  document.getElementById("idxFormBody").appendChild(tr);
+}
+function idxName(sel){sel.closest("tr").querySelector(".idx-n").textContent=IDXNAMES[sel.value]||"—"}
+function submitIdxMaint(){
+  const reason=document.getElementById("idxReason2").value.trim();
+  const rows=[...document.querySelectorAll("#idxFormBody tr")].filter(tr=>tr.querySelector(".idx-c").value&&tr.querySelector(".idx-v").value);
+  if(!rows.length||!reason){alert("请完整填写指数点位信息（代码＋点位）与维护原因");return}
+  const tbl=document.getElementById("m1Tbl");
+  const now=new Date(),p=n=>String(n).padStart(2,"0");
+  const ts="2026-10-15 "+p(now.getHours())+":"+p(now.getMinutes());
+  rows.forEach(tr=>{
+    const d=tr.querySelector(".idx-d").value,c=tr.querySelector(".idx-c").value;
+    const v=(+tr.querySelector(".idx-v").value).toFixed(4);
+    const r=tbl.insertRow(-1);
+    r.innerHTML='<td class="mono">'+d+'</td><td class="mono">'+c+'</td><td>'+IDXNAMES[c]+'</td><td class="num">'+v+'</td><td>李工</td><td class="mono">'+ts+'</td>';
+  });
+  closeM("mIdx");
+}
+/* ================= 利率 / 汇率维护弹层（参照指数维护） ================= */
+const RATENAMES={"DEP1Y（示例）":"一年定存（税前）","DEP7D（示例）":"七天通知存款"};
+const FXPAIRS={"M0000185":"美元 / 人民币","M0000187":"港元 / 人民币"};
+function fillProc(createId,taskId){
+  const now=new Date();
+  document.getElementById(createId).textContent=fmtTs(now);
+  document.getElementById(taskId).textContent=fmtTs(new Date(now.getTime()+864e5));
+}
+function openRateModal(){
+  openM("mRate");fillProc("rateCreateTime","rateTaskTime");
+  document.getElementById("rateFormBody").innerHTML="";document.getElementById("rateReason2").value="";addRateRow();
+}
+function openFxModal(){
+  openM("mFx");fillProc("fxCreateTime","fxTaskTime");
+  document.getElementById("fxFormBody").innerHTML="";document.getElementById("fxReason2").value="";addFxRow();
+}
+function addRateRow(){
+  const tr=document.createElement("tr");
+  tr.innerHTML='<td><input type="date" class="r-d" style="width:100%;border:1px solid var(--line);border-radius:4px;padding:4px 6px;font-family:var(--mono)"></td>'
+    +'<td><select class="r-c" onchange="rateName(this)" style="width:100%;border:1px solid var(--line);border-radius:4px;padding:4px 6px"><option value="">请选择</option>'
+    +Object.keys(RATENAMES).map(k=>'<option value="'+k+'">'+k+'</option>').join("")+'</select></td>'
+    +'<td class="r-n note">—</td>'
+    +'<td><input type="number" step="0.000001" class="r-v" placeholder="如 0.85" style="width:100%;border:1px solid var(--line);border-radius:4px;padding:4px 6px;text-align:right;font-family:var(--mono)"></td>'
+    +'<td class="ctr"><button class="btn sm dgr" onclick="this.closest(\'tr\').remove()">删除</button></td>';
+  document.getElementById("rateFormBody").appendChild(tr);
+}
+function rateName(sel){sel.closest("tr").querySelector(".r-n").textContent=RATENAMES[sel.value]||"—"}
+function addFxRow(){
+  const tr=document.createElement("tr");
+  tr.innerHTML='<td><input type="date" class="f-d" value="2026-10-15" style="width:100%;border:1px solid var(--line);border-radius:4px;padding:4px 6px;font-family:var(--mono)"></td>'
+    +'<td><select class="f-p" onchange="fxName(this)" style="width:100%;border:1px solid var(--line);border-radius:4px;padding:4px 6px"><option value="">请选择</option>'
+    +Object.keys(FXPAIRS).map(k=>'<option value="'+k+'">'+k+' '+FXPAIRS[k]+'</option>').join("")+'</select></td>'
+    +'<td><input type="number" step="0.00001" class="f-v" placeholder="如 0.90925" style="width:100%;border:1px solid var(--line);border-radius:4px;padding:4px 6px;text-align:right;font-family:var(--mono)"></td>'
+    +'<td class="ctr"><button class="btn sm dgr" onclick="this.closest(\'tr\').remove()">删除</button></td>';
+  document.getElementById("fxFormBody").appendChild(tr);
+}
+function fxName(sel){sel.dataset.name=FXPAIRS[sel.value]||""}
+function submitRateMaint(){
+  const reason=document.getElementById("rateReason2").value.trim();
+  const rows=[...document.querySelectorAll("#rateFormBody tr")].filter(tr=>tr.querySelector(".r-c").value&&tr.querySelector(".r-d").value&&tr.querySelector(".r-v").value);
+  if(!rows.length||!reason){alert("请完整填写利率数据（生效起＋代码＋年利率）与维护原因");return}
+  const tbl=document.getElementById("m2Tbl"),now=new Date(),p=n=>String(n).padStart(2,"0");
+  const ts="2026-10-15 "+p(now.getHours())+":"+p(now.getMinutes());
+  rows.forEach(tr=>{
+    const d=tr.querySelector(".r-d").value,c=tr.querySelector(".r-c").value,v=tr.querySelector(".r-v").value;
+    const prev=new Date(d);prev.setDate(prev.getDate()-1);
+    const stop=prev.getFullYear()+"-"+p(prev.getMonth()+1)+"-"+p(prev.getDate());
+    [...tbl.rows].slice(1).forEach(r=>{
+      if(r.cells[2]&&r.cells[2].textContent.trim()===c&&r.cells[1].textContent.trim()==="至今"){r.cells[1].textContent=stop;}
+    });
+    const r=tbl.insertRow(-1);
+    r.innerHTML='<td class="mono">'+d+'</td><td class="mono">至今</td><td class="mono">'+c+'</td><td>'+RATENAMES[c]+'</td><td class="num">'+v+'%</td><td>李工</td><td class="mono">'+ts+'</td>';
+  });
+  closeM("mRate");
+}
+function submitFxMaint(){
+  const reason=document.getElementById("fxReason2").value.trim();
+  const rows=[...document.querySelectorAll("#fxFormBody tr")].filter(tr=>tr.querySelector(".f-p").value&&tr.querySelector(".f-v").value);
+  if(!rows.length||!reason){alert("请完整填写汇率信息（币种对＋中间价）与维护原因");return}
+  const tbl=document.getElementById("m3Tbl"),now=new Date(),p=n=>String(n).padStart(2,"0");
+  const ts="2026-10-15 "+p(now.getHours())+":"+p(now.getMinutes());
+  rows.forEach(tr=>{
+    const d=tr.querySelector(".f-d").value,psel=tr.querySelector(".f-p");
+    const pair=FXPAIRS[psel.value]+"（"+psel.value+"）",v=tr.querySelector(".f-v").value;
+    const r=tbl.insertRow(-1);
+    r.innerHTML='<td class="mono">'+d+'</td><td>'+pair+'</td><td class="num">'+v+'</td><td>李工</td><td class="mono">'+ts+'</td>';
+  });
+  closeM("mFx");
+}
+/* ================= 行情查询：勾选导出＋日期排序 ================= */
+function bindCheckExport(tblId,btnId,noteId,total,orderTxt){
+  const tbl=document.getElementById(tblId),btn=document.getElementById(btnId),note=document.getElementById(noteId);
+  const all=tbl.querySelector(".ckAll"),cks=()=>[...tbl.querySelectorAll(".ck")];
+  function upd(){const n=cks().filter(c=>c.checked).length;
+    btn.textContent=n?("导出勾选（"+n+" 条）"):"导出当前结果";
+    note.textContent=n?("已勾选 "+n+" 条，导出仅含勾选项"):"未勾选 · 按当前查询结果导出（"+total+" 条 · "+orderTxt+"）";}
+  all.addEventListener("change",()=>{cks().forEach(c=>c.checked=all.checked);upd()});
+  tbl.addEventListener("change",e=>{if(e.target.classList.contains("ck")){all.checked=cks().length>0&&cks().every(c=>c.checked);upd()}});
+  upd();
+}
+bindCheckExport("t31Tbl","exp31","expNote31","673,484","日期倒序");
+bindCheckExport("t32Tbl","exp32","expNote32","386","生效起倒序");
+bindCheckExport("t33Tbl","exp33","expNote33","16,040","日期倒序");
+function bindDateSort(thId,cellIdx){
+  const th=document.getElementById(thId);if(!th)return;
+  const tbl=th.closest("table"),btn=th.querySelector(".sortbtn");let desc=true;
+  btn.addEventListener("click",()=>{desc=!desc;
+    const rows=[...tbl.querySelectorAll("tr")].slice(1);
+    rows.sort((a,b)=>{const da=a.cells[cellIdx].textContent.trim(),db=b.cells[cellIdx].textContent.trim();
+      return desc?db.localeCompare(da):da.localeCompare(db)});
+    rows.forEach(r=>tbl.appendChild(r));btn.textContent=desc?"↓":"↑";});
+}
+bindDateSort("t31DateTh",3);
+bindDateSort("t32DateTh",3);
+bindDateSort("t33DateTh",4);
+bindDateSort("m1DateTh",0);
+bindDateSort("m2DateTh",0);
+bindDateSort("m3DateTh",0);
+/* ================= 分页 ================= */
+document.querySelectorAll(".pager:not([data-manual])").forEach(pg=>{
+  const total=+pg.dataset.total;
+  const size=pg.querySelector(".psize"),cur=pg.querySelector(".pcur"),all=pg.querySelector(".pall");
+  const prev=pg.querySelector(".pprev"),next=pg.querySelector(".pnext");
+  let p=1;
+  const upd=()=>{const pages=Math.max(1,Math.ceil(total/+size.value));all.textContent=pages;
+    p=Math.min(Math.max(1,p),pages);cur.textContent=p;prev.disabled=p<=1;next.disabled=p>=pages;};
+  size.addEventListener("change",()=>{p=1;upd()});
+  prev.addEventListener("click",()=>{p--;upd()});
+  next.addEventListener("click",()=>{p++;upd()});
+  upd();
+});
+/* ================= 通用：重置查询条件 ================= */
+function resetQry(btn){
+  const box=btn.closest(".qry");if(!box)return;
+  box.querySelectorAll("input").forEach(i=>{if(i.type==="text"||i.type==="date")i.value=""});
+  box.querySelectorAll("select").forEach(s=>s.selectedIndex=0);
 }
 /* ================= 配置详情渲染 ================= */
 const CFG={
- "530001":{name:"530001 建信恒久价值混合",ver:"版本 v3 · 2024-05-06 起生效",comp:[["000906.CSI","中证800指数","指数",65,"CNY"],["CBA00101.CS","中债-新综合财富指数","指数",30,"CNY"],["DEP1Y（示例）","一年期定期存款利率（税前）","利率 · 分段",5,"CNY"]],contract:"《建信恒久价值混合基金合同》2024 修订版 · 第十五条"},
- "530003":{name:"530003 建信优选成长混合A",ver:"版本 v2 · 2023-08-01 起生效",comp:[["000906.CSI","中证800指数","指数",75,"CNY"],["CBA00101.CS","中债-新综合财富指数","指数",20,"CNY"],["DEP1Y（示例）","一年期定期存款利率（税前）","利率 · 分段",5,"CNY"]],contract:"《建信优选成长混合基金合同》2023-08-01 修订版 · 第十二条"},
- "960028":{name:"960028 建信优选成长H",ver:"版本 v2 · 2023-08-01 起生效",comp:[["000906.CSI","中证800指数","指数",75,"CNY"],["CBA00101.CS","中债-新综合财富指数","指数",20,"CNY"],["DEP1Y（示例）","一年期定期存款利率（税前）","利率 · 分段",5,"CNY"]],contract:"同 530003（H 份额共用基准）"},
- "007830":{name:"007830 建信荣瑞一年定开混合",ver:"版本 v4 · 2025-11-19 起生效（v5 复核中）",comp:[["CBA10201.CS","中债-总财富指数","指数",65,"CNY"],["000300.CSI","沪深300","指数",30,"CNY"],["DEP1Y（示例）","一年期定期存款利率（税前）","利率 · 分段",5,"CNY"]],contract:"原「荣瑞基准」复合列已拆解为成分＋权重配置（Q5 定稿）"},
- "026663":{name:"026663 建信资源严选股票发起C",ver:"版本 v1 · 2026-03-12 起生效",comp:[["000300.CSI","沪深300","指数",80,"CNY"],["CBA00101.CS","中债-新综合财富指数","指数",20,"CNY"]],contract:"《建信资源严选股票发起式基金合同》· 第十六条"},
- "020932":{name:"020932 建信沪港深价值混合A（示例）",ver:"版本 v1 · 2025-06-18 起生效",comp:[["HSI.HI","恒生指数","指数 · 跨境",60,"HKD · 自动折算"],["CBA00101.CS","中债-新综合财富指数","指数",40,"CNY"]],contract:"境外成分标注币种，按估值日当日人民币中间价自动折算（取消人工折算列）"},
- "539001":{name:"539001 建信稳定增利债券A（示例）",ver:"版本 v2 · 2024-01-15 起生效",comp:[["CBA00101.CS","中债-新综合财富指数","指数",90,"CNY"],["DEP1Y（示例）","一年期定期存款利率（税前）","利率 · 分段",10,"CNY"]],contract:"《建信稳定增利债券基金合同》2024 修订版"}
+ "530001":{name:"530001 建信恒久价值混合",ver:"版本 v3 · 2024-05-06 起生效",comp:[["000906.CSI","中证800指数","指数",65,"CNY"],["CBA00101.CS","中债-新综合财富指数","指数",30,"CNY"],["DEP1Y（示例）","一年期定期存款利率（税前）","利率 · 分段",5,"CNY",-0.1]]},
+ "530003":{name:"530003 建信优选成长混合A",ver:"版本 v2 · 2023-08-01 起生效",comp:[["000906.CSI","中证800指数","指数",75,"CNY"],["CBA00101.CS","中债-新综合财富指数","指数",20,"CNY"],["DEP1Y（示例）","一年期定期存款利率（税前）","利率 · 分段",5,"CNY",-0.1]]},
+ "960028":{name:"960028 建信优选成长H",ver:"版本 v2 · 2023-08-01 起生效",comp:[["000906.CSI","中证800指数","指数",75,"CNY"],["CBA00101.CS","中债-新综合财富指数","指数",20,"CNY"],["DEP1Y（示例）","一年期定期存款利率（税前）","利率 · 分段",5,"CNY",-0.1]]},
+ "007830":{name:"007830 建信荣瑞一年定开混合",ver:"版本 v4 · 2025-11-19 起生效（v5 复核中）",comp:[["CBA10201.CS","中债-总财富指数","指数",65,"CNY"],["000300.CSI","沪深300","指数",30,"CNY"],["DEP1Y（示例）","一年期定期存款利率（税前）","利率 · 分段",5,"CNY",-0.1]]},
+ "026663":{name:"026663 建信资源严选股票发起C",ver:"版本 v1 · 2026-03-12 起生效",comp:[["000300.CSI","沪深300","指数",80,"CNY"],["CBA00101.CS","中债-新综合财富指数","指数",20,"CNY"]]},
+ "020932":{name:"020932 建信沪港深价值混合A（示例）",ver:"版本 v1 · 2025-06-18 起生效",comp:[["HSI.HI","恒生指数","指数 · 跨境",60,"HKD · 自动折算"],["CBA00101.CS","中债-新综合财富指数","指数",40,"CNY"]]},
+ "539001":{name:"539001 建信稳定增利债券A（示例）",ver:"版本 v2 · 2024-01-15 起生效",comp:[["CBA00101.CS","中债-新综合财富指数","指数",85,"CNY"],["DEP1Y（示例）","一年期定期存款利率（税前）","利率 · 分段",10,"CNY",0.2]]}
 };
-const WCOLORS=["#1668DC","#5B9BD5","#B4690E"];
 function renderCfg(code){
   const c=CFG[code];if(!c)return;
-  document.getElementById("cfgName").textContent=c.name;
-  document.getElementById("cfgVer").textContent=c.ver;
+  document.getElementById("cfgTitle").textContent="配置详情 · "+c.name;
   const sum=c.comp.reduce((a,x)=>a+x[3],0);
-  const panel=document.querySelectorAll("#s2 .grid2 .panel")[0].querySelector(".pb");
-  panel.innerHTML=`<table class="tbl" style="margin-bottom:10px">
+  const cash=Math.max(0,Math.round((100-sum)*10000)/10000);
+  const showCash=cash>0.0001;
+  document.getElementById("cfgBody").innerHTML=`<div style="margin-bottom:10px"><span class="tag info">${c.ver}</span></div>
+  <table class="tbl" style="margin-bottom:10px">
     <tr><th>成分基准（Wind 代码）</th><th>名称</th><th class="ctr">基准类型</th><th class="num">权重</th><th class="ctr">币种</th></tr>
     ${c.comp.map(x=>`<tr><td class="mono">${x[0]}</td><td>${x[1]}</td><td class="ctr">${x[2]}</td><td class="num">${x[3].toFixed(4)}%</td><td class="ctr">${x[4]}</td></tr>`).join("")}
-  </table>
-  <div class="wbar">${c.comp.map((x,i)=>`<i style="width:${x[3]}%;background:${WCOLORS[i%3]}"></i>`).join("")}</div>
-  <div class="wbar-l">${c.comp.map((x,i)=>`<span><b style="color:${WCOLORS[i%3]}">■</b> ${x[1]} ${x[3]}%</span>`).join("")}
-    <span style="margin-left:auto"><span class="tag ${Math.abs(sum-100)<0.0001?"ok":"err"}">权重合计 ${sum.toFixed(4)}% ${Math.abs(sum-100)<0.0001?"✓（容差 ±0.0001）":"✗ 阻断"}</span></span></div>
-  <dl class="kv" style="margin-top:12px">
-    <dt>口径</dt><dd>每日再平衡（合同固定权重逐日加权）· 仅基金有净值日计算</dd>
-    <dt>合同关联</dt><dd>${c.contract}</dd>
-    <dt>维护</dt><dd>创新部发起 ＋ 创新部负责人复核 · 审批通过后生效 · 过合同生效日未配置系统自动补算</dd>
-  </dl>`;
+    ${showCash?`<tr><td class="mono">—</td><td>现金（差额权重自动归属）</td><td class="ctr">现金</td><td class="num">${cash.toFixed(4)}%</td><td class="ctr">CNY</td></tr>`:""}
+  </table>`;
+  openM("mCfg");
 }
 document.querySelectorAll("#cfgTbl tr[data-p]").forEach(tr=>tr.addEventListener("click",()=>{
   document.querySelectorAll("#cfgTbl tr").forEach(x=>x.classList.remove("sel"));
-  tr.classList.add("sel");renderCfg(tr.dataset.p);
+  tr.classList.add("sel");
 }));
-/* ================= 展示效果：曲线 ================= */
-function lcg(seed){let s=seed;return()=>{s=(s*9301+49297)%233280;return s/233280}}
-function tradingDates(n){const out=[];let d=new Date(2026,9,14);while(out.length<n){const w=d.getDay();if(w!==0&&w!==6)out.push(new Date(d));d.setDate(d.getDate()-1)}return out.reverse()}
-const DATES=tradingDates(520);
-function cumSeries(seed,drift,vol){const r=lcg(seed);let v=1;const a=[1];for(let i=1;i<DATES.length;i++){v*=1+drift+(r()-0.5)*vol;a.push(v)}return a}
-const PROD={
- mix:{name:"建信优选成长混合A",code:"530003 · 混合型 · 数据截至 2026-10-14",fund:cumSeries(7,0.00042,0.016),bench:cumSeries(23,0.00033,0.014),prec:4,
-  foot:"本基金业绩比较基准：中证800指数收益率×75% ＋ 中债-新综合财富指数收益率×20% ＋ 一年期定期存款利率（税前）×5%（示例）。曲线按①③日频序列渲染，区间数值由展示端按窗口累计；数据来源：产品系统统一推送，渠道不自算。"},
- hybrid:{name:"建信荣瑞一年定开混合",code:"007830 · 混合偏债 · 一年定期开放 · 数据截至 2026-10-14",fund:cumSeries(11,0.00016,0.006),bench:cumSeries(31,0.00014,0.005),prec:4,
-  foot:"本基金业绩比较基准：中债-总财富指数收益率×65% ＋ 沪深300指数收益率×30% ＋ 一年期定期存款利率（税前）×5%（复合基准拆解示例）。封闭期产品按净值披露频率更新展示。"},
- mmf:{name:"建信安心货币A（示例）",code:"021111 · 货币市场基金 · 数据截至 2026-10-14",fund:cumSeries(5,0.0000488,0.00001),bench:null,prec:6,
-  foot:"货币市场基金无业绩比较基准（合同除外条款）：仅展示净值增长率①（推送仅①）。展示精度按货币类口径 6 位小数。"}
-};
-let curProd="mix",curWin=126;
-function winStart(d){
-  if(d===9999)return 0;
-  if(d===0){const y=DATES.findIndex(x=>x.getFullYear()===2026);return y<0?0:y}
-  return Math.max(0,DATES.length-d);
+/* ================= 指数库（参照 zhishu.html 设计） ================= */
+const ZCUR={"CNY":"人民币","HKD":"港币","USD":"美元","EUR":"欧元","GBP":"英镑"};
+const ZDATA=[
+ {id:1,code:"000300.CSI",name:"沪深300",own:"否",type:"指数",foreign:"否",currency:"CNY",creator:"李工",createTime:"2026-08-01 10:20",desc:"由沪深两市精选300只龙头A股编制，反映A股整体市场表现，是权益类基金常用业绩基准。",sources:[{id:1,sourceName:"万得资讯",sourceCode:"WIND001",sourceIndexName:"沪深300指数",foreign:"否",currency:"CNY"}]},
+ {id:2,code:"000905.CSI",name:"中证500",own:"否",type:"指数",foreign:"否",currency:"CNY",creator:"李工",createTime:"2026-08-01 10:21",desc:"选取沪深两市中小市值500只股票，代表中小盘成长风格走势。",sources:[{id:2,sourceName:"同花顺iFinD",sourceCode:"IFIND001",sourceIndexName:"中证500指数",foreign:"否",currency:"CNY"}]},
+ {id:3,code:"000906.CSI",name:"中证800",own:"否",type:"指数",foreign:"否",currency:"CNY",creator:"张主管",createTime:"2026-08-02 14:30",desc:"由沪深300与中证500成份股合计构成，覆盖沪深两市大中盘股票。",sources:[{id:10,sourceName:"万得资讯",sourceCode:"WIND003",sourceIndexName:"中证800指数",foreign:"否",currency:"CNY"}]},
+ {id:4,code:"CBA00101.CS",name:"中债-新综合财富",own:"否",type:"指数",foreign:"否",currency:"CNY",creator:"张主管",createTime:"2026-08-02 14:33",desc:"覆盖全市场利率债、信用债的财富指数，作为纯债型基金业绩比较基准。",sources:[{id:3,sourceName:"东方财富Choice",sourceCode:"CHOICE001",sourceIndexName:"中债-新综合财富指数",foreign:"否",currency:"CNY"}]},
+ {id:5,code:"CBA10201.CS",name:"中债-总财富",own:"否",type:"指数",foreign:"否",currency:"CNY",creator:"王工",createTime:"2026-08-03 09:15",desc:"中债总指数财富版，覆盖银行间与交易所债券市场。",sources:[{id:9,sourceName:"东方财富Choice",sourceCode:"CHOICE003",sourceIndexName:"中债-总财富指数",foreign:"否",currency:"CNY"}]},
+ {id:6,code:"HSI.HI",name:"恒生指数",own:"否",type:"指数",foreign:"是",currency:"HKD",creator:"王工",createTime:"2026-08-03 09:18",desc:"香港交易所核心大盘蓝筹指数，覆盖金融、地产、科技龙头企业。",sources:[{id:4,sourceName:"彭博资讯",sourceCode:"BLOOM001",sourceIndexName:"恒生指数",foreign:"是",currency:"HKD"}]},
+ {id:7,code:"SPX.GI",name:"标普500",own:"否",type:"指数",foreign:"是",currency:"USD",creator:"王工",createTime:"2026-08-04 11:05",desc:"美国500家龙头上市公司组成，是全球主流权益资产基准指数。",sources:[{id:5,sourceName:"路透资讯",sourceCode:"REUTE001",sourceIndexName:"标普500指数",foreign:"是",currency:"USD"}]},
+ {id:8,code:"NDX.GI",name:"纳斯达克100",own:"否",type:"指数",foreign:"是",currency:"USD",creator:"李工",createTime:"2026-08-05 08:45",desc:"美股科技龙头指数，包含互联网、半导体、软件龙头公司。",sources:[{id:6,sourceName:"万得资讯",sourceCode:"WIND002",sourceIndexName:"纳斯达克100指数",foreign:"是",currency:"USD"}]},
+ {id:9,code:"000852.CSI",name:"中证1000",own:"否",type:"指数",foreign:"否",currency:"CNY",creator:"张主管",createTime:"2026-08-06 15:22",desc:"选取中证800样本以外的小市值股票，代表小盘股走势。",sources:[{id:7,sourceName:"同花顺iFinD",sourceCode:"IFIND002",sourceIndexName:"中证1000指数",foreign:"否",currency:"CNY"}]},
+ {id:10,code:"SX5E.GR",name:"欧洲斯托克50",own:"否",type:"指数",foreign:"是",currency:"EUR",creator:"王工",createTime:"2026-08-07 16:10",desc:"欧元区50家核心蓝筹企业，覆盖欧洲主流行业龙头。",sources:[{id:8,sourceName:"彭博资讯",sourceCode:"BLOOM002",sourceIndexName:"欧洲斯托克50",foreign:"是",currency:"EUR"}]},
+ {id:11,code:"M0004279",name:"金融机构人民币活期存款利率",own:"否",type:"利率",foreign:"否",currency:"CNY",creator:"李工",createTime:"2026-09-10 10:05",desc:"中国人民银行公布的金融机构人民币活期存款基准利率，用于现金管理类产品基准。",sources:[{id:11,sourceName:"万得资讯",sourceCode:"WIND004",sourceIndexName:"金融机构人民币活期存款利率",foreign:"否",currency:"CNY"}]},
+ {id:12,code:"M0004280",name:"一年期定期存款利率",own:"否",type:"利率",foreign:"否",currency:"CNY",creator:"张主管",createTime:"2026-09-10 10:08",desc:"中国人民银行公布的一年期定期存款基准利率，常作为保本型/稳健型产品业绩基准。",sources:[{id:12,sourceName:"万得资讯",sourceCode:"WIND005",sourceIndexName:"一年期定期存款利率",foreign:"否",currency:"CNY"}]},
+ {id:13,code:"JX-CUST-01",name:"建信自有综合收益指数",own:"是",type:"指数",foreign:"否",currency:"CNY",creator:"王工",createTime:"2026-09-20 15:40",desc:"公司内部自行编制的综合收益指数，行情由创新部手工维护，无外部数据来源。",sources:[]}
+];
+const ZSRC=[
+ {id:1,sourceName:"万得资讯",sourceCode:"WIND001",sourceIndexName:"沪深300指数",foreign:"否",currency:"CNY"},
+ {id:2,sourceName:"同花顺iFinD",sourceCode:"IFIND001",sourceIndexName:"中证500指数",foreign:"否",currency:"CNY"},
+ {id:3,sourceName:"东方财富Choice",sourceCode:"CHOICE001",sourceIndexName:"中债-新综合财富指数",foreign:"否",currency:"CNY"},
+ {id:4,sourceName:"彭博资讯",sourceCode:"BLOOM001",sourceIndexName:"恒生指数",foreign:"是",currency:"HKD"},
+ {id:5,sourceName:"路透资讯",sourceCode:"REUTE001",sourceIndexName:"标普500指数",foreign:"是",currency:"USD"},
+ {id:6,sourceName:"万得资讯",sourceCode:"WIND002",sourceIndexName:"纳斯达克100指数",foreign:"是",currency:"USD"},
+ {id:7,sourceName:"同花顺iFinD",sourceCode:"IFIND002",sourceIndexName:"中证1000指数",foreign:"否",currency:"CNY"},
+ {id:8,sourceName:"彭博资讯",sourceCode:"BLOOM002",sourceIndexName:"欧洲斯托克50",foreign:"是",currency:"EUR"},
+ {id:9,sourceName:"东方财富Choice",sourceCode:"CHOICE003",sourceIndexName:"中债-总财富指数",foreign:"否",currency:"CNY"},
+ {id:10,sourceName:"万得资讯",sourceCode:"WIND003",sourceIndexName:"中证800指数",foreign:"否",currency:"CNY"},
+ {id:11,sourceName:"万得资讯",sourceCode:"WIND004",sourceIndexName:"金融机构人民币活期存款利率",foreign:"否",currency:"CNY"},
+ {id:12,sourceName:"万得资讯",sourceCode:"WIND005",sourceIndexName:"一年期定期存款利率",foreign:"否",currency:"CNY"}
+];
+let zEditId=null,zCurSources=[],zFilterList=[...ZSRC],zDelTargetId=null;
+function zSrcText(d){return d.own==="是"?"自有指数，无外部数据来源":(d.sources[0]?d.sources[0].sourceName+"（"+d.sources[0].sourceIndexName+"）":"—")}
+let zPage=1;
+function zRender(){zPage=1;zPaint()}
+function zPaint(){
+  const size=+document.getElementById("zSize").value;
+  const code=document.getElementById("zSearchCode").value.trim().toLowerCase();
+  const name=document.getElementById("zSearchName").value.trim().toLowerCase();
+  const fg=document.getElementById("zSearchForeign").value;
+  const tp=document.getElementById("zSearchType").value;
+  const list=ZDATA.filter(it=>(!code||it.code.toLowerCase().includes(code))&&(!name||it.name.toLowerCase().includes(name))&&(fg==="全部"||it.foreign===fg)&&(tp==="全部"||it.type===tp));
+  const pages=Math.max(1,Math.ceil(list.length/size));
+  zPage=Math.min(Math.max(1,zPage),pages);
+  const start=(zPage-1)*size,rows=list.slice(start,start+size);
+  document.getElementById("zBody").innerHTML=rows.length?rows.map((it,i)=>'<tr><td class="ctr">'+(start+i+1)+'</td><td class="mono">'+it.code+'</td><td>'+it.name+'</td><td class="ctr">'+(it.type==="利率"?'<span class="tag warn">利率</span>':"指数")+'</td><td class="ctr">'+(it.own==="是"?'<span class="tag info">是</span>':"否")+'</td><td class="ctr">'+(it.foreign==="是"?'<span class="tag warn">是</span>':"否")+'</td><td class="ctr">'+ZCUR[it.currency]+'</td><td><b style="color:var(--blue)">'+zSrcText(it)+'</b></td><td>'+it.creator+'</td><td class="ctr"><button class="btn sm" onclick="zOpenView('+it.id+')">查看</button> <button class="btn sm" onclick="zOpenEdit('+it.id+')">编辑</button> <button class="btn sm dgr" onclick="zOpenDel('+it.id+')">删除</button></td></tr>').join(""):'<tr><td colspan="10" style="text-align:center;color:var(--ink3);padding:10px">无匹配数据</td></tr>';
+  document.getElementById("zCount").textContent=list.length;
+  document.getElementById("zTotal").textContent=list.length;
+  document.getElementById("zAll").textContent=pages;
+  document.getElementById("zCur").textContent=zPage;
+  document.getElementById("zPrev").disabled=zPage<=1;
+  document.getElementById("zNext").disabled=zPage>=pages;
 }
-function fmtPct(v,prec){return (v>=0?"":"−")+Math.abs(v*100).toFixed(prec)+"%"}
-function drawChart(svgId,fund,bench,prec,start){
-  const svg=document.getElementById(svgId);
-  const W=+svg.getAttribute("viewBox").split(" ")[2],H=+svg.getAttribute("viewBox").split(" ")[3];
-  const padL=44,padR=8,padT=10,padB=22;
-  const f=fund.slice(start).map(v=>v/fund[start]-1);
-  const b=bench?bench.slice(start).map(v=>v/bench[start]-1):null;
-  const all=f.concat(b||[]);
-  let mn=Math.min(0,...all),mx=Math.max(...all);const pad=(mx-mn)*0.08||0.001;mn-=pad;mx+=pad;
-  const X=i=>padL+(W-padL-padR)*i/(f.length-1||1);
-  const Y=v=>padT+(H-padT-padB)*(1-(v-mn)/(mx-mn));
-  let g="";
-  for(let t=0;t<=4;t++){const v=mn+(mx-mn)*t/4;g+=`<line x1="${padL}" y1="${Y(v)}" x2="${W-padR}" y2="${Y(v)}" stroke="#E8EDF4" stroke-width="1"/>
-    <text x="${padL-5}" y="${Y(v)+3}" text-anchor="end" font-size="9" fill="#7C8AA0" font-family="Consolas,monospace">${(v*100).toFixed(prec>4?2:1)}%</text>`}
-  const xl=[0,Math.floor((f.length-1)/2),f.length-1];
-  xl.forEach(i=>{const d=DATES[start+i];g+=`<text x="${X(i)}" y="${H-7}" text-anchor="middle" font-size="9" fill="#7C8AA0" font-family="Consolas,monospace">${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}</text>`});
-  const path=a=>a.map((v,i)=>(i?"L":"M")+X(i).toFixed(1)+" "+Y(v).toFixed(1)).join(" ");
-  g+=`<path d="${path(f)}" fill="none" stroke="#1668DC" stroke-width="2"/>`;
-  if(b)g+=`<path d="${path(b)}" fill="none" stroke="#C8922A" stroke-width="2" stroke-dasharray="5 3"/>`;
-  g+=`<circle cx="${X(f.length-1)}" cy="${Y(f[f.length-1])}" r="3" fill="#1668DC"/>`;
-  if(b)g+=`<circle cx="${X(b.length-1)}" cy="${Y(b[b.length-1])}" r="3" fill="#C8922A"/>`;
-  svg.innerHTML=g;
-  return{fv:f[f.length-1],bv:b?b[b.length-1]:null};
+function zResetSearch(){
+  document.getElementById("zSearchCode").value="";
+  document.getElementById("zSearchName").value="";
+  document.getElementById("zSearchForeign").value="全部";
+  document.getElementById("zSearchType").value="全部";
+  zRender();
 }
-function renderDemo(){
-  const p=PROD[curProd],start=winStart(curWin);
-  document.getElementById("siteFundName").textContent=p.name;
-  document.getElementById("siteFundCode").textContent=p.code;
-  document.getElementById("appFundName").textContent=p.name;
-  document.getElementById("appFundCode").textContent=p.code.split(" · ")[0]+" · 数据截至 2026-10-14";
-  document.getElementById("siteFoot").textContent=p.foot;
-  const s1=drawChart("siteChart",p.fund,p.bench,p.prec,start);
-  drawChart("appChart",p.fund,p.bench,p.prec,start);
-  document.getElementById("lgFund").textContent=fmtPct(s1.fv,p.prec);
-  document.getElementById("pnFund").textContent=fmtPct(s1.fv,p.prec);
-  document.getElementById("appFund").textContent=fmtPct(s1.fv,p.prec);
-  const hasB=!!p.bench;
-  document.getElementById("lgBenchWrap").style.display=hasB?"":"none";
-  document.getElementById("pnBenchBox").style.display=hasB?"":"none";
-  document.getElementById("appBenchBox").style.display=hasB?"":"none";
-  if(hasB){document.getElementById("lgBench").textContent=fmtPct(s1.bv,p.prec);
-    document.getElementById("pnBench").textContent=fmtPct(s1.bv,p.prec);
-    document.getElementById("appBench").textContent=fmtPct(s1.bv,p.prec);}
-  document.getElementById("pnPrec").textContent=hasB?`非货币 · ${p.prec} 位小数`:`货币 · ${p.prec} 位小数 · 仅推①`;
-  document.getElementById("lgNote").textContent=hasB?"":"（无业绩比较基准产品）";
+function zRenderSrcTags(){
+  document.getElementById("zSrcTags").innerHTML=zCurSources.length?zCurSources.map(s=>'<span style="display:inline-flex;align-items:center;gap:6px;background:#F3F7FC;border:1px solid var(--line);border-radius:4px;padding:4px 10px;font-size:12px;color:var(--ink)">'+s.sourceName+'：'+s.sourceIndexName+'</span>').join(""):'<span class="note">暂无数据来源</span>';
 }
-document.querySelectorAll("#siteTabs button,#appTabs button").forEach(b=>b.addEventListener("click",()=>{
-  curWin=+b.dataset.d;
-  document.querySelectorAll("#siteTabs button,#appTabs button").forEach(x=>x.classList.toggle("on",+x.dataset.d===curWin&&x.closest(".ptabs").contains(b)?true:+x.dataset.d===curWin));
-  renderDemo();
-}));
-document.getElementById("demoSel").addEventListener("change",e=>{curProd=e.target.value;renderDemo()});
-renderDemo();
+function zRenderSrcTable(){
+  document.getElementById("zSrcBody").innerHTML=zCurSources.length?zCurSources.map((s,i)=>'<tr><td>'+s.sourceName+'</td><td class="mono">'+s.sourceCode+'</td><td>'+s.sourceIndexName+'</td><td class="ctr"><button class="btn sm dgr" onclick="zDelSrc('+i+')">删除</button></td></tr>').join(""):'<tr><td colspan="4" style="text-align:center;color:var(--ink3);padding:10px">暂无数据来源</td></tr>';
+  zRenderSrcTags();
+}
+function zSyncFcState(){
+  const has=zCurSources.length>0;
+  document.querySelectorAll('input[name="zForeign"]').forEach(r=>r.disabled=has);
+  document.getElementById("zFormCurrency").disabled=has;
+  document.getElementById("zFcTip").textContent=has?"已按所选数据来源自动反显，不可修改":"选择数据来源后按来源指数自动反显，不可修改";
+  if(has){const s=zCurSources[0];
+    document.querySelector('input[name="zForeign"][value="'+s.foreign+'"]').checked=true;
+    document.getElementById("zFormCurrency").value=s.currency;}
+}
+function zToggleOwn(){
+  const own=document.querySelector('input[name="zOwn"]:checked').value;
+  const box=document.getElementById("zSrcBox");
+  if(own==="是"){zCurSources=[];box.style.display="none"}
+  else box.style.display="";
+  zRenderSrcTable();
+  zSyncFcState();
+}
+function zAutoType(){
+  const n=document.getElementById("zFormName").value;
+  if(n.includes("存款")||n.includes("利率"))document.querySelector('input[name="zType"][value="利率"]').checked=true;
+}
+function zDelSrc(i){
+  zCurSources.splice(i,1);
+  zRenderSrcTable();
+  zSyncFcState();
+}
+function zRenderSrcSelect(){
+  document.getElementById("zSrcSelectBody").innerHTML=zFilterList.length?zFilterList.map(s=>'<tr><td class="ctr"><input type="radio" name="zSrcPick" data-id="'+s.id+'"></td><td>'+s.sourceName+'</td><td class="mono">'+s.sourceCode+'</td><td>'+s.sourceIndexName+'</td><td class="ctr">'+(s.foreign==="是"?'<span class="tag warn">是</span>':"否")+'</td><td class="ctr">'+ZCUR[s.currency]+'</td></tr>').join(""):'<tr><td colspan="6" style="text-align:center;color:var(--ink3);padding:10px">无匹配数据</td></tr>';
+}
+function zFilterSrc(){
+  const n=document.getElementById("zQryName").value.trim().toLowerCase();
+  const c=document.getElementById("zQryCode").value.trim().toLowerCase();
+  const i=document.getElementById("zQryIdx").value.trim().toLowerCase();
+  zFilterList=ZSRC.filter(s=>(!n||s.sourceName.toLowerCase().includes(n))&&(!c||s.sourceCode.toLowerCase().includes(c))&&(!i||s.sourceIndexName.toLowerCase().includes(i)));
+  zRenderSrcSelect();
+}
+function zResetSrc(){document.getElementById("zQryName").value="";document.getElementById("zQryCode").value="";document.getElementById("zQryIdx").value="";zFilterList=[...ZSRC];zRenderSrcSelect()}
+function zOpenSrcSelect(){zResetSrc();openM("zSrcModal")}
+function zConfirmSrc(){
+  const ck=document.querySelector('input[name="zSrcPick"]:checked');
+  if(!ck){alert("请选择一条数据来源");return}
+  const it=ZSRC.find(s=>s.id===+ck.dataset.id);
+  if(!it)return;
+  zCurSources=[{...it}];
+  zRenderSrcTable();
+  zSyncFcState();
+  closeM("zSrcModal");
+}
+function zOpenAdd(){
+  zEditId=null;zCurSources=[];
+  document.getElementById("zModalTitle").textContent="新增指数";
+  document.getElementById("zFormCode").value="";
+  document.getElementById("zFormCode").readOnly=false;
+  document.getElementById("zFormName").value="";
+  document.querySelector('input[name="zType"][value="指数"]').checked=true;
+  document.querySelector('input[name="zOwn"][value="否"]').checked=true;
+  document.getElementById("zSrcBox").style.display="";
+  document.querySelector('input[name="zForeign"][value="否"]').checked=true;
+  document.getElementById("zFormCurrency").value="CNY";
+  document.getElementById("zFormDesc").value="";
+  zRenderSrcTable();
+  zSyncFcState();
+  openM("zModal");
+}
+function zOpenEdit(id){
+  const d=ZDATA.find(x=>x.id===id);if(!d)return;
+  zEditId=id;zCurSources=JSON.parse(JSON.stringify(d.sources));
+  document.getElementById("zModalTitle").textContent="编辑指数";
+  document.getElementById("zFormCode").value=d.code;
+  document.getElementById("zFormCode").readOnly=true;
+  document.getElementById("zFormName").value=d.name;
+  document.querySelector('input[name="zType"][value="'+d.type+'"]').checked=true;
+  document.querySelector('input[name="zOwn"][value="'+d.own+'"]').checked=true;
+  document.getElementById("zSrcBox").style.display=d.own==="是"?"none":"";
+  document.querySelector('input[name="zForeign"][value="'+d.foreign+'"]').checked=true;
+  document.getElementById("zFormCurrency").value=d.currency;
+  document.getElementById("zFormDesc").value=d.desc||"";
+  zRenderSrcTable();
+  zSyncFcState();
+  openM("zModal");
+}
+function zSave(){
+  const code=document.getElementById("zFormCode").value.trim();
+  const name=document.getElementById("zFormName").value.trim();
+  const own=document.querySelector('input[name="zOwn"]:checked').value;
+  if(!code){alert("请输入指数编码（Wind 代码）");return}
+  if(zEditId==null&&ZDATA.some(x=>x.code===code)){alert("指数编码已存在（Wind 代码为唯一键）");return}
+  if(!name){alert("请输入指数名称");return}
+  if(own==="否"&&!zCurSources.length){alert("非自有指数必须配置数据来源，请选择数据来源");return}
+  const now=new Date(),p=n=>String(n).padStart(2,"0");
+  const old=zEditId!=null?ZDATA.find(x=>x.id===zEditId):null;
+  const rec={id:old?old.id:Math.max(...ZDATA.map(x=>x.id))+1,code:code,name:name,own:own,type:document.querySelector('input[name="zType"]:checked').value,foreign:document.querySelector('input[name="zForeign"]:checked').value,currency:document.getElementById("zFormCurrency").value,creator:old?old.creator:"李工",createTime:old?old.createTime:("2026-10-16 "+p(now.getHours())+":"+p(now.getMinutes())),desc:document.getElementById("zFormDesc").value.trim(),sources:zCurSources};
+  if(old){ZDATA[ZDATA.findIndex(x=>x.id===old.id)]=rec}else ZDATA.push(rec);
+  zPaint();
+  closeM("zModal");
+  alert("保存成功");
+}
+function zOpenView(id){
+  const d=ZDATA.find(x=>x.id===id);if(!d)return;
+  document.getElementById("zViewBody").innerHTML='<dl class="kv"><dt>指数编码</dt><dd class="mono">'+d.code+'</dd><dt>指数名称</dt><dd>'+d.name+'</dd><dt>类型</dt><dd>'+(d.type==="利率"?'<span class="tag warn">利率</span>':"指数")+'</dd><dt>是否自有指数</dt><dd>'+d.own+'</dd><dt>是否外盘</dt><dd>'+d.foreign+'</dd><dt>计价币种</dt><dd>'+ZCUR[d.currency]+'</dd><dt>维护人</dt><dd>'+d.creator+'</dd><dt>维护时间</dt><dd class="mono">'+d.createTime+'</dd><dt>指数说明</dt><dd>'+(d.desc||"暂无")+'</dd></dl>'
+    +'<div style="font-size:12.5px;font-weight:700;margin:12px 0 6px">数据来源</div><div style="display:flex;gap:8px;flex-wrap:wrap">'+(d.sources.length?d.sources.map(s=>'<span style="display:inline-flex;align-items:center;gap:6px;background:#F3F7FC;border:1px solid var(--line);border-radius:4px;padding:4px 10px;font-size:12px">'+s.sourceName+'：'+s.sourceIndexName+'</span>').join(""):'<span class="note">自有指数，无外部数据来源</span>')+'</div>';
+  openM("zView");
+}
+function zOpenDel(id){zDelTargetId=id;document.getElementById("zDelReason").value="";openM("zDel")}
+function zConfirmDel(){
+  const r=document.getElementById("zDelReason").value.trim();
+  if(!r){alert("请输入删除原因");return}
+  const i=ZDATA.findIndex(x=>x.id===zDelTargetId);
+  if(i>=0)ZDATA.splice(i,1);
+  zPaint();
+  closeM("zDel");
+  alert("删除成功");
+}
+document.getElementById("zSize").addEventListener("change",()=>{zPage=1;zPaint()});
+document.getElementById("zPrev").addEventListener("click",()=>{zPage--;zPaint()});
+document.getElementById("zNext").addEventListener("click",()=>{zPage++;zPaint()});
+zRender();
+/* ================= 业绩基准数据查询（参照 jizhundianwei.html 设计 · 分页＋日期倒序） ================= */
+const BQDAYS=["2026-10-14","2026-10-13","2026-10-11","2026-10-10","2026-10-09","2026-10-08","2026-10-07"];
+const BQFUNDS=[
+ {fund:"530003",name:"建信优选成长混合A",idx:"中证800",idx0:5187.3200,pt0:5259.3188},
+ {fund:"530001",name:"建信恒久价值混合",idx:"中证800",idx0:5187.3200,pt0:4353.0912},
+ {fund:"007830",name:"建信荣瑞一年定开混合",idx:"中债-总财富",idx0:238.9054,pt0:1678.6552},
+ {fund:"026663",name:"建信资源严选股票发起C",idx:"沪深300",idx0:4721.5500,pt0:2915.7282},
+ {fund:"020932",name:"建信沪港深价值混合A（示例）",idx:"恒生指数（原币 HKD）",idx0:25310.8800,pt0:2572.8066,fx:true}
+];
+const BQDATA=[];
+BQFUNDS.forEach((f,fi)=>{
+  let pt=f.pt0,ip=f.idx0,fx=0.90912,fxp=0.90945;
+  BQDAYS.forEach((d,di)=>{
+    const s=Math.sin((fi+1)*13.37+di*7.77);
+    const ir=+(1+s*0.008).toFixed(8),ret=+(s*0.007+0.0003*Math.cos(fi+di)).toFixed(6);
+    if(di>0){fxp=fx;fx=+(fx+0.00033).toFixed(5)}
+    const err0=f.fund==="020932"&&d==="2026-10-14";
+    BQDATA.push({fund:f.fund,name:f.name,date:d,point:+pt.toFixed(4),ret:err0?null:ret,idx:f.idx,idxPoint:+ip.toFixed(4),idxRet:ir,fx:f.fx?fx:null,fxPrev:f.fx?fxp:null,recalc:err0?"异常":(f.fund==="026663"&&d==="2026-10-14")?"已重算 R1":"正常"});
+    pt=pt/(1+ret);ip=ip/ir;
+  });
+});
+let bqLast=[],bqPage=1,bqDesc=true;
+const bqChecked=new Set(),bqKey=r=>r.fund+"|"+r.date;
+function bqSortRows(){bqLast.sort((a,b)=>{const ea=a.recalc==="异常",eb=b.recalc==="异常";if(ea!==eb)return ea?-1:1;return bqDesc?b.date.localeCompare(a.date):a.date.localeCompare(b.date)})}
+function bqQuery(){
+  const f=document.getElementById("bqFund").value.trim();
+  const s=document.getElementById("bqStart").value,e=document.getElementById("bqEnd").value;
+  bqLast=BQDATA.filter(r=>(!f||r.fund===f)&&(!s||r.date>=s)&&(!e||r.date<=e));
+  bqPage=1;bqChecked.clear();bqSortRows();bqPaint();
+}
+function bqReset(){
+  document.getElementById("bqFund").value="";
+  document.getElementById("bqStart").value="2026-10-08";
+  document.getElementById("bqEnd").value="2026-10-14";
+  bqQuery();
+}
+function bqPaint(){
+  const size=+document.getElementById("bqSize").value;
+  const pages=Math.max(1,Math.ceil(bqLast.length/size));
+  bqPage=Math.min(Math.max(1,bqPage),pages);
+  const rows=bqLast.slice((bqPage-1)*size,bqPage*size);
+  const pos="var(--green)",neg="var(--red)";
+  document.getElementById("bqBody").innerHTML=rows.map(r=>{
+    const err=r.recalc==="异常",key=bqKey(r),fs=err?' style="color:var(--red);font-weight:600"':"";
+    const retCell=err?'<td class="num" style="color:var(--red)">—</td>':'<td class="num" style="color:'+(r.ret>=0?pos:neg)+'">'+(r.ret>=0?"+":"")+(r.ret*100).toFixed(4)+'%</td>';
+    const st=err?'<span class="tag err">异常</span>':(r.recalc==="正常"?'<span class="tag ok">正常</span>':'<span class="tag warn">'+r.recalc+'</span>');
+    return '<tr'+(err?' class="errrow"':'')+'><td class="ctr"><input type="checkbox" class="bqCk" data-k="'+key+'"'+(bqChecked.has(key)?" checked":"")+' aria-label="选择 '+r.fund+' '+r.date+'"></td><td class="mono"'+fs+'>'+r.fund+'</td><td'+fs+'>'+r.name+'</td><td class="mono">'+r.date+'</td><td class="num">'+r.point.toFixed(4)+'</td>'+retCell+'<td>'+r.idx+'</td><td class="num">'+r.idxPoint.toFixed(4)+'</td><td class="num">'+(r.fx!=null?r.fx.toFixed(5):"—")+'</td><td class="num">'+(r.fxPrev!=null?r.fxPrev.toFixed(5):"—")+'</td><td class="num">'+r.idxRet.toFixed(8)+'</td><td class="ctr">'+st+'</td></tr>';
+  }).join("");
+  document.getElementById("bqEmpty").style.display=bqLast.length?"none":"";
+  document.getElementById("bqTotal").textContent=bqLast.length;
+  document.getElementById("bqAll").textContent=pages;
+  document.getElementById("bqCur").textContent=bqPage;
+  document.getElementById("bqPrev").disabled=bqPage<=1;
+  document.getElementById("bqNext").disabled=bqPage>=pages;
+  document.getElementById("bqCkAll").checked=bqLast.length>0&&bqChecked.size>=bqLast.length;
+  bqUpdExport();
+}
+document.getElementById("bqSize").addEventListener("change",()=>{bqPage=1;bqPaint()});
+document.getElementById("bqPrev").addEventListener("click",()=>{bqPage--;bqPaint()});
+document.getElementById("bqNext").addEventListener("click",()=>{bqPage++;bqPaint()});
+document.querySelector("#bqDateTh .sortbtn").addEventListener("click",function(){bqDesc=!bqDesc;bqPage=1;bqSortRows();bqPaint();this.textContent=bqDesc?"↓":"↑"});
+function bqUpdExport(){
+  const n=bqChecked.size;
+  document.getElementById("bqExportBtn").textContent=n?("导出勾选（"+n+" 条）"):"导出数据";
+  document.getElementById("bqNote").textContent=n?("已勾选 "+n+" 条，导出仅含勾选项"):"未勾选 · 按当前查询结果导出（"+bqLast.length+" 条 · 交易日期"+(bqDesc?"倒序":"升序")+"）";
+}
+function bqExport(){const n=bqChecked.size;alert(n?("业绩比较基准数据导出功能已触发：仅导出勾选 "+n+" 条"):"业绩比较基准数据导出功能已触发（按当前查询结果导出 "+bqLast.length+" 条，交易日期"+(bqDesc?"倒序":"升序")+"）")}
+document.getElementById("bqCkAll").addEventListener("change",function(){if(this.checked)bqLast.forEach(r=>bqChecked.add(bqKey(r)));else bqChecked.clear();bqPaint()});
+document.getElementById("bqBody").addEventListener("change",e=>{if(e.target.classList.contains("bqCk")){const k=e.target.dataset.k;e.target.checked?bqChecked.add(k):bqChecked.delete(k);document.getElementById("bqCkAll").checked=bqLast.length>0&&bqChecked.size>=bqLast.length;bqUpdExport()}});
+bqQuery();
 </script>
 </body>
 </html>
