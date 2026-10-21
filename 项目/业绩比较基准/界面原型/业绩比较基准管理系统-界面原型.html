@@ -280,7 +280,7 @@ button{font-family:inherit;cursor:pointer}
         <span>第 <b class="mono pcur" id="zCur">1</b> / <span class="mono pall" id="zAll">1</span> 页</span>
         <button class="btn sm pprev" id="zPrev" disabled>上一页</button><button class="btn sm pnext" id="zNext">下一页</button>
       </div>
-      <div style="padding:9px 16px;border-top:1px solid var(--line2)" class="note">指数库为产品基准配置的成分基准主数据；外盘指数按原币存储，人民币折算仅在计算层按 §5.5 汇率折算口径执行；删除前请确认无在用配置引用。</div>
+      <div style="padding:9px 16px;border-top:1px solid var(--line2)" class="note">指数库为产品基准配置的成分基准主数据；外盘指数按原币存储，人民币折算仅在计算层按 §5.5 汇率折算口径执行；删除前请确认无在用配置引用。<b>编辑规则：非自有指数仅可修改指数说明；自有指数除指数编码、是否自有指数外均可修改。</b></div>
     </div>
   </div>
 </section>
@@ -305,15 +305,15 @@ button{font-family:inherit;cursor:pointer}
     <div class="tabpane on" id="t31">
       <div class="tabops"><span class="note" id="expNote31"></span><button class="btn" id="exp31">导出当前结果</button></div>
       <table class="tbl" id="t31Tbl">
-      <tr><th class="ctr" style="width:34px"><input type="checkbox" class="ckAll" title="全选"></th><th>Wind 代码（唯一键）</th><th>名称</th><th class="mono" id="t31DateTh">行情日期 <button class="sortbtn" title="切换升序/倒序">↓</button></th><th class="num">点位</th><th class="num">日环比 1+r</th><th class="ctr">数据来源</th></tr>
-      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">000906.CSI</td><td>中证800</td><td class="mono">2026-10-14</td><td class="num">5,187.3200</td><td class="num">1.00812345</td><td class="ctr"><span class="tag info">系统</span></td></tr>
-      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">CBA00101.CS</td><td>中债-新综合财富</td><td class="mono">2026-10-14</td><td class="num">245.1187</td><td class="num">1.00012345</td><td class="ctr"><span class="tag info">系统</span></td></tr>
-      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">000300.CSI</td><td>沪深300</td><td class="mono">2026-10-14</td><td class="num">4,721.5500</td><td class="num">1.00813720</td><td class="ctr"><span class="tag warn">人工维护</span></td></tr>
-      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">HSI.HI</td><td>恒生指数（原币 HKD · 不折算）</td><td class="mono">2026-10-14</td><td class="num">25,310.8800</td><td class="num">1.01934521</td><td class="ctr"><span class="tag info">系统</span></td></tr>
-      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">CBA10201.CS</td><td>中债-总财富指数</td><td class="mono">2026-10-14</td><td class="num">238.9054</td><td class="num">1.00009876</td><td class="ctr"><span class="tag info">系统</span></td></tr>
-      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">000906.CSI</td><td>中证800</td><td class="mono">2026-10-13</td><td class="num">5,145.5100</td><td class="num">0.99876543</td><td class="ctr"><span class="tag info">系统</span></td></tr>
-      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">000300.CSI</td><td>沪深300</td><td class="mono">2026-10-13</td><td class="num">4,683.4400</td><td class="num">0.99891234</td><td class="ctr"><span class="tag info">系统</span></td></tr>
-      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">HSI.HI</td><td>恒生指数（原币 HKD · 不折算）</td><td class="mono">2026-10-13</td><td class="num">24,830.4500</td><td class="num">0.99754321</td><td class="ctr"><span class="tag info">系统</span></td></tr>
+      <tr><th class="ctr" style="width:34px"><input type="checkbox" class="ckAll" title="全选"></th><th>Wind 代码（唯一键）</th><th>名称</th><th class="mono" id="t31DateTh">行情日期 <button class="sortbtn" title="切换升序/倒序">↓</button></th><th class="num">点位</th><th class="num">折原币点位</th><th class="num">当日汇率</th><th class="num">日环比 1+r</th><th class="ctr">数据来源</th></tr>
+      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">000906.CSI</td><td>中证800</td><td class="mono">2026-10-14</td><td class="num">5,187.3200</td><td class="num">—</td><td class="num">—</td><td class="num">1.00812345</td><td class="ctr"><span class="tag info">系统</span></td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">CBA00101.CS</td><td>中债-新综合财富</td><td class="mono">2026-10-14</td><td class="num">245.1187</td><td class="num">—</td><td class="num">—</td><td class="num">1.00012345</td><td class="ctr"><span class="tag info">系统</span></td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">000300.CSI</td><td>沪深300</td><td class="mono">2026-10-14</td><td class="num">4,721.5500</td><td class="num">—</td><td class="num">—</td><td class="num">1.00813720</td><td class="ctr"><span class="tag warn">人工维护</span></td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">HSI.HI</td><td>恒生指数（原币 HKD）</td><td class="mono">2026-10-14</td><td class="num">25,310.8800</td><td class="num">23,010.6272</td><td class="num">0.90912</td><td class="num">1.01934521</td><td class="ctr"><span class="tag info">系统</span></td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">CBA10201.CS</td><td>中债-总财富指数</td><td class="mono">2026-10-14</td><td class="num">238.9054</td><td class="num">—</td><td class="num">—</td><td class="num">1.00009876</td><td class="ctr"><span class="tag info">系统</span></td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">000906.CSI</td><td>中证800</td><td class="mono">2026-10-13</td><td class="num">5,145.5100</td><td class="num">—</td><td class="num">—</td><td class="num">0.99876543</td><td class="ctr"><span class="tag info">系统</span></td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">000300.CSI</td><td>沪深300</td><td class="mono">2026-10-13</td><td class="num">4,683.4400</td><td class="num">—</td><td class="num">—</td><td class="num">0.99891234</td><td class="ctr"><span class="tag info">系统</span></td></tr>
+      <tr><td class="ctr"><input type="checkbox" class="ck"></td><td class="mono">HSI.HI</td><td>恒生指数（原币 HKD）</td><td class="mono">2026-10-13</td><td class="num">24,830.4500</td><td class="num">22,582.0528</td><td class="num">0.90945</td><td class="num">0.99754321</td><td class="ctr"><span class="tag info">系统</span></td></tr>
       </table>
       <div class="pager" data-total="673484">
         <span>共 <b class="mono">673,484</b> 条</span>
@@ -322,7 +322,7 @@ button{font-family:inherit;cursor:pointer}
         <button class="btn sm pprev" disabled>上一页</button><button class="btn sm pnext">下一页</button>
         <span class="pnote">原型演示：分页仅联动指示器</span>
       </div>
-      <div style="padding:8px 16px" class="note">外币指数（如恒生指数）按<b>原币存储与查询、不折算人民币</b>；人民币折算仅在计算层按 §5.5 汇率折算口径执行。查询结果默认按日期倒序。</div>
+      <div style="padding:8px 16px" class="note">外币指数（如恒生指数）按<b>原币存储</b>，点位为原币行情；<b>折原币点位＝点位 × 当日汇率</b>（人民银行中间价、直接汇率、取行情日期当日），仅供查询展示与追溯，存储与日收益计算仍按 §5.4 汇率折算口径执行；当日汇率缺失时折原币点位显示「—」并告警＋人工补录；人民币指数不涉及折算，两列均显示「—」。查询结果默认按日期倒序。</div>
     </div>
     <div class="tabpane" id="t32">
       <div style="padding:10px 16px 0"><span class="banner info" style="margin:0"><span>ℹ</span><div>天数基准分时点切换（Q16 定稿）：<b>2026-07-01 前（至 06-30）ACT/360，2026-07-01 起（含当日）ACT/365</b>；利率按「生效起止＋适用利率」分段记录，历史区间按当时适用利率计提。</div></span></div>
@@ -681,11 +681,11 @@ button{font-family:inherit;cursor:pointer}
         <label class="req">是否自有指数</label><div style="display:flex;gap:16px;padding:5px 0;flex-wrap:wrap;align-items:center">
           <label style="display:inline-flex;align-items:center;gap:5px"><input type="radio" name="zOwn" value="否" checked style="width:auto" onchange="zToggleOwn()">否</label>
           <label style="display:inline-flex;align-items:center;gap:5px"><input type="radio" name="zOwn" value="是" style="width:auto" onchange="zToggleOwn()">是</label>
-          <span class="note">先选择是否为自有指数：选「否」经数据源选取指数代码后自动反显；选「是」手工维护，无需数据源</span>
+          <span class="note" id="zOwnNote">先选择是否为自有指数：选「否」经数据源选取指数代码后自动反显；选「是」手工维护，无需数据源</span>
         </div>
         <label class="req" id="zSrcLabel" style="display:none">数据源</label><div id="zSrcPickRow" style="display:none;padding:3px 0">
-          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span id="zSrcPicked"></span><button class="btn sm pri" onclick="zOpenSrcSelect()">选择数据源指数</button></div>
-          <div class="note" style="margin-top:3px">先选择数据源、再选择具体指数代码；确认后自动反显指数编码、指数名称、是否外盘指数、计价币种与类型（类型可编辑）</div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span id="zSrcPicked"></span><button class="btn sm pri" id="zSrcPickBtn" onclick="zOpenSrcSelect()">选择数据源指数</button></div>
+          <div class="note" style="margin-top:3px" id="zSrcPickNote">先选择数据源、再选择具体指数代码；确认后自动反显指数编码、指数名称、是否外盘指数、计价币种与类型（类型可编辑）</div>
         </div>
         <label class="req">指数编码</label><div><input id="zFormCode" class="mono" placeholder="如 000300.CSI（Wind 代码，唯一键）"><div class="note" style="margin-top:3px" id="zCodeNote">须与基准行情库的 Wind 代码一致；保存后不可修改</div></div>
         <label class="req">指数名称</label><div><input id="zFormName" placeholder="如 沪深300" oninput="zAutoType()"><div class="note" style="margin-top:3px" id="zNameNote">名称含「存款」「利率」字样时，类型自动识别为「利率」（可手动调整）</div></div>
@@ -1307,7 +1307,8 @@ function zResetSearch(){
 }
 function zRenderPickedSrc(){
   const el=document.getElementById("zSrcPicked");
-  el.innerHTML=zCurSources.length?'<span style="display:inline-flex;align-items:center;gap:6px;background:#F3F7FC;border:1px solid var(--line);border-radius:4px;padding:4px 10px;font-size:12px;color:var(--ink)">'+zCurSources[0].sourceName+' · <span class="mono">'+zCurSources[0].sourceCode+'</span> '+zCurSources[0].sourceIndexName+' <a href="javascript:void(0)" onclick="zDelSrc()" style="color:var(--red);margin-left:4px">✕</a></span>':'<span class="note">尚未选择</span>';
+  const rm=zEditId==null?' <a href="javascript:void(0)" onclick="zDelSrc()" style="color:var(--red);margin-left:4px">✕</a>':'';
+  el.innerHTML=zCurSources.length?'<span style="display:inline-flex;align-items:center;gap:6px;background:#F3F7FC;border:1px solid var(--line);border-radius:4px;padding:4px 10px;font-size:12px;color:var(--ink)">'+zCurSources[0].sourceName+' · <span class="mono">'+zCurSources[0].sourceCode+'</span> '+zCurSources[0].sourceIndexName+rm+'</span>':'<span class="note">尚未选择</span>';
 }
 function zSyncCurrencyRow(){
   const show=document.querySelector('input[name="zForeign"]:checked').value==="是";
@@ -1325,26 +1326,32 @@ function zSyncFcState(){
   const own=document.querySelector('input[name="zOwn"]:checked').value;
   const manual=own==="是";
   const has=zCurSources.length>0;
+  const editing=zEditId!=null;
   const codeEl=document.getElementById("zFormCode"),nameEl=document.getElementById("zFormName");
-  codeEl.readOnly=!manual||zEditId!=null;
+  document.querySelectorAll('input[name="zOwn"]').forEach(r=>r.disabled=editing);
+  codeEl.readOnly=!manual||editing;
   nameEl.readOnly=!manual;
-  document.getElementById("zCodeNote").textContent=manual?"须与基准行情库的 Wind 代码一致；保存后不可修改":"由所选数据源指数自动反显，不可修改";
-  document.getElementById("zNameNote").textContent=manual?"名称含「存款」「利率」字样时，类型自动识别为「利率」（可手动调整）":"由所选数据源指数自动反显，不可修改";
-  if(!manual&&has){const s=zCurSources[0];
+  document.getElementById("zCodeNote").textContent=editing?"指数编码为唯一键，编辑时不可修改":(manual?"须与基准行情库的 Wind 代码一致；保存后不可修改":"由所选数据源指数自动反显，不可修改");
+  document.getElementById("zNameNote").textContent=editing?(manual?"编辑时可修改指数名称":"编辑时仅可修改指数说明，指数名称不可修改"):(manual?"名称含「存款」「利率」字样时，类型自动识别为「利率」（可手动调整）":"由所选数据源指数自动反显，不可修改");
+  if(!editing&&!manual&&has){const s=zCurSources[0];
     codeEl.value=s.code;nameEl.value=s.name;
     document.querySelector('input[name="zForeign"][value="'+s.foreign+'"]').checked=true;
     document.getElementById("zFormCurrency").value=s.currency;
     document.querySelector('input[name="zType"][value="'+(s.type||"指数")+'"]').checked=true;}
   document.querySelectorAll('input[name="zForeign"]').forEach(r=>r.disabled=!manual);
   document.getElementById("zFormCurrency").disabled=!manual;
-  document.getElementById("zFcTip").textContent=manual?"外盘指数按原币行情维护，须指定计价币种":(has?"已按所选数据源指数自动反显，不可修改":"选择数据源后自动反显，不可修改");
+  document.getElementById("zSrcPickBtn").disabled=editing;
+  document.getElementById("zOwnNote").textContent=editing?"编辑时不可修改是否自有指数":"先选择是否为自有指数：选「否」经数据源选取指数代码后自动反显；选「是」手工维护，无需数据源";
+  document.getElementById("zSrcPickNote").textContent=editing?"编辑时数据来源不可修改":"先选择数据源、再选择具体指数代码；确认后自动反显指数编码、指数名称、是否外盘指数、计价币种与类型（类型可编辑）";
+  document.getElementById("zFcTip").textContent=editing?(manual?"编辑时可修改是否外盘指数与计价币种":"编辑时仅可修改指数说明"):(manual?"外盘指数按原币行情维护，须指定计价币种":(has?"已按所选数据源指数自动反显，不可修改":"选择数据源后自动反显，不可修改"));
   zSyncCurrencyRow();
 }
 function zSyncTypeState(){
   const manual=document.querySelector('input[name="zOwn"]:checked').value==="是";
   const has=zCurSources.length>0;
-  document.querySelectorAll('input[name="zType"]').forEach(r=>r.disabled=false);
-  document.getElementById("zTypeTip").textContent=manual?"自有指数可选「指数」或「利率」":(has?"按所选数据源指数自动反显，可手动调整":"选择数据源后自动反显，可手动调整");
+  const editing=zEditId!=null;
+  document.querySelectorAll('input[name="zType"]').forEach(r=>r.disabled=editing&&!manual);
+  document.getElementById("zTypeTip").textContent=editing?(manual?"编辑时可调整类型":"编辑时仅可修改指数说明，类型不可调整"):(manual?"自有指数可选「指数」或「利率」":(has?"按所选数据源指数自动反显，可手动调整":"选择数据源后自动反显，可手动调整"));
 }
 function zToggleOwn(){
   const srcMode=document.querySelector('input[name="zOwn"]:checked').value==="否";
