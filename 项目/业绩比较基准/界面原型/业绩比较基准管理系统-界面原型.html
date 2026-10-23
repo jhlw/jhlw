@@ -173,7 +173,7 @@ button{font-family:inherit;cursor:pointer}
     <a href="#s3m" data-s="s3m" class="sub"><span class="ic">✎</span>基准行情维护</a>
   </nav>
   <div class="side-foot">
-    界面原型 · 示例数据<br>依据《业务解决方案 v2.4》<br>建信基金（产品代码源自生产工作簿，其余标注"示例"）
+    界面原型 · 示例数据<br>依据《业务解决方案 v2.5》<br>建信基金（产品代码源自生产工作簿，其余标注"示例"）
   </div>
 </aside>
 <!-- ================= 主区 ================= -->
@@ -181,24 +181,24 @@ button{font-family:inherit;cursor:pointer}
   <header class="topbar">
     <span class="crumb" id="crumb">业绩基准及净值增长率查询</span>
     <span class="right">
-      <span>创新部 · 李工</span><span class="avatar">李</span>
+      <span>投资风险部 · 李工</span><span class="avatar">李</span>
     </span>
   </header>
   <main class="content">
 <!-- ============ S1 业绩基准及净值增长率查询（参照 jizhundianwei.html 设计） ============ -->
 <section class="screen on" id="s1">
   <div class="panel">
-    <div class="ph"><h3>业绩基准及净值增长率查询</h3><span class="sub">基准自算结果与净值增长率（估值系统透传）· 组合基准逐日点位与收益率 · 数据范围为今日及历史数据（今日批次＋全量历史序列）· 默认按净值日期倒序</span>
+    <div class="ph"><h3>业绩基准及净值增长率查询</h3><span class="sub">基准自算结果与净值增长率（估值系统透传）· 组合基准逐日收益率 · 数据范围为今日及历史数据（今日批次＋全量历史序列）· 默认按净值日期倒序</span>
       <span class="ops"><span class="note" id="bqNote"></span><button class="btn" id="bqExportBtn" onclick="bqExport()">导出数据</button></span></div>
     <div class="qry">
       <label>基金代码<input id="bqFund" placeholder="例如：530003" style="width:150px"></label>
       <label>开始日期<input type="date" id="bqStart" value="2026-10-08"></label>
       <label>结束日期<input type="date" id="bqEnd" value="2026-10-14"></label>
       <button class="btn pri" onclick="bqQuery()">查询</button><button class="btn" onclick="bqReset()">重置</button>
-      <span class="note" style="margin-left:auto">基金代码精确匹配；累计净值增长率＝自合同成立日起每日 1+净值增长率 连乘后减 1（净值增长率以估值系统输出为准，透传不重算）；基准累计增长率＝自合同成立日起累计（指数成分按 1+日收益率连乘、利率成分按分段日收益率累加，再按权重线性加权；起始日期为合同成立日，终止日期为净值日期当日）；每日超额＝净值收益率−基准收益率</span>
+      <span class="note" style="margin-left:auto">基金代码精确匹配；累计净值增长率＝自合同成立日起每日 1+净值增长率 连乘后减 1（净值增长率以估值系统输出为准，透传不重算）；基准累计增长率＝自合同成立日起每日 1+R 连乘后减 1（R 为当日加权合成日收益率，利率成分同样经合成日收益参与连乘；起始日期为合同成立日，终止日期为净值日期当日）；每日超额＝净值收益率−基准收益率</span>
     </div>
     <div class="pb flush"><table class="tbl" id="bqTbl">
-      <tr><th class="ctr" style="width:34px"><input type="checkbox" id="bqCkAll" title="全选"></th><th>基金代码</th><th>基金名称</th><th class="ctr" style="width:56px">份额</th><th class="mono" id="bqDateTh">净值日期 <button class="sortbtn" title="切换升序/倒序">↓</button></th><th class="num">基准点位</th><th class="num">1+净值增长率</th><th class="num">1+基准收益率</th><th class="num">累计净值增长率</th><th class="num">基准累计增长率</th><th class="num">每日超额</th><th class="num">净值收益率</th><th class="num">基准收益率</th><th class="ctr">计算状态</th></tr>
+      <tr><th class="ctr" style="width:34px"><input type="checkbox" id="bqCkAll" title="全选"></th><th>基金代码</th><th>基金名称</th><th class="ctr" style="width:56px">份额</th><th class="mono" id="bqDateTh">净值日期 <button class="sortbtn" title="切换升序/倒序">↓</button></th><th class="num">1+净值增长率</th><th class="num">1+基准收益率</th><th class="num">累计净值增长率</th><th class="num">基准累计增长率</th><th class="num">每日超额</th><th class="num">净值收益率</th><th class="num">基准收益率</th><th class="ctr">计算状态</th></tr>
       <tbody id="bqBody"></tbody>
     </table>
     <div id="bqEmpty" style="display:none;padding:36px;text-align:center;color:var(--ink3)">暂无查询结果，请调整查询条件后重试</div>
@@ -209,13 +209,13 @@ button{font-family:inherit;cursor:pointer}
       <button class="btn sm pprev" id="bqPrev" disabled>上一页</button><button class="btn sm pnext" id="bqNext">下一页</button>
       <span class="pnote">数据较多时建议缩小日期范围或按基金代码过滤 · 点击表头「净值日期」可切换排序方向</span>
     </div>
-    <div class="note" style="padding:9px 16px;border-top:1px solid var(--line2)">组合基准点位由成分基准按合同权重逐日合成（每日再平衡）；含外币成分的基金按估值日人民银行中间价折算（折算仅在计算层执行，明细不单列汇率）。指数收益率按日环比（1+r）口径展示；1+净值增长率与累计净值增长率以估值系统输出为准（透传不重算）；基准累计增长率＝自合同成立日起累计（指数成分连乘、利率成分按分段收益率累加，再按权重线性加权，终止日期为净值日期当日，见下方「计算口径速览」）；每日超额＝净值收益率−基准收益率。基准收益率缺失（计算异常）的基金整行标红并置顶，计算状态显示「异常」，异常日及其后的基准累计增长率、每日超额不输出（显示「—」），净值增长率各列不受影响照常展示。查询结果默认按净值日期倒序。导出规则：勾选行则仅导出勾选项，未勾选则按当前查询结果导出。</div>
-    <details style="padding:9px 16px;border-top:1px solid var(--line2)"><summary style="cursor:pointer;font-size:12px;color:var(--blue);font-weight:600">计算口径速览（依据《业务解决方案》§5 计算公式）</summary>
+    <div class="note" style="padding:9px 16px;border-top:1px solid var(--line2)">组合基准日收益率由成分基准按合同权重逐日加权合成（每日再平衡）；含外币成分的基金按估值日人民银行中间价折算（折算仅在计算层执行，明细不单列汇率）。指数收益率按日环比（1+r）口径展示；1+净值增长率与累计净值增长率以估值系统输出为准（透传不重算）；基准累计增长率＝自合同成立日起每日 1+R 连乘后减 1（R 为当日合成日收益率，利率成分参与连乘；终止日期为净值日期当日，见下方「计算口径速览」）；每日超额＝净值收益率−基准收益率。基准收益率缺失（计算异常）的基金整行标红并置顶，计算状态显示「异常」，异常日及其后的基准累计增长率、每日超额不输出（显示「—」），净值增长率各列不受影响照常展示。查询结果默认按净值日期倒序。导出规则：勾选行则仅导出勾选项，未勾选则按当前查询结果导出。</div>
+    <details style="padding:9px 16px;border-top:1px solid var(--line2)"><summary style="cursor:pointer;font-size:12px;color:var(--blue);font-weight:600">计算口径速览（依据《业务解决方案》§4 计算公式）</summary>
       <div class="note" style="padding-top:6px;line-height:2">
         <b>净值增长率（估值系统透传）</b>：1+净值增长率＝1＋当日净值增长率；累计净值增长率＝自合同成立日起每日 1+净值增长率 连乘后减 1；每日超额ₜ = 净值收益率ₜ − 基准收益率ₜ（基准计算异常时该日超额显示「—」）。<br>
         <b>每日 1+基准收益率</b>：指数类 1+rₜ = Indexₜ / Indexₜ₋₁（外盘指数按原币行情，计算时先经汇率折算）；利率类按天数基准分时点切换——2026-07-01 前（至 06-30）1+rₜ = 1 + y′ₜ/360 × (dₜ − dₜ₋₁)，2026-07-01 起（含当日）1+rₜ = 1 + y′ₜ/365 × (dₜ − dₜ₋₁)；配置调整点的成分 y′ₜ = yₜ ± 调整点（百分数）。<br>
         <b>组合基准日收益（每日再平衡）</b>：rᵇ(组合)ₜ = Σᵢ wᵢ × rᵢₜ（wᵢ 为合同固定权重，逐日以原权重加权；各成分权重合计须为 100%）。<br>
-        <b>基准累计增长率（基点＝合同成立日，自基点日次一净值披露日起累计、含期末日）</b>：指数成分 ∏(1+r_idx,d) − 1、利率成分 Σ r_r,d，线性加权 W_idx×[∏(1+r_idx,d)−1] + W_r×Σ r_r,d；跨基准版本与跨天数基准切换自然链接，无需特殊处理。<br>
+        <b>基准累计增长率（基点＝合同成立日，自基点日次一净值披露日起累计、含期末日）</b>：按当日合成日收益率 R_d＝Σw_i×r_i,d 逐日连乘 ∏(1+R_d) − 1（利率成分经合成日收益参与连乘，口径见文档 §4.2.2）；跨基准版本与跨天数基准切换自然链接，无需特殊处理。<br>
         <b>外币折算（人民银行中间价、直接汇率）</b>：经汇率调整指数ₜ = Indexₜ × FXₜ，1+rₜ = (Indexₜ × FXₜ) / (Indexₜ₋₁ × FXₜ₋₁)。<br>
         <b>精度</b>：接口全精度、中间结果 8 位小数；展示层非货币类基金 4 位小数、货币类基金 6 位小数。
       </div>
@@ -280,7 +280,7 @@ button{font-family:inherit;cursor:pointer}
         <span>第 <b class="mono pcur" id="zCur">1</b> / <span class="mono pall" id="zAll">1</span> 页</span>
         <button class="btn sm pprev" id="zPrev" disabled>上一页</button><button class="btn sm pnext" id="zNext">下一页</button>
       </div>
-      <div style="padding:9px 16px;border-top:1px solid var(--line2)" class="note">指数库为产品基准配置的成分基准主数据；外盘指数按原币存储，人民币折算仅在计算层按 §5.5 汇率折算口径执行；删除前请确认无在用配置引用。<b>编辑规则：非自有指数仅可修改指数说明；自有指数除指数编码、是否自有指数外均可修改。</b></div>
+      <div style="padding:9px 16px;border-top:1px solid var(--line2)" class="note">指数库为产品基准配置的成分基准主数据；外盘指数按原币存储，人民币折算仅在计算层按 §4.2.2 汇率折算口径执行；删除前请确认无在用配置引用。<b>编辑规则：非自有指数仅可修改指数说明；自有指数除指数编码、是否自有指数外均可修改。</b></div>
     </div>
   </div>
 </section>
@@ -322,7 +322,7 @@ button{font-family:inherit;cursor:pointer}
         <button class="btn sm pprev" disabled>上一页</button><button class="btn sm pnext">下一页</button>
         <span class="pnote">原型演示：分页仅联动指示器</span>
       </div>
-      <div style="padding:8px 16px" class="note">外币指数（如恒生指数）按<b>原币存储</b>，点位为原币行情；<b>折原币点位＝点位 × 当日汇率</b>（人民银行中间价、直接汇率、取行情日期当日），仅供查询展示与追溯，存储与日收益计算仍按 §5.4 汇率折算口径执行；当日汇率缺失时折原币点位显示「—」并告警＋人工补录；人民币指数不涉及折算，两列均显示「—」。查询结果默认按日期倒序。</div>
+      <div style="padding:8px 16px" class="note">外币指数（如恒生指数）按<b>原币存储</b>，点位为原币行情；<b>折原币点位＝点位 × 当日汇率</b>（人民银行中间价、直接汇率、取行情日期当日），仅供查询展示与追溯，存储与日收益计算仍按 §4.2.2 汇率折算口径执行；当日汇率缺失时折原币点位显示「—」并告警＋人工补录；人民币指数不涉及折算，两列均显示「—」。查询结果默认按日期倒序。</div>
     </div>
     <div class="tabpane" id="t32">
       <div style="padding:10px 16px 0"><span class="banner info" style="margin:0"><span>ℹ</span><div>天数基准分时点切换（Q16 定稿）：<b>2026-07-01 前（至 06-30）ACT/360，2026-07-01 起（含当日）ACT/365</b>；利率按「生效起止＋适用利率」分段记录，历史区间按当时适用利率计提。</div></span></div>
@@ -543,8 +543,8 @@ button{font-family:inherit;cursor:pointer}
     </div>
     <div class="mb">
       <div class="procinfo">
-        <span>创建人：<b>李工</b></span><span>归属部门：<b>创新部</b></span>
-        <span>前序任务处理人：<b>李工（经办）</b></span><span>审核处理人：<b>创新部主管（张主管）</b></span>
+        <span>创建人：<b>李工</b></span><span>归属部门：<b>投资风险部</b></span>
+        <span>前序任务处理人：<b>李工（经办）</b></span><span>审核处理人：<b>投资风险部负责人</b></span>
         <span>流程创建时间：<b class="mono" id="idxCreateTime">—</b></span><span>任务到达时间：<b class="mono" id="idxTaskTime">—</b></span>
       </div>
       <div class="flow" style="margin:14px 0 12px">
@@ -581,8 +581,8 @@ button{font-family:inherit;cursor:pointer}
     </div>
     <div class="mb">
       <div class="procinfo">
-        <span>创建人：<b>李工</b></span><span>归属部门：<b>创新部</b></span>
-        <span>前序任务处理人：<b>李工（经办）</b></span><span>审核处理人：<b>创新部主管（张主管）</b></span>
+        <span>创建人：<b>李工</b></span><span>归属部门：<b>投资风险部</b></span>
+        <span>前序任务处理人：<b>李工（经办）</b></span><span>审核处理人：<b>投资风险部负责人</b></span>
         <span>流程创建时间：<b class="mono" id="rateCreateTime">—</b></span><span>任务到达时间：<b class="mono" id="rateTaskTime">—</b></span>
       </div>
       <div class="flow" style="margin:14px 0 12px">
@@ -619,8 +619,8 @@ button{font-family:inherit;cursor:pointer}
     </div>
     <div class="mb">
       <div class="procinfo">
-        <span>创建人：<b>李工</b></span><span>归属部门：<b>创新部</b></span>
-        <span>前序任务处理人：<b>李工（经办）</b></span><span>审核处理人：<b>创新部主管（张主管）</b></span>
+        <span>创建人：<b>李工</b></span><span>归属部门：<b>投资风险部</b></span>
+        <span>前序任务处理人：<b>李工（经办）</b></span><span>审核处理人：<b>投资风险部负责人</b></span>
         <span>流程创建时间：<b class="mono" id="fxCreateTime">—</b></span><span>任务到达时间：<b class="mono" id="fxTaskTime">—</b></span>
       </div>
       <div class="flow" style="margin:14px 0 12px">
@@ -1260,7 +1260,7 @@ const ZDATA=[
  {id:10,code:"SX5E.GR",name:"欧洲斯托克50",own:"否",type:"指数",foreign:"是",currency:"EUR",creator:"王工",createTime:"2026-08-07 16:10",desc:"欧元区50家核心蓝筹企业，覆盖欧洲主流行业龙头。",sources:[{id:8,sourceName:"彭博资讯",sourceCode:"BLOOM002",sourceIndexName:"欧洲斯托克50",foreign:"是",currency:"EUR"}]},
  {id:11,code:"M0004279",name:"金融机构人民币活期存款利率",own:"否",type:"利率",foreign:"否",currency:"CNY",creator:"李工",createTime:"2026-09-10 10:05",desc:"中国人民银行公布的金融机构人民币活期存款基准利率，用于现金管理类产品基准。",sources:[{id:11,sourceName:"万得资讯",sourceCode:"WIND004",sourceIndexName:"金融机构人民币活期存款利率",foreign:"否",currency:"CNY"}]},
  {id:12,code:"M0004280",name:"一年期定期存款利率",own:"否",type:"利率",foreign:"否",currency:"CNY",creator:"张主管",createTime:"2026-09-10 10:08",desc:"中国人民银行公布的一年期定期存款基准利率，常作为保本型/稳健型产品业绩基准。",sources:[{id:12,sourceName:"万得资讯",sourceCode:"WIND005",sourceIndexName:"一年期定期存款利率",foreign:"否",currency:"CNY"}]},
- {id:13,code:"JX-CUST-01",name:"建信自有综合收益指数",own:"是",type:"指数",foreign:"否",currency:"CNY",creator:"王工",createTime:"2026-09-20 15:40",desc:"公司内部自行编制的综合收益指数，行情由创新部手工维护，无外部数据来源。",sources:[]}
+ {id:13,code:"JX-CUST-01",name:"建信自有综合收益指数",own:"是",type:"指数",foreign:"否",currency:"CNY",creator:"王工",createTime:"2026-09-20 15:40",desc:"公司内部自行编制的综合收益指数，行情由投资风险部手工维护，无外部数据来源。",sources:[]}
 ];
 const ZSRC=[
  {id:1,sourceName:"万得资讯",sourceCode:"WIND001",sourceIndexName:"沪深300指数",code:"000300.CSI",name:"沪深300",type:"指数",foreign:"否",currency:"CNY"},
@@ -1490,26 +1490,24 @@ zRender();
 /* ================= 业绩基准及净值增长率查询（参照 jizhundianwei.html 设计 · 分页＋日期倒序） ================= */
 const BQDAYS=["2026-10-14","2026-10-13","2026-10-11","2026-10-10","2026-10-09","2026-10-08","2026-10-07"];
 const BQFUNDS=[
- {fund:"530003",name:"建信优选成长混合A",share:"A",pt0:5259.3188,est:"2026-10-07"},
- {fund:"530001",name:"建信恒久价值混合",share:"",pt0:4353.0912,est:"2026-10-08"},
- {fund:"007830",name:"建信荣瑞一年定开混合",share:"",pt0:1678.6552,est:"2026-10-09"},
- {fund:"026663",name:"建信资源严选股票发起C",share:"C",pt0:2915.7282,est:"2026-10-07"},
- {fund:"020932",name:"建信沪港深价值混合A（示例）",share:"A",pt0:2572.8066,est:"2026-10-10"}
+ {fund:"530003",name:"建信优选成长混合A",share:"A",est:"2026-10-07"},
+ {fund:"530001",name:"建信恒久价值混合",share:"",est:"2026-10-08"},
+ {fund:"007830",name:"建信荣瑞一年定开混合",share:"",est:"2026-10-09"},
+ {fund:"026663",name:"建信资源严选股票发起C",share:"C",est:"2026-10-07"},
+ {fund:"020932",name:"建信沪港深价值混合A（示例）",share:"A",est:"2026-10-10"}
 ];
 const BQDATA=[];
 BQFUNDS.forEach((f,fi)=>{
-  let pt=f.pt0;
   BQDAYS.forEach((d,di)=>{
     if(d<f.est)return; // 合同成立日（含）之前无数据
     const s=Math.sin((fi+1)*13.37+di*7.77);
     const ret=+(s*0.007+0.0003*Math.cos(fi+di)).toFixed(6);              // 基准收益率（演示合成）
     const nret=+(Math.cos((fi+1)*7.77+di*3.14)*0.006+0.0004).toFixed(6); // 净值收益率（估值系统透传，演示合成）
     const err0=f.fund==="020932"&&d==="2026-10-14";
-    BQDATA.push({fund:f.fund,name:f.name,share:f.share,date:d,point:+pt.toFixed(4),ret:err0?null:ret,nret,recalc:err0?"异常":(f.fund==="026663"&&d==="2026-10-14")?"已重算 R1":"正常"});
-    pt=pt/(1+ret);
+    BQDATA.push({fund:f.fund,name:f.name,share:f.share,date:d,ret:err0?null:ret,nret,recalc:err0?"异常":(f.fund==="026663"&&d==="2026-10-14")?"已重算 R1":"正常"});
   });
 });
-// 基准累计增长率＝自合同成立日起累计（文档口径 §5.2.2/§5.2.3：指数成分连乘 ∏(1+r)−1、利率成分分段单利累加 Σr，再按权重线性加权）；异常日链路断裂，该日及之后为 null；演示数据为合成日收益简化连乘
+// 基准累计增长率＝自合同成立日起按当日合成日收益率逐日连乘 ∏(1+R)−1（文档口径 §4.2.2：利率成分经合成日收益参与连乘）；异常日链路断裂，该日及之后为 null；演示数据为合成日收益简化连乘
 (function(){const acc={};
   BQDATA.slice().sort((a,b)=>a.date.localeCompare(b.date)).forEach(r=>{
     if(!(r.fund in acc))acc[r.fund]=1;
@@ -1554,7 +1552,7 @@ function bqPaint(){
     const retCell=err?dash:pct(r.ret),cumCell=r.cum==null?dash:pct(r.cum);
     const excCell=err?dash:pct(r.nret-r.ret); // 每日超额＝净值收益率−基准收益率
     const st=err?'<span class="tag err">异常</span>':(r.recalc==="正常"?'<span class="tag ok">正常</span>':'<span class="tag warn">'+r.recalc+'</span>');
-    return '<tr'+(err?' class="errrow"':'')+'><td class="ctr"><input type="checkbox" class="bqCk" data-k="'+key+'"'+(bqChecked.has(key)?" checked":"")+' aria-label="选择 '+r.fund+' '+r.date+'"></td><td class="mono"'+fs+'>'+r.fund+'</td><td'+fs+'>'+r.name+'</td><td class="ctr">'+(r.share||"—")+'</td><td class="mono">'+r.date+'</td><td class="num">'+r.point.toFixed(4)+'</td><td class="num">'+(1+r.nret).toFixed(8)+'</td><td class="num">'+(err?"—":(1+r.ret).toFixed(8))+'</td>'+pct(r.ncum)+cumCell+excCell+pct(r.nret)+retCell+'<td class="ctr">'+st+'</td></tr>';
+    return '<tr'+(err?' class="errrow"':'')+'><td class="ctr"><input type="checkbox" class="bqCk" data-k="'+key+'"'+(bqChecked.has(key)?" checked":"")+' aria-label="选择 '+r.fund+' '+r.date+'"></td><td class="mono"'+fs+'>'+r.fund+'</td><td'+fs+'>'+r.name+'</td><td class="ctr">'+(r.share||"—")+'</td><td class="mono">'+r.date+'</td><td class="num">'+(1+r.nret).toFixed(8)+'</td><td class="num">'+(err?"—":(1+r.ret).toFixed(8))+'</td>'+pct(r.ncum)+cumCell+excCell+pct(r.nret)+retCell+'<td class="ctr">'+st+'</td></tr>';
   }).join("");
   document.getElementById("bqEmpty").style.display=bqLast.length?"none":"";
   document.getElementById("bqTotal").textContent=bqLast.length;
