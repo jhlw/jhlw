@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>指数收盘点位维护（发起→审核） — Wireframe</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'Segoe UI','Microsoft YaHei',sans-serif;background:#e0e0e0;display:flex;justify-content:center;padding:16px 0}
+.wf-screen{width:1280px;min-height:760px;background:#f5f5f5;border:2px dashed #ccc;display:flex}
+.wf-sidebar{width:210px;background:#e8e8e8;border-right:1px dashed #ccc;padding:10px;display:flex;flex-direction:column}
+.wf-brand{font-weight:600;color:#444;font-size:13px;padding:6px 4px 10px;border-bottom:1px dashed #ccc}
+.wf-nav-group{font-size:10px;color:#888;margin:10px 4px 2px}
+.wf-nav-item{font-size:12px;color:#555;padding:7px 8px;text-decoration:none}
+.wf-nav-item.on{font-weight:600;color:#333}
+.wf-main{flex:1;display:flex;flex-direction:column;position:relative}
+.wf-header{background:#e8e8e8;border-bottom:1px dashed #ccc;padding:10px 16px;font-size:15px;font-weight:600;color:#444}
+.wf-content{flex:1;padding:14px;display:flex;flex-direction:column;gap:12px}
+.wf-ghost{background:#fff;border:1px dashed #ddd;border-radius:4px;flex:1;opacity:.5;display:flex;align-items:center;justify-content:center;color:#aaa;font-size:12px}
+.wf-modal-mask{position:absolute;inset:0;background:rgba(0,0,0,.22);display:flex;align-items:flex-start;justify-content:center;padding:24px 12px}
+.wf-modal{background:#f7f7f7;border:2px dashed #999;border-radius:6px;width:880px;display:flex;flex-direction:column}
+.wf-modal-head{padding:10px 14px;background:#e8e8e8;border-bottom:1px dashed #ccc;font-weight:600;color:#444;font-size:14px;display:flex;gap:8px;align-items:center}
+.wf-tabs{display:flex;gap:6px;margin-left:auto}
+.wf-tab{padding:5px 14px;border:1px dashed #999;border-radius:4px;font-size:12px;color:#666;background:#fff}
+.wf-tab.on{background:#ccc;font-weight:600;color:#333}
+.wf-modal-body{padding:14px;display:flex;flex-direction:column;gap:12px}
+.wf-form-row{display:flex;gap:10px;align-items:center}
+.wf-label{width:90px;font-size:12px;color:#555;text-align:right}
+.wf-input{border:1px dashed #ccc;background:#fff;padding:6px 10px;font-size:12px;color:#999;border-radius:4px}
+.wf-table{width:100%;border-collapse:collapse;font-size:12px;background:#fff}
+.wf-table th,.wf-table td{border:1px dashed #ccc;padding:6px 8px;color:#666;text-align:left}
+.wf-table th{background:#ececec;color:#444}
+.wf-note{font-size:11px;color:#777;background:#fafafa;border:1px dashed #ddd;padding:6px 8px;border-radius:4px}
+.wf-panel-title{font-size:12px;font-weight:600;color:#444;border-left:3px solid #999;padding-left:8px}
+.wf-button{background:#ccc;border:1px dashed #999;padding:7px 18px;font-size:13px;font-weight:600;color:#444;border-radius:4px;text-align:center;white-space:nowrap}
+.wf-button-secondary{background:#fff;border:1px dashed #999;padding:7px 18px;font-size:13px;color:#666;border-radius:4px;text-align:center;white-space:nowrap}
+.wf-footer{font-size:10px;color:#aaa;text-align:center;padding:7px;border-top:1px dashed #ddd}
+a.wf-link{color:inherit;text-decoration:none;display:block}
+a.wf-link:hover{opacity:.6}
+</style>
+</head>
+<body>
+<div class="wf-screen">
+  <div class="wf-sidebar">
+    <div class="wf-brand">业绩比较基准管理系统</div>
+    <div class="wf-nav-group">基准行情库</div>
+    <a class="wf-link" href="s3m-quote-maint.html"><span class="wf-nav-item on">基准行情维护</span></a>
+  </div>
+  <div class="wf-main">
+    <div class="wf-header">基准行情维护</div>
+    <div class="wf-content"><div class="wf-ghost">（维护入口卡片 · 弹层之下略）</div></div>
+    <div class="wf-modal-mask">
+      <div class="wf-modal">
+        <div class="wf-modal-head">指数收盘点位维护
+          <div class="wf-tabs">
+            <a class="wf-link" href="#initPanel"><div class="wf-tab on">① 发起面板</div></a>
+            <a class="wf-link" href="#auditPanel"><div class="wf-tab">② 审核面板</div></a>
+          </div>
+        </div>
+        <div class="wf-modal-body">
+          <div id="initPanel" class="wf-panel-title">面板① 发起 — 逐行添加</div>
+          <table class="wf-table">
+            <tr><th>指数编码（Wind）</th><th>日期</th><th>收盘点位</th><th>操作</th></tr>
+            <tr><td>000852.SH</td><td>2026-10-26</td><td>3,142.66</td><td>删除行</td></tr>
+            <tr><td>000852.SH</td><td>2026-10-27</td><td>（待录入）</td><td>删除行</td></tr>
+            <tr><td>CBA00201.CS</td><td>2026-10-26</td><td>247.18</td><td>删除行</td></tr>
+          </table>
+          <div class="wf-form-row">
+            <div class="wf-button-secondary">＋ 添加行</div>
+            <a class="wf-link" href="modal-batch-import.html"><div class="wf-button-secondary">批量导入</div></a>
+            <span class="wf-label" style="margin-left:auto">紧急程度</span>
+            <input class="wf-input" value="普通 ▾ / 紧急" readonly style="width:140px">
+          </div>
+          <div class="wf-note">提交发起后进入审核队列；紧急批次优先提醒审核。</div>
+          <div style="display:flex;gap:8px;justify-content:flex-end">
+            <a class="wf-link" href="#auditPanel"><div class="wf-button">提交发起</div></a>
+            <a class="wf-link" href="s3m-quote-maint.html"><div class="wf-button-secondary">取消</div></a>
+          </div>
+          <hr style="border-top:1px dashed #ccc;margin:4px 0">
+          <div id="auditPanel" class="wf-panel-title">面板② 审核 — 批次快照</div>
+          <div class="wf-note">批次 Q-20261026-01 · 收盘点位 · 25 行 · 紧急程度：普通 · 发起：2026-10-26 09:12（经办）</div>
+          <div style="display:flex;gap:8px;justify-content:flex-end">
+            <a class="wf-link" href="#initPanel"><div class="wf-button-secondary">退回修改</div></a>
+            <a class="wf-link" href="s3m-quote-maint.html"><div class="wf-button">审核通过（入库）</div></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="wf-footer">弹层 指数收盘点位维护（双面板） — UC-007（父屏 s3m）</div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>删除指数确认 — Wireframe</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'Segoe UI','Microsoft YaHei',sans-serif;background:#e0e0e0;display:flex;justify-content:center;padding:16px 0}
+.wf-screen{width:1280px;min-height:760px;background:#f5f5f5;border:2px dashed #ccc;display:flex}
+.wf-sidebar{width:210px;background:#e8e8e8;border-right:1px dashed #ccc;padding:10px;display:flex;flex-direction:column}
+.wf-brand{font-weight:600;color:#444;font-size:13px;padding:6px 4px 10px;border-bottom:1px dashed #ccc}
+.wf-nav-group{font-size:10px;color:#888;margin:10px 4px 2px}
+.wf-nav-item{font-size:12px;color:#555;padding:7px 8px;text-decoration:none}
+.wf-nav-item.on{font-weight:600;color:#333}
+.wf-main{flex:1;display:flex;flex-direction:column;position:relative}
+.wf-header{background:#e8e8e8;border-bottom:1px dashed #ccc;padding:10px 16px;font-size:15px;font-weight:600;color:#444}
+.wf-content{flex:1;padding:14px;display:flex;flex-direction:column;gap:12px}
+.wf-ghost{background:#fff;border:1px dashed #ddd;border-radius:4px;flex:1;opacity:.5;display:flex;align-items:center;justify-content:center;color:#aaa;font-size:12px}
+.wf-modal-mask{position:absolute;inset:0;background:rgba(0,0,0,.22);display:flex;align-items:flex-start;justify-content:center;padding:80px 12px}
+.wf-modal{background:#f7f7f7;border:2px dashed #999;border-radius:6px;width:520px;display:flex;flex-direction:column}
+.wf-modal-head{padding:10px 14px;background:#e8e8e8;border-bottom:1px dashed #ccc;font-weight:600;color:#444;font-size:14px}
+.wf-modal-body{padding:18px 16px;font-size:13px;color:#555;display:flex;flex-direction:column;gap:10px}
+.wf-warn{font-size:12px;color:#a33;background:#fbeaea;border:1px dashed #d99;padding:8px;border-radius:4px}
+.wf-modal-foot{padding:10px 14px;border-top:1px dashed #ccc;display:flex;gap:8px;justify-content:flex-end}
+.wf-button{background:#ccc;border:1px dashed #999;padding:7px 18px;font-size:13px;font-weight:600;color:#444;border-radius:4px;text-align:center;white-space:nowrap}
+.wf-button-danger{background:#e5cfcf;border:1px dashed #a66;padding:7px 18px;font-size:13px;font-weight:600;color:#611;border-radius:4px;text-align:center;white-space:nowrap}
+.wf-button-secondary{background:#fff;border:1px dashed #999;padding:7px 18px;font-size:13px;color:#666;border-radius:4px;text-align:center;white-space:nowrap}
+.wf-footer{font-size:10px;color:#aaa;text-align:center;padding:7px;border-top:1px dashed #ddd}
+a.wf-link{color:inherit;text-decoration:none;display:block}
+a.wf-link:hover{opacity:.6}
+</style>
+</head>
+<body>
+<div class="wf-screen">
+  <div class="wf-sidebar">
+    <div class="wf-brand">业绩比较基准管理系统</div>
+    <div class="wf-nav-group">数据与配置</div>
+    <a class="wf-link" href="s2i-index-library.html"><span class="wf-nav-item on">指数库维护</span></a>
+  </div>
+  <div class="wf-main">
+    <div class="wf-header">指数库维护</div>
+    <div class="wf-content"><div class="wf-ghost">（指数列表 · 弹层之下略）</div></div>
+    <div class="wf-modal-mask">
+      <div class="wf-modal">
+        <div class="wf-modal-head">删除指数</div>
+        <div class="wf-modal-body">
+          <span>确认删除指数「中证2000（000852.SH）」？删除后不可在新配置中选用。</span>
+          <div class="wf-warn">⚠ 该指数已被 3 个产品基准配置引用（000270 v3、007830 v1、020932 v2），删除将导致相关配置成分失效，请先行处理。</div>
+        </div>
+        <div class="wf-modal-foot">
+          <a class="wf-link" href="s2i-index-library.html"><div class="wf-button-secondary">取消</div></a>
+          <a class="wf-link" href="s2i-index-library.html"><div class="wf-button-danger">确认删除</div></a>
+        </div>
+      </div>
+    </div>
+    <div class="wf-footer">弹层 删除指数确认 — UC-002（父屏 s2i 指数库维护）</div>
+  </div>
+</div>
+</body>
+</html>

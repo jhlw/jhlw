@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>产品基准配置管理 — Wireframe</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'Segoe UI','Microsoft YaHei',sans-serif;background:#e0e0e0;display:flex;justify-content:center;padding:16px 0}
+.wf-screen{width:1280px;min-height:760px;background:#f5f5f5;border:2px dashed #ccc;display:flex}
+.wf-sidebar{width:210px;background:#e8e8e8;border-right:1px dashed #ccc;padding:10px;display:flex;flex-direction:column}
+.wf-brand{font-weight:600;color:#444;font-size:13px;padding:6px 4px 10px;border-bottom:1px dashed #ccc}
+.wf-nav-group{font-size:10px;color:#888;margin:10px 4px 2px}
+.wf-nav-item{font-size:12px;color:#555;padding:7px 8px;text-decoration:none;border:1px dashed transparent;border-radius:4px}
+.wf-nav-item.on{background:#fff;border-color:#999;font-weight:600;color:#333}
+.wf-main{flex:1;display:flex;flex-direction:column;position:relative}
+.wf-header{background:#e8e8e8;border-bottom:1px dashed #ccc;padding:10px 16px;font-size:15px;font-weight:600;color:#444}
+.wf-content{flex:1;padding:14px;display:flex;flex-direction:column;gap:12px}
+.wf-panel{background:#fff;border:1px dashed #ccc;border-radius:4px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.wf-filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.wf-input{border:1px dashed #ccc;background:#fff;padding:7px 10px;font-size:12px;color:#999;border-radius:4px}
+.wf-button{background:#ccc;border:1px dashed #999;padding:7px 18px;font-size:13px;font-weight:600;color:#444;border-radius:4px;text-align:center}
+.wf-button-secondary{background:#fff;border:1px dashed #999;padding:7px 18px;font-size:13px;color:#666;border-radius:4px;text-align:center}
+.wf-table{width:100%;border-collapse:collapse;font-size:12px;background:#fff}
+.wf-table th,.wf-table td{border:1px dashed #ccc;padding:6px 8px;color:#666;text-align:left}
+.wf-table th{background:#ececec;color:#444}
+.wf-table .op{color:#333;font-weight:600;text-decoration:underline dashed #999}
+.wf-pager{display:flex;gap:6px;align-items:center;font-size:11px;color:#888}
+.wf-pager span{border:1px dashed #ccc;background:#fff;padding:2px 8px;border-radius:3px}
+.wf-note{font-size:11px;color:#777;background:#fafafa;border:1px dashed #ddd;padding:6px 8px;border-radius:4px}
+.wf-footer{font-size:10px;color:#aaa;text-align:center;padding:7px;border-top:1px dashed #ddd}
+a.wf-link{color:inherit;text-decoration:none;display:inline}
+a.wf-link:hover{opacity:.6}
+</style>
+</head>
+<body>
+<div class="wf-screen">
+  <div class="wf-sidebar">
+    <div class="wf-brand">业绩比较基准管理系统</div>
+    <div class="wf-nav-group">业绩查询</div>
+    <a class="wf-nav-item" href="s1-benchmark-query.html">业绩基准及净值增长率查询</a>
+    <div class="wf-nav-group">数据与配置</div>
+    <a class="wf-nav-item on" href="s2-config-mgmt.html">产品基准配置管理</a>
+    <a class="wf-nav-item" href="s2i-index-library.html">指数库维护</a>
+    <div class="wf-nav-group">基准行情库</div>
+    <a class="wf-nav-item" href="s3-quote-query.html">基准行情查询</a>
+    <a class="wf-nav-item" href="s3m-quote-maint.html">基准行情维护</a>
+  </div>
+  <div class="wf-main">
+    <div class="wf-header">产品基准配置管理</div>
+    <div class="wf-content">
+      <div class="wf-panel">
+        <div class="wf-filters">
+          <input class="wf-input" placeholder="产品代码/名称" readonly>
+          <div class="wf-button">查询</div>
+          <div class="wf-button-secondary">重置</div>
+          <a class="wf-link" href="modal-initiate-config.html"><div class="wf-button" style="margin-left:auto">＋ 发起基准配置</div></a>
+        </div>
+        <table class="wf-table">
+          <tr><th>产品代码</th><th>产品名称</th><th>当前版本</th><th>生效区间</th><th>权重合计</th><th>状态</th><th>操作</th></tr>
+          <tr><td>000270</td><td>建信灵活配置混合</td><td>v3</td><td>2019-10-11 ～ 至今</td><td>100.00%</td><td>有效</td>
+            <td><a class="wf-link" href="modal-config-detail.html"><span class="op">详情</span></a> ｜
+                <a class="wf-link" href="modal-initiate-config.html"><span class="op">修改</span></a> ｜
+                <a class="wf-link" href="modal-delete-config.html"><span class="op">删除</span></a></td></tr>
+          <tr><td>007830</td><td>××基金</td><td>v1</td><td>2022-03-01 ～ 至今</td><td>100.00%</td><td>有效</td>
+            <td><a class="wf-link" href="modal-config-detail.html"><span class="op">详情</span></a> ｜
+                <a class="wf-link" href="modal-initiate-config.html"><span class="op">修改</span></a> ｜
+                <a class="wf-link" href="modal-delete-config.html"><span class="op">删除</span></a></td></tr>
+          <tr><td>530001</td><td>××基金</td><td>v2</td><td>2024-06-14 ～ 至今</td><td>100.00%</td><td>待审核（v3 草稿）</td>
+            <td><a class="wf-link" href="modal-config-detail.html"><span class="op">详情</span></a></td></tr>
+        </table>
+        <div class="wf-pager"><span>‹</span><span>1</span><span>2</span><span>›</span><i>共 386 条 · 20 条/页</i></div>
+        <div class="wf-note">投资风险部维护 · 配置版本化（生效起止区间）· 修改/删除均走 发起→审核 双流程 · 变更触发历史追溯重算</div>
+      </div>
+    </div>
+    <div class="wf-footer">s2 产品基准配置管理 — UC-003 / UC-004 / UC-005</div>
+  </div>
+</div>
+</body>
+</html>

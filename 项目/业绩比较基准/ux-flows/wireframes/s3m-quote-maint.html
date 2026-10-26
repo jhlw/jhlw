@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>基准行情维护 — Wireframe</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'Segoe UI','Microsoft YaHei',sans-serif;background:#e0e0e0;display:flex;justify-content:center;padding:16px 0}
+.wf-screen{width:1280px;min-height:760px;background:#f5f5f5;border:2px dashed #ccc;display:flex}
+.wf-sidebar{width:210px;background:#e8e8e8;border-right:1px dashed #ccc;padding:10px;display:flex;flex-direction:column}
+.wf-brand{font-weight:600;color:#444;font-size:13px;padding:6px 4px 10px;border-bottom:1px dashed #ccc}
+.wf-nav-group{font-size:10px;color:#888;margin:10px 4px 2px}
+.wf-nav-item{font-size:12px;color:#555;padding:7px 8px;text-decoration:none;border:1px dashed transparent;border-radius:4px}
+.wf-nav-item.on{background:#fff;border-color:#999;font-weight:600;color:#333}
+.wf-main{flex:1;display:flex;flex-direction:column;position:relative}
+.wf-header{background:#e8e8e8;border-bottom:1px dashed #ccc;padding:10px 16px;font-size:15px;font-weight:600;color:#444}
+.wf-content{flex:1;padding:14px;display:flex;flex-direction:column;gap:12px}
+.wf-panel{background:#fff;border:1px dashed #ccc;border-radius:4px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.wf-cards{display:flex;gap:12px}
+.wf-card{flex:1;background:#fafafa;border:1px dashed #ccc;border-radius:4px;padding:14px;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.wf-card h4{font-size:13px;color:#444;font-weight:600}
+.wf-card p{font-size:11px;color:#888}
+.wf-button{background:#ccc;border:1px dashed #999;padding:7px 18px;font-size:13px;font-weight:600;color:#444;border-radius:4px;text-align:center}
+.wf-table{width:100%;border-collapse:collapse;font-size:12px;background:#fff}
+.wf-table th,.wf-table td{border:1px dashed #ccc;padding:6px 8px;color:#666;text-align:left}
+.wf-table th{background:#ececec;color:#444}
+.wf-note{font-size:11px;color:#777;background:#fafafa;border:1px dashed #ddd;padding:6px 8px;border-radius:4px}
+.wf-footer{font-size:10px;color:#aaa;text-align:center;padding:7px;border-top:1px dashed #ddd}
+a.wf-link{color:inherit;text-decoration:none;display:block}
+a.wf-link:hover{opacity:.6}
+</style>
+</head>
+<body>
+<div class="wf-screen">
+  <div class="wf-sidebar">
+    <div class="wf-brand">业绩比较基准管理系统</div>
+    <div class="wf-nav-group">业绩查询</div>
+    <a class="wf-link" href="s1-benchmark-query.html"><span class="wf-nav-item">业绩基准及净值增长率查询</span></a>
+    <div class="wf-nav-group">数据与配置</div>
+    <a class="wf-link" href="s2-config-mgmt.html"><span class="wf-nav-item">产品基准配置管理</span></a>
+    <a class="wf-link" href="s2i-index-library.html"><span class="wf-nav-item">指数库维护</span></a>
+    <div class="wf-nav-group">基准行情库</div>
+    <a class="wf-link" href="s3-quote-query.html"><span class="wf-nav-item">基准行情查询</span></a>
+    <span class="wf-nav-item on">基准行情维护</span>
+  </div>
+  <div class="wf-main">
+    <div class="wf-header">基准行情维护（发起→审核）</div>
+    <div class="wf-content">
+      <div class="wf-panel">
+        <div class="wf-cards">
+          <a class="wf-link" href="modal-maint-close.html"><div class="wf-card">
+            <div class="wf-icon-placeholder" style="width:32px;height:32px;background:#ddd;border:1px dashed #bbb;border-radius:4px"></div>
+            <h4>指数收盘点位维护</h4><p>按 Wind 代码逐日维护收盘点位</p><div class="wf-button">打开维护</div></div></a>
+          <a class="wf-link" href="modal-maint-rate.html"><div class="wf-card">
+            <div class="wf-icon-placeholder" style="width:32px;height:32px;background:#ddd;border:1px dashed #bbb;border-radius:4px"></div>
+            <h4>利率维护</h4><p>活期利率、债券收益率等指标</p><div class="wf-button">打开维护</div></div></a>
+          <a class="wf-link" href="modal-maint-fx.html"><div class="wf-card">
+            <div class="wf-icon-placeholder" style="width:32px;height:32px;background:#ddd;border:1px dashed #bbb;border-radius:4px"></div>
+            <h4>汇率维护</h4><p>外盘币种对中间价</p><div class="wf-button">打开维护</div></div></a>
+          <a class="wf-link" href="modal-batch-import.html"><div class="wf-card">
+            <div class="wf-icon-placeholder" style="width:32px;height:32px;background:#ddd;border:1px dashed #bbb;border-radius:4px"></div>
+            <h4>批量导入</h4><p>下载模板 → 上传文件 → 执行导入</p><div class="wf-button">打开导入</div></div></a>
+        </div>
+      </div>
+      <div class="wf-panel">
+        <h4 style="font-size:13px;color:#444">待审核批次</h4>
+        <table class="wf-table">
+          <tr><th>批次号</th><th>类型</th><th>行数</th><th>紧急程度</th><th>发起时间</th><th>状态</th></tr>
+          <tr><td>Q-20261026-01</td><td>收盘点位</td><td>25</td><td>普通</td><td>2026-10-26 09:12</td><td>待审核</td></tr>
+          <tr><td>Q-20261025-03</td><td>汇率</td><td>8</td><td>紧急</td><td>2026-10-25 17:40</td><td>已退回</td></tr>
+        </table>
+        <div class="wf-note">维护均走 经办发起 → 审核通过 双流程；通过后数据入库，进入基准行情查询与统一计算。</div>
+      </div>
+    </div>
+    <div class="wf-footer">s3m 基准行情维护 — UC-007</div>
+  </div>
+</div>
+</body>
+</html>

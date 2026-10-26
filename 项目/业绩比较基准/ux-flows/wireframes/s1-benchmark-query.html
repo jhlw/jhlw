@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>业绩基准及净值增长率查询 — Wireframe</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'Segoe UI','Microsoft YaHei',sans-serif;background:#e0e0e0;display:flex;justify-content:center;padding:16px 0}
+.wf-screen{width:1280px;min-height:760px;background:#f5f5f5;border:2px dashed #ccc;display:flex}
+.wf-sidebar{width:210px;background:#e8e8e8;border-right:1px dashed #ccc;padding:10px;display:flex;flex-direction:column}
+.wf-brand{font-weight:600;color:#444;font-size:13px;padding:6px 4px 10px;border-bottom:1px dashed #ccc}
+.wf-nav-group{font-size:10px;color:#888;margin:10px 4px 2px}
+.wf-nav-item{font-size:12px;color:#555;padding:7px 8px;text-decoration:none;border:1px dashed transparent;border-radius:4px}
+.wf-nav-item.on{background:#fff;border-color:#999;font-weight:600;color:#333}
+.wf-main{flex:1;display:flex;flex-direction:column;position:relative}
+.wf-header{background:#e8e8e8;border-bottom:1px dashed #ccc;padding:10px 16px;font-size:15px;font-weight:600;color:#444}
+.wf-content{flex:1;padding:14px;display:flex;flex-direction:column;gap:12px}
+.wf-panel{background:#fff;border:1px dashed #ccc;border-radius:4px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.wf-filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.wf-input{border:1px dashed #ccc;background:#fff;padding:7px 10px;font-size:12px;color:#999;border-radius:4px}
+.wf-button{background:#ccc;border:1px dashed #999;padding:7px 18px;font-size:13px;font-weight:600;color:#444;border-radius:4px;text-align:center}
+.wf-button-secondary{background:#fff;border:1px dashed #999;padding:7px 18px;font-size:13px;color:#666;border-radius:4px;text-align:center}
+.wf-table{width:100%;border-collapse:collapse;font-size:12px;background:#fff}
+.wf-table th,.wf-table td{border:1px dashed #ccc;padding:6px 8px;color:#666;text-align:left}
+.wf-table th{background:#ececec;color:#444}
+.wf-pager{display:flex;gap:6px;align-items:center;font-size:11px;color:#888}
+.wf-pager span{border:1px dashed #ccc;background:#fff;padding:2px 8px;border-radius:3px}
+.wf-note{font-size:11px;color:#777;background:#fafafa;border:1px dashed #ddd;padding:6px 8px;border-radius:4px}
+.wf-footer{font-size:10px;color:#aaa;text-align:center;padding:7px;border-top:1px dashed #ddd}
+a.wf-link{color:inherit;text-decoration:none;display:block}
+a.wf-link:hover{opacity:.7}
+</style>
+</head>
+<body>
+<div class="wf-screen">
+  <div class="wf-sidebar">
+    <div class="wf-brand">业绩比较基准管理系统</div>
+    <div class="wf-nav-group">业绩查询</div>
+    <a class="wf-nav-item on" href="s1-benchmark-query.html">业绩基准及净值增长率查询</a>
+    <div class="wf-nav-group">数据与配置</div>
+    <a class="wf-nav-item" href="s2-config-mgmt.html">产品基准配置管理</a>
+    <a class="wf-nav-item" href="s2i-index-library.html">指数库维护</a>
+    <div class="wf-nav-group">基准行情库</div>
+    <a class="wf-nav-item" href="s3-quote-query.html">基准行情查询</a>
+    <a class="wf-nav-item" href="s3m-quote-maint.html">基准行情维护</a>
+  </div>
+  <div class="wf-main">
+    <div class="wf-header">业绩基准及净值增长率查询</div>
+    <div class="wf-content">
+      <div class="wf-panel">
+        <div class="wf-filters">
+          <input class="wf-input" placeholder="基金代码（如 000270）" readonly>
+          <input class="wf-input" placeholder="起始日期" readonly>
+          <input class="wf-input" placeholder="截止日期" readonly>
+          <div class="wf-button">查询</div>
+          <div class="wf-button-secondary">重置</div>
+          <div class="wf-button">导出所选</div>
+        </div>
+        <table class="wf-table">
+          <tr><th>☐</th><th>净值日期 ▾</th><th>基金代码</th><th>基金名称</th><th>基准收益率 %（日）</th><th>净值增长率 %（估值系统透传）</th><th>基准累计收益率 %（折算列）</th></tr>
+          <tr><td>☐</td><td>2026-10-26</td><td>000270</td><td>建信灵活配置混合</td><td>0.2258</td><td>0.3105</td><td>57.2573</td></tr>
+          <tr><td>☐</td><td>2026-10-25</td><td>000270</td><td>建信灵活配置混合</td><td>0.1871</td><td>0.2044</td><td>56.9120</td></tr>
+          <tr><td>☐</td><td>2026-10-24</td><td>007830</td><td>××基金</td><td>0.0542</td><td>0.0499</td><td>12.4803</td></tr>
+          <tr><td>☐</td><td>2026-10-23</td><td>530001</td><td>××基金</td><td>0.1120</td><td>0.0987</td><td>8.3311</td></tr>
+        </table>
+        <div class="wf-pager"><span>‹</span><span>1</span><span>2</span><span>3</span><span>›</span><i>共 16,040 条 · 20 条/页</i></div>
+        <div class="wf-note">默认范围：今日批次＋全量历史序列；默认按净值日期倒序，可切换排序。基准自算结果与净值增长率逐日对照；导出按勾选行。</div>
+      </div>
+    </div>
+    <div class="wf-footer">s1 业绩基准及净值增长率查询 — UC-001</div>
+  </div>
+</div>
+</body>
+</html>
