@@ -231,27 +231,19 @@ button{font-family:inherit;cursor:pointer}
       <span class="ops">
         <input id="cfgSearchKey" placeholder="搜索产品代码 / 简称" style="border:1px solid var(--line);border-radius:4px;padding:5px 10px;font-size:12px;width:170px">
         <label style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--ink2)">生效日期<input type="date" id="cfgSearchDate" style="border:1px solid var(--line);border-radius:4px;padding:4px 6px;font-size:12px"></label>
-        <button class="btn">查询</button><button class="btn" onclick="cfgResetSearch()">重置</button>
+        <button class="btn" onclick="cfgQuery()">查询</button><button class="btn" onclick="cfgResetSearch()">重置</button>
         <button class="btn pri" id="btnChange">＋ 发起基准配置</button>
       </span></div>
     <div class="pb flush"><table class="tbl" id="cfgTbl">
       <tr><th>产品代码</th><th>产品简称</th><th class="mono">生效日期</th><th class="ctr">操作</th></tr>
-      <tr data-p="000270"><td class="mono">000270</td><td>建信灵活配置混合</td><td class="mono">2023-06-01</td><td class="ctr"><button class="btn sm" onclick="renderCfg('000270')">详情</button> <button class="btn sm" onclick="modCfg('000270')">修改</button> <button class="btn sm dgr" onclick="delRow(this)">删除</button></td></tr>
-      <tr data-p="531099"><td class="mono">531099</td><td>建信一年定开纯债债券（示例）</td><td class="mono">2025-03-01</td><td class="ctr"><button class="btn sm" onclick="renderCfg('531099')">详情</button> <button class="btn sm" onclick="modCfg('531099')">修改</button> <button class="btn sm dgr" onclick="delRow(this)">删除</button></td></tr>
-      <tr data-p="530001"><td class="mono">530001</td><td>建信恒久价值混合</td><td class="mono">2024-05-06</td><td class="ctr"><button class="btn sm" onclick="renderCfg('530001')">详情</button> <button class="btn sm" onclick="modCfg('530001')">修改</button> <button class="btn sm dgr" onclick="delRow(this)">删除</button></td></tr>
-      <tr data-p="530003" class="sel"><td class="mono">530003</td><td>建信优选成长混合A</td><td class="mono">2023-08-01</td><td class="ctr"><button class="btn sm" onclick="renderCfg('530003')">详情</button> <button class="btn sm" onclick="modCfg('530003')">修改</button> <button class="btn sm dgr" onclick="delRow(this)">删除</button></td></tr>
-      <tr data-p="960028"><td class="mono">960028</td><td>建信优选成长H</td><td class="mono">2023-08-01</td><td class="ctr"><button class="btn sm" onclick="renderCfg('960028')">详情</button> <button class="btn sm" onclick="modCfg('960028')">修改</button> <button class="btn sm dgr" onclick="delRow(this)">删除</button></td></tr>
-      <tr data-p="007830"><td class="mono">007830</td><td>建信荣瑞一年定开混合</td><td class="mono">2025-11-19</td><td class="ctr"><button class="btn sm" onclick="renderCfg('007830')">详情</button> <button class="btn sm" onclick="modCfg('007830')">修改</button> <button class="btn sm dgr" onclick="delRow(this)">删除</button></td></tr>
-      <tr data-p="026663"><td class="mono">026663</td><td>建信资源严选股票发起C</td><td class="mono">2026-03-12</td><td class="ctr"><button class="btn sm" onclick="renderCfg('026663')">详情</button> <button class="btn sm" onclick="modCfg('026663')">修改</button> <button class="btn sm dgr" onclick="delRow(this)">删除</button></td></tr>
-      <tr data-p="020932"><td class="mono">020932</td><td>建信沪港深价值混合A（示例）</td><td class="mono">2025-06-18</td><td class="ctr"><button class="btn sm" onclick="renderCfg('020932')">详情</button> <button class="btn sm" onclick="modCfg('020932')">修改</button> <button class="btn sm dgr" onclick="delRow(this)">删除</button></td></tr>
-      <tr data-p="539001"><td class="mono">539001</td><td>建信稳定增利债券A（示例）</td><td class="mono">2024-01-15</td><td class="ctr"><button class="btn sm" onclick="renderCfg('539001')">详情</button> <button class="btn sm" onclick="modCfg('539001')">修改</button> <button class="btn sm dgr" onclick="delRow(this)">删除</button></td></tr>
+      <tbody id="cfgListBody"></tbody>
     </table>
-    <div class="pager" data-total="486">
-      <span>共 <b class="mono">486</b> 条</span>
-      <label>每页<select class="psize"><option>10</option><option selected>30</option><option>50</option><option>100</option></select>条</label>
-      <span>第 <b class="mono pcur">1</b> / <span class="mono pall">17</span> 页</span>
-      <button class="btn sm pprev" disabled>上一页</button><button class="btn sm pnext">下一页</button>
-      <span class="pnote">原型演示：分页仅联动指示器</span>
+    <div class="pager" data-manual>
+      <span>共 <b class="mono" id="cfgTotal">0</b> 条</span>
+      <label>每页<select class="psize" id="cfgSize"><option>10</option><option selected>30</option><option>50</option><option>100</option></select>条</label>
+      <span>第 <b class="mono pcur" id="cfgCur">1</b> / <span class="mono pall" id="cfgAll">1</span> 页</span>
+      <button class="btn sm pprev" id="cfgPrev" disabled>上一页</button><button class="btn sm pnext" id="cfgNext">下一页</button>
+      <span class="pnote">查询按产品代码/简称模糊匹配；「生效日期」条件＝筛选截至该日仍在生效的版本；查询或切换每页条数后自动回到第 1 页</span>
     </div></div>
   </div>
 </section>
@@ -489,7 +481,7 @@ button{font-family:inherit;cursor:pointer}
         </div>
         <div style="font-size:12.5px;font-weight:700;margin-bottom:8px">基准基本信息</div>
         <div class="frm" style="grid-template-columns:110px 1fr;margin-bottom:14px">
-          <label class="req">生效日期</label><div><input type="date" class="mono" id="cfgEffDate" style="width:180px"><div class="note" style="margin-top:3px">默认值：所选产品的合同生效日</div></div>
+          <label class="req">生效日期</label><div><input type="date" class="mono" id="cfgEffDate" style="width:180px"><div class="note" style="margin-top:3px">默认值：所选产品的当前版本生效日；新版本生效后旧版本自动截断</div></div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
           <b style="font-size:12.5px">成分配置 <span style="color:var(--red)">*</span></b>
@@ -765,6 +757,15 @@ button{font-family:inherit;cursor:pointer}
   </div>
 </div>
 
+<!-- ============ 弹层：基准配置历史记录（按生效日期倒序） ============ -->
+<div class="mask" id="mHist" role="dialog" aria-modal="true" aria-label="基准配置历史记录">
+  <div class="modal" style="width:860px">
+    <div class="mh"><h3 id="histTitle">基准配置历史记录</h3><button class="x" onclick="closeM('mHist')">✕</button></div>
+    <div class="mb" id="histBody"></div>
+    <div class="mf"><button class="btn" onclick="closeM('mHist')">关闭</button></div>
+  </div>
+</div>
+
 <!-- ============ 弹层：删除基准配置（参照 yeji.html 流程式设计） ============ -->
 <div class="mask" id="mDel" role="dialog" aria-modal="true" aria-label="删除基准配置">
   <div class="modal" style="width:760px">
@@ -848,17 +849,21 @@ const PRODUCTS=[["000270","建信灵活配置混合","2023-06-01"],["531099","�
 function cfgResetSearch(){
   document.getElementById("cfgSearchKey").value="";
   document.getElementById("cfgSearchDate").value="";
+  cfgQuery();
 }
 document.getElementById("btnChange").addEventListener("click",()=>openCfgModal("发起基准配置（投资风险部）"));
 function modCfg(code){openCfgModal("修改基准配置 · "+code,code)}
 function openCfgModal(title,code){
   document.getElementById("mChangeTitle").textContent=title;
   openM("mChange");fillProc("cfgCreateTime","cfgTaskTime");
+  let prods=PRODUCTS;
+  if(code&&!PRODUCTS.some(p=>p[0]===code)){const r=CFGROWS.find(x=>x[0]===code);if(r)prods=[[r[0],r[1],r[2]],...PRODUCTS];}
   const sel=document.getElementById("cfgProduct");
-  sel.innerHTML='<option value="">请选择产品</option>'+PRODUCTS.map(p=>'<option value="'+p[0]+'">'+p[0]+' '+p[1]+'</option>').join("");
+  sel.innerHTML='<option value="">请选择产品</option>'+prods.map(p=>'<option value="'+p[0]+'">'+p[0]+' '+p[1]+'</option>').join("");
   if(code)sel.value=code;
   document.getElementById("cfgUrgency").selectedIndex=0;
-  document.getElementById("cfgEffDate").value=code?PRODUCTS.find(p=>p[0]===code)[2]:"";
+  const prodsel=code?prods.find(p=>p[0]===code):null;
+  document.getElementById("cfgEffDate").value=prodsel?prodsel[2]:"";
   document.getElementById("cfgRemark").value="";
   document.getElementById("cfgRejectReason").value="";
   document.querySelector('input[name="cfgAuditResult"][value="pass"]').checked=true;
@@ -974,7 +979,8 @@ function submitDelMaint(){
 }
 function passDelAudit(){
   alert("审核通过！删除流程完成，该产品基准配置已停用（无基准仅推送基金净值增长率，历史结果归档可查）");
-  if(delTargetRow)delTargetRow.remove();
+  if(delTargetCode){const i=CFGROWS.findIndex(r=>r[0]===delTargetCode);if(i>=0)CFGROWS.splice(i,1);}
+  cfgPaint();
   closeM("mDel");
 }
 function rejectDelAudit(){
@@ -1241,10 +1247,126 @@ function renderCfg(code){
   <div class="note">成分基准类型为「利率」时配置调整点：负值为在利率指数基础上减去该值，正值为加上该值；「指数」类成分无调整点（显示 —）。</div>`;
   openM("mCfg");
 }
-document.querySelectorAll("#cfgTbl tr[data-p]").forEach(tr=>tr.addEventListener("click",()=>{
+/* ================= 产品基准配置：列表数据 / 历史记录 / 真实分页 ================= */
+/* 配置历史版本（按产品代码归集；渲染时按生效日期倒序，生效日期为版本键值）
+   状态推导：eff="—" 为复核中；生效日期最新者为「当前生效」；其余为「已失效」（生效止按下一版本生效日前一日自动截断） */
+const CFGHIST={
+ "000270":[{v:"v1",eff:"2023-06-01",comp:[["000300.CSI","沪深300","指数",55,"CNY"],["CBA10201.CS","中债-总财富指数","指数",45,"CNY"]],note:"初始配置（合同生效）"}],
+ "531099":[{v:"v1",eff:"2025-03-01",comp:[["DEP1Y（示例）","一年期定期存款利率（税前）","利率 · 分段",100,"CNY",0.5]],note:"初始配置（合同生效）"}],
+ "530001":[
+   {v:"v3",eff:"2024-05-06",comp:[["000906.CSI","中证800指数","指数",65,"CNY"],["CBA00101.CS","中债-新综合财富指数","指数",30,"CNY"],["DEP1Y（示例）","一年期定期存款利率（税前）","利率 · 分段",5,"CNY",-0.1]],note:"基准编制方案调整，权益成分由沪深300切换为中证800并下调利率成分权重"},
+   {v:"v2",eff:"2023-06-20",comp:[["000300.CSI","沪深300","指数",60,"CNY"],["CBA00101.CS","中债-新综合财富指数","指数",30,"CNY"],["DEP1Y（示例）","一年期定期存款利率（税前）","利率 · 分段",10,"CNY",0]],note:"合同约定的定期调整"},
+   {v:"v1",eff:"2021-03-15",comp:[["000300.CSI","沪深300","指数",50,"CNY"],["CBA00101.CS","中债-新综合财富指数","指数",50,"CNY"]],note:"初始配置（示例）"}],
+ "530003":[
+   {v:"v2",eff:"2023-08-01",comp:[["000906.CSI","中证800指数","指数",75,"CNY"],["CBA00101.CS","中债-新综合财富指数","指数",20,"CNY"],["DEP1Y（示例）","一年期定期存款利率（税前）","利率 · 分段",5,"CNY",-0.1]],note:"基金合同修改，调高权益成分权重"},
+   {v:"v1",eff:"2021-05-10",comp:[["000906.CSI","中证800指数","指数",70,"CNY"],["CBA00101.CS","中债-新综合财富指数","指数",20,"CNY"],["DEP1Y（示例）","一年期定期存款利率（税前）","利率 · 分段",10,"CNY",0]],note:"初始配置（示例）"}],
+ "960028":[
+   {v:"v2",eff:"2023-08-01",comp:[["000906.CSI","中证800指数","指数",75,"CNY"],["CBA00101.CS","中债-新综合财富指数","指数",20,"CNY"],["DEP1Y（示例）","一年期定期存款利率（税前）","利率 · 分段",5,"CNY",-0.1]],note:"与 A 份额（530003）同步调整"},
+   {v:"v1",eff:"2022-11-08",comp:[["000906.CSI","中证800指数","指数",70,"CNY"],["CBA00101.CS","中债-新综合财富指数","指数",20,"CNY"],["DEP1Y（示例）","一年期定期存款利率（税前）","利率 · 分段",10,"CNY",0]],note:"初始配置（示例）"}],
+ "007830":[
+   {v:"v5",eff:"—",comp:[["CBA10201.CS","中债-总财富指数","指数",65,"CNY"],["000300.CSI","沪深300","指数",30,"CNY"],["DEP1Y（示例）","一年期定期存款利率（税前）","利率 · 分段",5,"CNY",-0.2]],note:"利率成分调整点由 -0.10% 调整为 -0.20%"},
+   {v:"v4",eff:"2025-11-19",comp:[["CBA10201.CS","中债-总财富指数","指数",65,"CNY"],["000300.CSI","沪深300","指数",30,"CNY"],["DEP1Y（示例）","一年期定期存款利率（税前）","利率 · 分段",5,"CNY",-0.1]],note:"开放期前完成基准复核调整"},
+   {v:"v3",eff:"2024-08-15",comp:[["CBA10201.CS","中债-总财富指数","指数",60,"CNY"],["000300.CSI","沪深300","指数",30,"CNY"],["DEP1Y（示例）","一年期定期存款利率（税前）","利率 · 分段",10,"CNY",0]],note:"下调利率成分权重（示例）"},
+   {v:"v2",eff:"2023-09-01",comp:[["CBA00101.CS","中债-新综合财富指数","指数",70,"CNY"],["000300.CSI","沪深300","指数",20,"CNY"],["DEP1Y（示例）","一年期定期存款利率（税前）","利率 · 分段",10,"CNY",0.2]],note:"债券成分切换为中债-新综合财富（示例）"},
+   {v:"v1",eff:"2022-06-20",comp:[["CBA00101.CS","中债-新综合财富指数","指数",80,"CNY"],["DEP1Y（示例）","一年期定期存款利率（税前）","利率 · 分段",20,"CNY",0.3]],note:"初始配置（合同生效）"}],
+ "026663":[{v:"v1",eff:"2026-03-12",comp:[["000300.CSI","沪深300","指数",80,"CNY"],["CBA00101.CS","中债-新综合财富指数","指数",20,"CNY"]],note:"初始配置（合同生效）"}],
+ "020932":[{v:"v1",eff:"2025-06-18",comp:[["HSI.HI","恒生指数","指数 · 跨境",60,"HKD · 自动折算"],["CBA00101.CS","中债-新综合财富指数","指数",40,"CNY"]],note:"初始配置（合同生效）"}],
+ "539001":[
+   {v:"v2",eff:"2024-01-15",comp:[["CBA00101.CS","中债-新综合财富指数","指数",90,"CNY"],["DEP1Y（示例）","一年期定期存款利率（税前）","利率 · 分段",10,"CNY",0.2]],note:"调高债券成分权重（示例）"},
+   {v:"v1",eff:"2022-03-10",comp:[["CBA00101.CS","中债-新综合财富指数","指数",80,"CNY"],["DEP1Y（示例）","一年期定期存款利率（税前）","利率 · 分段",20,"CNY",0.3]],note:"初始配置（示例）"}]
+};
+/* 列表数据：真实样例 9 条 ＋ 合成演示数据（补足条数以便演示分页，均标注「示例」） */
+const CFGROWS=PRODUCTS.map(p=>[p[0],p[1],p[2]]);
+(function(){
+  const names=["建信纯债债券A","建信双债增强债券C","建信稳益债券A","建信货币市场A","建信现金添益货币","建信短债债券A","建信短融债券","建信信用增强债券","建信可转债债券A","建信量化选股股票","建信创新成长混合","建信智能制造混合","建信新能源行业股票","建信医药健康混合","建信消费精选混合","建信红利价值混合","建信蓝筹精选混合","建信核心优势混合","建信均衡配置混合","建信多元收益混合","建信全球化配置（QDII）","建信海外中国债","建信稳健回报混合","建信固收增强债券","建信定期开放债券","建信30天持有债券","建信90天持有债券","建信一年持有混合","建信两年定开混合","建信三年定开混合"];
+  const comps=[
+    [["000300.CSI","沪深300","指数",80,"CNY"],["CBA00101.CS","中债-新综合财富指数","指数",20,"CNY"]],
+    [["CBA00101.CS","中债-新综合财富指数","指数",90,"CNY"],["DEP1Y（示例）","一年期定期存款利率（税前）","利率 · 分段",10,"CNY",-0.2]],
+    [["CBA10201.CS","中债-总财富指数","指数",70,"CNY"],["DEP1Y（示例）","一年期定期存款利率（税前）","利率 · 分段",30,"CNY",0.1]],
+    [["000906.CSI","中证800指数","指数",60,"CNY"],["CBA00101.CS","中债-新综合财富指数","指数",40,"CNY"]]];
+  const pd=n=>String(n).padStart(2,"0");
+  const fd=d=>d.getFullYear()+"-"+pd(d.getMonth()+1)+"-"+pd(d.getDate());
+  names.forEach((n,i)=>{
+    const code=String(27000+i*113).padStart(6,"0");
+    const full=n+"（示例）";
+    const d1=new Date(2023,0,4);d1.setDate(d1.getDate()+i*47);
+    const eff1=fd(d1);
+    CFGROWS.push([code,full,eff1]);
+    const comp=comps[i%4];
+    CFG[code]={name:code+" "+full,ver:"版本 v1 · "+eff1+" 起生效",comp:comp};
+    if(i%3===0){/* 每 3 只示例产品造 1 条历史版本，便于演示多版本倒序 */
+      const d0=new Date(d1);d0.setDate(d0.getDate()-400);
+      const eff0=fd(d0);
+      CFG[code].ver="版本 v2 · "+eff1+" 起生效";
+      CFGHIST[code]=[{v:"v2",eff:eff1,comp:comp,note:"基准定期调整（示例）"},
+        {v:"v1",eff:eff0,comp:comps[(i+2)%4],note:"初始配置（合同生效）"}];
+    }else{
+      CFGHIST[code]=[{v:"v1",eff:eff1,comp:comp,note:"初始配置（合同生效）"}];
+    }
+  });
+})();
+/* ---- 查询 / 分页（客户端真实分页：10 / 30 / 50 / 100 条每页） ---- */
+let cfgPage=1,cfgList=[];
+function cfgQuery(){
+  const k=document.getElementById("cfgSearchKey").value.trim().toLowerCase();
+  const d=document.getElementById("cfgSearchDate").value;
+  cfgList=CFGROWS.filter(r=>{
+    if(k&&!(r[0].toLowerCase().includes(k)||r[1].toLowerCase().includes(k)))return false;
+    if(d){/* 生效日期条件：筛选「截至该日存在仍在生效版本」的产品（版本生效区间＝生效日起至下一版本生效日前一日） */
+      const vers=(CFGHIST[r[0]]||[]).filter(h=>h.eff!=="—").sort((a,b)=>b.eff.localeCompare(a.eff));
+      if(!vers.some(h=>h.eff<=d))return false;
+    }
+    return true;
+  });
+  cfgPage=1;cfgPaint();
+}
+function cfgPaint(){
+  const size=+document.getElementById("cfgSize").value;
+  const pages=Math.max(1,Math.ceil(cfgList.length/size));
+  cfgPage=Math.min(Math.max(1,cfgPage),pages);
+  const start=(cfgPage-1)*size,rows=cfgList.slice(start,start+size);
+  document.getElementById("cfgListBody").innerHTML=rows.length?rows.map(r=>
+    '<tr data-p="'+r[0]+'"><td class="mono">'+r[0]+'</td><td>'+r[1]+'</td><td class="mono">'+r[2]+'</td>'
+    +'<td class="ctr"><button class="btn sm" onclick="renderCfg(\''+r[0]+'\')">详情</button> <button class="btn sm" onclick="renderHist(\''+r[0]+'\')">历史记录</button> <button class="btn sm" onclick="modCfg(\''+r[0]+'\')">修改</button> <button class="btn sm dgr" onclick="delRow(this)">删除</button></td></tr>').join("")
+    :'<tr><td colspan="4" style="text-align:center;color:var(--ink3);padding:10px">无匹配数据，请调整查询条件</td></tr>';
+  document.getElementById("cfgTotal").textContent=cfgList.length;
+  document.getElementById("cfgAll").textContent=pages;
+  document.getElementById("cfgCur").textContent=cfgPage;
+  document.getElementById("cfgPrev").disabled=cfgPage<=1;
+  document.getElementById("cfgNext").disabled=cfgPage>=pages;
+}
+document.getElementById("cfgSize").addEventListener("change",()=>{cfgPage=1;cfgPaint()});
+document.getElementById("cfgPrev").addEventListener("click",()=>{cfgPage--;cfgPaint()});
+document.getElementById("cfgNext").addEventListener("click",()=>{cfgPage++;cfgPaint()});
+/* ---- 历史记录弹层：以生效日期为键值倒序展示各历史版本（不含当前生效版本，当前版本见「详情」） ---- */
+function renderHist(code){
+  const row=CFGROWS.find(r=>r[0]===code);
+  const name=row?row[1]:(CFG[code]?CFG[code].name:code);
+  const vers=(CFGHIST[code]||[]).slice();
+  const curEff=vers.filter(h=>h.eff!=="—").map(h=>h.eff).sort().pop();
+  const hist=vers.filter(h=>h.eff!=="—"&&h.eff!==curEff); // 剔除复核中（未生效）与当前生效版本
+  hist.sort((a,b)=>b.eff.localeCompare(a.eff));
+  document.getElementById("histTitle").textContent="基准配置历史记录 · "+code+" "+name;
+  document.getElementById("histBody").innerHTML=
+    '<div class="banner info" style="margin:0 0 12px"><span>ℹ</span><div>共 <b class="mono">'+hist.length+'</b> 个历史版本（<b>不含当前生效版本</b>，当前生效版本见列表「生效日期」列与「详情」），以<b>生效日期</b>为键值<b>倒序</b>展示；新版本生效后，旧版本生效止自动截断为新生效日前一日，历史区间按当时生效版本计算（变更触发历史追溯重算评估）。</div></div>'
+    +(hist.length?hist.map(h=>
+      '<div style="border:1px solid var(--line);border-radius:4px;margin-bottom:12px">'
+      +'<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 12px;background:#F7F9FC;border-bottom:1px solid var(--line2);font-size:12.5px">'
+      +'<b class="mono">版本 '+h.v+'</b><span>生效日期 <b class="mono">'+h.eff+'</b></span>'
+      +'<span class="note" style="margin-left:auto">'+(h.note||"—")+'</span></div>'
+      +'<table class="tbl"><tr><th style="width:170px">成分基准（Wind 代码）</th><th>名称</th><th class="ctr" style="width:90px">类型</th><th class="num" style="width:110px">调整点(%)</th><th class="num" style="width:110px">权重(%)</th></tr>'
+      +h.comp.map(x=>'<tr><td class="mono">'+x[0]+'</td><td>'+x[1]+'</td><td class="ctr">'+x[2]+'</td><td class="num">'+(x[5]!=null?(x[5]>0?"+":"")+Number(x[5]).toFixed(4):"—")+'</td><td class="num">'+x[3].toFixed(4)+'%</td></tr>').join("")
+      +'</table></div>').join("")
+    :'<div class="note" style="text-align:center;padding:16px">暂无历史版本（该产品仅有当前生效版本，见「详情」）</div>');
+  openM("mHist");
+}
+/* ---- 行选中（事件委托，适配动态渲染的行） ---- */
+document.getElementById("cfgListBody").addEventListener("click",e=>{
+  const tr=e.target.closest("tr[data-p]");if(!tr)return;
   document.querySelectorAll("#cfgTbl tr").forEach(x=>x.classList.remove("sel"));
   tr.classList.add("sel");
-}));
+});
+cfgQuery();
 /* ================= 指数库（参照 zhishu.html 设计） ================= */
 const ZCUR={"CNY":"人民币","HKD":"港币","USD":"美元","EUR":"欧元","GBP":"英镑"};
 const ZDATA=[

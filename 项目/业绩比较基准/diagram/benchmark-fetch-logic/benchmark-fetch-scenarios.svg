@@ -1,0 +1,223 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 940">
+  <style>
+    text { font-family: 'JetBrains Mono', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    :root {
+      --bg: #0f172a;
+      --bg-grid: #1e293b;
+      --mask: #0f172a;
+      --text: white;
+      --text-muted: #94a3b8;
+      --arrow: #64748b;
+      --color-primary-fill: rgba(8,51,68,0.4);
+      --color-primary-stroke: #22d3ee;
+      --color-secondary-fill: rgba(6,78,59,0.4);
+      --color-secondary-stroke: #34d399;
+      --color-tertiary-fill: rgba(76,29,149,0.4);
+      --color-tertiary-stroke: #a78bfa;
+      --color-accent-fill: rgba(120,53,15,0.3);
+      --color-accent-stroke: #fbbf24;
+      --color-alert-fill: rgba(136,19,55,0.4);
+      --color-alert-stroke: #fb7185;
+      --color-connector-fill: rgba(251,146,60,0.3);
+      --color-connector-stroke: #fb923c;
+      --color-neutral-fill: rgba(30,41,59,0.5);
+      --color-neutral-stroke: #94a3b8;
+      --color-highlight-fill: rgba(59,130,246,0.3);
+      --color-highlight-stroke: #60a5fa;
+    }
+  </style>
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="var(--bg-grid)" stroke-width="0.5"/>
+    </pattern>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--color-secondary-stroke)"/>
+    </marker>
+    <marker id="arrow-grey" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--arrow)"/>
+    </marker>
+  </defs>
+
+  <rect width="100%" height="100%" fill="var(--bg)"/>
+  <rect width="100%" height="100%" fill="url(#grid)"/>
+
+  <text x="40" y="52" fill="var(--text)" font-size="16" font-weight="700">六类日期情形的取数行为</text>
+  <text x="40" y="76" fill="var(--text-muted)" font-size="9">mini 时间轴：A股线（青）· 境外线（绿）· 汇率线（琥珀）｜ 灰带＝A股休市区间，虚线圆＝当日无数据 ｜ 实例均经 000270 序列或公开日历核实</text>
+
+  <!-- ===== S1 常规交易日 ===== -->
+  <g transform="translate(40,100)">
+    <rect x="0" y="0" width="550" height="250" rx="8" fill="var(--mask)"/>
+    <rect x="0" y="0" width="550" height="250" rx="8" fill="var(--color-primary-fill)" stroke="var(--color-primary-stroke)" stroke-width="1.5" opacity="0.35"/>
+    <rect x="0" y="0" width="550" height="5" rx="2" fill="var(--color-primary-stroke)"/>
+    <text x="20" y="32" fill="var(--text)" font-size="11" font-weight="700">S1｜普通交易日（基准态）</text>
+    <text x="530" y="32" fill="var(--color-primary-stroke)" font-size="8" text-anchor="end">R(t)＝Σw·r，逐日连乘</text>
+    <line x1="90" y1="66" x2="530" y2="66" stroke="var(--color-primary-stroke)" stroke-width="1.5"/>
+    <text x="20" y="70" fill="var(--text-muted)" font-size="8">A股</text>
+    <circle cx="110" cy="66" r="3.5" fill="var(--color-primary-stroke)"/>
+    <circle cx="200" cy="66" r="3.5" fill="var(--color-primary-stroke)"/>
+    <circle cx="380" cy="66" r="5" fill="var(--color-highlight-stroke)"/>
+    <text x="380" y="54" fill="var(--color-highlight-stroke)" font-size="7.5" text-anchor="middle" font-weight="700">t</text>
+    <line x1="90" y1="92" x2="530" y2="92" stroke="var(--color-secondary-stroke)" stroke-width="1.5"/>
+    <text x="20" y="96" fill="var(--text-muted)" font-size="8">境外</text>
+    <circle cx="110" cy="92" r="3.5" fill="var(--color-secondary-stroke)"/>
+    <circle cx="200" cy="92" r="3.5" fill="var(--color-secondary-stroke)"/>
+    <circle cx="380" cy="92" r="5" fill="var(--color-secondary-stroke)"/>
+    <line x1="90" y1="118" x2="530" y2="118" stroke="var(--color-accent-stroke)" stroke-width="1.5"/>
+    <text x="20" y="122" fill="var(--text-muted)" font-size="8">汇率</text>
+    <circle cx="380" cy="118" r="5" fill="var(--color-accent-stroke)"/>
+    <text x="20" y="152" fill="var(--text)" font-size="8.5">三线在 t 日全部有数据：本币指数取 t 收盘，非本币指数取 t 境外收盘 × t 中间价，</text>
+    <text x="20" y="167" fill="var(--text)" font-size="8.5">利率自然日记息；各要素日收益率（8 位）加权合成 R(t)，连乘累计</text>
+    <rect x="16" y="182" width="518" height="52" rx="6" fill="var(--color-neutral-fill)" stroke="var(--color-neutral-stroke)" stroke-width="1" stroke-dasharray="4,4"/>
+    <text x="28" y="202" fill="var(--text-muted)" font-size="8">实例：任一普通交易日（如 2024-06-26）——全部要素取 t 日数据，R(t) 加权合成后连乘</text>
+    <text x="28" y="220" fill="var(--text-muted)" font-size="8">（美股系指数见 S6：t 收盘经 T+1 出具取得）</text>
+  </g>
+
+  <!-- ===== S2 境外休市 ===== -->
+  <g transform="translate(610,100)">
+    <rect x="0" y="0" width="550" height="250" rx="8" fill="var(--mask)"/>
+    <rect x="0" y="0" width="550" height="250" rx="8" fill="var(--color-secondary-fill)" stroke="var(--color-secondary-stroke)" stroke-width="1.5" opacity="0.35"/>
+    <rect x="0" y="0" width="550" height="5" rx="2" fill="var(--color-secondary-stroke)"/>
+    <text x="20" y="32" fill="var(--text)" font-size="11" font-weight="700">S2｜A股开市 · 境外指数休市</text>
+    <text x="530" y="32" fill="var(--color-secondary-stroke)" font-size="8" text-anchor="end">纯汇率效应日</text>
+    <line x1="90" y1="70" x2="530" y2="70" stroke="var(--color-primary-stroke)" stroke-width="1.5"/>
+    <text x="20" y="74" fill="var(--text-muted)" font-size="8">A股</text>
+    <circle cx="110" cy="70" r="3.5" fill="var(--color-primary-stroke)"/>
+    <circle cx="200" cy="70" r="3.5" fill="var(--color-primary-stroke)"/>
+    <circle cx="290" cy="70" r="3.5" fill="var(--color-primary-stroke)"/>
+    <circle cx="380" cy="70" r="5" fill="var(--color-highlight-stroke)"/>
+    <text x="380" y="58" fill="var(--color-highlight-stroke)" font-size="7.5" text-anchor="middle" font-weight="700">t</text>
+    <line x1="90" y1="110" x2="530" y2="110" stroke="var(--color-secondary-stroke)" stroke-width="1.5"/>
+    <text x="20" y="114" fill="var(--text-muted)" font-size="8">境外</text>
+    <circle cx="110" cy="110" r="3.5" fill="var(--color-secondary-stroke)"/>
+    <circle cx="200" cy="110" r="4.5" fill="none" stroke="var(--color-secondary-stroke)" stroke-width="1.5"/>
+    <text x="200" y="128" fill="var(--text-muted)" font-size="7" text-anchor="middle">t*＝最近披露</text>
+    <circle cx="380" cy="110" r="4.5" fill="none" stroke="var(--color-neutral-stroke)" stroke-width="1.2" stroke-dasharray="2,2"/>
+    <text x="380" y="128" fill="var(--text-muted)" font-size="7" text-anchor="middle">休市</text>
+    <circle cx="470" cy="110" r="3.5" fill="var(--color-secondary-stroke)"/>
+    <text x="470" y="128" fill="var(--text-muted)" font-size="7" text-anchor="middle">恢复</text>
+    <line x1="207" y1="101" x2="368" y2="101" stroke="var(--color-secondary-stroke)" stroke-width="1.2" stroke-dasharray="3,3" marker-end="url(#arrow-green)"/>
+    <text x="285" y="95" fill="var(--color-secondary-stroke)" font-size="7" text-anchor="middle">点位沿用 t*</text>
+    <text x="20" y="152" fill="var(--text)" font-size="8.5">境外点位沿用 t*，但汇率照常取 t 日中间价 → 该要素当日收益＝H(t)/H(t−1)−1（≠0）</text>
+    <text x="20" y="167" fill="var(--text)" font-size="8.5">境外恢复日一次并入全部涨跌；人民币计价境外指数例外：无汇率项，休市日＝严格 0</text>
+    <rect x="16" y="182" width="518" height="52" rx="6" fill="var(--color-neutral-fill)" stroke="var(--color-neutral-stroke)" stroke-width="1" stroke-dasharray="4,4"/>
+    <text x="28" y="202" fill="var(--text-muted)" font-size="8">实例：2025-04-18 耶稣受难日——港股休市（04-21 复活节周一续休）、A股开市；</text>
+    <text x="28" y="220" fill="var(--text-muted)" font-size="8">恒生沿用 04-17 收盘，要素收益＝H(04-18)/H(04-17)−1；04-22 并入 5 个自然日涨跌</text>
+  </g>
+
+  <!-- ===== S3 长假后首日 ===== -->
+  <g transform="translate(40,370)">
+    <rect x="0" y="0" width="550" height="250" rx="8" fill="var(--mask)"/>
+    <rect x="0" y="0" width="550" height="250" rx="8" fill="var(--color-accent-fill)" stroke="var(--color-accent-stroke)" stroke-width="1.5" opacity="0.35"/>
+    <rect x="0" y="0" width="550" height="5" rx="2" fill="var(--color-accent-stroke)"/>
+    <text x="20" y="32" fill="var(--text)" font-size="11" font-weight="700">S3｜A股长假后首个交易日</text>
+    <text x="530" y="32" fill="var(--color-accent-stroke)" font-size="8" text-anchor="end">跳空集中单日</text>
+    <rect x="130" y="46" width="220" height="84" rx="4" fill="var(--color-neutral-fill)"/>
+    <text x="240" y="140" fill="var(--text-muted)" font-size="7" text-anchor="middle">A股节假日（国庆 8 天 / 春节）</text>
+    <line x1="90" y1="62" x2="530" y2="62" stroke="var(--color-primary-stroke)" stroke-width="1.5"/>
+    <text x="20" y="66" fill="var(--text-muted)" font-size="8">A股</text>
+    <circle cx="110" cy="62" r="4" fill="var(--color-primary-stroke)"/>
+    <text x="110" y="52" fill="var(--text-muted)" font-size="7" text-anchor="middle">节前 t−1</text>
+    <circle cx="380" cy="62" r="5" fill="var(--color-highlight-stroke)"/>
+    <text x="380" y="52" fill="var(--color-highlight-stroke)" font-size="7.5" text-anchor="middle" font-weight="700">t（节后首日）</text>
+    <line x1="90" y1="88" x2="530" y2="88" stroke="var(--color-secondary-stroke)" stroke-width="1.5"/>
+    <text x="20" y="92" fill="var(--text-muted)" font-size="8">境外</text>
+    <circle cx="110" cy="88" r="3.5" fill="var(--color-secondary-stroke)"/>
+    <circle cx="190" cy="88" r="3.5" fill="var(--color-secondary-stroke)"/>
+    <circle cx="260" cy="88" r="3.5" fill="var(--color-secondary-stroke)"/>
+    <circle cx="330" cy="88" r="3.5" fill="var(--color-secondary-stroke)"/>
+    <text x="260" y="80" fill="var(--text-muted)" font-size="7" text-anchor="middle">假期照常披露</text>
+    <circle cx="380" cy="88" r="4.5" fill="var(--color-secondary-stroke)"/>
+    <line x1="90" y1="114" x2="530" y2="114" stroke="var(--color-neutral-stroke)" stroke-width="1.2" stroke-dasharray="4,4"/>
+    <text x="20" y="118" fill="var(--text-muted)" font-size="8">汇率</text>
+    <circle cx="110" cy="114" r="3.5" fill="var(--color-accent-stroke)"/>
+    <circle cx="380" cy="114" r="4.5" fill="var(--color-accent-stroke)"/>
+    <text x="240" y="110" fill="var(--text-muted)" font-size="7" text-anchor="middle">停发</text>
+    <text x="20" y="152" fill="var(--text)" font-size="8.5">境外假期多日涨跌＋汇率停发后累积变动＋利率假期利息，三者全部并入 t 单日 R(t)；</text>
+    <text x="20" y="167" fill="var(--text)" font-size="8.5">各要素分子＝t 日数据，分母＝节前最后交易日数据，跳空互不传染</text>
+    <rect x="16" y="182" width="518" height="52" rx="6" fill="var(--color-neutral-fill)" stroke="var(--color-neutral-stroke)" stroke-width="1" stroke-dasharray="4,4"/>
+    <text x="28" y="202" fill="var(--text-muted)" font-size="8">实例：2024-10-08——中证2000 单日 +8.6692%（假期 7 天＋当日集中一行），中债 −0.0911%，</text>
+    <text x="28" y="220" fill="var(--text-muted)" font-size="8">活期 0.35%/360×8 天并入 → R(t)＝+7.7981%（000270 序列 1.07798132 逐位吻合）</text>
+  </g>
+
+  <!-- ===== S4 季末非交易日 ===== -->
+  <g transform="translate(610,370)">
+    <rect x="0" y="0" width="550" height="250" rx="8" fill="var(--mask)"/>
+    <rect x="0" y="0" width="550" height="250" rx="8" fill="var(--color-highlight-fill)" stroke="var(--color-highlight-stroke)" stroke-width="1.5" opacity="0.35"/>
+    <rect x="0" y="0" width="550" height="5" rx="2" fill="var(--color-highlight-stroke)"/>
+    <text x="20" y="32" fill="var(--text)" font-size="11" font-weight="700">S4｜季末/年末＝周末或非交易日</text>
+    <text x="530" y="32" fill="var(--color-highlight-stroke)" font-size="8" text-anchor="end">不另立收益行</text>
+    <rect x="130" y="46" width="130" height="84" rx="4" fill="var(--color-neutral-fill)"/>
+    <text x="195" y="140" fill="var(--text-muted)" font-size="7" text-anchor="middle">周末/元旦</text>
+    <line x1="90" y1="70" x2="530" y2="70" stroke="var(--color-primary-stroke)" stroke-width="1.5"/>
+    <text x="20" y="74" fill="var(--text-muted)" font-size="8">A股</text>
+    <circle cx="110" cy="70" r="4.5" fill="var(--color-primary-stroke)"/>
+    <text x="110" y="58" fill="var(--text-muted)" font-size="7" text-anchor="middle">d*＝6-28 周五</text>
+    <polygon points="195,63 202,70 195,77 188,70" fill="var(--color-highlight-stroke)"/>
+    <text x="195" y="52" fill="var(--color-highlight-stroke)" font-size="7" text-anchor="middle">q＝6-30 季末</text>
+    <circle cx="380" cy="70" r="5" fill="var(--color-highlight-stroke)"/>
+    <text x="380" y="58" fill="var(--text-muted)" font-size="7" text-anchor="middle">7-01</text>
+    <line x1="90" y1="110" x2="530" y2="110" stroke="var(--color-secondary-stroke)" stroke-width="1.5"/>
+    <text x="20" y="114" fill="var(--text-muted)" font-size="8">境外</text>
+    <circle cx="110" cy="110" r="3.5" fill="var(--color-secondary-stroke)"/>
+    <circle cx="380" cy="110" r="3.5" fill="var(--color-secondary-stroke)"/>
+    <text x="20" y="152" fill="var(--text)" font-size="8.5">q 不产生独立收益行；对外披露值＝最近披露日 d*（6-28）收盘合成（附件3 注1）</text>
+    <text x="20" y="167" fill="var(--text)" font-size="8.5">下一交易日 R 分母取 d* 点位；跨 q 的自然日利息并入（07-01 含周末 3 天利息）</text>
+    <rect x="16" y="182" width="518" height="52" rx="6" fill="var(--color-neutral-fill)" stroke="var(--color-neutral-stroke)" stroke-width="1" stroke-dasharray="4,4"/>
+    <text x="28" y="202" fill="var(--text-muted)" font-size="8">实例：2024-06-30 周日——000270 序列无 06-30 行，Q2 披露值即 06-28 行；</text>
+    <text x="28" y="220" fill="var(--text-muted)" font-size="8">07-01：中证2000 1855.35/1840.84−1＝+0.7882% → R＝+0.7038%（序列 1.00703827 吻合）</text>
+  </g>
+
+  <!-- ===== S5 季末+境外叠加 ===== -->
+  <g transform="translate(40,640)">
+    <rect x="0" y="0" width="550" height="250" rx="8" fill="var(--mask)"/>
+    <rect x="0" y="0" width="550" height="250" rx="8" fill="var(--color-connector-fill)" stroke="var(--color-connector-stroke)" stroke-width="1.5" opacity="0.35"/>
+    <rect x="0" y="0" width="550" height="5" rx="2" fill="var(--color-connector-stroke)"/>
+    <text x="20" y="32" fill="var(--text)" font-size="11" font-weight="700">S5｜S4 ＋ 境外披露不同步（叠加）</text>
+    <text x="530" y="32" fill="var(--color-connector-stroke)" font-size="8" text-anchor="end">各自最近披露日</text>
+    <rect x="130" y="46" width="130" height="84" rx="4" fill="var(--color-neutral-fill)"/>
+    <text x="195" y="140" fill="var(--text-muted)" font-size="7" text-anchor="middle">12-30/31 周末</text>
+    <line x1="90" y1="70" x2="530" y2="70" stroke="var(--color-primary-stroke)" stroke-width="1.5"/>
+    <text x="20" y="74" fill="var(--text-muted)" font-size="8">A股</text>
+    <circle cx="110" cy="70" r="4.5" fill="var(--color-primary-stroke)"/>
+    <text x="110" y="58" fill="var(--text-muted)" font-size="7" text-anchor="middle">d*A＝12-29</text>
+    <polygon points="195,63 202,70 195,77 188,70" fill="var(--color-highlight-stroke)"/>
+    <text x="195" y="52" fill="var(--color-highlight-stroke)" font-size="7" text-anchor="middle">q＝12-31 年末</text>
+    <circle cx="380" cy="70" r="5" fill="var(--color-highlight-stroke)"/>
+    <text x="380" y="58" fill="var(--text-muted)" font-size="7" text-anchor="middle">1-02</text>
+    <line x1="90" y1="110" x2="530" y2="110" stroke="var(--color-secondary-stroke)" stroke-width="1.5"/>
+    <text x="20" y="114" fill="var(--text-muted)" font-size="8">境外</text>
+    <circle cx="110" cy="110" r="4.5" fill="var(--color-secondary-stroke)"/>
+    <text x="110" y="128" fill="var(--text-muted)" font-size="7" text-anchor="middle">d*美＝12-29（周五美股）</text>
+    <circle cx="380" cy="110" r="3.5" fill="var(--color-secondary-stroke)"/>
+    <text x="20" y="152" fill="var(--text)" font-size="8.5">各要素各自取自己的最近披露日 d*i（A 股与境外可以不同步，如港股半日市在 12-31）</text>
+    <text x="20" y="167" fill="var(--text)" font-size="8.5">汇率与指数披露日对齐：取同一 d* 的中间价（定夺③），保证价值时点一致</text>
+    <rect x="16" y="182" width="518" height="52" rx="6" fill="var(--color-neutral-fill)" stroke="var(--color-neutral-stroke)" stroke-width="1" stroke-dasharray="4,4"/>
+    <text x="28" y="202" fill="var(--text-muted)" font-size="8">实例：2023-12-31 周日——A股与美股最近披露日均为 12-29（周五）；</text>
+    <text x="28" y="220" fill="var(--text-muted)" font-size="8">年末披露值＝12-29 收盘 × 12-29 美元中间价（对齐折算，定夺③）</text>
+  </g>
+
+  <!-- ===== S6 美股时点 ===== -->
+  <g transform="translate(610,640)">
+    <rect x="0" y="0" width="550" height="250" rx="8" fill="var(--mask)"/>
+    <rect x="0" y="0" width="550" height="250" rx="8" fill="var(--color-alert-fill)" stroke="var(--color-alert-stroke)" stroke-width="1.5" opacity="0.35"/>
+    <rect x="0" y="0" width="550" height="5" rx="2" fill="var(--color-alert-stroke)"/>
+    <text x="20" y="32" fill="var(--text)" font-size="11" font-weight="700">S6｜美股跨时区：T+1 出具</text>
+    <text x="530" y="32" fill="var(--color-alert-stroke)" font-size="8" text-anchor="end">取美股 t 日收盘（不滞后）</text>
+    <rect x="150" y="46" width="200" height="84" rx="4" fill="var(--color-neutral-fill)"/>
+    <text x="250" y="140" fill="var(--text-muted)" font-size="7" text-anchor="middle">北京时间 t 日夜间 ～ t+1 凌晨</text>
+    <line x1="90" y1="88" x2="530" y2="88" stroke="var(--arrow)" stroke-width="1.5"/>
+    <circle cx="110" cy="88" r="4.5" fill="var(--color-primary-stroke)"/>
+    <text x="110" y="76" fill="var(--text-muted)" font-size="7" text-anchor="middle">A股 t 15:00 收盘</text>
+    <circle cx="380" cy="88" r="5" fill="var(--color-secondary-stroke)"/>
+    <text x="360" y="76" fill="var(--color-secondary-stroke)" font-size="7" text-anchor="middle" font-weight="700">美股 t 收盘＝T+1 凌晨</text>
+    <circle cx="470" cy="88" r="7" fill="none" stroke="var(--color-accent-stroke)" stroke-width="1.5"/>
+    <circle cx="470" cy="88" r="4.5" fill="var(--color-accent-stroke)"/>
+    <text x="470" y="76" fill="var(--color-accent-stroke)" font-size="7" text-anchor="middle" font-weight="700">T+1 出具</text>
+    <line x1="388" y1="99" x2="458" y2="99" stroke="var(--arrow)" stroke-width="1.2" marker-end="url(#arrow-grey)"/>
+    <text x="20" y="152" fill="var(--text)" font-size="8.5">含美股指数的基准等美股 t 日收盘后计算：美股取 t 日收盘、不滞后一个交易日；</text>
+    <text x="20" y="167" fill="var(--text)" font-size="8.5">估值汇率仍取 t 日中间价（t 日 9:15 已公布）；与 QDII 净值 T+1 披露节奏一致（定夺⑥）</text>
+    <rect x="16" y="182" width="518" height="52" rx="6" fill="var(--color-neutral-fill)" stroke="var(--color-neutral-stroke)" stroke-width="1" stroke-dasharray="4,4"/>
+    <text x="28" y="202" fill="var(--text-muted)" font-size="8">实例：纳指100×90%＋人民币活期×10%——T+1 晨间计算 T 日基准：</text>
+    <text x="28" y="220" fill="var(--text-muted)" font-size="8">Rb(t)＝Cn(t)·H(t)/[Cn(t−1)·H(t−1)]−1，Cn 取美股 T 收盘、H 取 T 日美元中间价</text>
+  </g>
+</svg>
