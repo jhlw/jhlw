@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "099e607f-c287-4641-977a-c72a28d9ef00",
+  "status": "current",
+  "command": "deliver",
+  "type": "dataflow",
+  "input": "D:\\Download\\Python\\项目\\业绩比较基准\\.archify\\dataflow-benchmark-fetch-20261105-215431\\candidate.json",
+  "output": "D:\\Download\\Python\\项目\\业绩比较基准\\.archify\\dataflow-benchmark-fetch-20261105-215431\\benchmark-fetch-dataflow.html",
+  "specification": {
+    "sha256": "c389cb4b25e7a011f41bc376bd13102a0aa421d8356b353bb4ac3cbee30a2406",
+    "bytes": 12127
+  },
+  "artifact": {
+    "sha256": "d602a60cda882550c4bceaebae1c9fed9137e9a2070ce325e27ca0d379fc835e",
+    "bytes": 864984
+  }
+}

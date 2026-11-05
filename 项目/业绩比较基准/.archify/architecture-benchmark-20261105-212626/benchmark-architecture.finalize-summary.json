@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "architecture",
+  "quality": "showcase",
+  "specification": {
+    "path": "D:\\Download\\Python\\项目\\业绩比较基准\\.archify\\architecture-benchmark-20261105-212626\\candidate.json",
+    "sha256": "b22f078d4aa9e9ed4c79c09f38459c1b9017c1ee2707fcda5102dedd9ca4d9bc",
+    "bytes": 11822
+  },
+  "artifact": {
+    "path": "D:\\Download\\Python\\项目\\业绩比较基准\\.archify\\architecture-benchmark-20261105-212626\\benchmark-architecture.html",
+    "sha256": "8fc3d6960d256e93141f732cd02ac4b87a263864f1ee2bd03a7e0ef31df0fb00",
+    "bytes": 874114
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "fail"
+  },
+  "failedStage": "browser-check",
+  "diagnostics": [
+    {
+      "code": "viewer/temp-cleanup-incomplete",
+      "severity": "error",
+      "message": "Browser cleanup could not safely finish; inspect the reported retained path.",
+      "subject": {
+        "artifact": "D:\\Download\\Python\\项目\\业绩比较基准\\.archify\\architecture-benchmark-20261105-212626\\benchmark-architecture.html"
+      },
+      "evidence": {
+        "reason": "Temporary directory cleanup failed; retained path \"C:\\Users\\jhlw\\AppData\\Local\\Temp\\archify-visual-check-profile-FHctsI\": EPERM, Permission denied: \\\\?\\C:\\Users\\jhlw\\AppData\\Local\\Temp\\archify-visual-check-profile-FHctsI '\\\\?\\C:\\Users\\jhlw\\AppData\\Local\\Temp\\archify-visual-check-profile-FHctsI'",
+        "retainedDirectory": "C:\\Users\\jhlw\\AppData\\Local\\Temp\\archify-visual-check-profile-FHctsI"
+      },
+      "supportedFixes": [
+        "resolve the reported process or filesystem failure; verify directory ownership before manual cleanup"
+      ]
+    }
+  ],
+  "diagnosticSummary": {
+    "total": 1,
+    "shown": 1,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "D:\\Download\\Python\\项目\\业绩比较基准\\.archify\\architecture-benchmark-20261105-212626\\benchmark-architecture.finalize.json",
+    "summaryReceipt": "D:\\Download\\Python\\项目\\业绩比较基准\\.archify\\architecture-benchmark-20261105-212626\\benchmark-architecture.finalize-summary.json",
+    "browserCheckReceipt": "D:\\Download\\Python\\项目\\业绩比较基准\\.archify\\architecture-benchmark-20261105-212626\\benchmark-architecture.browser-check.json"
+  },
+  "update": {
+    "status": "current",
+    "installedVersion": "3.2.0",
+    "availableVersion": "3.2.0",
+    "releaseNotes": null,
+    "checkedAt": "2026-11-05T13:32:24.656Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  },
+  "visualReview": "not-requested",
+  "durationMs": 8708,
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  }
+}

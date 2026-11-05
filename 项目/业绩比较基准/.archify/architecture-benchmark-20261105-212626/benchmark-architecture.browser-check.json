@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "browser-check",
+  "evidenceKind": "automated-browser",
+  "status": "fail",
+  "visualReview": "not-requested",
+  "provenance": "current",
+  "deliveryReceiptId": "32542a24-6056-41b3-89ad-d99cd8cd788d",
+  "artifact": {
+    "path": "D:\\Download\\Python\\项目\\业绩比较基准\\.archify\\architecture-benchmark-20261105-212626\\benchmark-architecture.html",
+    "sha256": "8fc3d6960d256e93141f732cd02ac4b87a263864f1ee2bd03a7e0ef31df0fb00",
+    "bytes": 874114
+  },
+  "state": {
+    "detail": "read",
+    "motion": "still"
+  },
+  "chrome": {
+    "status": "available",
+    "executable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+  },
+  "diagnostics": [
+    {
+      "code": "viewer/temp-cleanup-incomplete",
+      "severity": "error",
+      "message": "Browser cleanup could not safely finish; inspect the reported retained path.",
+      "subject": {
+        "artifact": "D:\\Download\\Python\\项目\\业绩比较基准\\.archify\\architecture-benchmark-20261105-212626\\benchmark-architecture.html"
+      },
+      "evidence": {
+        "reason": "Temporary directory cleanup failed; retained path \"C:\\Users\\jhlw\\AppData\\Local\\Temp\\archify-visual-check-profile-FHctsI\": EPERM, Permission denied: \\\\?\\C:\\Users\\jhlw\\AppData\\Local\\Temp\\archify-visual-check-profile-FHctsI '\\\\?\\C:\\Users\\jhlw\\AppData\\Local\\Temp\\archify-visual-check-profile-FHctsI'",
+        "retainedDirectory": "C:\\Users\\jhlw\\AppData\\Local\\Temp\\archify-visual-check-profile-FHctsI"
+      },
+      "supportedFixes": [
+        "resolve the reported process or filesystem failure; verify directory ownership before manual cleanup"
+      ]
+    }
+  ],
+  "containment": {
+    "status": "fail",
+    "policy": "fit-or-reader-declared-readable-vertical-scroll",
+    "viewports": []
+  },
+  "themeStates": {
+    "status": "fail",
+    "viewports": []
+  },
+  "readability": {
+    "status": "fail",
+    "minimumProjectedNodeTextPx": 6,
+    "viewports": []
+  },
+  "viewerChrome": {
+    "status": "fail",
+    "viewports": []
+  },
+  "captures": {
+    "status": "not-requested",
+    "screenshots": [],
+    "contactSheet": null
+  },
+  "sidecars": {
+    "receipt": "benchmark-architecture.browser-check.json",
+    "files": []
+  },
+  "error": "Temporary directory cleanup failed; retained path \"C:\\Users\\jhlw\\AppData\\Local\\Temp\\archify-visual-check-profile-FHctsI\": EPERM, Permission denied: \\\\?\\C:\\Users\\jhlw\\AppData\\Local\\Temp\\archify-visual-check-profile-FHctsI '\\\\?\\C:\\Users\\jhlw\\AppData\\Local\\Temp\\archify-visual-check-profile-FHctsI'"
+}

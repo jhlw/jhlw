@@ -1,0 +1,267 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "finalize",
+  "status": "pass",
+  "type": "dataflow",
+  "quality": "showcase",
+  "specification": {
+    "path": "D:\\Download\\Python\\项目\\业绩比较基准\\.archify\\dataflow-benchmark-fetch-20261105-215431\\candidate.json",
+    "sha256": "c389cb4b25e7a011f41bc376bd13102a0aa421d8356b353bb4ac3cbee30a2406",
+    "bytes": 12127
+  },
+  "artifact": {
+    "path": "D:\\Download\\Python\\项目\\业绩比较基准\\.archify\\dataflow-benchmark-fetch-20261105-215431\\benchmark-fetch-dataflow.html",
+    "sha256": "d602a60cda882550c4bceaebae1c9fed9137e9a2070ce325e27ca0d379fc835e",
+    "bytes": 864984
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "pass"
+  },
+  "diagnostics": [],
+  "diagnosticSummary": {
+    "total": 0,
+    "shown": 0,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "D:\\Download\\Python\\项目\\业绩比较基准\\.archify\\dataflow-benchmark-fetch-20261105-215431\\benchmark-fetch-dataflow.finalize.json",
+    "summaryReceipt": "D:\\Download\\Python\\项目\\业绩比较基准\\.archify\\dataflow-benchmark-fetch-20261105-215431\\benchmark-fetch-dataflow.finalize-summary.json",
+    "browserCheckReceipt": "D:\\Download\\Python\\项目\\业绩比较基准\\.archify\\dataflow-benchmark-fetch-20261105-215431\\benchmark-fetch-dataflow.browser-check.json"
+  },
+  "update": {
+    "status": "current",
+    "installedVersion": "3.2.0",
+    "availableVersion": "3.2.0",
+    "releaseNotes": null,
+    "checkedAt": "2026-11-05T13:32:24.656Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  },
+  "visualReview": "not-requested",
+  "durationMs": 8865,
+  "browserCheck": {
+    "requested": true,
+    "ran": true
+  },
+  "visualReviewRecommendation": {
+    "action": "inspect-route-readability",
+    "signals": {
+      "resolvedCrossovers": 10,
+      "routesOverSuggestedBends": 2
+    },
+    "reason": "Automated gates passed, but crossings or detours still need perceptual review before claiming visual quality.",
+    "affectedRoutes": {
+      "crossings": [
+        {
+          "left": {
+            "id": "f-exch-fetch",
+            "from": "exch",
+            "to": "fetchIdx",
+            "label": "合约收盘价·视同指数",
+            "collectionIndex": 1,
+            "artifactIndex": 2
+          },
+          "right": {
+            "id": "f-pboc-fx",
+            "from": "pboc",
+            "to": "fetchFx",
+            "label": "中间价",
+            "collectionIndex": 2,
+            "artifactIndex": 3
+          },
+          "point": [
+            199.5,
+            262
+          ]
+        },
+        {
+          "left": {
+            "id": "f-exch-fetch",
+            "from": "exch",
+            "to": "fetchIdx",
+            "label": "合约收盘价·视同指数",
+            "collectionIndex": 1,
+            "artifactIndex": 2
+          },
+          "right": {
+            "id": "f-rate-calc",
+            "from": "rate",
+            "to": "rateCalc",
+            "label": "分段年利率",
+            "collectionIndex": 3,
+            "artifactIndex": 4
+          },
+          "point": [
+            199.5,
+            401
+          ]
+        },
+        {
+          "left": {
+            "id": "f-exch-fetch",
+            "from": "exch",
+            "to": "fetchIdx",
+            "label": "合约收盘价·视同指数",
+            "collectionIndex": 1,
+            "artifactIndex": 2
+          },
+          "right": {
+            "id": "f-idx-recon",
+            "from": "idxpub",
+            "to": "recon",
+            "label": "公布涨跌幅·仅对账",
+            "collectionIndex": 10,
+            "artifactIndex": 11
+          },
+          "point": [
+            199.5,
+            166
+          ]
+        },
+        {
+          "left": {
+            "id": "f-pboc-fx",
+            "from": "pboc",
+            "to": "fetchFx",
+            "label": "中间价",
+            "collectionIndex": 2,
+            "artifactIndex": 3
+          },
+          "right": {
+            "id": "f-cal-idx",
+            "from": "cal3",
+            "to": "fetchIdx",
+            "label": "A股/境外日历",
+            "collectionIndex": 4,
+            "artifactIndex": 5
+          },
+          "point": [
+            237.5,
+            262
+          ]
+        },
+        {
+          "left": {
+            "id": "f-pboc-fx",
+            "from": "pboc",
+            "to": "fetchFx",
+            "label": "中间价",
+            "collectionIndex": 2,
+            "artifactIndex": 3
+          },
+          "right": {
+            "id": "f-idx-recon",
+            "from": "idxpub",
+            "to": "recon",
+            "label": "公布涨跌幅·仅对账",
+            "collectionIndex": 10,
+            "artifactIndex": 11
+          },
+          "point": [
+            207.5,
+            262
+          ]
+        },
+        {
+          "left": {
+            "id": "f-rate-calc",
+            "from": "rate",
+            "to": "rateCalc",
+            "label": "分段年利率",
+            "collectionIndex": 3,
+            "artifactIndex": 4
+          },
+          "right": {
+            "id": "f-cal-idx",
+            "from": "cal3",
+            "to": "fetchIdx",
+            "label": "A股/境外日历",
+            "collectionIndex": 4,
+            "artifactIndex": 5
+          },
+          "point": [
+            237.5,
+            385
+          ]
+        },
+        {
+          "left": {
+            "id": "f-rate-calc",
+            "from": "rate",
+            "to": "rateCalc",
+            "label": "分段年利率",
+            "collectionIndex": 3,
+            "artifactIndex": 4
+          },
+          "right": {
+            "id": "f-cal-fx",
+            "from": "cal3",
+            "to": "fetchFx",
+            "label": "中国工作日",
+            "collectionIndex": 5,
+            "artifactIndex": 6
+          },
+          "point": [
+            237.5,
+            385
+          ]
+        },
+        {
+          "left": {
+            "id": "f-rate-calc",
+            "from": "rate",
+            "to": "rateCalc",
+            "label": "分段年利率",
+            "collectionIndex": 3,
+            "artifactIndex": 4
+          },
+          "right": {
+            "id": "f-idx-recon",
+            "from": "idxpub",
+            "to": "recon",
+            "label": "公布涨跌幅·仅对账",
+            "collectionIndex": 10,
+            "artifactIndex": 11
+          },
+          "point": [
+            207.5,
+            401
+          ]
+        }
+      ],
+      "detours": [
+        {
+          "relationship": {
+            "id": "f-idx-fetch",
+            "from": "idxpub",
+            "to": "fetchIdx",
+            "label": "日收盘点位",
+            "collectionIndex": 0,
+            "artifactIndex": 1
+          },
+          "bends": 4,
+          "stretch": 1.294
+        },
+        {
+          "relationship": {
+            "id": "f-rate-calc",
+            "from": "rate",
+            "to": "rateCalc",
+            "label": "分段年利率",
+            "collectionIndex": 3,
+            "artifactIndex": 4
+          },
+          "bends": 4,
+          "stretch": 1.34
+        }
+      ],
+      "truncated": true
+    },
+    "repair": "Advisory only: this mode places or routes these relationships itself. Report them; do not remove relationships or meaning to reduce crossings."
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "基准取数逻辑——分构成类型与日期情形的数据流水线",
+    "locale": "zh-CN",
+    "output": ".archify/dataflow-benchmark-fetch-20261105-215431/benchmark-fetch-dataflow.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/jhlw/jhlw.git",
+      "provider": "github",
+      "link_mode": "local-only",
+      "revision": "a7f496f6f588a4b88b2a2ca6b23500337a912c9a"
+    }
+  },
+  "stages": [
+    { "label": "披露源" },
+    { "label": "取数·最近披露日" },
+    { "label": "要素日收益率" },
+    { "label": "加权合成" },
+    { "label": "序列输出" }
+  ],
+  "nodes": [
+    { "id": "idxpub", "type": "external", "label": "指数公司点位", "sublabel": "本币/非本币·收盘点位", "stage": 0, "row": 0, "sources": [{ "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 22, "end_line": 23, "label": "本币/非本币指数取数行" }, { "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 16, "end_line": 16, "label": "点位自算唯一来源" }] },
+    { "id": "pboc", "type": "external", "label": "人民银行中间价", "sublabel": "工作日 9:15 公布", "stage": 0, "row": 1, "sources": [{ "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 13, "end_line": 13, "label": "估值汇率定夺" }, { "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 24, "end_line": 24, "label": "汇率取数行" }] },
+    { "id": "rate", "type": "external", "label": "央行基准利率", "sublabel": "活期/定存/通知存款", "stage": 0, "row": 2, "sources": [{ "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 25, "end_line": 25, "label": "固定利率取数行" }] },
+    { "id": "exch", "type": "external", "label": "交易所合约价格", "sublabel": "上金所·夜盘归次日", "tag": "专项B", "stage": 0, "row": 3, "sources": [{ "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 40, "end_line": 40, "label": "专项B 合约视同指数" }, { "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 130, "end_line": 130, "label": "合约价格定夺" }] },
+    { "id": "cal3", "type": "database", "label": "三条独立日历", "sublabel": "A股/境外市场/中国工作日", "tag": "相互独立", "stage": 0, "row": 4, "sources": [{ "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 10, "end_line": 12, "label": "计算日历·出具时点" }, { "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 77, "end_line": 77, "label": "三条日历独立作用" }] },
+    { "id": "fetchIdx", "type": "backend", "label": "最近披露日取点位", "sublabel": "t 日未发布→最近披露日 d*", "tag": "美股 T+1 取 T 日收盘", "stage": 1, "row": 0, "sources": [{ "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 12, "end_line": 12, "label": "最近披露日原则" }, { "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 124, "end_line": 124, "label": "美股 T+1 定夺" }] },
+    { "id": "fetchFx", "type": "backend", "label": "估值汇率取数", "sublabel": "季末非交易日对齐 d*", "tag": "未公布取最近值", "stage": 1, "row": 1, "sources": [{ "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 13, "end_line": 13, "label": "折算公式·日历" }, { "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 125, "end_line": 125, "label": "季末汇率对齐定夺" }] },
+    { "id": "rateCalc", "type": "backend", "label": "利率天数计提", "sublabel": "2026-07-01 前 /360·起当年天数", "tag": "全局定夺", "stage": 1, "row": 2, "sources": [{ "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 15, "end_line": 15, "label": "利率天数基准" }, { "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 128, "end_line": 128, "label": "天数基准定夺" }] },
+    { "id": "recon", "type": "security", "label": "入库对账校验", "sublabel": "容差比较·不进计算链", "stage": 1, "row": 4, "sources": [{ "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 16, "end_line": 16, "label": "公布涨跌幅仅对账" }, { "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 126, "end_line": 126, "label": "收益率来源定夺" }] },
+    { "id": "rIdx", "type": "backend", "label": "本币指数 r", "sublabel": "C(t)/C(t−1)−1·8 位", "tag": "中债未发布记 0", "stage": 2, "row": 0, "sources": [{ "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 56, "end_line": 57, "label": "类型2 取数·中债延迟" }, { "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 127, "end_line": 127, "label": "记 0 实证" }] },
+    { "id": "rFxIdx", "type": "backend", "label": "非本币指数 r", "sublabel": "Cb(t)×H(t)/Cb(t−1)×H(t−1)−1", "tag": "休市=纯汇率效应", "stage": 2, "row": 1, "sources": [{ "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 77, "end_line": 80, "label": "类型4 公式·S2·S6" }, { "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 103, "end_line": 103, "label": "专项A 人民币版严格 0" }] },
+    { "id": "rRate", "type": "backend", "label": "固定利率 r", "sublabel": "年利率/天数基准×自然日", "tag": "节后首日并入", "stage": 2, "row": 2, "sources": [{ "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 49, "end_line": 51, "label": "类型1 自然日计息" }, { "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 63, "end_line": 64, "label": "类型3 假期利息并入" }] },
+    { "id": "compose", "type": "backend", "label": "当日合成 R(t)", "sublabel": "ΣWi×ri(t)·七类构成", "tag": "动态再平衡", "stage": 3, "row": 1, "sources": [{ "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 11, "end_line": 11, "label": "要素分解·加权合成" }, { "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 108, "end_line": 118, "label": "七类×情形总表" }] },
+    { "id": "chain", "type": "backend", "label": "逐日连乘", "sublabel": "区间累计=∏(1+R)−1", "stage": 4, "row": 0, "sources": [{ "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 11, "end_line": 11, "label": "逐日连乘口径" }, { "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 62, "end_line": 62, "label": "类型3 合成后连乘" }] },
+    { "id": "sum", "type": "backend", "label": "逐日加总", "sublabel": "唯一不连乘的类型", "tag": "纯利率", "stage": 4, "row": 2, "sources": [{ "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 49, "end_line": 49, "label": "区间收益=逐日加总" }] },
+    { "id": "series", "type": "database", "label": "基准累计增长率序列", "sublabel": "非货 4 位/货基 6 位·不截位", "tag": "日频", "stage": 4, "row": 1, "sources": [{ "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 14, "end_line": 14, "label": "精度标准" }, { "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 10, "end_line": 10, "label": "季末年末出具披露值" }] }
+  ],
+  "flows": [
+    { "id": "f-idx-fetch", "from": "idxpub", "to": "fetchIdx", "label": "日收盘点位", "variant": "emphasis" },
+    { "id": "f-exch-fetch", "from": "exch", "to": "fetchIdx", "label": "合约收盘价·视同指数" },
+    { "id": "f-pboc-fx", "from": "pboc", "to": "fetchFx", "label": "中间价" },
+    { "id": "f-rate-calc", "from": "rate", "to": "rateCalc", "label": "分段年利率" },
+    { "id": "f-cal-idx", "from": "cal3", "to": "fetchIdx", "label": "A股/境外日历" },
+    { "id": "f-cal-fx", "from": "cal3", "to": "fetchFx", "label": "中国工作日" },
+    { "id": "f-fetch-ridx", "from": "fetchIdx", "to": "rIdx", "label": "t 与 t−1 点位" },
+    { "id": "f-fetch-rfx", "from": "fetchIdx", "to": "rFxIdx", "label": "最近境外收盘 d*" },
+    { "id": "f-fx-rfx", "from": "fetchFx", "to": "rFxIdx", "label": "H(t)/H(t−1)" },
+    { "id": "f-ratecalc-rrate", "from": "rateCalc", "to": "rRate", "label": "自然日间隔计息" },
+    { "id": "f-idx-recon", "from": "idxpub", "to": "recon", "label": "公布涨跌幅·仅对账", "variant": "security" },
+    { "id": "f-ridx-compose", "from": "rIdx", "to": "compose", "label": "本币要素 r" },
+    { "id": "f-rfx-compose", "from": "rFxIdx", "to": "compose", "label": "非本币要素 r" },
+    { "id": "f-rrate-compose", "from": "rRate", "to": "compose", "label": "利率要素 r" },
+    { "id": "f-rrate-sum", "from": "rRate", "to": "sum", "label": "纯利率类·不加权" },
+    { "id": "f-compose-chain", "from": "compose", "to": "chain", "label": "R(t) 逐日", "variant": "emphasis" },
+    { "id": "f-chain-series", "from": "chain", "to": "series", "label": "∏(1+R)−1", "variant": "emphasis" },
+    { "id": "f-sum-series", "from": "sum", "to": "series", "label": "逐日算术加总" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "六项全局定夺（2026-11-04）", "items": ["指数日收益率以公布点位自算为唯一来源，公布涨跌幅仅作入库对账", "利率天数：2026-07-01 前 /360，起按当年实际总天数（365/366）", "美股基准 T+1 出具，美股要素取 T 日收盘（不滞后）", "季末非交易日汇率与指数披露日 d* 对齐；估值汇率统一人民银行中间价", "合约价格默认交易所收盘价，合同另有约定从合同", "固定利率无日历，按自然日连续计息，不受三条交易日历约束"] },
+    { "dot": "emerald", "title": "日期情形 S1–S6 行为", "items": ["S1 常规：全要素取 t 日值", "S2 境外休市：点位沿用最近披露日，收益率退化为纯汇率效应 H(t)/H(t−1)−1（非零）", "S3 长假后首日：境外多日涨跌＋汇率累积变动＋假期利息，三者并入单日一行", "S4 季末非交易日：不另立收益行，取最近披露日 d* 出具披露值", "S5 叠加：各要素最近披露日可不同步，各取各自的 d*", "S6 美股时区：T+1 凌晨收盘后计算，与 QDII 净值披露节奏一致"] },
+    { "dot": "rose", "title": "七类构成与专项", "items": ["纯利率类唯一不加权不连乘：区间收益＝逐日算术加总", "其余六类（纯本币/本币+利率/纯非本币/非本币+利率/非本币+本币/非本币+本币+利率）均加权合成后逐日连乘", "专项A：人民币计价境外指数免折汇，但披露日历仍跟境外市场，休市日收益率严格 0", "专项B：合约价格视同指数，日历按所属交易所，夜盘归属下一交易日", "000270 实证：切换前后六日期演算与序列逐位吻合"] }
+  ]
+}

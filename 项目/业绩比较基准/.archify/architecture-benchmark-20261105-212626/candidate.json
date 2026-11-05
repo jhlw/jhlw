@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "业绩比较基准管理系统——统一计算与披露架构",
+    "locale": "zh-CN",
+    "output": ".archify/architecture-benchmark-20261105-212626/benchmark-architecture.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/jhlw/jhlw.git",
+      "provider": "github",
+      "link_mode": "local-only",
+      "revision": "a7f496f6f588a4b88b2a2ca6b23500337a912c9a"
+    }
+  },
+  "components": [
+    { "id": "valuation", "type": "external", "label": "估值系统", "sublabel": "净值与日历来源", "pos": [250, 40], "size": [130, 60], "sources": [{ "path": "项目/业绩比较基准/业绩比较基准收益率统一计算与披露业务解决方案v2.2.md", "line": 62, "end_line": 68, "label": "§3.2 上游数据源" }, { "path": "项目/业绩比较基准/业绩比较基准收益率统一计算与披露业务解决方案v2.2.md", "line": 246, "end_line": 248, "label": "F05 透传原则" }] },
+    { "id": "quotesrc", "type": "external", "label": "行情数据源", "sublabel": "万得/iFinD/Choice/彭博/路透", "pos": [560, 40], "size": [150, 60], "sources": [{ "path": "项目/业绩比较基准/业绩比较基准收益率统一计算与披露业务解决方案v2.2.md", "line": 238, "end_line": 242, "label": "F04 多数据来源" }, { "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 18, "end_line": 25, "label": "四类要素取数规则" }] },
+    { "id": "pboc", "type": "external", "label": "人民银行", "sublabel": "中间价·工作日 9:15", "pos": [850, 40], "size": [140, 60], "sources": [{ "path": "项目/业绩比较基准/业绩比较基准收益率统一计算与披露业务解决方案v2.2.md", "line": 180, "end_line": 189, "label": "§5.4 汇率折算" }, { "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 13, "end_line": 13, "label": "估值汇率定夺" }] },
+    { "id": "ingest", "type": "backend", "label": "估值数据接入", "sublabel": "透传不重算·全精度", "tag": "F05", "pos": [250, 180], "size": [140, 64], "sources": [{ "path": "项目/业绩比较基准/业绩比较基准收益率统一计算与披露业务解决方案v2.2.md", "line": 219, "end_line": 219, "label": "F05" }, { "path": "项目/业绩比较基准/业绩比较基准收益率统一计算与披露业务解决方案v2.2.md", "line": 246, "end_line": 248, "label": "透传详述" }] },
+    { "id": "idxlib", "type": "database", "label": "指数库", "sublabel": "主数据·Wind 码唯一键", "tag": "F02", "pos": [480, 180], "size": [120, 64], "sources": [{ "path": "项目/业绩比较基准/业绩比较基准收益率统一计算与披露业务解决方案v2.2.md", "line": 230, "end_line": 232, "label": "F02 详述" }] },
+    { "id": "quotelib", "type": "database", "label": "基准行情库", "sublabel": "原币存储·生效前不入算", "tag": "F04", "pos": [680, 180], "size": [130, 64], "sources": [{ "path": "项目/业绩比较基准/业绩比较基准收益率统一计算与披露业务解决方案v2.2.md", "line": 238, "end_line": 244, "label": "F04 详述" }, { "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 16, "end_line": 16, "label": "点位自算唯一来源" }] },
+    { "id": "calendar", "type": "database", "label": "三类交易日历", "sublabel": "A股/货币市场/QD", "pos": [900, 180], "size": [140, 64], "sources": [{ "path": "项目/业绩比较基准/业绩比较基准收益率统一计算与披露业务解决方案v2.2.md", "line": 117, "end_line": 119, "label": "步骤2 日期轴" }, { "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 10, "end_line": 12, "label": "三条独立日历·最近披露日" }] },
+    { "id": "gate", "type": "security", "label": "齐套检查与告警", "sublabel": "基金粒度·缺数阻断+告警", "pos": [250, 320], "size": [150, 64], "sources": [{ "path": "项目/业绩比较基准/业绩比较基准收益率统一计算与披露业务解决方案v2.2.md", "line": 92, "end_line": 99, "label": "§4.1 日频主流程" }, { "path": "项目/业绩比较基准/业绩比较基准收益率统一计算与披露业务解决方案v2.2.md", "line": 244, "end_line": 244, "label": "缺行情处置" }] },
+    { "id": "config", "type": "database", "label": "产品基准配置库", "sublabel": "权重=100%·调整点·版本化", "tag": "F03", "pos": [480, 320], "size": [140, 64], "sources": [{ "path": "项目/业绩比较基准/业绩比较基准收益率统一计算与披露业务解决方案v2.2.md", "line": 234, "end_line": 236, "label": "F03 详述" }, { "path": "项目/业绩比较基准/业绩比较基准收益率统一计算与披露业务解决方案v2.2.md", "line": 72, "end_line": 73, "label": "配置产品化·追溯重算" }] },
+    { "id": "engine", "type": "backend", "label": "业绩计算引擎", "sublabel": "1+r→Σw·r→∏(1+R)−1", "tag": "F06/F07", "pos": [470, 460], "size": [180, 72], "sources": [{ "path": "项目/业绩比较基准/业绩比较基准收益率统一计算与披露业务解决方案v2.2.md", "line": 121, "end_line": 134, "label": "步骤3/4 计算" }, { "path": "项目/业绩比较基准/业绩比较基准收益率统一计算与披露业务解决方案v2.2.md", "line": 151, "end_line": 178, "label": "§5.2/5.3 公式" }, { "path": "项目/业绩比较基准/附件3-分构成类型基准取数逻辑与日期情形实例.md", "line": 8, "end_line": 16, "label": "总体口径·六项定夺" }] },
+    { "id": "review", "type": "security", "label": "质量复核", "sublabel": "独立引擎重算·人工确认", "tag": "F09", "pos": [480, 600], "size": [150, 64], "sources": [{ "path": "项目/业绩比较基准/业绩比较基准收益率统一计算与披露业务解决方案v2.2.md", "line": 131, "end_line": 136, "label": "步骤5 三层复核" }, { "path": "项目/业绩比较基准/业绩比较基准收益率统一计算与披露业务解决方案v2.2.md", "line": 223, "end_line": 223, "label": "F09" }] },
+    { "id": "query", "type": "frontend", "label": "业绩基准数据查询", "sublabel": "开放查询·永久保留", "tag": "F08", "pos": [760, 600], "size": [150, 64], "sources": [{ "path": "项目/业绩比较基准/业绩比较基准收益率统一计算与披露业务解决方案v2.2.md", "line": 250, "end_line": 252, "label": "F08 详述" }] },
+    { "id": "metrics", "type": "backend", "label": "统一指标服务", "sublabel": "净值+基准收益率·唯一同源", "pos": [250, 740], "size": [160, 64], "sources": [{ "path": "项目/业绩比较基准/业绩比较基准收益率统一计算与披露业务解决方案v2.2.md", "line": 74, "end_line": 77, "label": "一对多分发原则" }] },
+    { "id": "push", "type": "messagebus", "label": "推送服务", "sublabel": "批次覆盖重推·更正重推", "tag": "F10", "pos": [520, 740], "size": [130, 64], "sources": [{ "path": "项目/业绩比较基准/业绩比较基准收益率统一计算与披露业务解决方案v2.2.md", "line": 254, "end_line": 256, "label": "F10 详述" }] },
+    { "id": "admin", "type": "frontend", "label": "管理台", "sublabel": "任务监控·重算补算·审计", "tag": "P1", "pos": [760, 740], "size": [140, 64], "sources": [{ "path": "项目/业绩比较基准/业绩比较基准收益率统一计算与披露业务解决方案v2.2.md", "line": 225, "end_line": 225, "label": "F11 后续迭代" }] },
+    { "id": "web", "type": "external", "label": "官网", "sublabel": "业绩展示·同位置渲染", "pos": [440, 880], "size": [120, 60], "sources": [{ "path": "项目/业绩比较基准/业绩比较基准收益率统一计算与披露业务解决方案v2.2.md", "line": 138, "end_line": 143, "label": "§4.3 披露渠道" }] },
+    { "id": "app", "type": "external", "label": "APP", "sublabel": "同源同批次", "pos": [620, 880], "size": [120, 60], "sources": [{ "path": "项目/业绩比较基准/业绩比较基准收益率统一计算与披露业务解决方案v2.2.md", "line": 138, "end_line": 143, "label": "§4.3 披露渠道" }] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "业绩比较基准管理系统（产品系统）", "wraps": ["ingest", "idxlib", "quotelib", "calendar", "config", "gate", "engine", "review", "query", "metrics", "push", "admin"] }
+  ],
+  "connections": [
+    { "id": "val-to-ingest", "from": "valuation", "to": "ingest", "label": "净值增长率序列·全精度", "variant": "emphasis" },
+    { "id": "qs-to-ql", "from": "quotesrc", "to": "quotelib", "label": "点位/利率/合约收盘价" },
+    { "id": "pboc-to-ql", "from": "pboc", "to": "quotelib", "label": "中间价·直接汇率" },
+    { "id": "idx-to-cfg", "from": "idxlib", "to": "config", "label": "成分选用范围" },
+    { "id": "ingest-to-gate", "from": "ingest", "to": "gate", "label": "基准日期轴" },
+    { "id": "cfg-to-engine", "from": "config", "to": "engine", "label": "权重与版本", "variant": "emphasis" },
+    { "id": "ql-to-engine", "from": "quotelib", "to": "engine", "label": "最近披露日取数" },
+    { "id": "cal-to-engine", "from": "calendar", "to": "engine", "label": "三条日历独立作用" },
+    { "id": "gate-to-engine", "from": "gate", "to": "engine", "label": "齐套即算" },
+    { "id": "engine-to-review", "from": "engine", "to": "review", "label": "序列送复核" },
+    { "id": "review-to-metrics", "from": "review", "to": "metrics", "label": "复核通过→发布" },
+    { "id": "ingest-to-metrics", "from": "ingest", "to": "metrics", "label": "净值增长率透传分发", "variant": "emphasis", "fromSide": "left", "toSide": "left", "via": [[232, 212], [232, 772]] },
+    { "id": "metrics-to-push", "from": "metrics", "to": "push", "label": "同源分发" },
+    { "id": "push-to-web", "from": "push", "to": "web", "label": "按披露批次" },
+    { "id": "push-to-app", "from": "push", "to": "app", "label": "同源同批次" },
+    { "id": "engine-to-query", "from": "engine", "to": "query", "label": "开放查询·留痕" },
+    { "id": "admin-to-engine", "from": "admin", "to": "engine", "label": "监控·重算", "variant": "dashed" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "四层架构与透传原则", "items": ["数据层→计算层→服务层→披露层（§3.1）", "净值增长率透传不重算，口径责任在估值系统侧", "服务层唯一同源序列，官网/APP 禁止渠道自算", "微信渠道、定期报告导出不在本期范围"] },
+    { "dot": "emerald", "title": "计算口径·六项全局定夺（2026-11-04）", "items": ["当日合成 R=Σw·r，逐日连乘 ∏(1+R)−1，中间结果 8 位小数", "利率天数：2026-07-01 前 /360，起按当年实际天数（365/366）", "指数日收益率以公布点位自算为唯一来源，公布涨跌幅仅作入库对账", "美股基准 T+1 出具，美股要素取 T 日收盘", "季末非交易日汇率与指数披露日对齐；估值汇率统一人民银行中间价", "合约价格默认交易所收盘价，合同另有约定从合同"] },
+    { "dot": "rose", "title": "维护与治理（v2.5 定稿口径）", "items": ["维护归口投资风险部，经办→审核双步，生效前不进入计算", "权重合计必须等于 100%（v2.2 文稿「≤100%+差额归现金」已作废）", "缺数即阻断+告警，修复后自动重算；差异＞0.01 个百分点走更正重推", "配置版本化（生效起止区间），基准变更触发历史追溯重算", "过程数据开放查询、永久保留；展示精度非货基 4 位/货基 6 位"] }
+  ]
+}
