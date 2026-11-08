@@ -8,6 +8,7 @@
 - [~] 选择并规划第一个真实 feature。
 
 ## Recent Changes
+- [x] BUG-003 修复用户级 browser-harness Windows 伪链接：两个 `SKILL.md` 指针替换为合法根内容，启动告警消除。
 
 - [x] TOOL-001 安装并接入 GitHub Spec Kit：`specify-cli` 1.0.8、`.specify/` 脚手架与 Claude/Codex 双集成就绪，默认集成为 Codex。
 - [x] BUG-002 修复 pencil MCP 启动失败：扩展升级导致配置里的 0.6.68 路径失效，已更新为 0.6.70 并验证。
