@@ -167,38 +167,38 @@ button{font-family:inherit;cursor:pointer}
     <a href="#s2i" data-s="s2i"><span class="ic">⊞</span>指数库</a>
     <a href="#s2" data-s="s2"><span class="ic">≣</span>产品基准配置</a>
     <div class="nav-group">业绩查询</div>
-    <a href="#s1" class="on" data-s="s1"><span class="ic">◧</span>业绩基准及净值增长率查询</a>
+    <a href="#s1" class="on" data-s="s1"><span class="ic">◧</span>业绩基准及净值收益率查询</a>
     <div class="nav-group">基准行情库</div>
     <a href="#s3" data-s="s3" class="sub"><span class="ic">∿</span>基准行情查询</a>
     <a href="#s3m" data-s="s3m" class="sub"><span class="ic">✎</span>基准行情维护</a>
   </nav>
   <div class="side-foot">
-    界面原型 · 示例数据<br>依据《业务解决方案 v2.5》<br>建信基金（产品代码源自生产工作簿，其余标注"示例"）
+    界面原型 · 示例数据<br>依据《业务解决方案 v2.6》<br>建信基金（产品代码源自生产工作簿，其余标注"示例"）
   </div>
 </aside>
 <!-- ================= 主区 ================= -->
 <div class="main">
   <header class="topbar">
-    <span class="crumb" id="crumb">业绩基准及净值增长率查询</span>
+    <span class="crumb" id="crumb">业绩基准及净值收益率查询</span>
     <span class="right">
       <span>投资风险部 · 李工</span><span class="avatar">李</span>
     </span>
   </header>
   <main class="content">
-<!-- ============ S1 业绩基准及净值增长率查询（参照 jizhundianwei.html 设计） ============ -->
+<!-- ============ S1 业绩基准及净值收益率查询（参照 jizhundianwei.html 设计） ============ -->
 <section class="screen on" id="s1">
   <div class="panel">
-    <div class="ph"><h3>业绩基准及净值增长率查询</h3><span class="sub">基准自算结果与净值增长率（估值系统透传）· 组合基准逐日收益率 · 数据范围为今日及历史数据（今日批次＋全量历史序列）· 默认按净值日期倒序</span>
+    <div class="ph"><h3>业绩基准及净值收益率查询</h3><span class="sub">基准自算结果与基金净值收益率（产品系统自算）· 组合基准逐日收益率 · 数据范围为今日及历史数据（今日批次＋全量历史序列）· 默认按净值日期倒序</span>
       <span class="ops"><span class="note" id="bqNote"></span><button class="btn" id="bqExportBtn" onclick="bqExport()">导出数据</button></span></div>
     <div class="qry">
       <label>基金代码<input id="bqFund" placeholder="例如：530003" style="width:150px"></label>
       <label>开始日期<input type="date" id="bqStart" value="2026-10-08"></label>
       <label>结束日期<input type="date" id="bqEnd" value="2026-10-14"></label>
       <button class="btn pri" onclick="bqQuery()">查询</button><button class="btn" onclick="bqReset()">重置</button>
-      <span class="note" style="margin-left:auto">基金代码精确匹配；累计净值增长率＝自合同成立日起每日 1+净值增长率 连乘后减 1（净值增长率以估值系统输出为准，透传不重算）；基准累计增长率＝自合同成立日起每日 1+R 连乘后减 1（R 为当日加权合成日收益率，利率成分同样经合成日收益参与连乘；起始日期为合同成立日，终止日期为净值日期当日）；每日超额＝净值收益率−基准收益率</span>
+      <span class="note" style="margin-left:auto">基金代码精确匹配；累计净值增长率＝自基金合同生效日（含当日）起每日 1+净值收益率 连乘后减 1（净值信息取自估值系统，净值收益率与累计净值增长率由产品系统计算）；基准累计增长率＝自合同成立日起每日 1+R 连乘后减 1（R 为当日加权合成日收益率，利率成分同样经合成日收益参与连乘；起始日期为合同成立日，终止日期为净值日期当日）；每日超额＝净值收益率−基准收益率</span>
     </div>
     <div class="pb flush"><table class="tbl" id="bqTbl">
-      <tr><th class="ctr" style="width:34px"><input type="checkbox" id="bqCkAll" title="全选"></th><th>基金代码</th><th>基金名称</th><th class="ctr" style="width:56px">份额</th><th class="mono" id="bqDateTh">净值日期 <button class="sortbtn" title="切换升序/倒序">↓</button></th><th class="num">1+净值增长率</th><th class="num">1+基准收益率</th><th class="num">累计净值增长率</th><th class="num">基准累计增长率</th><th class="num">每日超额</th><th class="num">净值收益率</th><th class="num">基准收益率</th><th class="ctr">计算状态</th></tr>
+      <tr><th class="ctr" style="width:34px"><input type="checkbox" id="bqCkAll" title="全选"></th><th>基金代码</th><th>基金名称</th><th class="ctr" style="width:56px">份额</th><th class="mono" id="bqDateTh">净值日期 <button class="sortbtn" title="切换升序/倒序">↓</button></th><th class="num">1+净值收益率</th><th class="num">1+基准收益率</th><th class="num">累计净值增长率</th><th class="num">基准累计增长率</th><th class="num">每日超额</th><th class="num">净值收益率</th><th class="num">基准收益率</th><th class="ctr">计算状态</th></tr>
       <tbody id="bqBody"></tbody>
     </table>
     <div id="bqEmpty" style="display:none;padding:36px;text-align:center;color:var(--ink3)">暂无查询结果，请调整查询条件后重试</div>
@@ -209,10 +209,10 @@ button{font-family:inherit;cursor:pointer}
       <button class="btn sm pprev" id="bqPrev" disabled>上一页</button><button class="btn sm pnext" id="bqNext">下一页</button>
       <span class="pnote">数据较多时建议缩小日期范围或按基金代码过滤 · 点击表头「净值日期」可切换排序方向</span>
     </div>
-    <div class="note" style="padding:9px 16px;border-top:1px solid var(--line2)">组合基准日收益率由成分基准按合同权重逐日加权合成（每日再平衡）；含外币成分的基金按估值日人民银行中间价折算（折算仅在计算层执行，明细不单列汇率）。指数收益率按日环比（1+r）口径展示；1+净值增长率与累计净值增长率以估值系统输出为准（透传不重算）；基准累计增长率＝自合同成立日起每日 1+R 连乘后减 1（R 为当日合成日收益率，利率成分参与连乘；终止日期为净值日期当日，见下方「计算口径速览」）；每日超额＝净值收益率−基准收益率。基准收益率缺失（计算异常）的基金整行标红并置顶，计算状态显示「异常」，异常日及其后的基准累计增长率、每日超额不输出（显示「—」），净值增长率各列不受影响照常展示。查询结果默认按净值日期倒序。导出规则：勾选行则仅导出勾选项，未勾选则按当前查询结果导出。</div>
+    <div class="note" style="padding:9px 16px;border-top:1px solid var(--line2)">组合基准日收益率由成分基准按合同权重逐日加权合成（每日再平衡）；含外币成分的基金按估值日人民银行中间价折算（折算仅在计算层执行，明细不单列汇率）。指数收益率按日环比（1+r）口径展示；净值信息（单位净值、累计净值及分红、份额折算等权益事件）以估值系统输出为准，1+净值收益率与累计净值增长率由产品系统计算；基准累计增长率＝自合同成立日起每日 1+R 连乘后减 1（R 为当日合成日收益率，利率成分参与连乘；终止日期为净值日期当日，见下方「计算口径速览」）；每日超额＝净值收益率−基准收益率。基准收益率缺失（计算异常）的基金整行标红并置顶，计算状态显示「异常」，异常日及其后的基准累计增长率、每日超额不输出（显示「—」），净值收益率各列不受影响照常展示。查询结果默认按净值日期倒序。导出规则：勾选行则仅导出勾选项，未勾选则按当前查询结果导出。</div>
     <details style="padding:9px 16px;border-top:1px solid var(--line2)"><summary style="cursor:pointer;font-size:12px;color:var(--blue);font-weight:600">计算口径速览（依据《业务解决方案》§4 计算公式）</summary>
       <div class="note" style="padding-top:6px;line-height:2">
-        <b>净值增长率（估值系统透传）</b>：1+净值增长率＝1＋当日净值增长率；累计净值增长率＝自合同成立日起每日 1+净值增长率 连乘后减 1；每日超额ₜ = 净值收益率ₜ − 基准收益率ₜ（基准计算异常时该日超额显示「—」）。<br>
+        <b>基金净值收益率（产品系统自算，净值信息取自估值系统）</b>：净值收益率 R(t)＝(单位净值(t)＋每份分红(t))÷单位净值(t−1)−1（发生份额折算时按折算比例还原后计算）；1+净值收益率＝1＋R(t)；累计净值增长率＝自基金合同生效日（含当日）起每日 1+净值收益率 连乘后减 1；每日超额ₜ = 净值收益率ₜ − 基准收益率ₜ（基准计算异常时该日超额显示「—」）。<br>
         <b>每日 1+基准收益率</b>：指数类 1+rₜ = Indexₜ / Indexₜ₋₁（外盘指数按原币行情，计算时先经汇率折算）；利率类按天数基准分时点切换——2026-07-01 前（至 06-30）1+rₜ = 1 + y′ₜ/360 × (dₜ − dₜ₋₁)，2026-07-01 起（含当日）1+rₜ = 1 + y′ₜ/365 × (dₜ − dₜ₋₁)；配置调整点的成分 y′ₜ = yₜ ± 调整点（百分数）。<br>
         <b>组合基准日收益（每日再平衡）</b>：rᵇ(组合)ₜ = Σᵢ wᵢ × rᵢₜ（wᵢ 为合同固定权重，逐日以原权重加权；各成分权重合计须为 100%）。<br>
         <b>基准累计增长率（基点＝合同成立日，自基点日次一净值披露日起累计、含期末日）</b>：按当日合成日收益率 R_d＝Σw_i×r_i,d 逐日连乘 ∏(1+R_d) − 1（利率成分经合成日收益参与连乘，口径见文档 §4.2.2）；跨基准版本与跨天数基准切换自然链接，无需特殊处理。<br>
@@ -793,7 +793,7 @@ button{font-family:inherit;cursor:pointer}
       <!-- 发起面板 -->
       <div id="delPanelInit">
         <dl class="kv" id="delInfo" style="margin-bottom:12px"></dl>
-        <div class="banner warn" style="margin:0 0 12px"><span>⚠</span><div>删除后该产品<b>无业绩比较基准、仅推送基金净值增长率</b>，历史结果归档可查。</div></div>
+        <div class="banner warn" style="margin:0 0 12px"><span>⚠</span><div>删除后该产品<b>无业绩比较基准、仅推送基金净值收益率</b>，历史结果归档可查。</div></div>
         <div style="font-size:12.5px;margin-bottom:6px"><b>删除原因 <span style="color:var(--red)">*</span></b></div>
         <textarea id="delReason" rows="3" placeholder="请详细说明删除原因（如 产品转型 / 基准条款废止）…" style="width:100%;border:1px solid var(--line);border-radius:4px;padding:7px 9px;font-size:12.5px;font-family:inherit"></textarea>
         <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px">
@@ -826,7 +826,7 @@ button{font-family:inherit;cursor:pointer}
 
 <script>
 /* ================= 导航 ================= */
-const TITLES={s1:"业绩基准及净值增长率查询",s2:"产品基准配置",s2i:"指数库",s3:"基准行情查询",s3m:"基准行情维护"};
+const TITLES={s1:"业绩基准及净值收益率查询",s2:"产品基准配置",s2i:"指数库",s3:"基准行情查询",s3m:"基准行情维护"};
 function goto(s){
   document.querySelectorAll(".screen").forEach(e=>e.classList.toggle("on",e.id===s));
   document.querySelectorAll(".nav a").forEach(a=>{a.classList.toggle("on",a.dataset.s===s);a.setAttribute("aria-current",a.dataset.s===s?"page":"false")});
@@ -978,7 +978,7 @@ function submitDelMaint(){
   if(confirm("确认提交删除申请？"))switchDelStep("audit");
 }
 function passDelAudit(){
-  alert("审核通过！删除流程完成，该产品基准配置已停用（无基准仅推送基金净值增长率，历史结果归档可查）");
+  alert("审核通过！删除流程完成，该产品基准配置已停用（无基准仅推送基金净值收益率，历史结果归档可查）");
   if(delTargetCode){const i=CFGROWS.findIndex(r=>r[0]===delTargetCode);if(i>=0)CFGROWS.splice(i,1);}
   cfgPaint();
   closeM("mDel");
@@ -1609,7 +1609,7 @@ document.getElementById("zsSize").addEventListener("change",()=>{zSrcPage=1;zRen
 document.getElementById("zsPrev").addEventListener("click",()=>{zSrcPage--;zRenderSrcSelect()});
 document.getElementById("zsNext").addEventListener("click",()=>{zSrcPage++;zRenderSrcSelect()});
 zRender();
-/* ================= 业绩基准及净值增长率查询（参照 jizhundianwei.html 设计 · 分页＋日期倒序） ================= */
+/* ================= 业绩基准及净值收益率查询（参照 jizhundianwei.html 设计 · 分页＋日期倒序） ================= */
 const BQDAYS=["2026-10-14","2026-10-13","2026-10-11","2026-10-10","2026-10-09","2026-10-08","2026-10-07"];
 const BQFUNDS=[
  {fund:"530003",name:"建信优选成长混合A",share:"A",est:"2026-10-07"},
@@ -1624,7 +1624,7 @@ BQFUNDS.forEach((f,fi)=>{
     if(d<f.est)return; // 合同成立日（含）之前无数据
     const s=Math.sin((fi+1)*13.37+di*7.77);
     const ret=+(s*0.007+0.0003*Math.cos(fi+di)).toFixed(6);              // 基准收益率（演示合成）
-    const nret=+(Math.cos((fi+1)*7.77+di*3.14)*0.006+0.0004).toFixed(6); // 净值收益率（估值系统透传，演示合成）
+    const nret=+(Math.cos((fi+1)*7.77+di*3.14)*0.006+0.0004).toFixed(6); // 净值收益率（产品系统自算，演示合成）
     const err0=f.fund==="020932"&&d==="2026-10-14";
     BQDATA.push({fund:f.fund,name:f.name,share:f.share,date:d,ret:err0?null:ret,nret,recalc:err0?"异常":(f.fund==="026663"&&d==="2026-10-14")?"已重算 R1":"正常"});
   });
@@ -1638,7 +1638,7 @@ BQFUNDS.forEach((f,fi)=>{
     r.cum=acc[r.fund]!=null?acc[r.fund]-1:null;
   });
 })();
-// 累计净值增长率＝自合同成立日起每日(1+净值增长率)连乘后减 1，以估值系统输出为准（透传不重算，不受基准计算异常影响）；演示数据为合成日收益简化连乘
+// 累计净值增长率＝自基金合同生效日（含当日）起每日(1+净值收益率)连乘后减 1，由产品系统基于估值系统净值信息计算（不受基准计算异常影响）；演示数据为合成日收益简化连乘
 (function(){const acc={};
   BQDATA.slice().sort((a,b)=>a.date.localeCompare(b.date)).forEach(r=>{
     if(!(r.fund in acc))acc[r.fund]=1;
