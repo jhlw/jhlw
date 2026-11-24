@@ -1,0 +1,103 @@
+{
+  "process_name": "业绩比较基准每日计算与披露（v2.7 to-be）",
+  "stages": [
+    {
+      "name": "行情包到位（指数/利率/汇率）",
+      "owner": "外部·行情侧",
+      "type": "wait",
+      "duration_minutes_p50": 0,
+      "duration_minutes_p90": 0
+    },
+    {
+      "name": "净值信息到位（含万份收益/权益事件）",
+      "owner": "外部·估值系统",
+      "type": "wait",
+      "duration_minutes_p50": 0,
+      "duration_minutes_p90": 0
+    },
+    {
+      "name": "步骤1 数据准备与齐套检查",
+      "owner": "产品系统",
+      "type": "value-add",
+      "duration_minutes_p50": 0,
+      "duration_minutes_p90": 0
+    },
+    {
+      "name": "步骤2 日期轴对齐（三类日历）",
+      "owner": "产品系统",
+      "type": "value-add",
+      "duration_minutes_p50": 0,
+      "duration_minutes_p90": 0
+    },
+    {
+      "name": "步骤3 基金净值收益率计算（30位）",
+      "owner": "产品系统",
+      "type": "value-add",
+      "duration_minutes_p50": 0,
+      "duration_minutes_p90": 0
+    },
+    {
+      "name": "步骤4 成分基准日收益计算（8位）",
+      "owner": "产品系统",
+      "type": "value-add",
+      "duration_minutes_p50": 0,
+      "duration_minutes_p90": 0
+    },
+    {
+      "name": "步骤5 组合合成R=Σw·r（每日再平衡）",
+      "owner": "产品系统",
+      "type": "value-add",
+      "duration_minutes_p50": 0,
+      "duration_minutes_p90": 0
+    },
+    {
+      "name": "步骤6a 独立复核引擎重算比对",
+      "owner": "产品系统",
+      "type": "value-add",
+      "duration_minutes_p50": 0,
+      "duration_minutes_p90": 0
+    },
+    {
+      "name": "步骤6b 异常人工确认（触发时）",
+      "owner": "投资风险部",
+      "type": "value-add",
+      "duration_minutes_p50": 0,
+      "duration_minutes_p90": 0
+    },
+    {
+      "name": "步骤6c 推送官网/APP（同源同批次）",
+      "owner": "产品系统",
+      "type": "value-add",
+      "duration_minutes_p50": 0,
+      "duration_minutes_p90": 0
+    },
+    {
+      "name": "渠道渲染展示（禁止渠道自算）",
+      "owner": "官网/APP",
+      "type": "value-add",
+      "duration_minutes_p50": 0,
+      "duration_minutes_p90": 0
+    },
+    {
+      "name": "返工·发起行情维护（补录+原因+紧急度）",
+      "owner": "投资风险部",
+      "type": "rework",
+      "duration_minutes_p50": 0,
+      "duration_minutes_p90": 0
+    },
+    {
+      "name": "返工·维护审核（通过/退回修改）",
+      "owner": "投资风险部",
+      "type": "rework",
+      "duration_minutes_p50": 0,
+      "duration_minutes_p90": 0
+    },
+    {
+      "name": "返工·受影响基金重算并重推",
+      "owner": "产品系统",
+      "type": "rework",
+      "duration_minutes_p50": 0,
+      "duration_minutes_p90": 0
+    }
+  ]
+}
