@@ -166,6 +166,7 @@ button{font-family:inherit;cursor:pointer}
     <div class="nav-group">数据与配置</div>
     <a href="#s2i" data-s="s2i"><span class="ic">⊞</span>指数库</a>
     <a href="#s2" data-s="s2"><span class="ic">≣</span>产品基准配置</a>
+    <a href="#s2c" data-s="s2c"><span class="ic">◷</span>产品日历配置</a>
     <div class="nav-group">业绩查询</div>
     <a href="#s1" class="on" data-s="s1"><span class="ic">◧</span>业绩基准及净值收益率查询</a>
     <div class="nav-group">基准行情库</div>
@@ -173,7 +174,7 @@ button{font-family:inherit;cursor:pointer}
     <a href="#s3m" data-s="s3m" class="sub"><span class="ic">✎</span>基准行情维护</a>
   </nav>
   <div class="side-foot">
-    界面原型 · 示例数据<br>依据《业务解决方案 v2.7》<br>建信基金（产品代码源自生产工作簿，其余标注"示例"）
+    界面原型 · 示例数据<br>依据《业务解决方案 v2.8》<br>建信基金（产品代码源自生产工作簿，其余标注"示例"）
   </div>
 </aside>
 <!-- ================= 主区 ================= -->
@@ -217,6 +218,7 @@ button{font-family:inherit;cursor:pointer}
         <b>组合基准日收益（每日再平衡）</b>：rᵇ(组合)ₜ = Σᵢ wᵢ × rᵢₜ（wᵢ 为合同固定权重，逐日以原权重加权；各成分权重合计须为 100%）。<br>
         <b>基准累计增长率（基点＝合同成立日，自基点日次一净值披露日起累计、含期末日）</b>：按当日合成日收益率 R_d＝Σw_i×r_i,d 逐日连乘 ∏(1+R_d) − 1（利率成分经合成日收益参与连乘，口径见文档 §4.2.2）；跨基准版本与跨天数基准切换自然链接，无需特殊处理。<br>
         <b>外币折算（人民银行中间价、直接汇率）</b>：经汇率调整指数ₜ = Indexₜ × FXₜ，1+rₜ = (Indexₜ × FXₜ) / (Indexₜ₋₁ × FXₜ₋₁)。<br>
+        <b>日期轴与节假日历</b>：以估值系统提供的日期序列为基准日期轴（从估值外部系统获取节假日历实例数据）；每个产品适用的节假日历按《产品日历配置》（§5.1 数据与配置）读取——已配置的产品按其关联的节假日历处理，未配置的默认按中国节假日群处理。<br>
         <b>精度</b>：接口全精度；中间结果——净值收益率及累计净值增长率保留 30 位小数，基准侧（日收益率与组合合成）保留 8 位小数；展示层非货币类基金 4 位小数、货币类基金 6 位小数。
       </div>
     </details>
@@ -245,6 +247,39 @@ button{font-family:inherit;cursor:pointer}
       <button class="btn sm pprev" id="cfgPrev" disabled>上一页</button><button class="btn sm pnext" id="cfgNext">下一页</button>
       <span class="pnote">查询按产品代码/简称模糊匹配；「生效日期」条件＝筛选截至该日仍在生效的版本；查询或切换每页条数后自动回到第 1 页</span>
     </div></div>
+  </div>
+</section>
+
+<!-- ============ S2c 产品日历配置（v2.8 新增） ============ -->
+<section class="screen" id="s2c">
+  <div class="panel">
+    <div class="ph"><h3>产品日历配置</h3><span class="sub">数据与配置 · 投资风险部维护 · 以产品为维度维护产品与节假日历的关联关系 · 供业绩比较基准计算时确定所适用的节假日历</span></div>
+    <div class="qry">
+      <label>产品编码<input id="calSearchCode" placeholder="如 000270" style="width:120px"></label>
+      <label>产品名称<input id="calSearchName" placeholder="如 建信灵活配置" style="width:150px"></label>
+      <label>节假日历类型<select id="calSearchType"><option>全部</option></select></label>
+      <button class="btn pri" onclick="calQuery()">查询</button><button class="btn" onclick="calResetSearch()">重置</button>
+      <span class="note" style="margin-left:auto">共 <b class="mono" id="calCount">0</b> 条记录</span>
+    </div>
+    <div class="pb flush">
+      <div class="tabops" style="justify-content:flex-start;gap:8px">
+        <button class="btn pri" onclick="openCalModal()">＋ 新增关联</button>
+        <button class="btn" onclick="openCalExport()">导出节假日历</button>
+        <span class="note" style="margin-left:auto">支持按节假日类型及年度导出节假日历</span>
+      </div>
+      <table class="tbl" id="calTbl">
+        <tr><th class="ctr" style="width:44px">序号</th><th class="mono">产品编码</th><th>产品名称</th><th class="ctr">节假日日历类型</th><th class="mono">生效日期</th><th>维护人</th><th class="ctr" style="width:140px">操作</th></tr>
+        <tbody id="calBody"></tbody>
+      </table>
+      <div class="pager" id="calPager" data-manual>
+        <span>共 <b class="mono" id="calTotal">0</b> 条</span>
+        <label>每页<select class="psize" id="calSize"><option selected>10</option><option>30</option><option>50</option><option>100</option></select>条</label>
+        <span>第 <b class="mono pcur" id="calCur">1</b> / <span class="mono pall" id="calAll">1</span> 页</span>
+        <button class="btn sm pprev" id="calPrev" disabled>上一页</button><button class="btn sm pnext" id="calNext">下一页</button>
+        <span class="pnote">查询支持产品编码、产品名称、节假日历类型组合筛选</span>
+      </div>
+      <div style="padding:9px 16px;border-top:1px solid var(--line2)" class="note"><b>应用功能：</b>计算业绩比较基准时，系统先读取产品日历配置表——产品已配置日历的，按其对应的节假日历进行计算；未配置的，默认按<b>中国节假日群</b>进行计算。新增关联的默认生效日期为该产品合同生效日（可调整）；修改/删除关联的生效日期须<b>大于等于当前营业日</b>（原型演示当前营业日为 <b class="mono">2026-11-27</b>）。</div>
+    </div>
   </div>
 </section>
 
@@ -824,9 +859,55 @@ button{font-family:inherit;cursor:pointer}
   </div>
 </div>
 
+<!-- ============ 弹层：新增/编辑产品日历关联（v2.8 新增） ============ -->
+<div class="mask" id="mCal" role="dialog" aria-modal="true" aria-label="产品日历关联">
+  <div class="modal" style="width:560px">
+    <div class="mh"><h3 id="calModalTitle">新增产品日历关联</h3><button class="x" onclick="closeM('mCal')">✕</button></div>
+    <div class="mb">
+      <div class="frm" style="grid-template-columns:110px 1fr">
+        <label class="req">产品</label><div><select id="calProduct" onchange="calProductChange()"></select><div class="note" style="margin-top:3px" id="calProdNote">以产品为维度配置，一个产品仅可关联一个节假日历（单选）</div></div>
+        <label class="req">节假日历</label><select id="calType"></select>
+        <label class="req">生效日期</label><div><input type="date" id="calEff" class="mono" style="width:180px"><div class="note" style="margin-top:3px" id="calEffNote">新增时默认为所选产品的合同生效日（可调整）</div></div>
+      </div>
+      <div class="note" style="margin-top:12px">节假日历候选：中国节假日群、非港股交易日、周末节假日、恒生科技指数节假日、境外节假日群、银行间节假日群、港股通节假日群、中国香港节假日、富时100节假日、纳斯达克100节假日群。</div>
+    </div>
+    <div class="mf"><button class="btn" onclick="closeM('mCal')">取消</button><button class="btn pri" onclick="calSave()">保存</button></div>
+  </div>
+</div>
+
+<!-- ============ 弹层：删除产品日历关联（v2.8 新增） ============ -->
+<div class="mask" id="mCalDel" role="dialog" aria-modal="true" aria-label="删除产品日历关联">
+  <div class="modal" style="width:520px">
+    <div class="mh"><h3>删除产品日历关联</h3><button class="x" onclick="closeM('mCalDel')">✕</button></div>
+    <div class="mb">
+      <dl class="kv" id="calDelInfo" style="margin-bottom:12px"></dl>
+      <div class="banner warn" style="margin:0 0 12px"><span>⚠</span><div>删除后该产品<b>不再适用专属节假日历</b>，业绩比较基准计算默认按<b>中国节假日群</b>进行。</div></div>
+      <div class="frm" style="grid-template-columns:110px 1fr">
+        <label class="req">删除生效日期</label><div><input type="date" id="calDelEff" class="mono" style="width:180px"><div class="note" style="margin-top:3px">删除关联的生效日期须大于等于当前营业日（<span class="mono">2026-11-27</span>）</div></div>
+      </div>
+    </div>
+    <div class="mf"><button class="btn" onclick="closeM('mCalDel')">取消</button><button class="btn dgr" onclick="calDoDel()">确认删除</button></div>
+  </div>
+</div>
+
+<!-- ============ 弹层：导出节假日历（v2.8 新增） ============ -->
+<div class="mask" id="mCalExp" role="dialog" aria-modal="true" aria-label="导出节假日历">
+  <div class="modal" style="width:480px">
+    <div class="mh"><h3>导出节假日历</h3><button class="x" onclick="closeM('mCalExp')">✕</button></div>
+    <div class="mb">
+      <div class="frm" style="grid-template-columns:110px 1fr">
+        <label class="req">节假日类型</label><select id="calExpType"></select>
+        <label class="req">年度</label><select id="calExpYear" style="width:140px"><option>2023</option><option>2024</option><option>2025</option><option selected>2026</option><option>2027</option></select>
+      </div>
+      <div class="note" style="margin-top:12px">支持按节假日类型及年度导出节假日历（节假日日期清单）。</div>
+    </div>
+    <div class="mf"><button class="btn" onclick="closeM('mCalExp')">取消</button><button class="btn pri" onclick="calExpDo()">导出</button></div>
+  </div>
+</div>
+
 <script>
 /* ================= 导航 ================= */
-const TITLES={s1:"业绩基准及净值收益率查询",s2:"产品基准配置",s2i:"指数库",s3:"基准行情查询",s3m:"基准行情维护"};
+const TITLES={s1:"业绩基准及净值收益率查询",s2:"产品基准配置",s2c:"产品日历配置",s2i:"指数库",s3:"基准行情查询",s3m:"基准行情维护"};
 function goto(s){
   document.querySelectorAll(".screen").forEach(e=>e.classList.toggle("on",e.id===s));
   document.querySelectorAll(".nav a").forEach(a=>{a.classList.toggle("on",a.dataset.s===s);a.setAttribute("aria-current",a.dataset.s===s?"page":"false")});
@@ -1609,6 +1690,130 @@ document.getElementById("zsSize").addEventListener("change",()=>{zSrcPage=1;zRen
 document.getElementById("zsPrev").addEventListener("click",()=>{zSrcPage--;zRenderSrcSelect()});
 document.getElementById("zsNext").addEventListener("click",()=>{zSrcPage++;zRenderSrcSelect()});
 zRender();
+/* ================= 产品日历配置（v2.8 新增） ================= */
+const CALS=["中国节假日群","非港股交易日","周末节假日","恒生科技指数节假日","境外节假日群","银行间节假日群","港股通节假日群","中国香港节假日","富时100节假日","纳斯达克100节假日群"];
+const CAL_BIZ="2026-11-27";
+const CALPRODS=PRODUCTS.concat([
+ ["539002","建信全球精选股票（QDII）（示例）","2024-07-01"],
+ ["539003","建信纳斯达克科技（QDII）C（示例）","2025-09-01"],
+ ["539004","建信恒生科技指数发起（示例）","2026-05-20"]]);
+const CALROWS=[
+ ["000270","建信灵活配置混合","中国节假日群","2023-06-01","李工"],
+ ["530001","建信恒久价值混合","中国节假日群","2024-05-06","李工"],
+ ["530003","建信优选成长混合A","中国节假日群","2023-08-01","李工"],
+ ["960028","建信优选成长H","港股通节假日群","2023-08-01","张主管"],
+ ["020932","建信沪港深价值混合A（示例）","港股通节假日群","2025-06-18","张主管"],
+ ["026663","建信资源严选股票发起C","中国节假日群","2026-03-12","李工"],
+ ["007830","建信荣瑞一年定开混合","银行间节假日群","2025-11-19","王工"],
+ ["531099","建信一年定开纯债债券（示例）","周末节假日","2025-03-01","王工"],
+ ["539001","建信稳定增利债券A（示例）","中国节假日群","2024-01-15","李工"],
+ ["539002","建信全球精选股票（QDII）（示例）","境外节假日群","2024-07-01","张主管"],
+ ["539003","建信纳斯达克科技（QDII）C（示例）","纳斯达克100节假日群","2025-09-01","张主管"],
+ ["539004","建信恒生科技指数发起（示例）","恒生科技指数节假日","2026-05-20","王工"]];
+let calPage=1,calList=[],calEditCode=null,calDelCode=null;
+function calQuery(){
+  const c=document.getElementById("calSearchCode").value.trim().toLowerCase();
+  const n=document.getElementById("calSearchName").value.trim().toLowerCase();
+  const t=document.getElementById("calSearchType").value;
+  calList=CALROWS.filter(r=>(!c||r[0].toLowerCase().includes(c))&&(!n||r[1].toLowerCase().includes(n))&&(t==="全部"||r[2]===t));
+  calPage=1;calPaint();
+}
+function calPaint(){
+  const size=+document.getElementById("calSize").value;
+  const pages=Math.max(1,Math.ceil(calList.length/size));
+  calPage=Math.min(Math.max(1,calPage),pages);
+  const start=(calPage-1)*size,rows=calList.slice(start,start+size);
+  document.getElementById("calBody").innerHTML=rows.length?rows.map((r,i)=>
+    '<tr data-c="'+r[0]+'"><td class="ctr">'+(start+i+1)+'</td><td class="mono">'+r[0]+'</td><td>'+r[1]+'</td>'
+    +'<td class="ctr"><span class="tag '+(r[2]==="中国节假日群"?"info":"gray")+'">'+r[2]+'</span></td>'
+    +'<td class="mono">'+r[3]+'</td><td>'+r[4]+'</td>'
+    +'<td class="ctr" style="white-space:nowrap"><button class="btn sm" onclick="openCalModal(\''+r[0]+'\')">编辑</button> <button class="btn sm dgr" style="margin-left:4px" onclick="openCalDel(\''+r[0]+'\')">删除</button></td></tr>').join("")
+    :'<tr><td colspan="7" style="text-align:center;color:var(--ink3);padding:10px">无匹配数据，请调整查询条件</td></tr>';
+  document.getElementById("calCount").textContent=calList.length;
+  document.getElementById("calTotal").textContent=calList.length;
+  document.getElementById("calAll").textContent=pages;
+  document.getElementById("calCur").textContent=calPage;
+  document.getElementById("calPrev").disabled=calPage<=1;
+  document.getElementById("calNext").disabled=calPage>=pages;
+}
+function calResetSearch(){
+  document.getElementById("calSearchCode").value="";
+  document.getElementById("calSearchName").value="";
+  document.getElementById("calSearchType").value="全部";
+  calQuery();
+}
+function calFillTypeSelects(){
+  const q=document.getElementById("calSearchType");
+  q.innerHTML='<option>全部</option>'+CALS.map(c=>'<option>'+c+'</option>').join("");
+  document.getElementById("calType").innerHTML=CALS.map(c=>'<option>'+c+'</option>').join("");
+  document.getElementById("calExpType").innerHTML=CALS.map(c=>'<option>'+c+'</option>').join("");
+}
+function openCalModal(code){
+  calEditCode=code||null;
+  document.getElementById("calModalTitle").textContent=code?"编辑产品日历关联 · "+code:"新增产品日历关联";
+  const sel=document.getElementById("calProduct");
+  sel.innerHTML='<option value="">请选择产品</option>'+CALPRODS.map(p=>'<option value="'+p[0]+'">'+p[0]+' '+p[1]+'</option>').join("");
+  sel.disabled=!!code;
+  document.getElementById("calProdNote").textContent=code?"编辑时产品不可更换，仅可调整节假日历与生效日期":"以产品为维度配置，一个产品仅可关联一个节假日历（单选）";
+  document.getElementById("calEffNote").textContent=code?"修改后的生效日期须大于等于当前营业日（"+CAL_BIZ+"）":"默认为所选产品的合同生效日（可调整）";
+  if(code){
+    const r=CALROWS.find(x=>x[0]===code);
+    sel.value=code;document.getElementById("calType").value=r[2];document.getElementById("calEff").value=r[3];
+  }else{
+    sel.value="";document.getElementById("calType").selectedIndex=0;document.getElementById("calEff").value="";
+  }
+  openM("mCal");
+}
+function calProductChange(){
+  if(calEditCode)return;
+  const p=CALPRODS.find(x=>x[0]===document.getElementById("calProduct").value);
+  if(p)document.getElementById("calEff").value=p[2];
+}
+function calSave(){
+  const code=document.getElementById("calProduct").value;
+  const cal=document.getElementById("calType").value;
+  const eff=document.getElementById("calEff").value;
+  if(!code){alert("请选择产品");return}
+  if(!eff){alert("请选择生效日期");return}
+  if(calEditCode){
+    if(eff<CAL_BIZ){alert("修改关联的生效日期须大于等于当前营业日（"+CAL_BIZ+"）");return}
+    const r=CALROWS.find(x=>x[0]===calEditCode);
+    r[2]=cal;r[3]=eff;r[4]="李工";
+  }else{
+    if(CALROWS.some(x=>x[0]===code)){alert("该产品已存在节假日历关联，请通过「编辑」调整");return}
+    const p=CALPRODS.find(x=>x[0]===code);
+    CALROWS.push([code,p?p[1]:code,cal,eff,"李工"]);
+  }
+  closeM("mCal");calQuery();
+  alert("保存成功（原型演示）");
+}
+function openCalDel(code){
+  calDelCode=code;
+  const r=CALROWS.find(x=>x[0]===code);if(!r)return;
+  document.getElementById("calDelInfo").innerHTML='<dt>产品编码</dt><dd class="mono">'+r[0]+'</dd><dt>产品名称</dt><dd>'+r[1]+'</dd><dt>当前节假日历</dt><dd>'+r[2]+'</dd><dt>当前生效日期</dt><dd class="mono">'+r[3]+'</dd>';
+  document.getElementById("calDelEff").value=CAL_BIZ;
+  openM("mCalDel");
+}
+function calDoDel(){
+  const d=document.getElementById("calDelEff").value;
+  if(!d){alert("请选择删除生效日期");return}
+  if(d<CAL_BIZ){alert("删除关联的生效日期须大于等于当前营业日（"+CAL_BIZ+"）");return}
+  const i=CALROWS.findIndex(x=>x[0]===calDelCode);
+  if(i>=0)CALROWS.splice(i,1);
+  closeM("mCalDel");calQuery();
+  alert("删除成功：该产品不再适用专属节假日历，业绩比较基准计算默认按「中国节假日群」进行（原型演示）");
+}
+function openCalExport(){openM("mCalExp")}
+function calExpDo(){
+  const t=document.getElementById("calExpType").value,y=document.getElementById("calExpYear").value;
+  closeM("mCalExp");
+  alert("已按节假日类型及年度导出《"+y+" "+t+"》节假日历（原型演示，不生成文件）");
+}
+calFillTypeSelects();
+document.getElementById("calSize").addEventListener("change",()=>{calPage=1;calPaint()});
+document.getElementById("calPrev").addEventListener("click",()=>{calPage--;calPaint()});
+document.getElementById("calNext").addEventListener("click",()=>{calPage++;calPaint()});
+calQuery();
 /* ================= 业绩基准及净值收益率查询（参照 jizhundianwei.html 设计 · 分页＋日期倒序） ================= */
 const BQDAYS=["2026-10-14","2026-10-13","2026-10-11","2026-10-10","2026-10-09","2026-10-08","2026-10-07"];
 const BQFUNDS=[

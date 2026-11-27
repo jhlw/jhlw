@@ -1,5 +1,5 @@
 {
-  "process_name": "业绩比较基准每日计算与披露（v2.7 to-be）",
+  "process_name": "业绩比较基准每日计算与披露（v2.8 to-be）",
   "stages": [
     {
       "name": "行情包到位（指数/利率/汇率）",
@@ -23,7 +23,7 @@
       "duration_minutes_p90": 0
     },
     {
-      "name": "步骤2 日期轴对齐（三类日历）",
+      "name": "步骤2 日期轴对齐（读产品日历配置）",
       "owner": "产品系统",
       "type": "value-add",
       "duration_minutes_p50": 0,
